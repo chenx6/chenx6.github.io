@@ -2,17 +2,17 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>codeql on 二进制咸鱼的自我救赎</title>
-    <link>http://chenx6.github.io/tags/codeql/</link>
+    <link>https://chenx6.github.io/tags/codeql/</link>
     <description>Recent content in codeql on 二进制咸鱼的自我救赎</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-hans</language>
-    <lastBuildDate>Mon, 20 Apr 2020 00:00:00 +0800</lastBuildDate><atom:link href="http://chenx6.github.io/tags/codeql/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Mon, 20 Apr 2020 00:00:00 +0800</lastBuildDate><atom:link href="https://chenx6.github.io/tags/codeql/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>CodeQL 体验</title>
-      <link>http://chenx6.github.io/post/codeql/</link>
+      <link>https://chenx6.github.io/post/codeql/</link>
       <pubDate>Mon, 20 Apr 2020 00:00:00 +0800</pubDate>
       
-      <guid>http://chenx6.github.io/post/codeql/</guid>
+      <guid>https://chenx6.github.io/post/codeql/</guid>
       <description>概要 之前在 Twitter 上看到有大佬说 Github Learning Club 上搞了个免费的 CodeQL 课程，课程最终目标是使用 CodeQL 这个语言找出 uboot 中的 9 个漏洞。我在克服拖延症后，终于在 4 月底完成了这个课程，于是写文记录。 课程链接 通过 CodeQL 找出来的漏洞分析 提前准备</description>
     </item>
     

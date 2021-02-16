@@ -1,4 +1,4 @@
-baseURL = "http://chenx6.github.io/"
+baseURL = "https://chenx6.github.io/"
 languageCode = "zh-hans"
 defaultContentLanguage = "zh-hans"
 title = "二进制咸鱼的自我救赎"
