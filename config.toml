@@ -1,0 +1,84 @@
+baseURL = "http://chenx6.github.io/"
+languageCode = "zh-hans"
+defaultContentLanguage = "zh-hans"
+title = "二进制咸鱼的自我救赎"
+
+theme = "fuji"
+hasCJKLanguage = true
+enableEmoji = true
+enableRobotsTXT = true
+disableKinds = ["taxonomy"]
+ignoreErrors = ["error-disable-taxonomy"]
+publishDir = "docs"
+
+summaryLength = 100 # Custom summary length, add <!--more--> in post file to custom split point
+paginate = 10
+
+[outputFormats]
+  [outputFormats.SearchIndex]
+    isPlainText = true
+    notAlternative = true
+    mediaType = "application/json"
+    path = "/search/"
+
+[outputs]
+  home = ["HTML", "RSS", "SearchIndex"]
+
+[permalinks]
+  post = "/:section/:filename/" # Custom post links, e.g. "/:year/:month/:title/"
+
+[params]
+  author = "chen_null" # You can also set author in post front matter individually
+  subTitle = "幸福往往是摸的透彻，而敬业的心却往往隐藏。"
+
+  # License
+  license = "CC BY 4.0"
+  licenseLink = "https://creativecommons.org/licenses/by/4.0/"
+
+  # License in the footer
+  showLicenseInFooter = true
+
+  # License at the end of each post
+  showLicense = false
+  showToc = true
+
+[markup]
+  [markup.goldmark]
+    [markup.goldmark.renderer]
+      unsafe = true  # Enable user to embed HTML snippets in Markdown content
+  [markup.highlight]
+    codeFences = false  # Disable Hugo's code highlighter
+
+  [markup.tableOfContents]
+    startLevel = 2
+    endLevel = 3
+
+[taxonomies]
+  tag = "tags"
+
+[menu]
+  [[menu.nav]]
+    name = "Home"
+    url = "/"
+    weight = 1
+  [[menu.nav]]
+    name = "Archives"
+    url = "/archives/"
+    weight = 2
+  [[menu.nav]]
+    name = "About"
+    url = "/about/"
+    weight = 3
+  [[menu.nav]]
+    name = "Search"
+    url = "/search/"
+    weight = 4
+  [[menu.nav]]
+    name = "RSS"
+    url = "/index.xml"
+    weight = 5
+
+  [[menu.link]]
+    name = "GitHub"
+    url = "https://github.com/chenx6"
+    weight = 1

@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>backdoor on 二进制咸鱼的自我救赎</title>
+    <link>http://chenx6.github.io/tags/backdoor/</link>
+    <description>Recent content in backdoor on 二进制咸鱼的自我救赎</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh-hans</language>
+    <lastBuildDate>Wed, 01 Jan 2020 00:00:00 +0800</lastBuildDate><atom:link href="http://chenx6.github.io/tags/backdoor/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>给 ELF 文件加上后门</title>
+      <link>http://chenx6.github.io/post/elf_backdoor/</link>
+      <pubDate>Wed, 01 Jan 2020 00:00:00 +0800</pubDate>
+      
+      <guid>http://chenx6.github.io/post/elf_backdoor/</guid>
+      <description>在渗透测试中，给常用的可执行文件加上后门是很常见的操作。但是之前的加后门 &amp;ldquo;The backdoor factory&amp;rdquo; 已经不维护了，而且还是 Python2 写的，代码质量也&amp;hellip;所以我自己尝试着重新用 Python3 造了个轮子。在造轮子的过程中，由于 APUE 扔在学</description>
+    </item>
+    
+  </channel>
+</rss>

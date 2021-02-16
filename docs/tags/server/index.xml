@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>server on 二进制咸鱼的自我救赎</title>
+    <link>http://chenx6.github.io/tags/server/</link>
+    <description>Recent content in server on 二进制咸鱼的自我救赎</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh-hans</language>
+    <lastBuildDate>Sat, 01 Feb 2020 00:00:00 +0800</lastBuildDate><atom:link href="http://chenx6.github.io/tags/server/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>斐讯 N1 折腾/避坑笔记</title>
+      <link>http://chenx6.github.io/post/n1_modify/</link>
+      <pubDate>Sat, 01 Feb 2020 00:00:00 +0800</pubDate>
+      
+      <guid>http://chenx6.github.io/post/n1_modify/</guid>
+      <description>最近想搞一台小服务器来做 Git 服务器，下载 Bt 等事情，所以就在一堆便宜的 ARM 机顶盒/NAS 中间挑选。最后看上了 100 RMB 左右的斐讯 N1，因为 N1 不用拆机就可以刷机。 准备工作 空 U 盘 HDMI 线 一台斐讯 N1 键盘，鼠标 可以试试没有 HDMI</description>
+    </item>
+    
+  </channel>
+</rss>

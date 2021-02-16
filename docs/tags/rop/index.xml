@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>rop on 二进制咸鱼的自我救赎</title>
+    <link>http://chenx6.github.io/tags/rop/</link>
+    <description>Recent content in rop on 二进制咸鱼的自我救赎</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh-hans</language>
+    <lastBuildDate>Mon, 01 Jun 2020 00:00:00 +0800</lastBuildDate><atom:link href="http://chenx6.github.io/tags/rop/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>不同视角看 ROP</title>
+      <link>http://chenx6.github.io/post/different-rop/</link>
+      <pubDate>Mon, 01 Jun 2020 00:00:00 +0800</pubDate>
+      
+      <guid>http://chenx6.github.io/post/different-rop/</guid>
+      <description>看了许多讲 ROP 的文章，发现很多只是讲了怎么利用，但是没有讲为什么这么利用。所以写文记录。 什么是 ROP ROP (Return orient programming) 是一种漏洞利用方法，使得攻击者绕过保护(例如 NX 栈不可执行)执行恶意代码。攻击者通过栈溢出等手段实现</description>
+    </item>
+    
+  </channel>
+</rss>

@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>二进制咸鱼的自我救赎</title>
+    <link>http://chenx6.github.io/</link>
+    <description>Recent content on 二进制咸鱼的自我救赎</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh-hans</language>
+    <lastBuildDate>Thu, 21 Jan 2021 00:00:00 +0800</lastBuildDate><atom:link href="http://chenx6.github.io/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>记录一次失败的固件 fuzz</title>
+      <link>http://chenx6.github.io/post/fail_firm_fuzz/</link>
+      <pubDate>Thu, 21 Jan 2021 00:00:00 +0800</pubDate>
+      
+      <guid>http://chenx6.github.io/post/fail_firm_fuzz/</guid>
+      <description>这是我第一次对华硕路由器的 httpd 进行 fuzz。结果 fuzz 出来的结果没有经过实机测试，就提交上去了，然后就是华硕的安全团队复现不出来&amp;hellip;为什么复现不出来，在本文总结处进行分析。本文主要讲我在进行固件</description>
+    </item>
+    
+    <item>
+      <title>重写 OLLVM 之控制流平坦化</title>
+      <link>http://chenx6.github.io/post/rewrite_ollvm_fla/</link>
+      <pubDate>Thu, 21 Jan 2021 00:00:00 +0800</pubDate>
+      
+      <guid>http://chenx6.github.io/post/rewrite_ollvm_fla/</guid>
+      <description>OLLVM 的控制流平坦化是逆向老哥最讨厌的混淆了，因为一旦使用就代表着 IDA 的 decompiler 彻底报废了。所以了解并在自己的项目中重写控制流平坦化挺重要的。 什么是控制流平坦化 名词解释 BasicBlock 代码块，以跳转语句结尾的一段代码。 语言描述</description>
+    </item>
+    
+    <item>
+      <title>不同视角看 ROP</title>
+      <link>http://chenx6.github.io/post/different-rop/</link>
+      <pubDate>Mon, 01 Jun 2020 00:00:00 +0800</pubDate>
+      
+      <guid>http://chenx6.github.io/post/different-rop/</guid>
+      <description>看了许多讲 ROP 的文章，发现很多只是讲了怎么利用，但是没有讲为什么这么利用。所以写文记录。 什么是 ROP ROP (Return orient programming) 是一种漏洞利用方法，使得攻击者绕过保护(例如 NX 栈不可执行)执行恶意代码。攻击者通过栈溢出等手段实现</description>
+    </item>
+    
+    <item>
+      <title>CodeQL 体验</title>
+      <link>http://chenx6.github.io/post/codeql/</link>
+      <pubDate>Mon, 20 Apr 2020 00:00:00 +0800</pubDate>
+      
+      <guid>http://chenx6.github.io/post/codeql/</guid>
+      <description>概要 之前在 Twitter 上看到有大佬说 Github Learning Club 上搞了个免费的 CodeQL 课程，课程最终目标是使用 CodeQL 这个语言找出 uboot 中的 9 个漏洞。我在克服拖延症后，终于在 4 月底完成了这个课程，于是写文记录。 课程链接 通过 CodeQL 找出来的漏洞分析 提前准备</description>
+    </item>
+    
+    <item>
+      <title>斐讯 N1 折腾/避坑笔记</title>
+      <link>http://chenx6.github.io/post/n1_modify/</link>
+      <pubDate>Sat, 01 Feb 2020 00:00:00 +0800</pubDate>
+      
+      <guid>http://chenx6.github.io/post/n1_modify/</guid>
+      <description>最近想搞一台小服务器来做 Git 服务器，下载 Bt 等事情，所以就在一堆便宜的 ARM 机顶盒/NAS 中间挑选。最后看上了 100 RMB 左右的斐讯 N1，因为 N1 不用拆机就可以刷机。 准备工作 空 U 盘 HDMI 线 一台斐讯 N1 键盘，鼠标 可以试试没有 HDMI</description>
+    </item>
+    
+    <item>
+      <title>LC3-VM 学习和实现</title>
+      <link>http://chenx6.github.io/post/lc3-vm/</link>
+      <pubDate>Wed, 15 Jan 2020 00:00:00 +0800</pubDate>
+      
+      <guid>http://chenx6.github.io/post/lc3-vm/</guid>
+      <description>本文是根据 https://justinmeiners.github.io/lc3-vm 和 https://justinmeiners.github.io/lc3-vm/supplies/lc3-isa.pdf ISA 写出 LC3 VM 的实现过程。 代码已上传到了 Github 上：https://github.com/chenx6/lc3-vm LC3 架构 内存 LC3 架构有 2^16 个地址，每个地址包含一个 word (2 byte, 16 bit)。是大端序存储。所</description>
+    </item>
+    
+    <item>
+      <title>使用 LLVM Pass 实现字符串加密</title>
+      <link>http://chenx6.github.io/post/obfuscate_string/</link>
+      <pubDate>Wed, 01 Jan 2020 00:00:00 +0800</pubDate>
+      
+      <guid>http://chenx6.github.io/post/obfuscate_string/</guid>
+      <description>这个项目可以作为我看了这么久 LLVM 的 Docs 助眠的一个小总结吧。这个项目主要就是给函数使用的常量字符串进行加密，在程序被静态分析的时候干扰分析。当然找到思路后，这个混淆还是很容易解开的。 吐槽下，网上的文章质量参</description>
+    </item>
+    
+    <item>
+      <title>在 LLVM 代码树外编译 LLVM Pass (使用 OLLVM 示范)</title>
+      <link>http://chenx6.github.io/post/build_pass_out_of_tree/</link>
+      <pubDate>Wed, 01 Jan 2020 00:00:00 +0800</pubDate>
+      
+      <guid>http://chenx6.github.io/post/build_pass_out_of_tree/</guid>
+      <description>在网络上流传的编译 LLVM Pass 都需要一份 LLVM 源码，从整个源代码编译，编译非常花时间 (i7 6700HQ 使用 make -j8 编译整个项目花了近 50 分钟)，所以在翻阅文档时发现 LLVM 支持在代码树外编译，在 1 分钟内编译一个 Pass，还是非常香的。 项目</description>
+    </item>
+    
+    <item>
+      <title>给 ELF 文件加上后门</title>
+      <link>http://chenx6.github.io/post/elf_backdoor/</link>
+      <pubDate>Wed, 01 Jan 2020 00:00:00 +0800</pubDate>
+      
+      <guid>http://chenx6.github.io/post/elf_backdoor/</guid>
+      <description>在渗透测试中，给常用的可执行文件加上后门是很常见的操作。但是之前的加后门 &amp;ldquo;The backdoor factory&amp;rdquo; 已经不维护了，而且还是 Python2 写的，代码质量也&amp;hellip;所以我自己尝试着重新用 Python3 造了个轮子。在造轮子的过程中，由于 APUE 扔在学</description>
+    </item>
+    
+    <item>
+      <title>重写 OLLVM 之虚假控制流</title>
+      <link>http://chenx6.github.io/post/rewrite_ollvm_bcf/</link>
+      <pubDate>Wed, 01 Jan 2020 00:00:00 +0800</pubDate>
+      
+      <guid>http://chenx6.github.io/post/rewrite_ollvm_bcf/</guid>
+      <description>由于我个人觉得 OLLVM 的代码年久失修，所以就新建了个项目，开始学习并重写 OLLVM。项目地址：https://github.com/chenx6/baby_obfuscator。如果将我的重写项目和 OLLVM 相比的</description>
+    </item>
+    
+    <item>
+      <title>About</title>
+      <link>http://chenx6.github.io/about/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>http://chenx6.github.io/about/</guid>
+      <description>这是一个介绍页面，但是我不知道该写什么&amp;hellip; 个人介绍 对软件逆向工程感兴趣 联系邮箱：abc82766@gmail.com 使用说明 注意，发在安全客等媒体上的文章没法以 CC BY 许可公开&amp;hellip;</description>
+    </item>
+    
+  </channel>
+</rss>
