@@ -9,10 +9,10 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge" />
 <meta http-equiv="Cache-Control" content="no-transform" />
 <meta http-equiv="Cache-Control" content="no-siteapp" />
-<meta name="generator" content="Hugo 0.80.0" />
+<meta name="generator" content="Hugo 0.88.1" />
 
 
-<link rel="shortcut icon" href="https://cdn.jsdelivr.net/gh/dsrkafuu/dsr-cdn@1/images/favicons/dsrca/favicon.ico" />
+<link rel="shortcut icon" href="https://cdn.jsdelivr.net/gh/dsrkafuu/dsr-cdn-main@1/images/favicons/dsrca.ico" />
 
 
 
@@ -32,7 +32,7 @@
 <meta name="twitter:title" content="重写 OLLVM 之控制流平坦化" />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="https://chenx6.github.io/post/rewrite_ollvm_fla/" /><meta property="og:description" content="OLLVM 的控制流平坦化是逆向老哥最讨厌的混淆了，因为一旦使用就代表着 IDA 的 decompiler 彻底报废了。所以了解并在[自己的项目中](https://github.com/chenx6/baby_obfuscator)重写控制流平坦化挺重要的。" />
-<meta name="twitter:description" content="OLLVM 的控制流平坦化是逆向老哥最讨厌的混淆了，因为一旦使用就代表着 IDA 的 decompiler 彻底报废了。所以了解并在[自己的项目中](https://github.com/chenx6/baby_obfuscator)重写控制流平坦化挺重要的。" /><meta name="twitter:card" content="summary" /><meta property="article:published_time" content="2021-01-21T00:00:00+08:00" /><meta property="article:modified_time" content="2021-01-21T00:00:00+08:00" />
+<meta name="twitter:description" content="OLLVM 的控制流平坦化是逆向老哥最讨厌的混淆了，因为一旦使用就代表着 IDA 的 decompiler 彻底报废了。所以了解并在[自己的项目中](https://github.com/chenx6/baby_obfuscator)重写控制流平坦化挺重要的。" /><meta name="twitter:card" content="summary" /><meta property="article:published_time" content="2021-01-21T00:00:00+00:00" /><meta property="article:modified_time" content="2021-01-21T00:00:00+00:00" />
 
 
 <style>
@@ -49,7 +49,11 @@
 
 
 
+
 <link rel="stylesheet" href="https://chenx6.github.io/assets/css/fuji.min.css" />
+
+
+
 
 
 
@@ -57,7 +61,10 @@
 
 </head>
 
-<body data-theme="auto">
+<body
+  data-theme="auto"
+  data-theme-auto='false'
+  >
     <script data-cfasync="false">
   
   var fujiThemeData = localStorage.getItem('fuji_data-theme');
@@ -71,6 +78,7 @@
     }
   }
 </script>
+
     <header>
     <div class="container-lg clearfix">
         <div class="col-12 header">
@@ -93,7 +101,11 @@
         <a href="https://chenx6.github.io/post/rewrite_ollvm_fla/">重写 OLLVM 之控制流平坦化</a>
     </h2>
     <div class="post-item post-meta">
-        <span><i class="iconfont icon-today-sharp"></i>&nbsp;2021-01-21</span><span><i class="iconfont icon-pricetags-sharp"></i>&nbsp;<a href="/tags/re">re</a>&nbsp;<a href="/tags/llvm">llvm</a>&nbsp;</span>
+        <span><i class="iconfont icon-today-sharp"></i>&nbsp;2021-01-21</span>
+
+
+
+<span><i class="iconfont icon-pricetags-sharp"></i>&nbsp;<a href="/tags/re">re</a>&nbsp;<a href="/tags/llvm">llvm</a>&nbsp;</span>
 
     </div>
     
@@ -433,6 +445,7 @@ storeRng-&gt;setOperand(0, caseCond);
   </ul>
 </nav></div>
 </aside>
+
         </div>
         <div class="btn">
     <div class="btn-menu" id="btn-menu">
@@ -583,13 +596,14 @@ storeRng-&gt;setOperand(0, caseCond);
 
     
 <script defer src="https://cdn.jsdelivr.net/npm/medium-zoom@1.0.6/dist/medium-zoom.min.js"></script>
-<script defer src="https://cdn.jsdelivr.net/npm/lazysizes@5.3.0/lazysizes.min.js"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/lazysizes@5.3.2/lazysizes.min.js"></script>
 <script defer src="https://cdn.jsdelivr.net/npm/prismjs@1.23.0/components/prism-core.min.js"></script>
 <script defer src="https://cdn.jsdelivr.net/npm/prismjs@1.23.0/plugins/autoloader/prism-autoloader.min.js"></script>
 
 
 
 <script defer src="/assets/js/fuji.min.js"></script>
+
 
 
 </body>

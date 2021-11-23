@@ -9,10 +9,10 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge" />
 <meta http-equiv="Cache-Control" content="no-transform" />
 <meta http-equiv="Cache-Control" content="no-siteapp" />
-<meta name="generator" content="Hugo 0.80.0" />
+<meta name="generator" content="Hugo 0.88.1" />
 
 
-<link rel="shortcut icon" href="https://cdn.jsdelivr.net/gh/dsrkafuu/dsr-cdn@1/images/favicons/dsrca/favicon.ico" />
+<link rel="shortcut icon" href="https://cdn.jsdelivr.net/gh/dsrkafuu/dsr-cdn-main@1/images/favicons/dsrca.ico" />
 
 
 
@@ -32,7 +32,7 @@
 <meta name="twitter:title" content="CodeQL 体验" />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="https://chenx6.github.io/post/codeql/" /><meta property="og:description" content="之前在 Twitter 上看到有大佬说 Github Learning Club 上搞了个免费的 CodeQL 课程，课程最终目标是使用 CodeQL 这个语言找出 uboot 中的 9 个漏洞。我在克服拖延症后，终于在 4 月底完成了这个课程，于是写文记录。" />
-<meta name="twitter:description" content="之前在 Twitter 上看到有大佬说 Github Learning Club 上搞了个免费的 CodeQL 课程，课程最终目标是使用 CodeQL 这个语言找出 uboot 中的 9 个漏洞。我在克服拖延症后，终于在 4 月底完成了这个课程，于是写文记录。" /><meta name="twitter:card" content="summary" /><meta property="article:published_time" content="2020-04-20T00:00:00+08:00" /><meta property="article:modified_time" content="2020-04-20T00:00:00+08:00" />
+<meta name="twitter:description" content="之前在 Twitter 上看到有大佬说 Github Learning Club 上搞了个免费的 CodeQL 课程，课程最终目标是使用 CodeQL 这个语言找出 uboot 中的 9 个漏洞。我在克服拖延症后，终于在 4 月底完成了这个课程，于是写文记录。" /><meta name="twitter:card" content="summary" /><meta property="article:published_time" content="2020-04-20T00:00:00+00:00" /><meta property="article:modified_time" content="2020-04-20T00:00:00+00:00" />
 
 
 <style>
@@ -49,7 +49,11 @@
 
 
 
+
 <link rel="stylesheet" href="https://chenx6.github.io/assets/css/fuji.min.css" />
+
+
+
 
 
 
@@ -57,7 +61,10 @@
 
 </head>
 
-<body data-theme="auto">
+<body
+  data-theme="auto"
+  data-theme-auto='false'
+  >
     <script data-cfasync="false">
   
   var fujiThemeData = localStorage.getItem('fuji_data-theme');
@@ -71,6 +78,7 @@
     }
   }
 </script>
+
     <header>
     <div class="container-lg clearfix">
         <div class="col-12 header">
@@ -93,7 +101,11 @@
         <a href="https://chenx6.github.io/post/codeql/">CodeQL 体验</a>
     </h2>
     <div class="post-item post-meta">
-        <span><i class="iconfont icon-today-sharp"></i>&nbsp;2020-04-20</span><span><i class="iconfont icon-pricetags-sharp"></i>&nbsp;<a href="/tags/re">re</a>&nbsp;<a href="/tags/codeql">codeql</a>&nbsp;</span>
+        <span><i class="iconfont icon-today-sharp"></i>&nbsp;2020-04-20</span>
+
+
+
+<span><i class="iconfont icon-pricetags-sharp"></i>&nbsp;<a href="/tags/re">re</a>&nbsp;<a href="/tags/codeql">codeql</a>&nbsp;</span>
 
     </div>
     
@@ -249,7 +261,7 @@ select sink, source, sink, &quot;Network byte swap flows to memcpy&quot;
 </p>
 <p>这里就是 Github 展示的漏洞，对 nfs 请求的回复长度未经过校验，导致可以控制 nfs_path 的 2048 字节。</p>
 <h2 id="refs">refs</h2>
-<p>CodeQL 教程 <a href="https://help.semmle.com/QL/learn-ql/">https://help.semmle.com/QL/learn-ql/</a></p>
+<p>CodeQL 教程 <a href="https://help.semmle.com/QL/learn-ql/" target="_blank">https://help.semmle.com/QL/learn-ql/</a></p>
 
     </div>
 </article>
@@ -364,6 +376,7 @@ select sink, source, sink, &quot;Network byte swap flows to memcpy&quot;
   </ul>
 </nav></div>
 </aside>
+
         </div>
         <div class="btn">
     <div class="btn-menu" id="btn-menu">
@@ -514,13 +527,14 @@ select sink, source, sink, &quot;Network byte swap flows to memcpy&quot;
 
     
 <script defer src="https://cdn.jsdelivr.net/npm/medium-zoom@1.0.6/dist/medium-zoom.min.js"></script>
-<script defer src="https://cdn.jsdelivr.net/npm/lazysizes@5.3.0/lazysizes.min.js"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/lazysizes@5.3.2/lazysizes.min.js"></script>
 <script defer src="https://cdn.jsdelivr.net/npm/prismjs@1.23.0/components/prism-core.min.js"></script>
 <script defer src="https://cdn.jsdelivr.net/npm/prismjs@1.23.0/plugins/autoloader/prism-autoloader.min.js"></script>
 
 
 
 <script defer src="/assets/js/fuji.min.js"></script>
+
 
 
 </body>

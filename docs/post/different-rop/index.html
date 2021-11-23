@@ -9,10 +9,10 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge" />
 <meta http-equiv="Cache-Control" content="no-transform" />
 <meta http-equiv="Cache-Control" content="no-siteapp" />
-<meta name="generator" content="Hugo 0.80.0" />
+<meta name="generator" content="Hugo 0.88.1" />
 
 
-<link rel="shortcut icon" href="https://cdn.jsdelivr.net/gh/dsrkafuu/dsr-cdn@1/images/favicons/dsrca/favicon.ico" />
+<link rel="shortcut icon" href="https://cdn.jsdelivr.net/gh/dsrkafuu/dsr-cdn-main@1/images/favicons/dsrca.ico" />
 
 
 
@@ -32,7 +32,7 @@
 <meta name="twitter:title" content="不同视角看 ROP" />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="https://chenx6.github.io/post/different-rop/" /><meta property="og:description" content="看了许多讲 ROP 的文章，发现很多只是讲了怎么利用，但是没有讲为什么这么利用。所以写文记录。" />
-<meta name="twitter:description" content="看了许多讲 ROP 的文章，发现很多只是讲了怎么利用，但是没有讲为什么这么利用。所以写文记录。" /><meta name="twitter:card" content="summary" /><meta property="article:published_time" content="2020-06-01T00:00:00+08:00" /><meta property="article:modified_time" content="2020-06-01T00:00:00+08:00" />
+<meta name="twitter:description" content="看了许多讲 ROP 的文章，发现很多只是讲了怎么利用，但是没有讲为什么这么利用。所以写文记录。" /><meta name="twitter:card" content="summary" /><meta property="article:published_time" content="2020-06-01T00:00:00+00:00" /><meta property="article:modified_time" content="2020-06-01T00:00:00+00:00" />
 
 
 <style>
@@ -49,7 +49,11 @@
 
 
 
+
 <link rel="stylesheet" href="https://chenx6.github.io/assets/css/fuji.min.css" />
+
+
+
 
 
 
@@ -57,7 +61,10 @@
 
 </head>
 
-<body data-theme="auto">
+<body
+  data-theme="auto"
+  data-theme-auto='false'
+  >
     <script data-cfasync="false">
   
   var fujiThemeData = localStorage.getItem('fuji_data-theme');
@@ -71,6 +78,7 @@
     }
   }
 </script>
+
     <header>
     <div class="container-lg clearfix">
         <div class="col-12 header">
@@ -93,7 +101,11 @@
         <a href="https://chenx6.github.io/post/different-rop/">不同视角看 ROP</a>
     </h2>
     <div class="post-item post-meta">
-        <span><i class="iconfont icon-today-sharp"></i>&nbsp;2020-06-01</span><span><i class="iconfont icon-pricetags-sharp"></i>&nbsp;<a href="/tags/pwn">pwn</a>&nbsp;<a href="/tags/rop">rop</a>&nbsp;</span>
+        <span><i class="iconfont icon-today-sharp"></i>&nbsp;2020-06-01</span>
+
+
+
+<span><i class="iconfont icon-pricetags-sharp"></i>&nbsp;<a href="/tags/pwn">pwn</a>&nbsp;<a href="/tags/rop">rop</a>&nbsp;</span>
 
     </div>
     
@@ -287,7 +299,7 @@ _add ENDP
 |       |ret addr|
 +----------------+
 </code></pre>
-<p>如果需要了解更多，则请查询相关系统和 CPU 架构的 ABI，例如<a href="https://stackoverflow.com/questions/2535989/what-are-the-calling-conventions-for-unix-linux-system-calls-on-i386-and-x86-6">https://stackoverflow.com/questions/2535989/what-are-the-calling-conventions-for-unix-linux-system-calls-on-i386-and-x86-6</a> 和 <a href="https://docs.microsoft.com/en-us/cpp/build/x64-calling-convention?view=vs-2019">https://docs.microsoft.com/en-us/cpp/build/x64-calling-convention?view=vs-2019</a></p>
+<p>如果需要了解更多，则请查询相关系统和 CPU 架构的 ABI，例如<a href="https://stackoverflow.com/questions/2535989/what-are-the-calling-conventions-for-unix-linux-system-calls-on-i386-and-x86-6" target="_blank">https://stackoverflow.com/questions/2535989/what-are-the-calling-conventions-for-unix-linux-system-calls-on-i386-and-x86-6</a> 和 <a href="https://docs.microsoft.com/en-us/cpp/build/x64-calling-convention?view=vs-2019" target="_blank">https://docs.microsoft.com/en-us/cpp/build/x64-calling-convention?view=vs-2019</a></p>
 <h2 id="扩展面对常见的代码保护措施">扩展：面对常见的代码保护措施</h2>
 <p>如果出现 NX 时，就需要使用 ROP 技术绕过。</p>
 <p>如果出现 canary 时需要想怎么泄露 canary，通过 off by one 或者格式化字符串实现泄露，还有少见的报错泄露法和覆盖 canary 法。</p>
@@ -407,6 +419,7 @@ _add ENDP
   </ul>
 </nav></div>
 </aside>
+
         </div>
         <div class="btn">
     <div class="btn-menu" id="btn-menu">
@@ -556,13 +569,14 @@ _add ENDP
 
     
 <script defer src="https://cdn.jsdelivr.net/npm/medium-zoom@1.0.6/dist/medium-zoom.min.js"></script>
-<script defer src="https://cdn.jsdelivr.net/npm/lazysizes@5.3.0/lazysizes.min.js"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/lazysizes@5.3.2/lazysizes.min.js"></script>
 <script defer src="https://cdn.jsdelivr.net/npm/prismjs@1.23.0/components/prism-core.min.js"></script>
 <script defer src="https://cdn.jsdelivr.net/npm/prismjs@1.23.0/plugins/autoloader/prism-autoloader.min.js"></script>
 
 
 
 <script defer src="/assets/js/fuji.min.js"></script>
+
 
 
 </body>

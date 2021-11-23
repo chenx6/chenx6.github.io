@@ -9,10 +9,10 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge" />
 <meta http-equiv="Cache-Control" content="no-transform" />
 <meta http-equiv="Cache-Control" content="no-siteapp" />
-<meta name="generator" content="Hugo 0.80.0" />
+<meta name="generator" content="Hugo 0.88.1" />
 
 
-<link rel="shortcut icon" href="https://cdn.jsdelivr.net/gh/dsrkafuu/dsr-cdn@1/images/favicons/dsrca/favicon.ico" />
+<link rel="shortcut icon" href="https://cdn.jsdelivr.net/gh/dsrkafuu/dsr-cdn-main@1/images/favicons/dsrca.ico" />
 
 
 
@@ -32,7 +32,7 @@
 <meta name="twitter:title" content="斐讯 N1 折腾/避坑笔记" />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="https://chenx6.github.io/post/n1_modify/" /><meta property="og:description" content="最近想搞一台小服务器来做 Git 服务器，下载 Bt 等事情，所以就在一堆便宜的 ARM 机顶盒/NAS 中间挑选。最后看上了 100 RMB 左右的斐讯 N1，因为 N1 不用拆机就可以刷机。" />
-<meta name="twitter:description" content="最近想搞一台小服务器来做 Git 服务器，下载 Bt 等事情，所以就在一堆便宜的 ARM 机顶盒/NAS 中间挑选。最后看上了 100 RMB 左右的斐讯 N1，因为 N1 不用拆机就可以刷机。" /><meta name="twitter:card" content="summary" /><meta property="article:published_time" content="2020-02-01T00:00:00+08:00" /><meta property="article:modified_time" content="2020-02-01T00:00:00+08:00" />
+<meta name="twitter:description" content="最近想搞一台小服务器来做 Git 服务器，下载 Bt 等事情，所以就在一堆便宜的 ARM 机顶盒/NAS 中间挑选。最后看上了 100 RMB 左右的斐讯 N1，因为 N1 不用拆机就可以刷机。" /><meta name="twitter:card" content="summary" /><meta property="article:published_time" content="2020-02-01T00:00:00+00:00" /><meta property="article:modified_time" content="2020-02-01T00:00:00+00:00" />
 
 
 <style>
@@ -49,7 +49,11 @@
 
 
 
+
 <link rel="stylesheet" href="https://chenx6.github.io/assets/css/fuji.min.css" />
+
+
+
 
 
 
@@ -57,7 +61,10 @@
 
 </head>
 
-<body data-theme="auto">
+<body
+  data-theme="auto"
+  data-theme-auto='false'
+  >
     <script data-cfasync="false">
   
   var fujiThemeData = localStorage.getItem('fuji_data-theme');
@@ -71,6 +78,7 @@
     }
   }
 </script>
+
     <header>
     <div class="container-lg clearfix">
         <div class="col-12 header">
@@ -93,7 +101,11 @@
         <a href="https://chenx6.github.io/post/n1_modify/">斐讯 N1 折腾/避坑笔记</a>
     </h2>
     <div class="post-item post-meta">
-        <span><i class="iconfont icon-today-sharp"></i>&nbsp;2020-02-01</span><span><i class="iconfont icon-pricetags-sharp"></i>&nbsp;<a href="/tags/arm">arm</a>&nbsp;<a href="/tags/server">server</a>&nbsp;</span>
+        <span><i class="iconfont icon-today-sharp"></i>&nbsp;2020-02-01</span>
+
+
+
+<span><i class="iconfont icon-pricetags-sharp"></i>&nbsp;<a href="/tags/arm">arm</a>&nbsp;<a href="/tags/server">server</a>&nbsp;</span>
 
     </div>
     
@@ -116,11 +128,11 @@
 <li>插入带有镜像的 U 盘，然后使用 <code>adb shell reboot update</code> 进入 U 盘镜像中的系统</li>
 <li>使用镜像中的脚本完成安装。</li>
 </ol>
-<p>这部分可以看其他人的图文教程（忘了截图了&hellip;）例如 <a href="https://www.cnblogs.com/HintLee/p/9866485.html">https://www.cnblogs.com/HintLee/p/9866485.html</a> 和 <a href="https://www.aptx.xin/phicomm-n1.html">https://www.aptx.xin/phicomm-n1.html</a></p>
+<p>这部分可以看其他人的图文教程（忘了截图了&hellip;）例如 <a href="https://www.cnblogs.com/HintLee/p/9866485.html" target="_blank">https://www.cnblogs.com/HintLee/p/9866485.html</a> 和 <a href="https://www.aptx.xin/phicomm-n1.html" target="_blank">https://www.aptx.xin/phicomm-n1.html</a></p>
 <h3 id="n1-降级">N1 降级</h3>
 <p>将 N1 的 USB 调试打开，然后用 webpad 的降级工具降级，工具运行完成后重启盒子的系统，虽然看起来版本号没有变，但是底层的版本号确实降级了。</p>
 <h3 id="镜像安装">镜像安装</h3>
-<p>首先是去找镜像。恩山上的帖子感觉有点复古，所以我就去外网找到了这个帖子：<a href="https://forum.armbian.com/topic/7930-armbian-for-amlogic-s9xxx-kernel-5x/">https://forum.armbian.com/topic/7930-armbian-for-amlogic-s9xxx-kernel-5x/</a>，但是这里面提供的镜像竟然是 rc 版本的，于是就又去 <a href="https://forum.armbian.com/topic/12162-single-armbian-image-for-rk-aml-aw/">https://forum.armbian.com/topic/12162-single-armbian-image-for-rk-aml-aw/</a> 找到了三种芯片合一镜像。虽然镜像解压出来有 5G 大小，但是这个 build 比较新，是 2 月 20 日左右编译的。我选择了 &ldquo;Armbian_20.05.0-trunk_Arm-64_buster_current_5.5.1_20200227.img&rdquo; 这个不带桌面的 Debian buster 系统的镜像。网盘地址：<a href="https://yadi.sk/d/_rQgn_FosYuW0g">https://yadi.sk/d/_rQgn_FosYuW0g</a></p>
+<p>首先是去找镜像。恩山上的帖子感觉有点复古，所以我就去外网找到了这个帖子：<a href="https://forum.armbian.com/topic/7930-armbian-for-amlogic-s9xxx-kernel-5x/" target="_blank">https://forum.armbian.com/topic/7930-armbian-for-amlogic-s9xxx-kernel-5x/</a>，但是这里面提供的镜像竟然是 rc 版本的，于是就又去 <a href="https://forum.armbian.com/topic/12162-single-armbian-image-for-rk-aml-aw/" target="_blank">https://forum.armbian.com/topic/12162-single-armbian-image-for-rk-aml-aw/</a> 找到了三种芯片合一镜像。虽然镜像解压出来有 5G 大小，但是这个 build 比较新，是 2 月 20 日左右编译的。我选择了 &ldquo;Armbian_20.05.0-trunk_Arm-64_buster_current_5.5.1_20200227.img&rdquo; 这个不带桌面的 Debian buster 系统的镜像。网盘地址：<a href="https://yadi.sk/d/_rQgn_FosYuW0g" target="_blank">https://yadi.sk/d/_rQgn_FosYuW0g</a></p>
 <p>其次是刻录 U 盘，这里推荐 rufus，绿色版文件不到 10 MB。操作也非常简单。</p>
 <p><img class="img-zoomable" src="/images/Annotation_2020-03-02_161540.png" alt="0" />
 </p>
@@ -281,6 +293,7 @@
   </ul>
 </nav></div>
 </aside>
+
         </div>
         <div class="btn">
     <div class="btn-menu" id="btn-menu">
@@ -440,13 +453,14 @@
 
     
 <script defer src="https://cdn.jsdelivr.net/npm/medium-zoom@1.0.6/dist/medium-zoom.min.js"></script>
-<script defer src="https://cdn.jsdelivr.net/npm/lazysizes@5.3.0/lazysizes.min.js"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/lazysizes@5.3.2/lazysizes.min.js"></script>
 <script defer src="https://cdn.jsdelivr.net/npm/prismjs@1.23.0/components/prism-core.min.js"></script>
 <script defer src="https://cdn.jsdelivr.net/npm/prismjs@1.23.0/plugins/autoloader/prism-autoloader.min.js"></script>
 
 
 
 <script defer src="/assets/js/fuji.min.js"></script>
+
 
 
 </body>

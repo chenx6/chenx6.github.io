@@ -9,10 +9,10 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge" />
 <meta http-equiv="Cache-Control" content="no-transform" />
 <meta http-equiv="Cache-Control" content="no-siteapp" />
-<meta name="generator" content="Hugo 0.80.0" />
+<meta name="generator" content="Hugo 0.88.1" />
 
 
-<link rel="shortcut icon" href="https://cdn.jsdelivr.net/gh/dsrkafuu/dsr-cdn@1/images/favicons/dsrca/favicon.ico" />
+<link rel="shortcut icon" href="https://cdn.jsdelivr.net/gh/dsrkafuu/dsr-cdn-main@1/images/favicons/dsrca.ico" />
 
 
 
@@ -32,7 +32,7 @@
 <meta name="twitter:title" content="LC3-VM 学习和实现" />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="https://chenx6.github.io/post/lc3-vm/" /><meta property="og:description" content="本文是根据 &lt;https://justinmeiners.github.io/lc3-vm&gt; 和 &lt;https://justinmeiners.github.io/lc3-vm/supplies/lc3-isa.pdf&gt; ISA 写出 LC3 VM 的实现过程。" />
-<meta name="twitter:description" content="本文是根据 &lt;https://justinmeiners.github.io/lc3-vm&gt; 和 &lt;https://justinmeiners.github.io/lc3-vm/supplies/lc3-isa.pdf&gt; ISA 写出 LC3 VM 的实现过程。" /><meta name="twitter:card" content="summary" /><meta property="article:published_time" content="2020-01-15T00:00:00+08:00" /><meta property="article:modified_time" content="2020-01-15T00:00:00+08:00" />
+<meta name="twitter:description" content="本文是根据 &lt;https://justinmeiners.github.io/lc3-vm&gt; 和 &lt;https://justinmeiners.github.io/lc3-vm/supplies/lc3-isa.pdf&gt; ISA 写出 LC3 VM 的实现过程。" /><meta name="twitter:card" content="summary" /><meta property="article:published_time" content="2020-01-15T00:00:00+00:00" /><meta property="article:modified_time" content="2020-01-15T00:00:00+00:00" />
 
 
 <style>
@@ -49,7 +49,11 @@
 
 
 
+
 <link rel="stylesheet" href="https://chenx6.github.io/assets/css/fuji.min.css" />
+
+
+
 
 
 
@@ -57,7 +61,10 @@
 
 </head>
 
-<body data-theme="auto">
+<body
+  data-theme="auto"
+  data-theme-auto='false'
+  >
     <script data-cfasync="false">
   
   var fujiThemeData = localStorage.getItem('fuji_data-theme');
@@ -71,6 +78,7 @@
     }
   }
 </script>
+
     <header>
     <div class="container-lg clearfix">
         <div class="col-12 header">
@@ -93,13 +101,17 @@
         <a href="https://chenx6.github.io/post/lc3-vm/">LC3-VM 学习和实现</a>
     </h2>
     <div class="post-item post-meta">
-        <span><i class="iconfont icon-today-sharp"></i>&nbsp;2020-01-15</span><span><i class="iconfont icon-pricetags-sharp"></i>&nbsp;<a href="/tags/vm">vm</a>&nbsp;</span>
+        <span><i class="iconfont icon-today-sharp"></i>&nbsp;2020-01-15</span>
+
+
+
+<span><i class="iconfont icon-pricetags-sharp"></i>&nbsp;<a href="/tags/vm">vm</a>&nbsp;</span>
 
     </div>
     
     <div class="post-content markdown-body">
-        <p>本文是根据 <a href="https://justinmeiners.github.io/lc3-vm">https://justinmeiners.github.io/lc3-vm</a> 和 <a href="https://justinmeiners.github.io/lc3-vm/supplies/lc3-isa.pdf">https://justinmeiners.github.io/lc3-vm/supplies/lc3-isa.pdf</a> ISA 写出 LC3 VM 的实现过程。</p>
-<p>代码已上传到了 Github 上：<a href="https://github.com/chenx6/lc3-vm">https://github.com/chenx6/lc3-vm</a></p>
+        <p>本文是根据 <a href="https://justinmeiners.github.io/lc3-vm" target="_blank">https://justinmeiners.github.io/lc3-vm</a> 和 <a href="https://justinmeiners.github.io/lc3-vm/supplies/lc3-isa.pdf" target="_blank">https://justinmeiners.github.io/lc3-vm/supplies/lc3-isa.pdf</a> ISA 写出 LC3 VM 的实现过程。</p>
+<p>代码已上传到了 Github 上：<a href="https://github.com/chenx6/lc3-vm" target="_blank">https://github.com/chenx6/lc3-vm</a></p>
 <h2 id="lc3-架构">LC3 架构</h2>
 <h3 id="内存">内存</h3>
 <p>LC3 架构有 2^16 个地址，每个地址包含一个 word (2 byte, 16 bit)。是大端序存储。所以用 C 表示如下。</p>
@@ -181,7 +193,7 @@ enum Condition
 </code></pre>
 <h2 id="虚拟机实现">虚拟机实现</h2>
 <h3 id="虚拟机基本架构">虚拟机基本架构</h3>
-<p>原文将读取文件和解析指令耦合在了一起，并且将内存和寄存器都变成了全局变量，那样就不能同时跑多个虚拟机了。所以在我的实现中，将读取文件，和解析指令并执行进行了拆分，将存储内存和寄存器的数组从全局变量变成了动态内存，还从别的项目里偷了测试样例 <a href="https://github.com/viking/lc3-vm/">https://github.com/viking/lc3-vm/</a>，最后写个 CMake 来负责处理编译依赖。</p>
+<p>原文将读取文件和解析指令耦合在了一起，并且将内存和寄存器都变成了全局变量，那样就不能同时跑多个虚拟机了。所以在我的实现中，将读取文件，和解析指令并执行进行了拆分，将存储内存和寄存器的数组从全局变量变成了动态内存，还从别的项目里偷了测试样例 <a href="https://github.com/viking/lc3-vm/" target="_blank">https://github.com/viking/lc3-vm/</a>，最后写个 CMake 来负责处理编译依赖。</p>
 <p>通过一个结构体表示虚拟机的状态 (内存和寄存器) 会方便管理一些。</p>
 <pre><code class="language-c">typedef struct _vm_ctx
 {
@@ -526,9 +538,9 @@ SET_TESTS_PROPERTIES( ${PROJECT_NAME}-test PROPERTIES
 )
 </code></pre>
 <h2 id="refs">refs</h2>
-<p>原文 <a href="https://justinmeiners.github.io/lc3-vm">https://justinmeiners.github.io/lc3-vm</a>
-这个 C 实现的虚拟机封装比较完整 <a href="https://github.com/rpendleton/lc3sim-c">https://github.com/rpendleton/lc3sim-c</a>
-这个实现里加了测试样例 <a href="https://github.com/viking/lc3-vm">https://github.com/viking/lc3-vm</a></p>
+<p>原文 <a href="https://justinmeiners.github.io/lc3-vm" target="_blank">https://justinmeiners.github.io/lc3-vm</a>
+这个 C 实现的虚拟机封装比较完整 <a href="https://github.com/rpendleton/lc3sim-c" target="_blank">https://github.com/rpendleton/lc3sim-c</a>
+这个实现里加了测试样例 <a href="https://github.com/viking/lc3-vm" target="_blank">https://github.com/viking/lc3-vm</a></p>
 
     </div>
 </article>
@@ -652,6 +664,7 @@ SET_TESTS_PROPERTIES( ${PROJECT_NAME}-test PROPERTIES
   </ul>
 </nav></div>
 </aside>
+
         </div>
         <div class="btn">
     <div class="btn-menu" id="btn-menu">
@@ -811,13 +824,14 @@ SET_TESTS_PROPERTIES( ${PROJECT_NAME}-test PROPERTIES
 
     
 <script defer src="https://cdn.jsdelivr.net/npm/medium-zoom@1.0.6/dist/medium-zoom.min.js"></script>
-<script defer src="https://cdn.jsdelivr.net/npm/lazysizes@5.3.0/lazysizes.min.js"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/lazysizes@5.3.2/lazysizes.min.js"></script>
 <script defer src="https://cdn.jsdelivr.net/npm/prismjs@1.23.0/components/prism-core.min.js"></script>
 <script defer src="https://cdn.jsdelivr.net/npm/prismjs@1.23.0/plugins/autoloader/prism-autoloader.min.js"></script>
 
 
 
 <script defer src="/assets/js/fuji.min.js"></script>
+
 
 
 </body>

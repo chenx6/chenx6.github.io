@@ -6,11 +6,11 @@
     <description>Recent content in vm on 二进制咸鱼的自我救赎</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-hans</language>
-    <lastBuildDate>Wed, 15 Jan 2020 00:00:00 +0800</lastBuildDate><atom:link href="https://chenx6.github.io/tags/vm/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Wed, 15 Jan 2020 00:00:00 +0000</lastBuildDate><atom:link href="https://chenx6.github.io/tags/vm/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>LC3-VM 学习和实现</title>
       <link>https://chenx6.github.io/post/lc3-vm/</link>
-      <pubDate>Wed, 15 Jan 2020 00:00:00 +0800</pubDate>
+      <pubDate>Wed, 15 Jan 2020 00:00:00 +0000</pubDate>
       
       <guid>https://chenx6.github.io/post/lc3-vm/</guid>
       <description>本文是根据 https://justinmeiners.github.io/lc3-vm 和 https://justinmeiners.github.io/lc3-vm/supplies/lc3-isa.pdf ISA 写出 LC3 VM 的实现过程。 代码已上传到了 Github 上：https://github.com/chenx6/lc3-vm LC3 架构 内存 LC3 架构有 2^16 个地址，每个地址包含一个 word (2 byte, 16 bit)。是大端序存储。所</description>

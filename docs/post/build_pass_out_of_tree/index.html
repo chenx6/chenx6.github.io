@@ -9,10 +9,10 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge" />
 <meta http-equiv="Cache-Control" content="no-transform" />
 <meta http-equiv="Cache-Control" content="no-siteapp" />
-<meta name="generator" content="Hugo 0.80.0" />
+<meta name="generator" content="Hugo 0.88.1" />
 
 
-<link rel="shortcut icon" href="https://cdn.jsdelivr.net/gh/dsrkafuu/dsr-cdn@1/images/favicons/dsrca/favicon.ico" />
+<link rel="shortcut icon" href="https://cdn.jsdelivr.net/gh/dsrkafuu/dsr-cdn-main@1/images/favicons/dsrca.ico" />
 
 
 
@@ -32,7 +32,7 @@
 <meta name="twitter:title" content="在 LLVM 代码树外编译 LLVM Pass (使用 OLLVM 示范)" />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="https://chenx6.github.io/post/build_pass_out_of_tree/" /><meta property="og:description" content="在网络上流传的编译 LLVM Pass 都需要一份 LLVM 源码，从整个源代码编译，编译非常花时间 (i7 6700HQ 使用 `make -j8` 编译整个项目花了近 50 分钟)，所以在翻阅文档时发现 LLVM 支持在代码树外编译，在 1 分钟内编译一个 Pass，还是非常香的。" />
-<meta name="twitter:description" content="在网络上流传的编译 LLVM Pass 都需要一份 LLVM 源码，从整个源代码编译，编译非常花时间 (i7 6700HQ 使用 `make -j8` 编译整个项目花了近 50 分钟)，所以在翻阅文档时发现 LLVM 支持在代码树外编译，在 1 分钟内编译一个 Pass，还是非常香的。" /><meta name="twitter:card" content="summary" /><meta property="article:published_time" content="2020-01-01T00:00:00+08:00" /><meta property="article:modified_time" content="2020-01-01T00:00:00+08:00" />
+<meta name="twitter:description" content="在网络上流传的编译 LLVM Pass 都需要一份 LLVM 源码，从整个源代码编译，编译非常花时间 (i7 6700HQ 使用 `make -j8` 编译整个项目花了近 50 分钟)，所以在翻阅文档时发现 LLVM 支持在代码树外编译，在 1 分钟内编译一个 Pass，还是非常香的。" /><meta name="twitter:card" content="summary" /><meta property="article:published_time" content="2020-01-01T00:00:00+00:00" /><meta property="article:modified_time" content="2020-01-01T00:00:00+00:00" />
 
 
 <style>
@@ -49,7 +49,11 @@
 
 
 
+
 <link rel="stylesheet" href="https://chenx6.github.io/assets/css/fuji.min.css" />
+
+
+
 
 
 
@@ -57,7 +61,10 @@
 
 </head>
 
-<body data-theme="auto">
+<body
+  data-theme="auto"
+  data-theme-auto='false'
+  >
     <script data-cfasync="false">
   
   var fujiThemeData = localStorage.getItem('fuji_data-theme');
@@ -71,6 +78,7 @@
     }
   }
 </script>
+
     <header>
     <div class="container-lg clearfix">
         <div class="col-12 header">
@@ -93,7 +101,11 @@
         <a href="https://chenx6.github.io/post/build_pass_out_of_tree/">在 LLVM 代码树外编译 LLVM Pass (使用 OLLVM 示范)</a>
     </h2>
     <div class="post-item post-meta">
-        <span><i class="iconfont icon-today-sharp"></i>&nbsp;2020-01-01</span><span><i class="iconfont icon-pricetags-sharp"></i>&nbsp;<a href="/tags/re">re</a>&nbsp;<a href="/tags/llvm">llvm</a>&nbsp;</span>
+        <span><i class="iconfont icon-today-sharp"></i>&nbsp;2020-01-01</span>
+
+
+
+<span><i class="iconfont icon-pricetags-sharp"></i>&nbsp;<a href="/tags/re">re</a>&nbsp;<a href="/tags/llvm">llvm</a>&nbsp;</span>
 
     </div>
     
@@ -395,9 +407,9 @@ LABEL_38:
 }
 </code></pre>
 <h2 id="refs">refs</h2>
-<p>OLLVM (好久没更新了啊) <a href="https://github.com/obfuscator-llvm//obfuscator/tree/llvm-4.0">https://github.com/obfuscator-llvm//obfuscator/tree/llvm-4.0</a></p>
-<p>LLVM 官方关于 CMake 构建项目的文档：<a href="http://releases.llvm.org/9.0.0/docs/CMake.html#developing-llvm-passes-out-of-source">http://releases.llvm.org/9.0.0/docs/CMake.html#developing-llvm-passes-out-of-source</a></p>
-<p>一个 LLVM Pass 骨架：<a href="https://github.com/sampsyo/llvm-pass-skeleton">https://github.com/sampsyo/llvm-pass-skeleton</a></p>
+<p>OLLVM (好久没更新了啊) <a href="https://github.com/obfuscator-llvm//obfuscator/tree/llvm-4.0" target="_blank">https://github.com/obfuscator-llvm//obfuscator/tree/llvm-4.0</a></p>
+<p>LLVM 官方关于 CMake 构建项目的文档：<a href="http://releases.llvm.org/9.0.0/docs/CMake.html#developing-llvm-passes-out-of-source" target="_blank">http://releases.llvm.org/9.0.0/docs/CMake.html#developing-llvm-passes-out-of-source</a></p>
+<p>一个 LLVM Pass 骨架：<a href="https://github.com/sampsyo/llvm-pass-skeleton" target="_blank">https://github.com/sampsyo/llvm-pass-skeleton</a></p>
 
     </div>
 </article>
@@ -512,6 +524,7 @@ LABEL_38:
   </ul>
 </nav></div>
 </aside>
+
         </div>
         <div class="btn">
     <div class="btn-menu" id="btn-menu">
@@ -662,13 +675,14 @@ LABEL_38:
 
     
 <script defer src="https://cdn.jsdelivr.net/npm/medium-zoom@1.0.6/dist/medium-zoom.min.js"></script>
-<script defer src="https://cdn.jsdelivr.net/npm/lazysizes@5.3.0/lazysizes.min.js"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/lazysizes@5.3.2/lazysizes.min.js"></script>
 <script defer src="https://cdn.jsdelivr.net/npm/prismjs@1.23.0/components/prism-core.min.js"></script>
 <script defer src="https://cdn.jsdelivr.net/npm/prismjs@1.23.0/plugins/autoloader/prism-autoloader.min.js"></script>
 
 
 
 <script defer src="/assets/js/fuji.min.js"></script>
+
 
 
 </body>
