@@ -6,7 +6,16 @@
     <description>Recent content on 二进制咸鱼的自我救赎</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-hans</language>
-    <lastBuildDate>Thu, 21 Jan 2021 00:00:00 +0000</lastBuildDate><atom:link href="https://chenx6.github.io/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Sat, 26 Feb 2022 00:00:00 +0000</lastBuildDate><atom:link href="https://chenx6.github.io/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Frida 在一次离谱比赛中的应用</title>
+      <link>https://chenx6.github.io/post/frida_beginner/</link>
+      <pubDate>Sat, 26 Feb 2022 00:00:00 +0000</pubDate>
+      
+      <guid>https://chenx6.github.io/post/frida_beginner/</guid>
+      <description>在某次离谱比赛中，我使用了 Frida 解出了题目，下面是一些简单的笔记。 在 2021 年 10 月 24 日，我浪费了2小时的时间解出了一个某弹幕网站办的比赛的离谱安卓题，解出之后的内心就是：rnm，退时间！更加嘲讽的是，他还在一个</description>
+    </item>
+    
     <item>
       <title>记录一次失败的固件 fuzz</title>
       <link>https://chenx6.github.io/post/fail_firm_fuzz/</link>
@@ -95,15 +104,6 @@
       
       <guid>https://chenx6.github.io/post/rewrite_ollvm_bcf/</guid>
       <description>由于我个人觉得 OLLVM 的代码年久失修，所以就新建了个项目，开始学习并重写 OLLVM。项目地址：https://github.com/chenx6/baby_obfuscator。如果将我的重写项目和 OLLVM 相比的</description>
-    </item>
-    
-    <item>
-      <title></title>
-      <link>https://chenx6.github.io/post/frida_beginner/</link>
-      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      
-      <guid>https://chenx6.github.io/post/frida_beginner/</guid>
-      <description>Frida 在一次离谱比赛中的应用 在某次离谱比赛中，我使用了 Frida 解出了题目，下面是一些简单的笔记。 在 2021 年 10 月 24 日，我浪费了2小时的时间解出了一个某弹幕网站办的比赛的离谱安卓题，解出之后的内心就是：rnm，退时间！</description>
     </item>
     
     <item>

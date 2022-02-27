@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>frida on 二进制咸鱼的自我救赎</title>
+    <link>https://chenx6.github.io/tags/frida/</link>
+    <description>Recent content in frida on 二进制咸鱼的自我救赎</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh-hans</language>
+    <lastBuildDate>Sat, 26 Feb 2022 00:00:00 +0000</lastBuildDate><atom:link href="https://chenx6.github.io/tags/frida/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Frida 在一次离谱比赛中的应用</title>
+      <link>https://chenx6.github.io/post/frida_beginner/</link>
+      <pubDate>Sat, 26 Feb 2022 00:00:00 +0000</pubDate>
+      
+      <guid>https://chenx6.github.io/post/frida_beginner/</guid>
+      <description>在某次离谱比赛中，我使用了 Frida 解出了题目，下面是一些简单的笔记。 在 2021 年 10 月 24 日，我浪费了2小时的时间解出了一个某弹幕网站办的比赛的离谱安卓题，解出之后的内心就是：rnm，退时间！更加嘲讽的是，他还在一个</description>
+    </item>
+    
+  </channel>
+</rss>
