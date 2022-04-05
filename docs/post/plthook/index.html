@@ -16,19 +16,23 @@
 
 
 
-<title>二进制咸鱼的自我救赎 - 幸福往往是摸的透彻，而敬业的心却往往隐藏。</title>
+<title>plt hook 项目代码分析和最小实现 - 二进制咸鱼的自我救赎</title>
 
 
 <meta name="author" content="chen_null" />
 
 
+<meta name="description" content="虽然知道可以通过魔改 plt 表实现 hook 函数，但是不知道具体实现...碰巧最近用到了 plthook 这个库，于是我就研究了下 plthook 这个库，并且仿照着这个库重新实现一份代码。" />
 
-<link rel="alternate" type="application/rss+xml" href="https://chenx6.github.io/index.xml" title="二进制咸鱼的自我救赎" />
 
-<meta property="og:title" content="二进制咸鱼的自我救赎" />
-<meta name="twitter:title" content="二进制咸鱼的自我救赎" />
-<meta property="og:type" content="website" />
-<meta property="og:url" content="https://chenx6.github.io/" /><meta name="twitter:card" content="summary" /><meta property="og:updated_time" content="2022-04-05T00:00:00+00:00" />
+<meta name="keywords" content="re, plt, elf" />
+
+
+<meta property="og:title" content="plt hook 项目代码分析和最小实现" />
+<meta name="twitter:title" content="plt hook 项目代码分析和最小实现" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://chenx6.github.io/post/plthook/" /><meta property="og:description" content="虽然知道可以通过魔改 plt 表实现 hook 函数，但是不知道具体实现...碰巧最近用到了 plthook 这个库，于是我就研究了下 plthook 这个库，并且仿照着这个库重新实现一份代码。" />
+<meta name="twitter:description" content="虽然知道可以通过魔改 plt 表实现 hook 函数，但是不知道具体实现...碰巧最近用到了 plthook 这个库，于是我就研究了下 plthook 这个库，并且仿照着这个库重新实现一份代码。" /><meta name="twitter:card" content="summary" /><meta property="article:published_time" content="2022-04-05T00:00:00+00:00" /><meta property="article:modified_time" content="2022-04-05T00:00:00+00:00" />
 
 
 <style>
@@ -91,51 +95,130 @@
             
             <div class="col-12 col-md-9 float-left content">
                 
-
-
-
-<div class="post">
+<article>
+    
     <h2 class="post-item post-title">
-        <a href="https://chenx6.github.io/post/elf_backdoor/">给 ELF 文件加上后门</a>
+        <a href="https://chenx6.github.io/post/plthook/">plt hook 项目代码分析和最小实现</a>
     </h2>
     <div class="post-item post-meta">
-        <span><i class="iconfont icon-today-sharp"></i>&nbsp;2020-01-01</span>
+        <span><i class="iconfont icon-today-sharp"></i>&nbsp;2022-04-05</span>
 
 
 
-<span><i class="iconfont icon-pricetags-sharp"></i>&nbsp;<a href="/tags/re">re</a>&nbsp;<a href="/tags/mal">mal</a>&nbsp;<a href="/tags/backdoor">backdoor</a>&nbsp;</span>
-
-    </div>
-    <div class="post-item post-summary markdown-body">
-        在渗透测试中，给常用的可执行文件加上后门是很常见的操作。但是之前的加后门 &ldquo;The backdoor factory&rdquo; 已经不维护了，而且还是 Python2 写的，代码质量也&hellip;所以我自己尝试着重新用 Python3 造了个轮子。在造轮子的过程中，由于 APUE 扔在学
-    </div>
-</div>
-
-<div class="post">
-    <h2 class="post-item post-title">
-        <a href="https://chenx6.github.io/post/rewrite_ollvm_bcf/">重写 OLLVM 之虚假控制流</a>
-    </h2>
-    <div class="post-item post-meta">
-        <span><i class="iconfont icon-today-sharp"></i>&nbsp;2020-01-01</span>
-
-
-
-<span><i class="iconfont icon-pricetags-sharp"></i>&nbsp;<a href="/tags/re">re</a>&nbsp;<a href="/tags/llvm">llvm</a>&nbsp;</span>
+<span><i class="iconfont icon-pricetags-sharp"></i>&nbsp;<a href="/tags/re">re</a>&nbsp;<a href="/tags/plt">plt</a>&nbsp;<a href="/tags/elf">elf</a>&nbsp;</span>
 
     </div>
-    <div class="post-item post-summary markdown-body">
-        由于我个人觉得 OLLVM 的代码年久失修，所以就新建了个项目，开始学习并重写 OLLVM。项目地址：https://github.com/chenx6/baby_obfuscator。如果将我的重写项目和 OLLVM 相比的
+    
+    <div class="post-content markdown-body">
+        <h1 id="plt-hook-项目代码分析和最小实现">plt hook 项目代码分析和最小实现</h1>
+<p>虽然知道可以通过魔改 plt 表实现 hook 函数，但是不知道具体实现&hellip;碰巧最近用到了 plthook 这个库，于是我就研究了下 plthook 这个库，并且仿照着这个库重新实现一份代码。</p>
+<h2 id="原理分析">原理分析</h2>
+<p>根据命名规则，.rela.plt 表是负责 plt 表的重定位信息。.rela 表中有每项都有 2 个成员，r_offset 指向了该重定位入口所要修正的位置的第一个字节的虚拟地址， r_info 则是表示相关信息，可以通过 <code>ELF[32|64]_R_SYM</code> 获得其指向的 .dynsym 项的下标。</p>
+<p>.dynsym 表（动态链接表）中存放动态链接需要的信息，可以通过 .dynsym 表从 .strtab 表中获得要链接的函数名字。</p>
+<h2 id="项目代码分析">项目代码分析</h2>
+<p>经过阅读代码后，我大致了解了 plthook 在 Linux/x86_64 平台上的逻辑。</p>
+<blockquote>
+<p>由于项目的代码支持多个 UNIX 系统（Windows 下则是实现了 IAT Hook），所以原项目中有一堆的宏和封装，下面的逻辑只对应着 Linux/x86_64 平台。</p>
+</blockquote>
+<ol>
+<li>获取 <code>link_map</code>
+<ul>
+<li>对动态库使用 <code>dlinfo(hndl, RTLD_DI_LINKMAP, &amp;lmap)</code></li>
+<li>对可执行文件使用 <code>_r_debug.r_map</code> 结构体</li>
+</ul>
+</li>
+<li>通过 <code>link_map</code> 获取相关 section 的信息。
+<ul>
+<li>获取 &ldquo;DT_SYMTAB DT_STRTAB DT_STRSZ DT_JMPREL DT_PLTRELSZ&rdquo; 的相关信息</li>
+</ul>
+</li>
+<li>在 rela 表中获得其在 dynsym 中的位置，然后通过 dynsym 获得名字</li>
+<li>如果是被替换函数，就通过修改 PLT 表进行替换。</li>
+</ol>
+<h2 id="重新复现">重新复现</h2>
+<p>首先是通过 <code>dlopen</code> <code>dlinfo</code> 获得 <code>link_map</code>。使用 <code>sysconf</code> 则是获得了页的大小。</p>
+<pre><code class="language-c">/// @brief Initlize plthook_info
+/// @param info empty plthook_info variable
+/// @param name library name, NULL means program itself
+plthook_status plt_hook_init(plthook_info *info, char *name) {
+  page_size = sysconf(_SC_PAGESIZE);
+  plthook_status status = PLTHOOK_SUCCESS;
+  // Get link_map
+  void *handle = dlopen(name, RTLD_LAZY | RTLD_NOLOAD);
+  struct link_map *map = NULL;
+  int result = dlinfo(handle, RTLD_DI_LINKMAP, &amp;map);
+</code></pre>
+<p>然后是从 <code>link_map</code> 中获得各个 section（&ldquo;DT_SYMTAB DT_STRTAB DT_STRSZ DT_JMPREL DT_PLTRELSZ&rdquo;）的信息，供后续使用。</p>
+<pre><code class="language-c">  // Get information from link_map's address and dyn table
+  info-&gt;base_addr = (uint8_t *)map-&gt;l_addr;
+  size_t rela_size = 0;
+  for (Elf64_Dyn *curr = map-&gt;l_ld; curr-&gt;d_tag != DT_NULL; curr++) {
+    switch (curr-&gt;d_tag) {
+    // Address of string table
+    case DT_STRTAB:
+      info-&gt;str_table = curr-&gt;d_un.d_ptr;
+      break;
+    case DT_STRSZ:
+      info-&gt;str_sz = curr-&gt;d_un.d_val;
+      break;
+    // Address of relocation entries associated solely with the PLT
+    case DT_JMPREL:
+      info-&gt;rel = (Elf64_Rela *)curr-&gt;d_un.d_ptr;
+      break;
+    case DT_PLTRELSZ:
+      rela_size = curr-&gt;d_un.d_val;
+      break;
+    // Address of symbol table
+    case DT_SYMTAB:
+      info-&gt;dynsym = (Elf64_Sym *)curr-&gt;d_un.d_ptr;
+      break;
+    }
+  }
+  info-&gt;rel_cnt = rela_size / sizeof(Elf64_Rela);
+  return status;
+}
+</code></pre>
+<p>然后是替换函数。主要流程就是通过 .rela.plt 表找到函数在 .dynsym 段的位置，然后再通过 .dynsym 段获取函数名字，如果是要替换的函数的话，就用 mprotect 将段加上可写权限，并通过写入 <code>r_offset</code> 指向的地址进行魔改。</p>
+<pre><code class="language-c">/// @brief Replace function with new function
+plthook_status plt_hook_replace(plthook_info *info, char *name,
+                                void *func_address) {
+  if (info == NULL || name == NULL || func_address == NULL) {
+    return PLTHOOK_ARGUMENT_ERROR;
+  }
+  // Get symbol index from relocation table, then get function name from symbol
+  Elf64_Rela *rela = info-&gt;rel;
+  for (size_t i = 0; i &lt; info-&gt;rel_cnt; i++) {
+    Elf64_Rela *curr = rela + i;
+    size_t sym_idx = ELF64_R_SYM(curr-&gt;r_info);
+    size_t str_idx = info-&gt;dynsym[sym_idx].st_name;
+    if (strcmp(name, info-&gt;str_table + str_idx) != 0) {
+      continue;
+    }
+    size_t *origin_func = (size_t *)(info-&gt;base_addr + curr-&gt;r_offset);
+    mprotect(ALIGN_ADDR(origin_func), page_size,
+             PROT_READ | PROT_WRITE | PROT_EXEC);
+    *origin_func = (size_t)func_address;
+    return PLTHOOK_SUCCESS;
+  }
+  return PLTHOOK_NOT_FOUND;
+}
+</code></pre>
+<p>完整代码：<a href="https://gist.github.com/chenx6/2624aae29873ffabbeb74b75d2351f22" target="_blank">https://gist.github.com/chenx6/2624aae29873ffabbeb74b75d2351f22</a></p>
+<p>将代码和 <code>test_main.c</code> 一起编译(别忘了加上 -ldl)后，应该可以看到 <code>atoi</code> 的返回值从正确的 &ldquo;123456&rdquo; 变成了 &ldquo;114514&rdquo;，说明这个 POC 实现成功了。也可以通过用 ((constructor)) 修饰函数，通过 so 注入进行修改。</p>
+<h1 id="refs">Refs</h1>
+<ul>
+<li><a href="https://github.com/kubo/plthook" target="_blank">kubo/plthook</a></li>
+<li><code>man elf</code></li>
+<li><a href="https://zhuanlan.zhihu.com/p/401446080" target="_blank">ELF加载器的原理与实现</a></li>
+<li><a href="http://chuquan.me/2018/05/21/elf-introduce/" target="_blank">计算机那些事(4)——ELF文件结构</a></li>
+</ul>
+
     </div>
-</div>
-<div class="pagination"><div class="pag-first">
-    <a href="/"><i class="iconfont icon-caret-back-circle-sharp"></i></a>
-  </div><div class="pag-previous">
-    <a href="/"><i class="iconfont icon-chevron-back-circle-sharp"></i></a>
-  </div><div class="pag-item">
-    <a href="/">1</a>
-  </div><div class="pag-item pag-current">
-    <a href="/page/2/">2</a>
-  </div></div>
+</article>
+
+
+
+
             </div>
             <aside class="col-12 col-md-3 float-left sidebar">
     
@@ -239,9 +322,14 @@
             
         </div>
     </div>
-    
-    
-    
+    <div class="sidebar-item sidebar-toc">
+        <h3>目录</h3><nav id="TableOfContents">
+  <ul>
+    <li><a href="#原理分析">原理分析</a></li>
+    <li><a href="#项目代码分析">项目代码分析</a></li>
+    <li><a href="#重新复现">重新复现</a></li>
+  </ul>
+</nav></div>
 </aside>
 
         </div>
@@ -358,6 +446,19 @@
             </span>
             
         </div>
+    </div>
+    
+    
+    
+    <div class="sidebar-item sidebar-toc">
+        <h3>目录</h3>
+        <nav id="TableOfContents">
+  <ul>
+    <li><a href="#原理分析">原理分析</a></li>
+    <li><a href="#项目代码分析">项目代码分析</a></li>
+    <li><a href="#重新复现">重新复现</a></li>
+  </ul>
+</nav>
     </div>
     
     

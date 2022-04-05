@@ -2,16 +2,28 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
+    <loc>https://chenx6.github.io/tags/elf/</loc>
+    <lastmod>2022-04-05T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://chenx6.github.io/tags/plt/</loc>
+    <lastmod>2022-04-05T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://chenx6.github.io/post/plthook/</loc>
+    <lastmod>2022-04-05T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://chenx6.github.io/post/</loc>
+    <lastmod>2022-04-05T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://chenx6.github.io/tags/re/</loc>
+    <lastmod>2022-04-05T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://chenx6.github.io/</loc>
+    <lastmod>2022-04-05T00:00:00+00:00</lastmod>
+  </url><url>
     <loc>https://chenx6.github.io/tags/frida/</loc>
     <lastmod>2022-02-26T00:00:00+00:00</lastmod>
   </url><url>
     <loc>https://chenx6.github.io/post/frida_beginner/</loc>
-    <lastmod>2022-02-26T00:00:00+00:00</lastmod>
-  </url><url>
-    <loc>https://chenx6.github.io/post/</loc>
-    <lastmod>2022-02-26T00:00:00+00:00</lastmod>
-  </url><url>
-    <loc>https://chenx6.github.io/</loc>
     <lastmod>2022-02-26T00:00:00+00:00</lastmod>
   </url><url>
     <loc>https://chenx6.github.io/tags/fuzz/</loc>
@@ -21,9 +33,6 @@
     <lastmod>2021-01-21T00:00:00+00:00</lastmod>
   </url><url>
     <loc>https://chenx6.github.io/tags/pwn/</loc>
-    <lastmod>2021-01-21T00:00:00+00:00</lastmod>
-  </url><url>
-    <loc>https://chenx6.github.io/tags/re/</loc>
     <lastmod>2021-01-21T00:00:00+00:00</lastmod>
   </url><url>
     <loc>https://chenx6.github.io/post/fail_firm_fuzz/</loc>

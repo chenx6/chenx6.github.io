@@ -28,7 +28,7 @@
 <meta property="og:title" content="Posts" />
 <meta name="twitter:title" content="Posts" />
 <meta property="og:type" content="website" />
-<meta property="og:url" content="https://chenx6.github.io/post/" /><meta name="twitter:card" content="summary" /><meta property="og:updated_time" content="2022-02-26T00:00:00+00:00" />
+<meta property="og:url" content="https://chenx6.github.io/post/" /><meta name="twitter:card" content="summary" /><meta property="og:updated_time" content="2022-04-05T00:00:00+00:00" />
 
 
 <style>
@@ -93,6 +93,23 @@
                 
 
 
+
+<div class="post">
+    <h2 class="post-item post-title">
+        <a href="https://chenx6.github.io/post/plthook/">plt hook 项目代码分析和最小实现</a>
+    </h2>
+    <div class="post-item post-meta">
+        <span><i class="iconfont icon-today-sharp"></i>&nbsp;2022-04-05</span>
+
+
+
+<span><i class="iconfont icon-pricetags-sharp"></i>&nbsp;<a href="/tags/re">re</a>&nbsp;<a href="/tags/plt">plt</a>&nbsp;<a href="/tags/elf">elf</a>&nbsp;</span>
+
+    </div>
+    <div class="post-item post-summary markdown-body">
+        plt hook 项目代码分析和最小实现 虽然知道可以通过魔改 plt 表实现 hook 函数，但是不知道具体实现&hellip;碰巧最近用到了 plthook 这个库，于是我就研究了下 plthook 这个库，并且仿照着这个库重新实现一份代码。 原理分析 根据命名规则
+    </div>
+</div>
 
 <div class="post">
     <h2 class="post-item post-title">
@@ -246,23 +263,6 @@
         在网络上流传的编译 LLVM Pass 都需要一份 LLVM 源码，从整个源代码编译，编译非常花时间 (i7 6700HQ 使用 make -j8 编译整个项目花了近 50 分钟)，所以在翻阅文档时发现 LLVM 支持在代码树外编译，在 1 分钟内编译一个 Pass，还是非常香的。 项目
     </div>
 </div>
-
-<div class="post">
-    <h2 class="post-item post-title">
-        <a href="https://chenx6.github.io/post/elf_backdoor/">给 ELF 文件加上后门</a>
-    </h2>
-    <div class="post-item post-meta">
-        <span><i class="iconfont icon-today-sharp"></i>&nbsp;2020-01-01</span>
-
-
-
-<span><i class="iconfont icon-pricetags-sharp"></i>&nbsp;<a href="/tags/re">re</a>&nbsp;<a href="/tags/mal">mal</a>&nbsp;<a href="/tags/backdoor">backdoor</a>&nbsp;</span>
-
-    </div>
-    <div class="post-item post-summary markdown-body">
-        在渗透测试中，给常用的可执行文件加上后门是很常见的操作。但是之前的加后门 &ldquo;The backdoor factory&rdquo; 已经不维护了，而且还是 Python2 写的，代码质量也&hellip;所以我自己尝试着重新用 Python3 造了个轮子。在造轮子的过程中，由于 APUE 扔在学
-    </div>
-</div>
 <div class="pagination"><div class="pag-item pag-current">
     <a href="/post/">1</a>
   </div><div class="pag-item">
@@ -330,6 +330,10 @@
             </span>
             
             <span>
+                <a href="/tags/elf/">elf</a>
+            </span>
+            
+            <span>
                 <a href="/tags/frida/">frida</a>
             </span>
             
@@ -343,6 +347,10 @@
             
             <span>
                 <a href="/tags/mal/">mal</a>
+            </span>
+            
+            <span>
+                <a href="/tags/plt/">plt</a>
             </span>
             
             <span>
@@ -442,6 +450,10 @@
             </span>
             
             <span>
+                <a href="/tags/elf/">elf</a>
+            </span>
+            
+            <span>
                 <a href="/tags/frida/">frida</a>
             </span>
             
@@ -455,6 +467,10 @@
             
             <span>
                 <a href="/tags/mal/">mal</a>
+            </span>
+            
+            <span>
+                <a href="/tags/plt/">plt</a>
             </span>
             
             <span>
