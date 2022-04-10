@@ -110,8 +110,7 @@
     </div>
     
     <div class="post-content markdown-body">
-        <h1 id="plt-hook-项目代码分析和最小实现">plt hook 项目代码分析和最小实现</h1>
-<p>虽然知道可以通过魔改 plt 表实现 hook 函数，但是不知道具体实现&hellip;碰巧最近用到了 plthook 这个库，于是我就研究了下 plthook 这个库，并且仿照着这个库重新实现一份代码。</p>
+        <p>虽然知道可以通过魔改 plt 表实现 hook 函数，但是不知道具体实现&hellip;碰巧最近用到了 plthook 这个库，于是我就研究了下 plthook 这个库，并且仿照着这个库重新实现一份代码。</p>
 <h2 id="原理分析">原理分析</h2>
 <p>根据命名规则，.rela.plt 表是负责 plt 表的重定位信息。.rela 表中有每项都有 2 个成员，r_offset 指向了该重定位入口所要修正的位置的第一个字节的虚拟地址， r_info 则是表示相关信息，可以通过 <code>ELF[32|64]_R_SYM</code> 获得其指向的 .dynsym 项的下标。</p>
 <p>.dynsym 表（动态链接表）中存放动态链接需要的信息，可以通过 .dynsym 表从 .strtab 表中获得要链接的函数名字。</p>
@@ -217,6 +216,33 @@ plthook_status plt_hook_replace(plthook_info *info, char *name,
 </article>
 
 
+
+<div class="post-comment" data-comment="utterances">
+    <span class="post-comment-notloaded">
+        <i class="iconfont icon-chatbox-ellipses-sharp"></i>&nbsp;查看评论
+    </span>
+    <script>
+        function loadComment() {
+            var commentArea = document.querySelector('.post-comment');
+            var utterancesTheme = document.body.getAttribute('data-theme');
+            if (utterancesTheme === 'auto') {
+                utterancesTheme = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'photon-dark' :
+                    'github-light';
+            } else {
+                utterancesTheme = utterancesTheme === 'dark' ? 'photon-dark' : 'github-light';
+            }
+            var s = document.createElement('script');
+            s.src = 'https://utteranc.es/client.js';
+            s.setAttribute('repo', 'chenx6\/chenx6.github.io');
+            s.setAttribute('issue-term', 'pathname');
+            s.setAttribute('theme', utterancesTheme);
+            s.setAttribute('crossorigin', 'anonymous');
+            s.setAttribute('async', '');
+            document.querySelector('.post-comment').appendChild(s);
+            document.querySelector('span.post-comment-notloaded').setAttribute('style', 'display: none;');
+        }
+    </script>
+</div>
 
 
             </div>

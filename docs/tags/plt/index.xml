@@ -13,7 +13,7 @@
       <pubDate>Tue, 05 Apr 2022 00:00:00 +0000</pubDate>
       
       <guid>https://chenx6.github.io/post/plthook/</guid>
-      <description>plt hook 项目代码分析和最小实现 虽然知道可以通过魔改 plt 表实现 hook 函数，但是不知道具体实现&amp;hellip;碰巧最近用到了 plthook 这个库，于是我就研究了下 plthook 这个库，并且仿照着这个库重新实现一份代码。 原理分析 根据命名规则</description>
+      <description>虽然知道可以通过魔改 plt 表实现 hook 函数，但是不知道具体实现&amp;hellip;碰巧最近用到了 plthook 这个库，于是我就研究了下 plthook 这个库，并且仿照着这个库重新实现一份代码。 原理分析 根据命名规则，.rela.plt 表是负</description>
     </item>
     
   </channel>

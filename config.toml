@@ -42,6 +42,9 @@ paginate = 10
   showLicense = false
   showToc = true
 
+  utterancesRepo = "chenx6/chenx6.github.io"
+  utterancesIssueTerm = "pathname"
+
 [markup]
   [markup.goldmark]
     [markup.goldmark.renderer]
