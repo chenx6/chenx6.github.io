@@ -9,7 +9,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge" />
 <meta http-equiv="Cache-Control" content="no-transform" />
 <meta http-equiv="Cache-Control" content="no-siteapp" />
-<meta name="generator" content="Hugo 0.88.1" />
+<meta name="generator" content="Hugo 0.98.0" />
 
 
 <link rel="shortcut icon" href="https://cdn.jsdelivr.net/gh/dsrkafuu/dsr-cdn-main@1/images/favicons/dsrca.ico" />
@@ -28,7 +28,7 @@
 <meta property="og:title" content="Posts" />
 <meta name="twitter:title" content="Posts" />
 <meta property="og:type" content="website" />
-<meta property="og:url" content="https://chenx6.github.io/post/" /><meta name="twitter:card" content="summary" /><meta property="og:updated_time" content="2022-04-05T00:00:00+00:00" />
+<meta property="og:url" content="https://chenx6.github.io/post/" /><meta name="twitter:card" content="summary" /><meta property="og:updated_time" content="2022-05-02T19:19:57+08:00" />
 
 
 <style>
@@ -96,18 +96,35 @@
 
 <div class="post">
     <h2 class="post-item post-title">
-        <a href="https://chenx6.github.io/post/elf_backdoor/">给 ELF 文件加上后门</a>
+        <a href="https://chenx6.github.io/post/obfuscate_string/">使用 LLVM Pass 实现字符串加密</a>
     </h2>
     <div class="post-item post-meta">
         <span><i class="iconfont icon-today-sharp"></i>&nbsp;2020-01-01</span>
 
 
 
-<span><i class="iconfont icon-pricetags-sharp"></i>&nbsp;<a href="/tags/re">re</a>&nbsp;<a href="/tags/mal">mal</a>&nbsp;<a href="/tags/backdoor">backdoor</a>&nbsp;</span>
+<span><i class="iconfont icon-pricetags-sharp"></i>&nbsp;<a href="/tags/re">re</a>&nbsp;<a href="/tags/llvm">llvm</a>&nbsp;</span>
 
     </div>
     <div class="post-item post-summary markdown-body">
-        在渗透测试中，给常用的可执行文件加上后门是很常见的操作。但是之前的加后门 &ldquo;The backdoor factory&rdquo; 已经不维护了，而且还是 Python2 写的，代码质量也&hellip;所以我自己尝试着重新用 Python3 造了个轮子。在造轮子的过程中，由于 APUE 扔在学
+        这个项目可以作为我看了这么久 LLVM 的 Docs 助眠的一个小总结吧。这个项目主要就是给函数使用的常量字符串进行加密，在程序被静态分析的时候干扰分析。当然找到思路后，这个混淆还是很容易解开的。 吐槽下，网上的文章质量参
+    </div>
+</div>
+
+<div class="post">
+    <h2 class="post-item post-title">
+        <a href="https://chenx6.github.io/post/build_pass_out_of_tree/">在 LLVM 代码树外编译 LLVM Pass (使用 OLLVM 示范)</a>
+    </h2>
+    <div class="post-item post-meta">
+        <span><i class="iconfont icon-today-sharp"></i>&nbsp;2020-01-01</span>
+
+
+
+<span><i class="iconfont icon-pricetags-sharp"></i>&nbsp;<a href="/tags/re">re</a>&nbsp;<a href="/tags/llvm">llvm</a>&nbsp;</span>
+
+    </div>
+    <div class="post-item post-summary markdown-body">
+        在网络上流传的编译 LLVM Pass 都需要一份 LLVM 源码，从整个源代码编译，编译非常花时间 (i7 6700HQ 使用 make -j8 编译整个项目花了近 50 分钟)，所以在翻阅文档时发现 LLVM 支持在代码树外编译，在 1 分钟内编译一个 Pass，还是非常香的。 项目
     </div>
 </div>
 
@@ -203,6 +220,10 @@
             
             <span>
                 <a href="/tags/fuzz/">fuzz</a>
+            </span>
+            
+            <span>
+                <a href="/tags/linux/">linux</a>
             </span>
             
             <span>
@@ -323,6 +344,10 @@
             
             <span>
                 <a href="/tags/fuzz/">fuzz</a>
+            </span>
+            
+            <span>
+                <a href="/tags/linux/">linux</a>
             </span>
             
             <span>
