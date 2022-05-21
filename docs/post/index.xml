@@ -6,7 +6,16 @@
     <description>Recent content in Posts on 二进制咸鱼的自我救赎</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-hans</language>
-    <lastBuildDate>Mon, 02 May 2022 19:19:57 +0800</lastBuildDate><atom:link href="https://chenx6.github.io/post/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Sat, 21 May 2022 00:00:00 +0000</lastBuildDate><atom:link href="https://chenx6.github.io/post/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>关于 C 语言编译的那些破事</title>
+      <link>https://chenx6.github.io/post/compile_cheatsheet/</link>
+      <pubDate>Sat, 21 May 2022 00:00:00 +0000</pubDate>
+      
+      <guid>https://chenx6.github.io/post/compile_cheatsheet/</guid>
+      <description>C 和 C++ 的编译是真的痛苦，会出现一堆离谱的问题。所以我特地写一篇文章讲一下这些破事，并且提供一些样例代码方便复制黏贴。 编译过程简述 在网上能找到一堆的编译流程相关的博客，而且肯定比我讲的正确，所以这里我就</description>
+    </item>
+    
     <item>
       <title>写一个可交互的反弹 Shell</title>
       <link>https://chenx6.github.io/post/rev_pty/</link>
@@ -59,15 +68,6 @@
       
       <guid>https://chenx6.github.io/post/different-rop/</guid>
       <description>看了许多讲 ROP 的文章，发现很多只是讲了怎么利用，但是没有讲为什么这么利用。所以写文记录。 什么是 ROP ROP (Return orient programming) 是一种漏洞利用方法，使得攻击者绕过保护(例如 NX 栈不可执行)执行恶意代码。攻击者通过栈溢出等手段实现</description>
-    </item>
-    
-    <item>
-      <title>关于 C 语言编译的那些破事</title>
-      <link>https://chenx6.github.io/post/compile_cheatsheet/</link>
-      <pubDate>Thu, 21 May 2020 00:00:00 +0000</pubDate>
-      
-      <guid>https://chenx6.github.io/post/compile_cheatsheet/</guid>
-      <description>C 和 C++ 的编译是真的痛苦，会出现一堆离谱的问题。所以我特地写一篇文章讲一下这些破事，并且提供一些样例代码方便复制黏贴。 编译过程简述 在网上能找到一堆的编译流程相关的博客，而且肯定比我讲的正确，所以这里我就</description>
     </item>
     
     <item>

@@ -6,11 +6,11 @@
     <description>Recent content in compile on 二进制咸鱼的自我救赎</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-hans</language>
-    <lastBuildDate>Thu, 21 May 2020 00:00:00 +0000</lastBuildDate><atom:link href="https://chenx6.github.io/tags/compile/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Sat, 21 May 2022 00:00:00 +0000</lastBuildDate><atom:link href="https://chenx6.github.io/tags/compile/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>关于 C 语言编译的那些破事</title>
       <link>https://chenx6.github.io/post/compile_cheatsheet/</link>
-      <pubDate>Thu, 21 May 2020 00:00:00 +0000</pubDate>
+      <pubDate>Sat, 21 May 2022 00:00:00 +0000</pubDate>
       
       <guid>https://chenx6.github.io/post/compile_cheatsheet/</guid>
       <description>C 和 C++ 的编译是真的痛苦，会出现一堆离谱的问题。所以我特地写一篇文章讲一下这些破事，并且提供一些样例代码方便复制黏贴。 编译过程简述 在网上能找到一堆的编译流程相关的博客，而且肯定比我讲的正确，所以这里我就</description>
