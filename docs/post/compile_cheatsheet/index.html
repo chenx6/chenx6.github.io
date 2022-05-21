@@ -223,8 +223,9 @@ cmake -DCMAKE_BUILD_TYPE=Debug ..
 <pre><code class="language-bash">export PKG_CONFIG_PATH=/usr/lib/pkgconfig/:$PKG_CONFIG_PATH
 </code></pre>
 <p>官方文档参考 <a href="#refs">#refs</a></p>
-<h2 id="编译器gcc编译选项">编译器/GCC编译选项</h2>
-<h3 id="链接">链接</h3>
+<h2 id="编译器">编译器</h2>
+<h3 id="gcc编译选项">GCC编译选项</h3>
+<h4 id="链接">链接</h4>
 <table>
 <thead>
 <tr>
@@ -256,7 +257,7 @@ cmake -DCMAKE_BUILD_TYPE=Debug ..
 </tr>
 </tbody>
 </table>
-<h3 id="目录搜索">目录搜索</h3>
+<h4 id="目录搜索">目录搜索</h4>
 <table>
 <thead>
 <tr>
@@ -283,7 +284,7 @@ cmake -DCMAKE_BUILD_TYPE=Debug ..
 </tr>
 </tbody>
 </table>
-<h2 id="使用-zig-cc-进行跨平台编译">使用 zig cc 进行跨平台编译</h2>
+<h3 id="使用-zig-cc-进行跨平台编译">使用 zig cc 进行跨平台编译</h3>
 <p>zig cc 真是跨平台编译救星，下面演示下常见命令。</p>
 <pre><code class="language-bash"># 显示支持的 libc
 zig targets | jq .libc
@@ -493,13 +494,12 @@ RUN python3 -m pip install meson -i https://opentuna.cn/pypi/web/simple
         <li><a href="#pkg-config">pkg-config</a></li>
       </ul>
     </li>
-    <li><a href="#编译器gcc编译选项">编译器/GCC编译选项</a>
+    <li><a href="#编译器">编译器</a>
       <ul>
-        <li><a href="#链接">链接</a></li>
-        <li><a href="#目录搜索">目录搜索</a></li>
+        <li><a href="#gcc编译选项">GCC编译选项</a></li>
+        <li><a href="#使用-zig-cc-进行跨平台编译">使用 zig cc 进行跨平台编译</a></li>
       </ul>
     </li>
-    <li><a href="#使用-zig-cc-进行跨平台编译">使用 zig cc 进行跨平台编译</a></li>
     <li><a href="#环境配置">环境配置</a>
       <ul>
         <li><a href="#dockerpodman">Docker/Podman</a></li>
@@ -661,13 +661,12 @@ RUN python3 -m pip install meson -i https://opentuna.cn/pypi/web/simple
         <li><a href="#pkg-config">pkg-config</a></li>
       </ul>
     </li>
-    <li><a href="#编译器gcc编译选项">编译器/GCC编译选项</a>
+    <li><a href="#编译器">编译器</a>
       <ul>
-        <li><a href="#链接">链接</a></li>
-        <li><a href="#目录搜索">目录搜索</a></li>
+        <li><a href="#gcc编译选项">GCC编译选项</a></li>
+        <li><a href="#使用-zig-cc-进行跨平台编译">使用 zig cc 进行跨平台编译</a></li>
       </ul>
     </li>
-    <li><a href="#使用-zig-cc-进行跨平台编译">使用 zig cc 进行跨平台编译</a></li>
     <li><a href="#环境配置">环境配置</a>
       <ul>
         <li><a href="#dockerpodman">Docker/Podman</a></li>

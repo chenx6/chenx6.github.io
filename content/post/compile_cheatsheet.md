@@ -130,9 +130,11 @@ export PKG_CONFIG_PATH=/usr/lib/pkgconfig/:$PKG_CONFIG_PATH
 
 官方文档参考 [#refs](#refs)
 
-## 编译器/GCC编译选项
+## 编译器
 
-### 链接
+### GCC编译选项
+
+#### 链接
 
 |选项|作用|样例|
 | - | - | - |
@@ -141,7 +143,7 @@ export PKG_CONFIG_PATH=/usr/lib/pkgconfig/:$PKG_CONFIG_PATH
 |`-static-libstdc++`|静态链接libstdc++||
 |`-Wl,$option`|将链接选项传递给 ld||
 
-### 目录搜索
+#### 目录搜索
 
 |选项|作用|样例|
 | - | - | - |
@@ -149,7 +151,7 @@ export PKG_CONFIG_PATH=/usr/lib/pkgconfig/:$PKG_CONFIG_PATH
 |`-L$dir`|库文件搜索路径|`-L./lib`|
 |`--sysroot=$dir`|头文件和库的搜索路径|`--sysroot=/usr`|
 
-## 使用 zig cc 进行跨平台编译
+### 使用 zig cc 进行跨平台编译
 
 zig cc 真是跨平台编译救星，下面演示下常见命令。
 
