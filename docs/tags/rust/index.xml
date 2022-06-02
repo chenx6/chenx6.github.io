@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>rust on 二进制咸鱼的自我救赎</title>
+    <link>https://chenx6.github.io/tags/rust/</link>
+    <description>Recent content in rust on 二进制咸鱼的自我救赎</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh-hans</language>
+    <lastBuildDate>Thu, 02 Jun 2022 00:00:00 +0000</lastBuildDate><atom:link href="https://chenx6.github.io/tags/rust/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>使用编译原理的知识，用 Rust 写一个计算器</title>
+      <link>https://chenx6.github.io/post/calculator/</link>
+      <pubDate>Thu, 02 Jun 2022 00:00:00 +0000</pubDate>
+      
+      <guid>https://chenx6.github.io/post/calculator/</guid>
+      <description>”想写个计算器“这件事情应该是我刚学会 C 语言时候的事情，当时还看不懂栈，逆波兰式等结构。但是现在不一样了，我不仅学过数据结构，还学过了编译原理。这次我就拿学过的编译原理相关知识写个计算器。 前置知识 上下</description>
+    </item>
+    
+  </channel>
+</rss>
