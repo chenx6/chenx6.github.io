@@ -9,7 +9,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge" />
 <meta http-equiv="Cache-Control" content="no-transform" />
 <meta http-equiv="Cache-Control" content="no-siteapp" />
-<meta name="generator" content="Hugo 0.99.1" />
+<meta name="generator" content="Hugo 0.101.0" />
 
 
 <link rel="icon" href="data:;base64,iVBORw0KGgo=">
@@ -317,6 +317,10 @@ RUN python3 -m pip install meson -i https://opentuna.cn/pypi/web/simple
 <p>使用容器进行编译。设置成运行完后删除，并将当前目录映射到 &ldquo;/src&rdquo; 目录下，启动名字为 <code>$容器名字</code> 的容器。</p>
 <pre><code class="language-bash">podman run --rm -v &quot;$(pwd):/src&quot; -it $容器名字
 </code></pre>
+<h3 id="glibc-symver">Glibc symver</h3>
+<p>有时候在新系统上编译的可执行文件，在旧系统上运行时，会产生 &ldquo;找不到函数&rdquo; 错误。这时候可以通过指定 symver 来进行兼容旧版本。具体细节可以参考 <a href="#Refs">#Refs</a> 中的 &ldquo;All about symbol versioning&rdquo;，或者使用 &ldquo;wheybags/glibc_version_header&rdquo; 这个项目。</p>
+<pre><code class="language-c">__asm__(&quot;.symver fopen,fopen@GLIBC_2.2.5&quot;);
+</code></pre>
 <h2 id="refs">Refs</h2>
 <ul>
 <li><a href="https://gcc.gnu.org/onlinedocs/gcc-11.3.0/gcc/" target="_blank">https://gcc.gnu.org/onlinedocs/gcc-11.3.0/gcc/</a></li>
@@ -324,6 +328,8 @@ RUN python3 -m pip install meson -i https://opentuna.cn/pypi/web/simple
 <li><a href="https://mesonbuild.com/howtox.html" target="_blank">https://mesonbuild.com/howtox.html</a></li>
 <li><a href="https://mesonbuild.com/Meson-sample.html" target="_blank">https://mesonbuild.com/Meson-sample.html</a></li>
 <li><a href="https://andrewkelley.me/post/zig-cc-powerful-drop-in-replacement-gcc-clang.html" target="_blank">https://andrewkelley.me/post/zig-cc-powerful-drop-in-replacement-gcc-clang.html</a></li>
+<li><a href="https://zhuanlan.zhihu.com/p/314912277" target="_blank">All about symbol versioning</a></li>
+<li><a href="https://github.com/wheybags/glibc_version_header" target="_blank">https://github.com/wheybags/glibc_version_header</a></li>
 </ul>
 
     </div>
@@ -507,6 +513,7 @@ RUN python3 -m pip install meson -i https://opentuna.cn/pypi/web/simple
     <li><a href="#环境配置">环境配置</a>
       <ul>
         <li><a href="#dockerpodman">Docker/Podman</a></li>
+        <li><a href="#glibc-symver">Glibc symver</a></li>
       </ul>
     </li>
     <li><a href="#refs">Refs</a></li>
@@ -678,6 +685,7 @@ RUN python3 -m pip install meson -i https://opentuna.cn/pypi/web/simple
     <li><a href="#环境配置">环境配置</a>
       <ul>
         <li><a href="#dockerpodman">Docker/Podman</a></li>
+        <li><a href="#glibc-symver">Glibc symver</a></li>
       </ul>
     </li>
     <li><a href="#refs">Refs</a></li>

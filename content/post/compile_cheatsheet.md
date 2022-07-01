@@ -200,6 +200,14 @@ RUN python3 -m pip install meson -i https://opentuna.cn/pypi/web/simple
 podman run --rm -v "$(pwd):/src" -it $容器名字
 ```
 
+### Glibc symver
+
+有时候在新系统上编译的可执行文件，在旧系统上运行时，会产生 "找不到函数" 错误。这时候可以通过指定 symver 来进行兼容旧版本。具体细节可以参考 [#Refs](#Refs) 中的 "All about symbol versioning"，或者使用 "wheybags/glibc_version_header" 这个项目。
+
+```c
+__asm__(".symver fopen,fopen@GLIBC_2.2.5");
+```
+
 ## Refs
 
 - <https://gcc.gnu.org/onlinedocs/gcc-11.3.0/gcc/>
@@ -207,3 +215,5 @@ podman run --rm -v "$(pwd):/src" -it $容器名字
 - <https://mesonbuild.com/howtox.html>
 - <https://mesonbuild.com/Meson-sample.html>
 - <https://andrewkelley.me/post/zig-cc-powerful-drop-in-replacement-gcc-clang.html>
+- [All about symbol versioning](https://zhuanlan.zhihu.com/p/314912277)
+- <https://github.com/wheybags/glibc_version_header>
