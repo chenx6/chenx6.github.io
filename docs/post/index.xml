@@ -6,7 +6,16 @@
     <description>Recent content in Posts on 二进制咸鱼的自我救赎</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-hans</language>
-    <lastBuildDate>Thu, 02 Jun 2022 00:00:00 +0000</lastBuildDate><atom:link href="https://chenx6.github.io/post/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Sun, 24 Jul 2022 00:00:00 +0000</lastBuildDate><atom:link href="https://chenx6.github.io/post/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>从日志函数中回复无符号的函数名字</title>
+      <link>https://chenx6.github.io/post/from_log/</link>
+      <pubDate>Sun, 24 Jul 2022 00:00:00 +0000</pubDate>
+      
+      <guid>https://chenx6.github.io/post/from_log/</guid>
+      <description>在逆向二进制程序中，经常碰到将程序 strip 了，但是日志函数中保留着函数名字的情况。所以写文记录在这种情况下，使用 IDAPython 恢复函数名字的过程。 日志函数长什么样 下面是我手写的一个日志函数。主要有几个部分： 日志级别 Lo</description>
+    </item>
+    
     <item>
       <title>使用编译原理的知识，用 Rust 写一个计算器</title>
       <link>https://chenx6.github.io/post/calculator/</link>
