@@ -15,19 +15,19 @@
 <link rel="icon" href="data:;base64,iVBORw0KGgo=">
 
 
-<title>llvm - 二进制咸鱼的自我救赎</title>
+<title>c2 - 二进制咸鱼的自我救赎</title>
 
 
 <meta name="author" content="chen_null" />
 
 
 
-<link rel="alternate" type="application/rss+xml" href="https://chenx6.github.io/tags/llvm/index.xml" title="二进制咸鱼的自我救赎" />
+<link rel="alternate" type="application/rss+xml" href="https://chenx6.github.io/tags/c2/index.xml" title="二进制咸鱼的自我救赎" />
 
-<meta property="og:title" content="llvm" />
-<meta name="twitter:title" content="llvm" />
+<meta property="og:title" content="c2" />
+<meta name="twitter:title" content="c2" />
 <meta property="og:type" content="website" />
-<meta property="og:url" content="https://chenx6.github.io/tags/llvm/" /><meta name="twitter:card" content="summary" /><meta property="og:updated_time" content="2021-01-21T00:00:00+00:00" />
+<meta property="og:url" content="https://chenx6.github.io/tags/c2/" /><meta name="twitter:card" content="summary" /><meta property="og:updated_time" content="2022-10-23T00:00:00+00:00" />
 
 
 <style>
@@ -92,76 +92,25 @@
                 
 
 <div class="page-info">
-  <span>拥有标签 llvm 的文章：</span>
+  <span>拥有标签 c2 的文章：</span>
 </div>
 
 
 
 <div class="post">
   <h2 class="post-item post-title">
-    <a href="https://chenx6.github.io/post/rewrite_ollvm_fla/">重写 OLLVM 之控制流平坦化</a>
+    <a href="https://chenx6.github.io/post/meterpreter/">meterpreter 简要分析</a>
   </h2>
   <div class="post-item post-meta">
-    <span><i class="iconfont icon-today-sharp"></i>&nbsp;2021-01-21</span>
+    <span><i class="iconfont icon-today-sharp"></i>&nbsp;2022-10-23</span>
 
 
 
-<span><i class="iconfont icon-pricetags-sharp"></i>&nbsp;<a href="/tags/re">re</a>&nbsp;<a href="/tags/llvm">llvm</a>&nbsp;</span>
+<span><i class="iconfont icon-pricetags-sharp"></i>&nbsp;<a href="/tags/python">python</a>&nbsp;<a href="/tags/c2">c2</a>&nbsp;<a href="/tags/rat">rat</a>&nbsp;</span>
 
   </div>
   <div class="post-item post-summary markdown-body">
-    OLLVM 的控制流平坦化是逆向老哥最讨厌的混淆了，因为一旦使用就代表着 IDA 的 decompiler 彻底报废了。所以了解并在自己的项目中重写控制流平坦化挺重要的。 什么是控制流平坦化 名词解释 BasicBlock 代码块，以跳转语句结尾的一段代码。 语言描述
-  </div>
-</div>
-
-<div class="post">
-  <h2 class="post-item post-title">
-    <a href="https://chenx6.github.io/post/obfuscate_string/">使用 LLVM Pass 实现字符串加密</a>
-  </h2>
-  <div class="post-item post-meta">
-    <span><i class="iconfont icon-today-sharp"></i>&nbsp;2020-01-01</span>
-
-
-
-<span><i class="iconfont icon-pricetags-sharp"></i>&nbsp;<a href="/tags/re">re</a>&nbsp;<a href="/tags/llvm">llvm</a>&nbsp;</span>
-
-  </div>
-  <div class="post-item post-summary markdown-body">
-    这个项目可以作为我看了这么久 LLVM 的 Docs 助眠的一个小总结吧。这个项目主要就是给函数使用的常量字符串进行加密，在程序被静态分析的时候干扰分析。当然找到思路后，这个混淆还是很容易解开的。 吐槽下，网上的文章质量参
-  </div>
-</div>
-
-<div class="post">
-  <h2 class="post-item post-title">
-    <a href="https://chenx6.github.io/post/build_pass_out_of_tree/">在 LLVM 代码树外编译 LLVM Pass (使用 OLLVM 示范)</a>
-  </h2>
-  <div class="post-item post-meta">
-    <span><i class="iconfont icon-today-sharp"></i>&nbsp;2020-01-01</span>
-
-
-
-<span><i class="iconfont icon-pricetags-sharp"></i>&nbsp;<a href="/tags/re">re</a>&nbsp;<a href="/tags/llvm">llvm</a>&nbsp;</span>
-
-  </div>
-  <div class="post-item post-summary markdown-body">
-    在网络上流传的编译 LLVM Pass 都需要一份 LLVM 源码，从整个源代码编译，编译非常花时间 (i7 6700HQ 使用 make -j8 编译整个项目花了近 50 分钟)，所以在翻阅文档时发现 LLVM 支持在代码树外编译，在 1 分钟内编译一个 Pass，还是非常香的。 项目
-  </div>
-</div>
-
-<div class="post">
-  <h2 class="post-item post-title">
-    <a href="https://chenx6.github.io/post/rewrite_ollvm_bcf/">重写 OLLVM 之虚假控制流</a>
-  </h2>
-  <div class="post-item post-meta">
-    <span><i class="iconfont icon-today-sharp"></i>&nbsp;2020-01-01</span>
-
-
-
-<span><i class="iconfont icon-pricetags-sharp"></i>&nbsp;<a href="/tags/re">re</a>&nbsp;<a href="/tags/llvm">llvm</a>&nbsp;</span>
-
-  </div>
-  <div class="post-item post-summary markdown-body">
-    由于我个人觉得 OLLVM 的代码年久失修，所以就新建了个项目，开始学习并重写 OLLVM。项目地址：https://github.com/chenx6/baby_obfuscator。如果将我的重写项目和 OLLVM 相比的
+    meterpreter 是 metasploit 里自带的一款远程控制工具，具有正向/反向连接模式，并且功能强大，所以想分析下其实现。 获取代码 meterpreter 的本体有很多种语言的实现，包括 C 实现的 mettle,还有在 metasploit-payloads 仓库里的 Python/PHP/Java 实现。这里选择 Python 实现。并且由于
   </div>
 </div>
 

@@ -6,7 +6,16 @@
     <description>Recent content in Posts on 二进制咸鱼的自我救赎</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-hans</language>
-    <lastBuildDate>Sun, 24 Jul 2022 00:00:00 +0000</lastBuildDate><atom:link href="https://chenx6.github.io/post/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Sun, 23 Oct 2022 00:00:00 +0000</lastBuildDate><atom:link href="https://chenx6.github.io/post/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>meterpreter 简要分析</title>
+      <link>https://chenx6.github.io/post/meterpreter/</link>
+      <pubDate>Sun, 23 Oct 2022 00:00:00 +0000</pubDate>
+      
+      <guid>https://chenx6.github.io/post/meterpreter/</guid>
+      <description>meterpreter 是 metasploit 里自带的一款远程控制工具，具有正向/反向连接模式，并且功能强大，所以想分析下其实现。 获取代码 meterpreter 的本体有很多种语言的实现，包括 C 实现的 mettle,还有在 metasploit-payloads 仓库里的 Python/PHP/Java 实现。这里选择 Python 实现。并且由于</description>
+    </item>
+    
     <item>
       <title>从日志函数中回复无符号的函数名字</title>
       <link>https://chenx6.github.io/post/from_log/</link>
