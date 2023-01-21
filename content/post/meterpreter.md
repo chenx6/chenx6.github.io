@@ -3,8 +3,12 @@ title = "meterpreter 简要分析"
 date = 2022-10-23
 tags = ["python", "c2", "rat"]
 +++
+# meterpreter 简要分析
 
 meterpreter 是 metasploit 里自带的一款远程控制工具，具有正向/反向连接模式，并且功能强大，所以想分析下其实现。
+
+- 2022-10-23 初版博文发布
+- 2023-01-21 加入端口转发功能的实现分析
 
 ## 获取代码
 
@@ -279,6 +283,88 @@ class MeterpreterSocket(MeterpreterChannel):
 ### core 和 stdapi
 
 core 是 meterpreter 的基础功能，包括 channel 和 transport 的管理等功能。这些功能的实现是在 `PythonMeterpreter` 类中以 "_core" 开头的函数，在类初始化时加入到 `extension_functions` dict 中供后续调用。而 stdapi 则是平时用到的扩展功能，包括上传/下载文件等功能，通过 `core_loadlib` 功能进行动态载入。
+
+## 功能分析
+
+### 端口转发
+
+开启端口转发后，访问端口可以看到下面的日志，配合日志可以对代码进行分析。
+
+```plaintext
+DEBUG:root:[*] running method core_channel_open
+DEBUG:root:[*] core_channel_open dispatching to handler: channel_open_stdapi_net_tcp_client
+DEBUG:root:[*] added channel id: 2 type: MeterpreterSocketTCPClient
+DEBUG:root:[*] sending response packet
+DEBUG:root:[*] running method core_channel_write
+DEBUG:root:[*] sending response packet
+DEBUG:root:[*] running method stdapi_net_socket_tcp_shutdown
+DEBUG:root:[*] sending response packet
+```
+
+可以看出先通过 `channel_open_stdapi_net_tcp_client` 函数创建链接。主要流程就是从请求中获取 socket 连接信息 `peer_address_info`，还有可选的 `local_address_info`，然后尝试去连接，如果连接成功的话，就创建新的 `MeterpreterSocketTCPClient` 类型的 channel，在创建成功后返回给控制端相应的信息。
+
+```python
+@register_function
+def channel_open_stdapi_net_tcp_client(request, response):
+    peer_address_info, local_address_info = getaddrinfo_from_request(request, socktype=socket.SOCK_STREAM, proto=socket.IPPROTO_TCP)
+    retries = packet_get_tlv(request, TLV_TYPE_CONNECT_RETRIES).get('value', 1)
+    if not peer_address_info:
+        return ERROR_CONNECTION_ERROR, response
+    connected = False
+    for _ in range(retries + 1):
+        sock = socket.socket(peer_address_info['family'], peer_address_info['socktype'], peer_address_info['proto'])
+        sock.settimeout(3.0)
+        # ...
+        try:
+            sock.connect(peer_address_info['sockaddr'])
+            connected = True
+            break
+        except:
+            pass
+    if not connected:
+        return ERROR_CONNECTION_ERROR, response
+    channel_id = meterpreter.add_channel(MeterpreterSocketTCPClient(sock))
+    response += tlv_pack(TLV_TYPE_CHANNEL_ID, channel_id)
+    response += tlv_pack_local_addrinfo(sock)
+    return ERROR_SUCCESS, response
+```
+
+在相应的 channel 创建成功后，下一条指令就是 "core_channel_write"，往之前创建的 socket 对应的 channel 里写入数据后，主循环会遍历 channel 列表，如果 channel 是 `MeterpreterSocketTCPClient` 就尝试从中读取数据并返回。需要注意的是在收发数据的时候对 fd 使用了 `select` 函数等待读事件，并设置了超时时间，防止单个 channel 长时间阻塞主进程。
+
+```python
+def run(self):
+    while self.running and not self.session_has_expired:
+        request = self.get_packet()
+        if request:
+            response = self.create_response(request)
+            if response:
+                self.send_packet(response)
+            # ...
+        # iterate over the keys because self.channels could be modified if one is closed
+        channel_ids = list(self.channels.keys())
+        for channel_id in channel_ids:
+            channel = self.channels[channel_id]
+            data = bytes()
+            write_request_parts = []
+            if isinstance(channel, MeterpreterSocketTCPClient):
+                while select.select([channel.fileno()], [], [], 0)[0]:
+                    try:
+                        d = channel.read(1)
+                    except socket.error:
+                        d = bytes()
+                    if len(d) == 0:
+                        self.handle_dead_resource_channel(channel_id)
+                        break
+                    data += d
+            # ...
+            if data:
+                write_request_parts.extend([
+                    {'type': TLV_TYPE_CHANNEL_ID, 'value': channel_id},
+                    {'type': TLV_TYPE_CHANNEL_DATA, 'value': data},
+                    {'type': TLV_TYPE_LENGTH, 'value': len(data)},
+                ])
+                self.send_packet(tlv_pack_request('core_channel_write', write_request_parts))
+```
 
 ## 总结
 
