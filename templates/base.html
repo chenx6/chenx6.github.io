@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" href="data:;base64,iVBORw0KGgo=">
+  <title>{% block title %}{{ config.title }}{% endblock title %}</title>
+  <link rel="stylesheet" href="{{ get_url(path="water.min.css", trailing_slash=false) }}">
+  {% if config.generate_feed %}
+  <link rel="alternate" type={% if config.feed_filename=="atom.xml" %}"application/atom+xml"{% else %}"application/rss+xml"{% endif %} title="RSS" href="{{ get_url(path=config.feed_filename) | safe }}">
+  {% endif %}
+
+  {% block extra_head %}
+  {% endblock extra_head %}
+</head>
+
+<body>
+  <header>
+    <a href="{{ config.base_url }}"><h1>{{ config.title }}</h1></a>
+    {% if config.description %}
+    <p class="lead">{{config.description}}</p>
+    {% endif %}
+    {% for item in config.extra.menu %}
+      <a href="{{ item.url | safe | replace(from="$BASE_URL", to=config.base_url) }}">
+        {{ item.name }}
+      </a>
+    {% endfor %}
+    {% if config.generate_feed %}
+    <a href="{{ get_url(path=config.feed_filename) | safe }}">RSS</a>
+    {% endif %}
+  </header>
+  {% block content %} {% endblock %}
+</body>
+
+</html>

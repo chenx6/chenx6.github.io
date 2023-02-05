@@ -1,0 +1,10 @@
+{% import "macros/post_macros.html" as post_macros %}
+{% extends "base.html" %}
+
+{% block content %}
+    <h1>{{ term.name }}</h1>
+
+    {% for page in term.pages %}
+      {{ post_macros::page_in_list(page=page) }}
+    {% endfor %}
+{% endblock content %}

@@ -1,0 +1,19 @@
+{% import "macros/tag_macros.html" as tag_macros %}
+
+{# Render page item #}
+{% macro page_in_list(page) %}
+<div class="post">
+  <h2 class="post-title">
+    <a href="{{ page.permalink }}">
+      {{ page.title }}
+    </a>
+  </h1>
+  <span class="post-date">{{ page.date | date(format="%Y-%m-%d") }}</span>
+  {{ tag_macros::tag_list(page=page) }}
+  {% if page.summary %}
+  <div>
+    {{ page.summary | safe }}
+  </div>
+  {% endif %}
+</div>
+{% endmacro page_in_list %}

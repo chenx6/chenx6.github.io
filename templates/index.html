@@ -1,0 +1,19 @@
+{% import "macros/post_macros.html" as post_macros %}
+{% extends "base.html" %}
+
+{% block content %}
+  <div class="posts">
+    {% set section = get_section(path="post/_index.md") %}
+    {% for page in section.pages %}
+      {{ post_macros::page_in_list(page=page) }}
+    {% endfor %}
+  </div>
+  <nav class="pagination">
+    {% if paginator.previous %}
+      <a class="previous" href="{{ paginator.previous }}">‹ Previous</a>
+    {% endif %}
+    {% if paginator.next %}
+      <a class="next" href="{{ paginator.next }}">Next ›</a>
+    {% endif %}
+  </nav>
+{% endblock content %}

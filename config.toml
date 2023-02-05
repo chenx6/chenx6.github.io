@@ -1,0 +1,21 @@
+base_url = "https://example.com"
+compile_sass = false
+build_search_index = false
+
+title = "Title"
+description = "description"
+generate_feed = true
+feed_filename = "atom.xml"
+default_language = "zh_CN"
+
+taxonomies = [
+    {name = "tags", feed = true}
+]
+
+[markdown]
+highlight_code = true
+
+[extra]
+menu = [
+    {url = "$BASE_URL/about", name = "About"}
+]
