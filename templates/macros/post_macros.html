@@ -14,6 +14,11 @@
   <div>
     {{ page.summary | safe }}
   </div>
+  {% elif page.content %}
+  <div>
+    {# Zola's summary need to modify post, so we manually cut first paragraph as summary #}
+    {{ page.content | split(pat="</p>") | first | replace(from="<p>", to="") }}
+  </div>
   {% endif %}
 </div>
 {% endmacro page_in_list %}
