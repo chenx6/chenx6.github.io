@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" href="data:;base64,iVBORw0KGgo=">
+  <title>二进制咸鱼的自我救赎</title>
+  <link rel="stylesheet" href="https://chenx6.github.io/water.min.css">
+  <link rel="stylesheet" type="text/css" href="/syntax-theme-dark.css" media="(prefers-color-scheme: dark)" />
+  <link rel="stylesheet" type="text/css" href="/syntax-theme-light.css" media="(prefers-color-scheme: light)" />
+  
+  <link rel="alternate" type="application/atom+xml" title="RSS" href="https://chenx6.github.io/atom.xml">
+  
+
+  
+  
+</head>
+
+<body>
+  <header>
+    <a href="https:&#x2F;&#x2F;chenx6.github.io&#x2F;"><h1>二进制咸鱼的自我救赎</h1></a>
+    
+    <p class="lead">幸福往往是摸的透彻，而敬业的心却常常隐藏。</p>
+    
+    
+      <a href="https:&#x2F;&#x2F;chenx6.github.io&#x2F;&#x2F;about">
+        About
+      </a>
+    
+    
+    <a href="https://chenx6.github.io/atom.xml">RSS</a>
+    
+  </header>
+  
+    <h1>re</h1>
+
+    
+      
+<div class="post">
+  <h2 class="post-title">
+    <a href="https:&#x2F;&#x2F;chenx6.github.io&#x2F;post&#x2F;plthook&#x2F;">
+      plt hook 项目代码分析和最小实现
+    </a>
+  </h1>
+  <span class="post-date">2022-04-05</span>
+  
+  
+    
+      <a href="https://chenx6.github.io/tags/re/">#re</a>
+    
+      <a href="https://chenx6.github.io/tags/plt/">#plt</a>
+    
+      <a href="https://chenx6.github.io/tags/elf/">#elf</a>
+    
+  
+
+  
+  <div>
+    
+    虽然知道可以通过魔改 plt 表实现 hook 函数，但是不知道具体实现...碰巧最近用到了 plthook 这个库，于是我就研究了下 plthook 这个库，并且仿照着这个库重新实现一份代码。
+  </div>
+  
+</div>
+
+    
+      
+<div class="post">
+  <h2 class="post-title">
+    <a href="https:&#x2F;&#x2F;chenx6.github.io&#x2F;post&#x2F;rewrite-ollvm-fla&#x2F;">
+      重写 OLLVM 之控制流平坦化
+    </a>
+  </h1>
+  <span class="post-date">2021-01-21</span>
+  
+  
+    
+      <a href="https://chenx6.github.io/tags/re/">#re</a>
+    
+      <a href="https://chenx6.github.io/tags/llvm/">#llvm</a>
+    
+  
+
+  
+  <div>
+    
+    OLLVM 的控制流平坦化是逆向老哥最讨厌的混淆了，因为一旦使用就代表着 IDA 的 decompiler 彻底报废了。所以了解并在&lt;a href=&quot;https:&#x2F;&#x2F;github.com&#x2F;chenx6&#x2F;baby_obfuscator&quot;&gt;自己的项目中&lt;&#x2F;a&gt;重写控制流平坦化挺重要的。
+  </div>
+  
+</div>
+
+    
+      
+<div class="post">
+  <h2 class="post-title">
+    <a href="https:&#x2F;&#x2F;chenx6.github.io&#x2F;post&#x2F;codeql&#x2F;">
+      CodeQL 体验
+    </a>
+  </h1>
+  <span class="post-date">2020-04-20</span>
+  
+  
+    
+      <a href="https://chenx6.github.io/tags/re/">#re</a>
+    
+      <a href="https://chenx6.github.io/tags/codeql/">#codeql</a>
+    
+  
+
+  
+  <div>
+    
+    &lt;h2 id=&quot;gai-yao&quot;&gt;概要&lt;&#x2F;h2&gt;
+之前在 Twitter 上看到有大佬说 Github Learning Club 上搞了个免费的 CodeQL 课程，课程最终目标是使用 CodeQL 这个语言找出 uboot 中的 9 个漏洞。我在克服拖延症后，终于在 4 月底完成了这个课程，于是写文记录。
+  </div>
+  
+</div>
+
+    
+      
+<div class="post">
+  <h2 class="post-title">
+    <a href="https:&#x2F;&#x2F;chenx6.github.io&#x2F;post&#x2F;build-pass-out-of-tree&#x2F;">
+      在 LLVM 代码树外编译 LLVM Pass (使用 OLLVM 示范)
+    </a>
+  </h1>
+  <span class="post-date">2020-01-01</span>
+  
+  
+    
+      <a href="https://chenx6.github.io/tags/re/">#re</a>
+    
+      <a href="https://chenx6.github.io/tags/llvm/">#llvm</a>
+    
+  
+
+  
+  <div>
+    
+    在网络上流传的编译 LLVM Pass 都需要一份 LLVM 源码，从整个源代码编译，编译非常花时间 (i7 6700HQ 使用 &lt;code&gt;make -j8&lt;&#x2F;code&gt; 编译整个项目花了近 50 分钟)，所以在翻阅文档时发现 LLVM 支持在代码树外编译，在 1 分钟内编译一个 Pass，还是非常香的。
+  </div>
+  
+</div>
+
+    
+      
+<div class="post">
+  <h2 class="post-title">
+    <a href="https:&#x2F;&#x2F;chenx6.github.io&#x2F;post&#x2F;elf-backdoor&#x2F;">
+      给 ELF 文件加上后门
+    </a>
+  </h1>
+  <span class="post-date">2020-01-01</span>
+  
+  
+    
+      <a href="https://chenx6.github.io/tags/re/">#re</a>
+    
+      <a href="https://chenx6.github.io/tags/mal/">#mal</a>
+    
+      <a href="https://chenx6.github.io/tags/backdoor/">#backdoor</a>
+    
+  
+
+  
+  <div>
+    
+    在渗透测试中，给常用的可执行文件加上后门是很常见的操作。但是之前的加后门 &amp;quot;The backdoor factory&amp;quot; 已经不维护了，而且还是 Python2 写的，代码质量也...所以我自己尝试着重新用 Python3 造了个轮子。在造轮子的过程中，由于 APUE 扔在学校里面了，导致在写和系统相关的汇编时出现了一些翻车情况...
+  </div>
+  
+</div>
+
+    
+      
+<div class="post">
+  <h2 class="post-title">
+    <a href="https:&#x2F;&#x2F;chenx6.github.io&#x2F;post&#x2F;obfuscate-string&#x2F;">
+      使用 LLVM Pass 实现字符串加密
+    </a>
+  </h1>
+  <span class="post-date">2020-01-01</span>
+  
+  
+    
+      <a href="https://chenx6.github.io/tags/re/">#re</a>
+    
+      <a href="https://chenx6.github.io/tags/llvm/">#llvm</a>
+    
+  
+
+  
+  <div>
+    
+    这个项目可以作为我看了这么久 LLVM 的 Docs 助眠的一个小总结吧。这个项目主要就是给函数使用的常量字符串进行加密，在程序被静态分析的时候干扰分析。当然找到思路后，这个混淆还是很容易解开的。
+  </div>
+  
+</div>
+
+    
+      
+<div class="post">
+  <h2 class="post-title">
+    <a href="https:&#x2F;&#x2F;chenx6.github.io&#x2F;post&#x2F;rewrite-ollvm-bcf&#x2F;">
+      重写 OLLVM 之虚假控制流
+    </a>
+  </h1>
+  <span class="post-date">2020-01-01</span>
+  
+  
+    
+      <a href="https://chenx6.github.io/tags/re/">#re</a>
+    
+      <a href="https://chenx6.github.io/tags/llvm/">#llvm</a>
+    
+  
+
+  
+  <div>
+    
+    由于我个人觉得 OLLVM 的代码年久失修，所以就新建了个项目，开始学习并重写 OLLVM。项目地址：&lt;a href=&quot;https:&#x2F;&#x2F;github.com&#x2F;chenx6&#x2F;baby_obfuscator&quot;&gt;https:&#x2F;&#x2F;github.com&#x2F;chenx6&#x2F;baby_obfuscator&lt;&#x2F;a&gt;。如果将我的重写项目和 OLLVM 相比的话，我的项目的优点就是编译比较快（编译整个项目只需要不到 1 分钟），代码比较“新”吧...
+  </div>
+  
+</div>
+
+    
+
+</body>
+
+</html>

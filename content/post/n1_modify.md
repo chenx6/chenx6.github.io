@@ -2,6 +2,7 @@
 title = "斐讯 N1 折腾/避坑笔记"
 date = 2020-02-01
 description = "最近想搞一台小服务器来做 Git 服务器，下载 Bt 等事情，所以就在一堆便宜的 ARM 机顶盒/NAS 中间挑选。最后看上了 100 RMB 左右的斐讯 N1，因为 N1 不用拆机就可以刷机。"
+[taxonomies]
 tags = ["arm", "server"]
 +++
 

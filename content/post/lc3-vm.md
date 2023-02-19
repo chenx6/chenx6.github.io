@@ -2,6 +2,7 @@
 title = "LC3-VM 学习和实现"
 date = 2020-01-15
 description = "本文是根据 <https://justinmeiners.github.io/lc3-vm> 和 <https://justinmeiners.github.io/lc3-vm/supplies/lc3-isa.pdf> ISA 写出 LC3 VM 的实现过程。"
+[taxonomies]
 tags = ["vm"]
 +++
 

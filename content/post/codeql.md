@@ -2,6 +2,7 @@
 title = "CodeQL 体验"
 date = 2020-04-20
 description = "之前在 Twitter 上看到有大佬说 Github Learning Club 上搞了个免费的 CodeQL 课程，课程最终目标是使用 CodeQL 这个语言找出 uboot 中的 9 个漏洞。我在克服拖延症后，终于在 4 月底完成了这个课程，于是写文记录。"
+[taxonomies]
 tags = ["re", "codeql"]
 +++
 

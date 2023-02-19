@@ -2,6 +2,7 @@
 title = "重写 OLLVM 之控制流平坦化"
 date = 2021-01-21
 description = "OLLVM 的控制流平坦化是逆向老哥最讨厌的混淆了，因为一旦使用就代表着 IDA 的 decompiler 彻底报废了。所以了解并在[自己的项目中](https://github.com/chenx6/baby_obfuscator)重写控制流平坦化挺重要的。"
+[taxonomies]
 tags = ["re", "llvm"]
 +++
 

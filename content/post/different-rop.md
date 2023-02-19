@@ -2,6 +2,7 @@
 title = "不同视角看 ROP"
 date = 2020-06-01
 description = "看了许多讲 ROP 的文章，发现很多只是讲了怎么利用，但是没有讲为什么这么利用。所以写文记录。"
+[taxonomies]
 tags = ["pwn", "rop"]
 +++
 

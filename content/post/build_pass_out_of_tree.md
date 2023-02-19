@@ -2,6 +2,7 @@
 title = "在 LLVM 代码树外编译 LLVM Pass (使用 OLLVM 示范)"
 date = 2020-01-01
 description = "在网络上流传的编译 LLVM Pass 都需要一份 LLVM 源码，从整个源代码编译，编译非常花时间 (i7 6700HQ 使用 `make -j8` 编译整个项目花了近 50 分钟)，所以在翻阅文档时发现 LLVM 支持在代码树外编译，在 1 分钟内编译一个 Pass，还是非常香的。"
+[taxonomies]
 tags = ["re", "llvm"]
 +++
 

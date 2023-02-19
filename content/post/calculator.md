@@ -1,6 +1,7 @@
 +++
 title = "使用编译原理的知识，用 Rust 写一个计算器"
 date = 2022-06-02
+[taxonomies]
 tags = ["plt", "rust"]
 [extra]
 katex = true

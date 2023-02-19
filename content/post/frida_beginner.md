@@ -2,6 +2,7 @@
 title = "Frida 在一次离谱比赛中的应用"
 date = 2022-02-26
 description = "在某次离谱比赛中，我使用了 Frida 解出了题目，下面是一些简单的笔记。"
+[taxonomies]
 tags = ["frida"]
 +++
 

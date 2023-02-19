@@ -2,6 +2,7 @@
 title = "给 ELF 文件加上后门"
 date = 2020-01-01
 description = "在渗透测试中，给常用的可执行文件加上后门是很常见的操作。但是之前的加后门 \"The backdoor factory\" 已经不维护了，而且还是 Python2 写的，代码质量也...所以我自己尝试着重新用 Python3 造了个轮子。在造轮子的过程中，由于 APUE 扔在学校里面了，导致在写和系统相关的汇编时出现了一些翻车情况..."
+[taxonomies]
 tags = ["re", "mal", "backdoor"]
 +++
 

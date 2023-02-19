@@ -1,6 +1,7 @@
 +++
 title = "从日志函数中回复无符号的函数名字"
 date = 2022-07-24
+[taxonomies]
 tags = ["ida", "python"]
 +++
 

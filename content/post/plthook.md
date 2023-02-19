@@ -2,6 +2,7 @@
 title = "plt hook 项目代码分析和最小实现"
 date = 2022-04-05
 description = "虽然知道可以通过魔改 plt 表实现 hook 函数，但是不知道具体实现...碰巧最近用到了 plthook 这个库，于是我就研究了下 plthook 这个库，并且仿照着这个库重新实现一份代码。"
+[taxonomies]
 tags = ["re", "plt", "elf"]
 +++
 虽然知道可以通过魔改 plt 表实现 hook 函数，但是不知道具体实现...碰巧最近用到了 plthook 这个库，于是我就研究了下 plthook 这个库，并且仿照着这个库重新实现一份代码。
