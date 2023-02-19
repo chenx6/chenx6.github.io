@@ -15,6 +15,12 @@ taxonomies = [
 [markdown]
 highlight_code = true
 
+highlight_theme = "css"
+highlight_themes_css = [
+  { theme = "ayu-dark", filename = "syntax-theme-dark.css" },
+  { theme = "ayu-light", filename = "syntax-theme-light.css" },
+]
+
 [extra]
 menu = [
     {url = "$BASE_URL/about", name = "About"}
