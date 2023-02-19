@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" href="data:;base64,iVBORw0KGgo=">
+  <title>二进制咸鱼的自我救赎</title>
+  <link rel="stylesheet" href="https://chenx6.github.io/water.min.css">
+  <link rel="stylesheet" type="text/css" href="/syntax-theme-dark.css" media="(prefers-color-scheme: dark)" />
+  <link rel="stylesheet" type="text/css" href="/syntax-theme-light.css" media="(prefers-color-scheme: light)" />
+  
+  <link rel="alternate" type="application/atom+xml" title="RSS" href="https://chenx6.github.io/atom.xml">
+  
+
+  
+  
+</head>
+
+<body>
+  <header>
+    <a href="https:&#x2F;&#x2F;chenx6.github.io&#x2F;"><h1>二进制咸鱼的自我救赎</h1></a>
+    
+    <p class="lead">幸福往往是摸的透彻，而敬业的心却常常隐藏。</p>
+    
+    
+      <a href="https:&#x2F;&#x2F;chenx6.github.io&#x2F;&#x2F;about">
+        About
+      </a>
+    
+    
+    <a href="https://chenx6.github.io/atom.xml">RSS</a>
+    
+  </header>
+  
+<div class="container">
+  <aside class="toc">
+    
+    <ul>
+      
+      <li>
+        <a href="https://chenx6.github.io/post/plthook/#yuan-li-fen-xi">原理分析</a>
+        
+      </li>
+      
+      <li>
+        <a href="https://chenx6.github.io/post/plthook/#xiang-mu-dai-ma-fen-xi">项目代码分析</a>
+        
+      </li>
+      
+      <li>
+        <a href="https://chenx6.github.io/post/plthook/#zhong-xin-fu-xian">重新复现</a>
+        
+      </li>
+      
+      <li>
+        <a href="https://chenx6.github.io/post/plthook/#refs">Refs</a>
+        
+      </li>
+      
+    </ul>
+    
+  </aside>
+  <div class="post">
+    <h2 class="post-title">plt hook 项目代码分析和最小实现</h1>
+      <span class="post-date">2022-04-05</span>
+      
+  
+
+      <p>虽然知道可以通过魔改 plt 表实现 hook 函数，但是不知道具体实现...碰巧最近用到了 plthook 这个库，于是我就研究了下 plthook 这个库，并且仿照着这个库重新实现一份代码。</p>
+<h2 id="yuan-li-fen-xi">原理分析</h2>
+<p>根据命名规则，.rela.plt 表是负责 plt 表的重定位信息。.rela 表中有每项都有 2 个成员，r_offset 指向了该重定位入口所要修正的位置的第一个字节的虚拟地址， r_info 则是表示相关信息，可以通过 <code>ELF[32|64]_R_SYM</code> 获得其指向的 .dynsym 项的下标。</p>
+<p>.dynsym 表（动态链接表）中存放动态链接需要的信息，可以通过 .dynsym 表从 .strtab 表中获得要链接的函数名字。</p>
+<h2 id="xiang-mu-dai-ma-fen-xi">项目代码分析</h2>
+<p>经过阅读代码后，我大致了解了 plthook 在 Linux/x86_64 平台上的逻辑。</p>
+<blockquote>
+<p>由于项目的代码支持多个 UNIX 系统（Windows 下则是实现了 IAT Hook），所以原项目中有一堆的宏和封装，下面的逻辑只对应着 Linux/x86_64 平台。</p>
+</blockquote>
+<ol>
+<li>获取 <code>link_map</code>
+<ul>
+<li>对动态库使用 <code>dlinfo(hndl, RTLD_DI_LINKMAP, &amp;lmap)</code></li>
+<li>对可执行文件使用 <code>_r_debug.r_map</code> 结构体</li>
+</ul>
+</li>
+<li>通过 <code>link_map</code> 获取相关 section 的信息。
+<ul>
+<li>获取 &quot;DT_SYMTAB DT_STRTAB DT_STRSZ DT_JMPREL DT_PLTRELSZ&quot; 的相关信息</li>
+</ul>
+</li>
+<li>在 rela 表中获得其在 dynsym 中的位置，然后通过 dynsym 获得名字</li>
+<li>如果是被替换函数，就通过修改 PLT 表进行替换。</li>
+</ol>
+<h2 id="zhong-xin-fu-xian">重新复现</h2>
+<p>首先是通过 <code>dlopen</code> <code>dlinfo</code> 获得 <code>link_map</code>。使用 <code>sysconf</code> 则是获得了页的大小。</p>
+<pre data-lang="c" class="language-c z-code"><code class="language-c" data-lang="c"><span class="z-source z-c"><span class="z-comment z-line z-double-slash z-c"><span class="z-punctuation z-definition z-comment z-c">//</span>/ @brief Initlize plthook_info
+</span><span class="z-comment z-line z-double-slash z-c"><span class="z-punctuation z-definition z-comment z-c">//</span>/ @param info empty plthook_info variable
+</span><span class="z-comment z-line z-double-slash z-c"><span class="z-punctuation z-definition z-comment z-c">//</span>/ @param name library name, NULL means program itself
+</span>plthook_status <span class="z-meta z-function z-c"><span class="z-entity z-name z-function z-c">plt_hook_init</span></span><span class="z-meta z-function z-parameters z-c"><span class="z-meta z-group z-c"><span class="z-punctuation z-section z-group z-begin z-c">(</span></span></span><span class="z-meta z-function z-parameters z-c"><span class="z-meta z-group z-c">plthook_info <span class="z-keyword z-operator z-c">*</span><span class="z-variable z-parameter z-c">info</span><span class="z-punctuation z-separator z-c">,</span> <span class="z-storage z-type z-c">char</span> <span class="z-keyword z-operator z-c">*</span><span class="z-variable z-parameter z-c">name</span><span class="z-punctuation z-section z-group z-end z-c">)</span></span></span><span class="z-meta z-function z-c"> </span><span class="z-meta z-function z-c"><span class="z-meta z-block z-c"><span class="z-punctuation z-section z-block z-begin z-c">{</span></span></span><span class="z-meta z-function z-c"><span class="z-meta z-block z-c">
+  page_size <span class="z-keyword z-operator z-assignment z-c">=</span> <span class="z-meta z-function-call z-c"><span class="z-variable z-function z-c">sysconf</span><span class="z-meta z-group z-c"><span class="z-punctuation z-section z-group z-begin z-c">(</span></span></span><span class="z-meta z-function-call z-c"><span class="z-meta z-group z-c">_SC_PAGESIZE</span></span><span class="z-meta z-function-call z-c"><span class="z-meta z-group z-c"><span class="z-punctuation z-section z-group z-end z-c">)</span></span></span><span class="z-punctuation z-terminator z-c">;</span>
+  plthook_status status <span class="z-keyword z-operator z-assignment z-c">=</span> PLTHOOK_SUCCESS<span class="z-punctuation z-terminator z-c">;</span>
+  <span class="z-comment z-line z-double-slash z-c"><span class="z-punctuation z-definition z-comment z-c">//</span> Get link_map
+</span>  <span class="z-storage z-type z-c">void</span> <span class="z-keyword z-operator z-c">*</span>handle <span class="z-keyword z-operator z-assignment z-c">=</span> <span class="z-meta z-function-call z-c"><span class="z-variable z-function z-c">dlopen</span><span class="z-meta z-group z-c"><span class="z-punctuation z-section z-group z-begin z-c">(</span></span></span><span class="z-meta z-function-call z-c"><span class="z-meta z-group z-c">name<span class="z-punctuation z-separator z-c">,</span> RTLD_LAZY <span class="z-keyword z-operator z-arithmetic z-c">|</span> RTLD_NOLOAD</span></span><span class="z-meta z-function-call z-c"><span class="z-meta z-group z-c"><span class="z-punctuation z-section z-group z-end z-c">)</span></span></span><span class="z-punctuation z-terminator z-c">;</span>
+  <span class="z-storage z-type z-c">struct</span> link_map <span class="z-keyword z-operator z-c">*</span>map <span class="z-keyword z-operator z-assignment z-c">=</span> <span class="z-constant z-language z-c">NULL</span><span class="z-punctuation z-terminator z-c">;</span>
+  <span class="z-storage z-type z-c">int</span> result <span class="z-keyword z-operator z-assignment z-c">=</span> <span class="z-meta z-function-call z-c"><span class="z-variable z-function z-c">dlinfo</span><span class="z-meta z-group z-c"><span class="z-punctuation z-section z-group z-begin z-c">(</span></span></span><span class="z-meta z-function-call z-c"><span class="z-meta z-group z-c">handle<span class="z-punctuation z-separator z-c">,</span> RTLD_DI_LINKMAP<span class="z-punctuation z-separator z-c">,</span> <span class="z-keyword z-operator z-c">&amp;</span>map</span></span><span class="z-meta z-function-call z-c"><span class="z-meta z-group z-c"><span class="z-punctuation z-section z-group z-end z-c">)</span></span></span><span class="z-punctuation z-terminator z-c">;</span>
+</span></span></span></code></pre>
+<p>然后是从 <code>link_map</code> 中获得各个 section（&quot;DT_SYMTAB DT_STRTAB DT_STRSZ DT_JMPREL DT_PLTRELSZ&quot;）的信息，供后续使用。</p>
+<pre data-lang="c" class="language-c z-code"><code class="language-c" data-lang="c"><span class="z-source z-c">  <span class="z-comment z-line z-double-slash z-c"><span class="z-punctuation z-definition z-comment z-c">//</span> Get information from link_map&#39;s address and dyn table
+</span>  info<span class="z-punctuation z-accessor z-c">-&gt;</span>base_addr <span class="z-keyword z-operator z-assignment z-c">=</span> <span class="z-meta z-group z-c"><span class="z-punctuation z-section z-group z-begin z-c">(</span><span class="z-support z-type z-stdint z-c">uint8_t</span> <span class="z-keyword z-operator z-c">*</span><span class="z-punctuation z-section z-group z-end z-c">)</span></span>map<span class="z-punctuation z-accessor z-c">-&gt;</span>l_addr<span class="z-punctuation z-terminator z-c">;</span>
+  <span class="z-support z-type z-sys-types z-c">size_t</span> rela_size <span class="z-keyword z-operator z-assignment z-c">=</span> <span class="z-constant z-numeric z-integer z-decimal z-c">0</span><span class="z-punctuation z-terminator z-c">;</span>
+  <span class="z-keyword z-control z-c">for</span> <span class="z-meta z-group z-c"><span class="z-punctuation z-section z-group z-begin z-c">(</span>Elf64_Dyn <span class="z-keyword z-operator z-c">*</span>curr <span class="z-keyword z-operator z-assignment z-c">=</span> map<span class="z-punctuation z-accessor z-c">-&gt;</span>l_ld<span class="z-punctuation z-terminator z-c">;</span> curr<span class="z-punctuation z-accessor z-c">-&gt;</span>d_tag <span class="z-keyword z-operator z-comparison z-c">!=</span> DT_NULL<span class="z-punctuation z-terminator z-c">;</span> curr<span class="z-keyword z-operator z-arithmetic z-c">++</span><span class="z-punctuation z-section z-group z-end z-c">)</span></span> <span class="z-meta z-block z-c"><span class="z-punctuation z-section z-block z-begin z-c">{</span>
+    <span class="z-keyword z-control z-c">switch</span> <span class="z-meta z-group z-c"><span class="z-punctuation z-section z-group z-begin z-c">(</span>curr<span class="z-punctuation z-accessor z-c">-&gt;</span>d_tag<span class="z-punctuation z-section z-group z-end z-c">)</span></span> <span class="z-meta z-block z-c"><span class="z-punctuation z-section z-block z-begin z-c">{</span>
+    <span class="z-comment z-line z-double-slash z-c"><span class="z-punctuation z-definition z-comment z-c">//</span> Address of string table
+</span>    <span class="z-keyword z-control z-c">case</span> DT_STRTAB<span class="z-punctuation z-separator z-c">:</span>
+      info<span class="z-punctuation z-accessor z-c">-&gt;</span>str_table <span class="z-keyword z-operator z-assignment z-c">=</span> curr<span class="z-punctuation z-accessor z-c">-&gt;</span>d_un<span class="z-punctuation z-accessor z-c">.</span><span class="z-variable z-other z-member z-c">d_ptr</span><span class="z-punctuation z-terminator z-c">;</span>
+      <span class="z-keyword z-control z-flow z-break z-c">break</span><span class="z-punctuation z-terminator z-c">;</span>
+    <span class="z-keyword z-control z-c">case</span> DT_STRSZ<span class="z-punctuation z-separator z-c">:</span>
+      info<span class="z-punctuation z-accessor z-c">-&gt;</span>str_sz <span class="z-keyword z-operator z-assignment z-c">=</span> curr<span class="z-punctuation z-accessor z-c">-&gt;</span>d_un<span class="z-punctuation z-accessor z-c">.</span><span class="z-variable z-other z-member z-c">d_val</span><span class="z-punctuation z-terminator z-c">;</span>
+      <span class="z-keyword z-control z-flow z-break z-c">break</span><span class="z-punctuation z-terminator z-c">;</span>
+    <span class="z-comment z-line z-double-slash z-c"><span class="z-punctuation z-definition z-comment z-c">//</span> Address of relocation entries associated solely with the PLT
+</span>    <span class="z-keyword z-control z-c">case</span> DT_JMPREL<span class="z-punctuation z-separator z-c">:</span>
+      info<span class="z-punctuation z-accessor z-c">-&gt;</span>rel <span class="z-keyword z-operator z-assignment z-c">=</span> <span class="z-meta z-group z-c"><span class="z-punctuation z-section z-group z-begin z-c">(</span>Elf64_Rela <span class="z-keyword z-operator z-c">*</span><span class="z-punctuation z-section z-group z-end z-c">)</span></span>curr<span class="z-punctuation z-accessor z-c">-&gt;</span>d_un<span class="z-punctuation z-accessor z-c">.</span><span class="z-variable z-other z-member z-c">d_ptr</span><span class="z-punctuation z-terminator z-c">;</span>
+      <span class="z-keyword z-control z-flow z-break z-c">break</span><span class="z-punctuation z-terminator z-c">;</span>
+    <span class="z-keyword z-control z-c">case</span> DT_PLTRELSZ<span class="z-punctuation z-separator z-c">:</span>
+      rela_size <span class="z-keyword z-operator z-assignment z-c">=</span> curr<span class="z-punctuation z-accessor z-c">-&gt;</span>d_un<span class="z-punctuation z-accessor z-c">.</span><span class="z-variable z-other z-member z-c">d_val</span><span class="z-punctuation z-terminator z-c">;</span>
+      <span class="z-keyword z-control z-flow z-break z-c">break</span><span class="z-punctuation z-terminator z-c">;</span>
+    <span class="z-comment z-line z-double-slash z-c"><span class="z-punctuation z-definition z-comment z-c">//</span> Address of symbol table
+</span>    <span class="z-keyword z-control z-c">case</span> DT_SYMTAB<span class="z-punctuation z-separator z-c">:</span>
+      info<span class="z-punctuation z-accessor z-c">-&gt;</span>dynsym <span class="z-keyword z-operator z-assignment z-c">=</span> <span class="z-meta z-group z-c"><span class="z-punctuation z-section z-group z-begin z-c">(</span>Elf64_Sym <span class="z-keyword z-operator z-c">*</span><span class="z-punctuation z-section z-group z-end z-c">)</span></span>curr<span class="z-punctuation z-accessor z-c">-&gt;</span>d_un<span class="z-punctuation z-accessor z-c">.</span><span class="z-variable z-other z-member z-c">d_ptr</span><span class="z-punctuation z-terminator z-c">;</span>
+      <span class="z-keyword z-control z-flow z-break z-c">break</span><span class="z-punctuation z-terminator z-c">;</span>
+    <span class="z-punctuation z-section z-block z-end z-c">}</span></span>
+  <span class="z-punctuation z-section z-block z-end z-c">}</span></span>
+  info<span class="z-punctuation z-accessor z-c">-&gt;</span>rel_cnt <span class="z-keyword z-operator z-assignment z-c">=</span> rela_size <span class="z-keyword z-operator z-arithmetic z-c">/</span> <span class="z-keyword z-operator z-word z-c">sizeof</span><span class="z-meta z-group z-c"><span class="z-punctuation z-section z-group z-begin z-c">(</span></span><span class="z-meta z-group z-c">Elf64_Rela</span><span class="z-meta z-group z-c"><span class="z-punctuation z-section z-group z-end z-c">)</span></span><span class="z-punctuation z-terminator z-c">;</span>
+  <span class="z-keyword z-control z-flow z-return z-c">return</span> status<span class="z-punctuation z-terminator z-c">;</span>
+<span class="z-invalid z-illegal z-stray-bracket-end z-c">}</span>
+</span></code></pre>
+<p>然后是替换函数。主要流程就是通过 .rela.plt 表找到函数在 .dynsym 段的位置，然后再通过 .dynsym 段获取函数名字，如果是要替换的函数的话，就用 mprotect 将段加上可写权限，并通过写入 <code>r_offset</code> 指向的地址进行魔改。</p>
+<pre data-lang="c" class="language-c z-code"><code class="language-c" data-lang="c"><span class="z-source z-c"><span class="z-comment z-line z-double-slash z-c"><span class="z-punctuation z-definition z-comment z-c">//</span>/ @brief Replace function with new function
+</span>plthook_status <span class="z-meta z-function z-c"><span class="z-entity z-name z-function z-c">plt_hook_replace</span></span><span class="z-meta z-function z-parameters z-c"><span class="z-meta z-group z-c"><span class="z-punctuation z-section z-group z-begin z-c">(</span></span></span><span class="z-meta z-function z-parameters z-c"><span class="z-meta z-group z-c">plthook_info <span class="z-keyword z-operator z-c">*</span><span class="z-variable z-parameter z-c">info</span><span class="z-punctuation z-separator z-c">,</span> <span class="z-storage z-type z-c">char</span> <span class="z-keyword z-operator z-c">*</span><span class="z-variable z-parameter z-c">name</span><span class="z-punctuation z-separator z-c">,</span>
+                                <span class="z-storage z-type z-c">void</span> <span class="z-keyword z-operator z-c">*</span><span class="z-variable z-parameter z-c">func_address</span><span class="z-punctuation z-section z-group z-end z-c">)</span></span></span><span class="z-meta z-function z-c"> </span><span class="z-meta z-function z-c"><span class="z-meta z-block z-c"><span class="z-punctuation z-section z-block z-begin z-c">{</span></span></span><span class="z-meta z-function z-c"><span class="z-meta z-block z-c">
+  <span class="z-keyword z-control z-c">if</span> <span class="z-meta z-group z-c"><span class="z-punctuation z-section z-group z-begin z-c">(</span>info <span class="z-keyword z-operator z-comparison z-c">==</span> <span class="z-constant z-language z-c">NULL</span> <span class="z-keyword z-operator z-arithmetic z-c">||</span> name <span class="z-keyword z-operator z-comparison z-c">==</span> <span class="z-constant z-language z-c">NULL</span> <span class="z-keyword z-operator z-arithmetic z-c">||</span> func_address <span class="z-keyword z-operator z-comparison z-c">==</span> <span class="z-constant z-language z-c">NULL</span><span class="z-punctuation z-section z-group z-end z-c">)</span></span> <span class="z-meta z-block z-c"><span class="z-punctuation z-section z-block z-begin z-c">{</span>
+    <span class="z-keyword z-control z-flow z-return z-c">return</span> PLTHOOK_ARGUMENT_ERROR<span class="z-punctuation z-terminator z-c">;</span>
+  <span class="z-punctuation z-section z-block z-end z-c">}</span></span>
+  <span class="z-comment z-line z-double-slash z-c"><span class="z-punctuation z-definition z-comment z-c">//</span> Get symbol index from relocation table, then get function name from symbol
+</span>  Elf64_Rela <span class="z-keyword z-operator z-c">*</span>rela <span class="z-keyword z-operator z-assignment z-c">=</span> info<span class="z-punctuation z-accessor z-c">-&gt;</span>rel<span class="z-punctuation z-terminator z-c">;</span>
+  <span class="z-keyword z-control z-c">for</span> <span class="z-meta z-group z-c"><span class="z-punctuation z-section z-group z-begin z-c">(</span><span class="z-support z-type z-sys-types z-c">size_t</span> i <span class="z-keyword z-operator z-assignment z-c">=</span> <span class="z-constant z-numeric z-integer z-decimal z-c">0</span><span class="z-punctuation z-terminator z-c">;</span> i <span class="z-keyword z-operator z-comparison z-c">&lt;</span> info<span class="z-punctuation z-accessor z-c">-&gt;</span>rel_cnt<span class="z-punctuation z-terminator z-c">;</span> i<span class="z-keyword z-operator z-arithmetic z-c">++</span><span class="z-punctuation z-section z-group z-end z-c">)</span></span> <span class="z-meta z-block z-c"><span class="z-punctuation z-section z-block z-begin z-c">{</span>
+    Elf64_Rela <span class="z-keyword z-operator z-c">*</span>curr <span class="z-keyword z-operator z-assignment z-c">=</span> rela <span class="z-keyword z-operator z-arithmetic z-c">+</span> i<span class="z-punctuation z-terminator z-c">;</span>
+    <span class="z-support z-type z-sys-types z-c">size_t</span> sym_idx <span class="z-keyword z-operator z-assignment z-c">=</span> <span class="z-meta z-function-call z-c"><span class="z-variable z-function z-c">ELF64_R_SYM</span><span class="z-meta z-group z-c"><span class="z-punctuation z-section z-group z-begin z-c">(</span></span></span><span class="z-meta z-function-call z-c"><span class="z-meta z-group z-c">curr<span class="z-punctuation z-accessor z-c">-&gt;</span>r_info</span></span><span class="z-meta z-function-call z-c"><span class="z-meta z-group z-c"><span class="z-punctuation z-section z-group z-end z-c">)</span></span></span><span class="z-punctuation z-terminator z-c">;</span>
+    <span class="z-support z-type z-sys-types z-c">size_t</span> str_idx <span class="z-keyword z-operator z-assignment z-c">=</span> info<span class="z-punctuation z-accessor z-c">-&gt;</span>dynsym<span class="z-meta z-brackets z-c"><span class="z-punctuation z-section z-brackets z-begin z-c">[</span>sym_idx<span class="z-punctuation z-section z-brackets z-end z-c">]</span></span><span class="z-punctuation z-accessor z-c">.</span><span class="z-variable z-other z-member z-c">st_name</span><span class="z-punctuation z-terminator z-c">;</span>
+    <span class="z-keyword z-control z-c">if</span> <span class="z-meta z-group z-c"><span class="z-punctuation z-section z-group z-begin z-c">(</span><span class="z-meta z-function-call z-c"><span class="z-support z-function z-C99 z-c">strcmp</span><span class="z-meta z-group z-c"><span class="z-punctuation z-section z-group z-begin z-c">(</span></span></span><span class="z-meta z-function-call z-c"><span class="z-meta z-group z-c">name<span class="z-punctuation z-separator z-c">,</span> info<span class="z-punctuation z-accessor z-c">-&gt;</span>str_table <span class="z-keyword z-operator z-arithmetic z-c">+</span> str_idx</span></span><span class="z-meta z-function-call z-c"><span class="z-meta z-group z-c"><span class="z-punctuation z-section z-group z-end z-c">)</span></span></span> <span class="z-keyword z-operator z-comparison z-c">!=</span> <span class="z-constant z-numeric z-integer z-decimal z-c">0</span><span class="z-punctuation z-section z-group z-end z-c">)</span></span> <span class="z-meta z-block z-c"><span class="z-punctuation z-section z-block z-begin z-c">{</span>
+      <span class="z-keyword z-control z-flow z-continue z-c">continue</span><span class="z-punctuation z-terminator z-c">;</span>
+    <span class="z-punctuation z-section z-block z-end z-c">}</span></span>
+    <span class="z-support z-type z-sys-types z-c">size_t</span> <span class="z-keyword z-operator z-c">*</span>origin_func <span class="z-keyword z-operator z-assignment z-c">=</span> <span class="z-meta z-group z-c"><span class="z-punctuation z-section z-group z-begin z-c">(</span><span class="z-support z-type z-sys-types z-c">size_t</span> <span class="z-keyword z-operator z-c">*</span><span class="z-punctuation z-section z-group z-end z-c">)</span></span><span class="z-meta z-group z-c"><span class="z-punctuation z-section z-group z-begin z-c">(</span>info<span class="z-punctuation z-accessor z-c">-&gt;</span>base_addr <span class="z-keyword z-operator z-arithmetic z-c">+</span> curr<span class="z-punctuation z-accessor z-c">-&gt;</span>r_offset<span class="z-punctuation z-section z-group z-end z-c">)</span></span><span class="z-punctuation z-terminator z-c">;</span>
+    <span class="z-meta z-function-call z-c"><span class="z-variable z-function z-c">mprotect</span><span class="z-meta z-group z-c"><span class="z-punctuation z-section z-group z-begin z-c">(</span></span></span><span class="z-meta z-function-call z-c"><span class="z-meta z-group z-c"><span class="z-meta z-function-call z-c"><span class="z-variable z-function z-c">ALIGN_ADDR</span><span class="z-meta z-group z-c"><span class="z-punctuation z-section z-group z-begin z-c">(</span></span></span><span class="z-meta z-function-call z-c"><span class="z-meta z-group z-c">origin_func</span></span><span class="z-meta z-function-call z-c"><span class="z-meta z-group z-c"><span class="z-punctuation z-section z-group z-end z-c">)</span></span></span><span class="z-punctuation z-separator z-c">,</span> page_size<span class="z-punctuation z-separator z-c">,</span>
+             PROT_READ <span class="z-keyword z-operator z-arithmetic z-c">|</span> PROT_WRITE <span class="z-keyword z-operator z-arithmetic z-c">|</span> PROT_EXEC</span></span><span class="z-meta z-function-call z-c"><span class="z-meta z-group z-c"><span class="z-punctuation z-section z-group z-end z-c">)</span></span></span><span class="z-punctuation z-terminator z-c">;</span>
+    <span class="z-keyword z-operator z-c">*</span>origin_func <span class="z-keyword z-operator z-assignment z-c">=</span> <span class="z-meta z-group z-c"><span class="z-punctuation z-section z-group z-begin z-c">(</span><span class="z-support z-type z-sys-types z-c">size_t</span><span class="z-punctuation z-section z-group z-end z-c">)</span></span>func_address<span class="z-punctuation z-terminator z-c">;</span>
+    <span class="z-keyword z-control z-flow z-return z-c">return</span> PLTHOOK_SUCCESS<span class="z-punctuation z-terminator z-c">;</span>
+  <span class="z-punctuation z-section z-block z-end z-c">}</span></span>
+  <span class="z-keyword z-control z-flow z-return z-c">return</span> PLTHOOK_NOT_FOUND<span class="z-punctuation z-terminator z-c">;</span>
+</span></span><span class="z-meta z-function z-c"><span class="z-meta z-block z-c"><span class="z-punctuation z-section z-block z-end z-c">}</span></span></span>
+</span></code></pre>
+<p>完整代码：<a href="https://gist.github.com/chenx6/2624aae29873ffabbeb74b75d2351f22">https://gist.github.com/chenx6/2624aae29873ffabbeb74b75d2351f22</a></p>
+<p>将代码和 <code>test_main.c</code> 一起编译(别忘了加上 -ldl)后，应该可以看到 <code>atoi</code> 的返回值从正确的 &quot;123456&quot; 变成了 &quot;114514&quot;，说明这个 POC 实现成功了。也可以通过用 ((constructor)) 修饰函数，通过 so 注入进行修改。</p>
+<h1 id="refs">Refs</h1>
+<ul>
+<li><a href="https://github.com/kubo/plthook">kubo/plthook</a></li>
+<li><code>man elf</code></li>
+<li><a href="https://zhuanlan.zhihu.com/p/401446080">ELF加载器的原理与实现</a></li>
+<li><a href="http://chuquan.me/2018/05/21/elf-introduce/">计算机那些事(4)——ELF文件结构</a></li>
+</ul>
+
+  </div>
+</div>
+
+</body>
+
+</html>

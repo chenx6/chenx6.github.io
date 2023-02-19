@@ -1,0 +1,429 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" href="data:;base64,iVBORw0KGgo=">
+  <title>二进制咸鱼的自我救赎</title>
+  <link rel="stylesheet" href="https://chenx6.github.io/water.min.css">
+  <link rel="stylesheet" type="text/css" href="/syntax-theme-dark.css" media="(prefers-color-scheme: dark)" />
+  <link rel="stylesheet" type="text/css" href="/syntax-theme-light.css" media="(prefers-color-scheme: light)" />
+  
+  <link rel="alternate" type="application/atom+xml" title="RSS" href="https://chenx6.github.io/atom.xml">
+  
+
+  
+  
+</head>
+
+<body>
+  <header>
+    <a href="https:&#x2F;&#x2F;chenx6.github.io&#x2F;"><h1>二进制咸鱼的自我救赎</h1></a>
+    
+    <p class="lead">幸福往往是摸的透彻，而敬业的心却常常隐藏。</p>
+    
+    
+      <a href="https:&#x2F;&#x2F;chenx6.github.io&#x2F;&#x2F;about">
+        About
+      </a>
+    
+    
+    <a href="https://chenx6.github.io/atom.xml">RSS</a>
+    
+  </header>
+  
+<div class="container">
+  <aside class="toc">
+    
+    <ul>
+      
+      <li>
+        <a href="https://chenx6.github.io/post/calculator/#qian-zhi-zhi-shi">前置知识</a>
+        
+      </li>
+      
+      <li>
+        <a href="https://chenx6.github.io/post/calculator/#zheng-ti-jia-gou">整体架构</a>
+        
+      </li>
+      
+      <li>
+        <a href="https://chenx6.github.io/post/calculator/#ci-fa-fen-xi">词法分析</a>
+        
+      </li>
+      
+      <li>
+        <a href="https://chenx6.github.io/post/calculator/#yu-fa-fen-xi">语法分析</a>
+        
+        <ul>
+          
+          <li>
+            <a href="https://chenx6.github.io/post/calculator/#zuo-di-gui">左递归</a>
+          </li>
+          
+          <li>
+            <a href="https://chenx6.github.io/post/calculator/#hui-su">回溯</a>
+          </li>
+          
+          <li>
+            <a href="https://chenx6.github.io/post/calculator/#dai-ma-shi-xian">代码实现</a>
+          </li>
+          
+        </ul>
+        
+      </li>
+      
+      <li>
+        <a href="https://chenx6.github.io/post/calculator/#yun-suan">运算</a>
+        
+      </li>
+      
+      <li>
+        <a href="https://chenx6.github.io/post/calculator/#zong-jie">总结</a>
+        
+      </li>
+      
+      <li>
+        <a href="https://chenx6.github.io/post/calculator/#refs">Refs</a>
+        
+      </li>
+      
+    </ul>
+    
+  </aside>
+  <div class="post">
+    <h2 class="post-title">使用编译原理的知识，用 Rust 写一个计算器</h1>
+      <span class="post-date">2022-06-02</span>
+      
+  
+
+      <p>”想写个计算器“这件事情应该是我刚学会 C 语言时候的事情，当时还看不懂栈，逆波兰式等结构。但是现在不一样了，我不仅学过数据结构，还学过了编译原理。这次我就拿学过的编译原理相关知识写个计算器。</p>
+<h2 id="qian-zhi-zhi-shi">前置知识</h2>
+<p>上下文无关语法(CFG)：描述了语句是如何形成的。</p>
+<p>语句：从语法规则里推导出的一个符号串。</p>
+<p>产生式：CFG 中每个规则都称为一个产生式。</p>
+<p>非终结符：语法产生式中的变量</p>
+<p>终结符：出现在语句中的单词，单词包含一个词素及语法范畴。在语法中，单词通过其语法范畴表示。</p>
+<h2 id="zheng-ti-jia-gou">整体架构</h2>
+<p>整体流程就是 “词法分析 -&gt; 语法分析 -&gt; 解析语法树” 进行计算。</p>
+<p>几个文件分布如下：</p>
+<pre data-lang="plaintext" class="language-plaintext z-code"><code class="language-plaintext" data-lang="plaintext"><span class="z-text z-plain">.
+├── Cargo.lock
+├── Cargo.toml
+└── src
+    ├── lexer.rs  # 手写词法分析
+    ├── main.rs   # 程序入口，实现表达式计算
+    └── parser.rs # 递归下降语法分析
+</span></code></pre>
+<h2 id="ci-fa-fen-xi">词法分析</h2>
+<p>先定义好 Token。Rust 的枚举类型异常强大，写起来没什么问题。主要是括号，算数运算符，还有数字。</p>
+<pre data-lang="rust" class="language-rust z-code"><code class="language-rust" data-lang="rust"><span class="z-source z-rust"><span class="z-meta z-annotation z-rust"><span class="z-punctuation z-definition z-annotation z-rust">#</span><span class="z-punctuation z-section z-group z-begin z-rust">[</span><span class="z-variable z-annotation z-rust">derive</span><span class="z-meta z-annotation z-parameters z-rust"><span class="z-meta z-group z-rust"><span class="z-punctuation z-section z-group z-begin z-rust">(</span></span></span><span class="z-meta z-annotation z-parameters z-rust"><span class="z-meta z-group z-rust">Debug<span class="z-punctuation z-separator z-rust">,</span> PartialEq</span></span><span class="z-meta z-annotation z-parameters z-rust"><span class="z-meta z-group z-rust"><span class="z-punctuation z-section z-group z-end z-rust">)</span></span></span><span class="z-punctuation z-section z-group z-end z-rust">]</span></span>
+<span class="z-meta z-enum z-rust"><span class="z-storage z-modifier z-rust">pub</span> <span class="z-storage z-type z-enum z-rust">enum</span> <span class="z-entity z-name z-enum z-rust">OperatorType</span> <span class="z-meta z-block z-rust"><span class="z-punctuation z-section z-block z-begin z-rust">{</span>
+    Plus<span class="z-punctuation z-separator z-rust">,</span>
+    Sub<span class="z-punctuation z-separator z-rust">,</span>
+    Div<span class="z-punctuation z-separator z-rust">,</span>
+    Mul<span class="z-punctuation z-separator z-rust">,</span>
+</span><span class="z-meta z-block z-rust"><span class="z-punctuation z-section z-block z-end z-rust">}</span></span></span>
+
+<span class="z-meta z-annotation z-rust"><span class="z-punctuation z-definition z-annotation z-rust">#</span><span class="z-punctuation z-section z-group z-begin z-rust">[</span><span class="z-variable z-annotation z-rust">derive</span><span class="z-meta z-annotation z-parameters z-rust"><span class="z-meta z-group z-rust"><span class="z-punctuation z-section z-group z-begin z-rust">(</span></span></span><span class="z-meta z-annotation z-parameters z-rust"><span class="z-meta z-group z-rust">Debug<span class="z-punctuation z-separator z-rust">,</span> PartialEq</span></span><span class="z-meta z-annotation z-parameters z-rust"><span class="z-meta z-group z-rust"><span class="z-punctuation z-section z-group z-end z-rust">)</span></span></span><span class="z-punctuation z-section z-group z-end z-rust">]</span></span>
+<span class="z-meta z-enum z-rust"><span class="z-storage z-modifier z-rust">pub</span> <span class="z-storage z-type z-enum z-rust">enum</span> <span class="z-entity z-name z-enum z-rust">BracketType</span> <span class="z-meta z-block z-rust"><span class="z-punctuation z-section z-block z-begin z-rust">{</span>
+    Left<span class="z-punctuation z-separator z-rust">,</span>
+    Right<span class="z-punctuation z-separator z-rust">,</span>
+</span><span class="z-meta z-block z-rust"><span class="z-punctuation z-section z-block z-end z-rust">}</span></span></span>
+
+<span class="z-meta z-annotation z-rust"><span class="z-punctuation z-definition z-annotation z-rust">#</span><span class="z-punctuation z-section z-group z-begin z-rust">[</span><span class="z-variable z-annotation z-rust">derive</span><span class="z-meta z-annotation z-parameters z-rust"><span class="z-meta z-group z-rust"><span class="z-punctuation z-section z-group z-begin z-rust">(</span></span></span><span class="z-meta z-annotation z-parameters z-rust"><span class="z-meta z-group z-rust">Debug<span class="z-punctuation z-separator z-rust">,</span> PartialEq</span></span><span class="z-meta z-annotation z-parameters z-rust"><span class="z-meta z-group z-rust"><span class="z-punctuation z-section z-group z-end z-rust">)</span></span></span><span class="z-punctuation z-section z-group z-end z-rust">]</span></span>
+<span class="z-meta z-enum z-rust"><span class="z-storage z-modifier z-rust">pub</span> <span class="z-storage z-type z-enum z-rust">enum</span> <span class="z-entity z-name z-enum z-rust">Token</span> <span class="z-meta z-block z-rust"><span class="z-punctuation z-section z-block z-begin z-rust">{</span>
+    Number<span class="z-meta z-group z-rust"><span class="z-punctuation z-section z-group z-begin z-rust">(</span><span class="z-storage z-type z-rust">i32</span></span><span class="z-meta z-group z-rust"><span class="z-punctuation z-section z-group z-end z-rust">)</span></span><span class="z-punctuation z-separator z-rust">,</span>
+    Operator<span class="z-meta z-group z-rust"><span class="z-punctuation z-section z-group z-begin z-rust">(</span>OperatorType</span><span class="z-meta z-group z-rust"><span class="z-punctuation z-section z-group z-end z-rust">)</span></span><span class="z-punctuation z-separator z-rust">,</span>
+    Bracket<span class="z-meta z-group z-rust"><span class="z-punctuation z-section z-group z-begin z-rust">(</span>BracketType</span><span class="z-meta z-group z-rust"><span class="z-punctuation z-section z-group z-end z-rust">)</span></span><span class="z-punctuation z-separator z-rust">,</span>
+</span><span class="z-meta z-block z-rust"><span class="z-punctuation z-section z-block z-end z-rust">}</span></span></span>
+</span></code></pre>
+<p>然后是定义一个 <code>Scanner</code>。主要作用就是扫描用户输入，通过函数调用不断的返回用户输入字符串的一部分，还有就是向下一个字符前进。</p>
+<pre data-lang="rust" class="language-rust z-code"><code class="language-rust" data-lang="rust"><span class="z-source z-rust"><span class="z-meta z-struct z-rust"><span class="z-storage z-type z-struct z-rust">struct</span> </span><span class="z-meta z-struct z-rust"><span class="z-entity z-name z-struct z-rust">Scanner</span> </span><span class="z-meta z-struct z-rust"><span class="z-meta z-block z-rust"><span class="z-punctuation z-section z-block z-begin z-rust">{</span>
+    <span class="z-variable z-other z-member z-rust">raw</span><span class="z-punctuation z-separator z-type z-rust">:</span> String,
+    <span class="z-variable z-other z-member z-rust">pos</span><span class="z-punctuation z-separator z-type z-rust">:</span> <span class="z-storage z-type z-rust">usize</span>,
+</span><span class="z-meta z-block z-rust"><span class="z-punctuation z-section z-block z-end z-rust">}</span></span></span>
+
+<span class="z-meta z-impl z-rust"><span class="z-storage z-type z-impl z-rust">impl</span> </span><span class="z-meta z-impl z-rust"><span class="z-entity z-name z-impl z-rust">Scanner</span> </span><span class="z-meta z-impl z-rust"><span class="z-meta z-block z-rust"><span class="z-punctuation z-section z-block z-begin z-rust">{</span>
+    <span class="z-meta z-function z-rust"><span class="z-meta z-function z-rust"><span class="z-storage z-type z-function z-rust">fn</span> </span><span class="z-entity z-name z-function z-rust">new</span></span><span class="z-meta z-function z-rust"><span class="z-meta z-function z-parameters z-rust"><span class="z-punctuation z-section z-parameters z-begin z-rust">(</span><span class="z-variable z-parameter z-rust">s</span><span class="z-punctuation z-separator z-rust">:</span> <span class="z-keyword z-operator z-rust">&amp;</span><span class="z-storage z-type z-rust">str</span></span><span class="z-meta z-function z-rust"><span class="z-meta z-function z-parameters z-rust"><span class="z-punctuation z-section z-parameters z-end z-rust">)</span></span></span></span><span class="z-meta z-function z-rust"> <span class="z-meta z-function z-return-type z-rust"><span class="z-punctuation z-separator z-rust">-&gt;</span> Scanner</span> </span><span class="z-meta z-function z-rust"><span class="z-meta z-block z-rust"><span class="z-punctuation z-section z-block z-begin z-rust">{</span>
+        Scanner <span class="z-meta z-block z-rust"><span class="z-punctuation z-section z-block z-begin z-rust">{</span>
+            raw<span class="z-punctuation z-separator z-rust">:</span> <span class="z-support z-type z-rust">String</span><span class="z-meta z-path z-rust"><span class="z-punctuation z-accessor z-rust">::</span></span>from<span class="z-meta z-group z-rust"><span class="z-punctuation z-section z-group z-begin z-rust">(</span>s</span><span class="z-meta z-group z-rust"><span class="z-punctuation z-section z-group z-end z-rust">)</span></span><span class="z-punctuation z-separator z-rust">,</span>
+            pos<span class="z-punctuation z-separator z-rust">:</span> <span class="z-constant z-numeric z-integer z-decimal z-rust">0</span><span class="z-punctuation z-separator z-rust">,</span>
+        </span><span class="z-meta z-block z-rust"><span class="z-punctuation z-section z-block z-end z-rust">}</span></span>
+    </span><span class="z-meta z-block z-rust"><span class="z-punctuation z-section z-block z-end z-rust">}</span></span></span>
+
+    <span class="z-meta z-function z-rust"><span class="z-meta z-function z-rust"><span class="z-storage z-type z-function z-rust">fn</span> </span><span class="z-entity z-name z-function z-rust">peek</span></span><span class="z-meta z-function z-rust"><span class="z-meta z-function z-parameters z-rust"><span class="z-punctuation z-section z-parameters z-begin z-rust">(</span><span class="z-keyword z-operator z-rust">&amp;</span><span class="z-storage z-modifier z-rust">mut</span> <span class="z-variable z-parameter z-rust">self</span></span><span class="z-meta z-function z-rust"><span class="z-meta z-function z-parameters z-rust"><span class="z-punctuation z-section z-parameters z-end z-rust">)</span></span></span></span><span class="z-meta z-function z-rust"> <span class="z-meta z-function z-return-type z-rust"><span class="z-punctuation z-separator z-rust">-&gt;</span> <span class="z-meta z-generic z-rust"><span class="z-support z-type z-rust">Option</span><span class="z-punctuation z-definition z-generic z-begin z-rust">&lt;</span><span class="z-storage z-type z-rust">char</span><span class="z-punctuation z-definition z-generic z-end z-rust">&gt;</span></span></span> </span><span class="z-meta z-function z-rust"><span class="z-meta z-block z-rust"><span class="z-punctuation z-section z-block z-begin z-rust">{</span>
+        <span class="z-variable z-language z-rust">self</span><span class="z-punctuation z-accessor z-dot z-rust">.</span>raw<span class="z-punctuation z-accessor z-dot z-rust">.</span><span class="z-support z-function z-rust">chars</span><span class="z-meta z-group z-rust"><span class="z-punctuation z-section z-group z-begin z-rust">(</span></span><span class="z-meta z-group z-rust"><span class="z-punctuation z-section z-group z-end z-rust">)</span></span><span class="z-punctuation z-accessor z-dot z-rust">.</span><span class="z-support z-function z-rust">nth</span><span class="z-meta z-group z-rust"><span class="z-punctuation z-section z-group z-begin z-rust">(</span><span class="z-variable z-language z-rust">self</span><span class="z-punctuation z-accessor z-dot z-rust">.</span>pos</span><span class="z-meta z-group z-rust"><span class="z-punctuation z-section z-group z-end z-rust">)</span></span>
+    </span><span class="z-meta z-block z-rust"><span class="z-punctuation z-section z-block z-end z-rust">}</span></span></span>
+
+    <span class="z-meta z-function z-rust"><span class="z-meta z-function z-rust"><span class="z-storage z-type z-function z-rust">fn</span> </span><span class="z-entity z-name z-function z-rust">next</span></span><span class="z-meta z-function z-rust"><span class="z-meta z-function z-parameters z-rust"><span class="z-punctuation z-section z-parameters z-begin z-rust">(</span><span class="z-keyword z-operator z-rust">&amp;</span><span class="z-storage z-modifier z-rust">mut</span> <span class="z-variable z-parameter z-rust">self</span></span><span class="z-meta z-function z-rust"><span class="z-meta z-function z-parameters z-rust"><span class="z-punctuation z-section z-parameters z-end z-rust">)</span></span></span></span><span class="z-meta z-function z-rust"> <span class="z-meta z-function z-return-type z-rust"><span class="z-punctuation z-separator z-rust">-&gt;</span> <span class="z-meta z-generic z-rust"><span class="z-support z-type z-rust">Option</span><span class="z-punctuation z-definition z-generic z-begin z-rust">&lt;</span><span class="z-storage z-type z-rust">char</span><span class="z-punctuation z-definition z-generic z-end z-rust">&gt;</span></span></span> </span><span class="z-meta z-function z-rust"><span class="z-meta z-block z-rust"><span class="z-punctuation z-section z-block z-begin z-rust">{</span>
+        <span class="z-variable z-language z-rust">self</span><span class="z-punctuation z-accessor z-dot z-rust">.</span>pos <span class="z-keyword z-operator z-assignment z-rust">+=</span> <span class="z-constant z-numeric z-integer z-decimal z-rust">1</span><span class="z-punctuation z-terminator z-rust">;</span>
+        <span class="z-variable z-language z-rust">self</span><span class="z-punctuation z-accessor z-dot z-rust">.</span>raw<span class="z-punctuation z-accessor z-dot z-rust">.</span><span class="z-support z-function z-rust">chars</span><span class="z-meta z-group z-rust"><span class="z-punctuation z-section z-group z-begin z-rust">(</span></span><span class="z-meta z-group z-rust"><span class="z-punctuation z-section z-group z-end z-rust">)</span></span><span class="z-punctuation z-accessor z-dot z-rust">.</span><span class="z-support z-function z-rust">nth</span><span class="z-meta z-group z-rust"><span class="z-punctuation z-section z-group z-begin z-rust">(</span><span class="z-variable z-language z-rust">self</span><span class="z-punctuation z-accessor z-dot z-rust">.</span>pos <span class="z-keyword z-operator z-arithmetic z-rust">-</span> <span class="z-constant z-numeric z-integer z-decimal z-rust">1</span></span><span class="z-meta z-group z-rust"><span class="z-punctuation z-section z-group z-end z-rust">)</span></span>
+    </span><span class="z-meta z-block z-rust"><span class="z-punctuation z-section z-block z-end z-rust">}</span></span></span>
+</span><span class="z-meta z-block z-rust"><span class="z-punctuation z-section z-block z-end z-rust">}</span></span></span>
+</span></code></pre>
+<p>接下来就是词法分析本体。主要工作就是从 <code>Scanner</code> 读取和解析用户输入，并且在调用相应的函数时，返回相应的 Token。相当于一个手写的状态机。</p>
+<pre data-lang="rust" class="language-rust z-code"><code class="language-rust" data-lang="rust"><span class="z-source z-rust"><span class="z-comment z-line z-documentation z-rust"><span class="z-punctuation z-definition z-comment z-rust">///</span> A hand-written lexer
+</span><span class="z-meta z-annotation z-rust"><span class="z-punctuation z-definition z-annotation z-rust">#</span><span class="z-punctuation z-section z-group z-begin z-rust">[</span><span class="z-variable z-annotation z-rust">derive</span><span class="z-meta z-annotation z-parameters z-rust"><span class="z-meta z-group z-rust"><span class="z-punctuation z-section z-group z-begin z-rust">(</span></span></span><span class="z-meta z-annotation z-parameters z-rust"><span class="z-meta z-group z-rust">Debug</span></span><span class="z-meta z-annotation z-parameters z-rust"><span class="z-meta z-group z-rust"><span class="z-punctuation z-section z-group z-end z-rust">)</span></span></span><span class="z-punctuation z-section z-group z-end z-rust">]</span></span>
+<span class="z-meta z-struct z-rust"><span class="z-storage z-modifier z-rust">pub</span> <span class="z-storage z-type z-struct z-rust">struct</span> </span><span class="z-meta z-struct z-rust"><span class="z-entity z-name z-struct z-rust">Lexer</span> </span><span class="z-meta z-struct z-rust"><span class="z-meta z-block z-rust"><span class="z-punctuation z-section z-block z-begin z-rust">{</span>
+    <span class="z-variable z-other z-member z-rust">tokens</span><span class="z-punctuation z-separator z-type z-rust">:</span> <span class="z-meta z-generic z-rust"><span class="z-support z-type z-rust">Vec</span><span class="z-punctuation z-definition z-generic z-begin z-rust">&lt;</span>Token<span class="z-punctuation z-definition z-generic z-end z-rust">&gt;</span></span>,
+    <span class="z-variable z-other z-member z-rust">pos</span><span class="z-punctuation z-separator z-type z-rust">:</span> <span class="z-storage z-type z-rust">usize</span>,
+</span><span class="z-meta z-block z-rust"><span class="z-punctuation z-section z-block z-end z-rust">}</span></span></span>
+
+<span class="z-meta z-impl z-rust"><span class="z-storage z-type z-impl z-rust">impl</span> </span><span class="z-meta z-impl z-rust"><span class="z-entity z-name z-impl z-rust">Lexer</span> </span><span class="z-meta z-impl z-rust"><span class="z-meta z-block z-rust"><span class="z-punctuation z-section z-block z-begin z-rust">{</span>
+    <span class="z-meta z-function z-rust"><span class="z-meta z-function z-rust"><span class="z-storage z-modifier z-rust">pub</span> <span class="z-storage z-type z-function z-rust">fn</span> </span><span class="z-entity z-name z-function z-rust">new</span></span><span class="z-meta z-function z-rust"><span class="z-meta z-function z-parameters z-rust"><span class="z-punctuation z-section z-parameters z-begin z-rust">(</span><span class="z-variable z-parameter z-rust">s</span><span class="z-punctuation z-separator z-rust">:</span> <span class="z-keyword z-operator z-rust">&amp;</span><span class="z-storage z-type z-rust">str</span></span><span class="z-meta z-function z-rust"><span class="z-meta z-function z-parameters z-rust"><span class="z-punctuation z-section z-parameters z-end z-rust">)</span></span></span></span><span class="z-meta z-function z-rust"> <span class="z-meta z-function z-return-type z-rust"><span class="z-punctuation z-separator z-rust">-&gt;</span> <span class="z-meta z-generic z-rust"><span class="z-support z-type z-rust">Result</span><span class="z-punctuation z-definition z-generic z-begin z-rust">&lt;</span>Lexer, LexerError<span class="z-punctuation z-definition z-generic z-end z-rust">&gt;</span></span></span> </span><span class="z-meta z-function z-rust"><span class="z-meta z-block z-rust"><span class="z-punctuation z-section z-block z-begin z-rust">{</span>
+        <span class="z-storage z-type z-rust">let</span> <span class="z-storage z-modifier z-rust">mut</span> scanner <span class="z-keyword z-operator z-assignment z-rust">=</span> <span class="z-meta z-path z-rust">Scanner<span class="z-punctuation z-accessor z-rust">::</span></span>new<span class="z-meta z-group z-rust"><span class="z-punctuation z-section z-group z-begin z-rust">(</span>s</span><span class="z-meta z-group z-rust"><span class="z-punctuation z-section z-group z-end z-rust">)</span></span><span class="z-punctuation z-terminator z-rust">;</span>
+        <span class="z-storage z-type z-rust">let</span> <span class="z-storage z-modifier z-rust">mut</span> tokens <span class="z-keyword z-operator z-assignment z-rust">=</span> <span class="z-support z-macro z-rust">vec!</span><span class="z-meta z-group z-rust"><span class="z-punctuation z-section z-group z-begin z-rust">[</span><span class="z-punctuation z-section z-group z-end z-rust">]</span></span><span class="z-punctuation z-terminator z-rust">;</span>
+        <span class="z-keyword z-control z-rust">while</span> <span class="z-storage z-type z-rust">let</span> <span class="z-support z-type z-rust">Some</span><span class="z-meta z-group z-rust"><span class="z-punctuation z-section z-group z-begin z-rust">(</span>ch</span><span class="z-meta z-group z-rust"><span class="z-punctuation z-section z-group z-end z-rust">)</span></span> <span class="z-keyword z-operator z-assignment z-rust">=</span> scanner<span class="z-punctuation z-accessor z-dot z-rust">.</span><span class="z-support z-function z-rust">peek</span><span class="z-meta z-group z-rust"><span class="z-punctuation z-section z-group z-begin z-rust">(</span></span><span class="z-meta z-group z-rust"><span class="z-punctuation z-section z-group z-end z-rust">)</span></span> <span class="z-meta z-block z-rust"><span class="z-punctuation z-section z-block z-begin z-rust">{</span>
+            <span class="z-keyword z-control z-rust">match</span> ch <span class="z-meta z-block z-rust"><span class="z-punctuation z-section z-block z-begin z-rust">{</span>
+                <span class="z-comment z-line z-double-slash z-rust"><span class="z-punctuation z-definition z-comment z-rust">//</span> 省略一大堆代码
+</span>                <span class="z-keyword z-operator z-rust">_</span> <span class="z-keyword z-operator z-rust">=&gt;</span> <span class="z-meta z-block z-rust"><span class="z-punctuation z-section z-block z-begin z-rust">{</span></span><span class="z-meta z-block z-rust"><span class="z-punctuation z-section z-block z-end z-rust">}</span></span>
+            </span><span class="z-meta z-block z-rust"><span class="z-punctuation z-section z-block z-end z-rust">}</span></span>
+        </span><span class="z-meta z-block z-rust"><span class="z-punctuation z-section z-block z-end z-rust">}</span></span>
+        <span class="z-support z-type z-rust">Ok</span><span class="z-meta z-group z-rust"><span class="z-punctuation z-section z-group z-begin z-rust">(</span>Lexer <span class="z-meta z-block z-rust"><span class="z-punctuation z-section z-block z-begin z-rust">{</span> tokens<span class="z-punctuation z-separator z-rust">,</span> pos<span class="z-punctuation z-separator z-rust">:</span> <span class="z-constant z-numeric z-integer z-decimal z-rust">0</span> </span><span class="z-meta z-block z-rust"><span class="z-punctuation z-section z-block z-end z-rust">}</span></span></span><span class="z-meta z-group z-rust"><span class="z-punctuation z-section z-group z-end z-rust">)</span></span>
+    </span><span class="z-meta z-block z-rust"><span class="z-punctuation z-section z-block z-end z-rust">}</span></span></span>
+
+    <span class="z-meta z-function z-rust"><span class="z-meta z-function z-rust"><span class="z-storage z-modifier z-rust">pub</span> <span class="z-storage z-type z-function z-rust">fn</span> </span><span class="z-entity z-name z-function z-rust">next</span></span><span class="z-meta z-function z-rust"><span class="z-meta z-function z-parameters z-rust"><span class="z-punctuation z-section z-parameters z-begin z-rust">(</span><span class="z-keyword z-operator z-rust">&amp;</span><span class="z-storage z-modifier z-rust">mut</span> <span class="z-variable z-parameter z-rust">self</span></span><span class="z-meta z-function z-rust"><span class="z-meta z-function z-parameters z-rust"><span class="z-punctuation z-section z-parameters z-end z-rust">)</span></span></span></span><span class="z-meta z-function z-rust"> <span class="z-meta z-function z-return-type z-rust"><span class="z-punctuation z-separator z-rust">-&gt;</span> <span class="z-meta z-generic z-rust"><span class="z-support z-type z-rust">Option</span><span class="z-punctuation z-definition z-generic z-begin z-rust">&lt;</span><span class="z-keyword z-operator z-rust">&amp;</span>Token<span class="z-punctuation z-definition z-generic z-end z-rust">&gt;</span></span></span> </span><span class="z-meta z-function z-rust"><span class="z-meta z-block z-rust"><span class="z-punctuation z-section z-block z-begin z-rust">{</span>
+        <span class="z-variable z-language z-rust">self</span><span class="z-punctuation z-accessor z-dot z-rust">.</span>pos <span class="z-keyword z-operator z-assignment z-rust">+=</span> <span class="z-constant z-numeric z-integer z-decimal z-rust">1</span><span class="z-punctuation z-terminator z-rust">;</span>
+        <span class="z-variable z-language z-rust">self</span><span class="z-punctuation z-accessor z-dot z-rust">.</span>tokens<span class="z-punctuation z-accessor z-dot z-rust">.</span><span class="z-support z-function z-rust">get</span><span class="z-meta z-group z-rust"><span class="z-punctuation z-section z-group z-begin z-rust">(</span><span class="z-variable z-language z-rust">self</span><span class="z-punctuation z-accessor z-dot z-rust">.</span>pos <span class="z-keyword z-operator z-arithmetic z-rust">-</span> <span class="z-constant z-numeric z-integer z-decimal z-rust">1</span></span><span class="z-meta z-group z-rust"><span class="z-punctuation z-section z-group z-end z-rust">)</span></span>
+    </span><span class="z-meta z-block z-rust"><span class="z-punctuation z-section z-block z-end z-rust">}</span></span></span>
+
+    <span class="z-meta z-function z-rust"><span class="z-meta z-function z-rust"><span class="z-storage z-modifier z-rust">pub</span> <span class="z-storage z-type z-function z-rust">fn</span> </span><span class="z-entity z-name z-function z-rust">peek</span></span><span class="z-meta z-function z-rust"><span class="z-meta z-function z-parameters z-rust"><span class="z-punctuation z-section z-parameters z-begin z-rust">(</span><span class="z-keyword z-operator z-rust">&amp;</span><span class="z-storage z-modifier z-rust">mut</span> <span class="z-variable z-parameter z-rust">self</span></span><span class="z-meta z-function z-rust"><span class="z-meta z-function z-parameters z-rust"><span class="z-punctuation z-section z-parameters z-end z-rust">)</span></span></span></span><span class="z-meta z-function z-rust"> <span class="z-meta z-function z-return-type z-rust"><span class="z-punctuation z-separator z-rust">-&gt;</span> <span class="z-meta z-generic z-rust"><span class="z-support z-type z-rust">Option</span><span class="z-punctuation z-definition z-generic z-begin z-rust">&lt;</span><span class="z-keyword z-operator z-rust">&amp;</span>Token<span class="z-punctuation z-definition z-generic z-end z-rust">&gt;</span></span></span> </span><span class="z-meta z-function z-rust"><span class="z-meta z-block z-rust"><span class="z-punctuation z-section z-block z-begin z-rust">{</span>
+        <span class="z-variable z-language z-rust">self</span><span class="z-punctuation z-accessor z-dot z-rust">.</span>tokens<span class="z-punctuation z-accessor z-dot z-rust">.</span><span class="z-support z-function z-rust">get</span><span class="z-meta z-group z-rust"><span class="z-punctuation z-section z-group z-begin z-rust">(</span><span class="z-variable z-language z-rust">self</span><span class="z-punctuation z-accessor z-dot z-rust">.</span>pos</span><span class="z-meta z-group z-rust"><span class="z-punctuation z-section z-group z-end z-rust">)</span></span>
+    </span><span class="z-meta z-block z-rust"><span class="z-punctuation z-section z-block z-end z-rust">}</span></span></span>
+</span><span class="z-meta z-block z-rust"><span class="z-punctuation z-section z-block z-end z-rust">}</span></span></span>
+</span></code></pre>
+<p>下面是之前代码中省略的部分，即读取和解析用户输入字符，通过当前字符来来生成不同的 Token。例如解析数字 Token 这部分则是不断的读取是数字的字符到 <code>buf</code> 里，等到不是数字的字符时停止读取，并从 <code>buf</code> 里解析数字。还有就是在碰到空格时则跳过当前字符。</p>
+<pre data-lang="rust" class="language-rust z-code"><code class="language-rust" data-lang="rust"><span class="z-source z-rust"><span class="z-keyword z-control z-rust">match</span> ch <span class="z-meta z-block z-rust"><span class="z-punctuation z-section z-block z-begin z-rust">{</span>
+    <span class="z-comment z-line z-double-slash z-rust"><span class="z-punctuation z-definition z-comment z-rust">//</span> Operator
+</span>    <span class="z-string z-quoted z-single z-rust"><span class="z-punctuation z-definition z-string z-begin z-rust">&#39;</span>+<span class="z-punctuation z-definition z-string z-end z-rust">&#39;</span></span> <span class="z-keyword z-operator z-bitwise z-rust">|</span> <span class="z-string z-quoted z-single z-rust"><span class="z-punctuation z-definition z-string z-begin z-rust">&#39;</span>-<span class="z-punctuation z-definition z-string z-end z-rust">&#39;</span></span> <span class="z-keyword z-operator z-bitwise z-rust">|</span> <span class="z-string z-quoted z-single z-rust"><span class="z-punctuation z-definition z-string z-begin z-rust">&#39;</span>*<span class="z-punctuation z-definition z-string z-end z-rust">&#39;</span></span> <span class="z-keyword z-operator z-bitwise z-rust">|</span> <span class="z-string z-quoted z-single z-rust"><span class="z-punctuation z-definition z-string z-begin z-rust">&#39;</span>/<span class="z-punctuation z-definition z-string z-end z-rust">&#39;</span></span> <span class="z-keyword z-operator z-rust">=&gt;</span> <span class="z-meta z-block z-rust"><span class="z-punctuation z-section z-block z-begin z-rust">{</span>
+        <span class="z-storage z-type z-rust">let</span> op <span class="z-keyword z-operator z-assignment z-rust">=</span> <span class="z-keyword z-control z-rust">match</span> ch <span class="z-meta z-block z-rust"><span class="z-punctuation z-section z-block z-begin z-rust">{</span>
+            <span class="z-string z-quoted z-single z-rust"><span class="z-punctuation z-definition z-string z-begin z-rust">&#39;</span>+<span class="z-punctuation z-definition z-string z-end z-rust">&#39;</span></span> <span class="z-keyword z-operator z-rust">=&gt;</span> <span class="z-meta z-path z-rust">OperatorType<span class="z-punctuation z-accessor z-rust">::</span></span>Plus<span class="z-punctuation z-separator z-rust">,</span>
+            <span class="z-string z-quoted z-single z-rust"><span class="z-punctuation z-definition z-string z-begin z-rust">&#39;</span>-<span class="z-punctuation z-definition z-string z-end z-rust">&#39;</span></span> <span class="z-keyword z-operator z-rust">=&gt;</span> <span class="z-meta z-path z-rust">OperatorType<span class="z-punctuation z-accessor z-rust">::</span></span>Sub<span class="z-punctuation z-separator z-rust">,</span>
+            <span class="z-string z-quoted z-single z-rust"><span class="z-punctuation z-definition z-string z-begin z-rust">&#39;</span>*<span class="z-punctuation z-definition z-string z-end z-rust">&#39;</span></span> <span class="z-keyword z-operator z-rust">=&gt;</span> <span class="z-meta z-path z-rust">OperatorType<span class="z-punctuation z-accessor z-rust">::</span></span>Mul<span class="z-punctuation z-separator z-rust">,</span>
+            <span class="z-string z-quoted z-single z-rust"><span class="z-punctuation z-definition z-string z-begin z-rust">&#39;</span>/<span class="z-punctuation z-definition z-string z-end z-rust">&#39;</span></span> <span class="z-keyword z-operator z-rust">=&gt;</span> <span class="z-meta z-path z-rust">OperatorType<span class="z-punctuation z-accessor z-rust">::</span></span>Div<span class="z-punctuation z-separator z-rust">,</span>
+            <span class="z-keyword z-operator z-rust">_</span> <span class="z-keyword z-operator z-rust">=&gt;</span> <span class="z-keyword z-control z-rust">return</span> <span class="z-support z-type z-rust">Err</span><span class="z-meta z-group z-rust"><span class="z-punctuation z-section z-group z-begin z-rust">(</span><span class="z-meta z-path z-rust">LexerError<span class="z-punctuation z-accessor z-rust">::</span></span>LexError</span><span class="z-meta z-group z-rust"><span class="z-punctuation z-section z-group z-end z-rust">)</span></span><span class="z-punctuation z-separator z-rust">,</span>
+        </span><span class="z-meta z-block z-rust"><span class="z-punctuation z-section z-block z-end z-rust">}</span></span><span class="z-punctuation z-terminator z-rust">;</span>
+        tokens<span class="z-punctuation z-accessor z-dot z-rust">.</span><span class="z-support z-function z-rust">push</span><span class="z-meta z-group z-rust"><span class="z-punctuation z-section z-group z-begin z-rust">(</span><span class="z-meta z-path z-rust">Token<span class="z-punctuation z-accessor z-rust">::</span></span>Operator<span class="z-meta z-group z-rust"><span class="z-punctuation z-section z-group z-begin z-rust">(</span>op</span><span class="z-meta z-group z-rust"><span class="z-punctuation z-section z-group z-end z-rust">)</span></span></span><span class="z-meta z-group z-rust"><span class="z-punctuation z-section z-group z-end z-rust">)</span></span><span class="z-punctuation z-terminator z-rust">;</span>
+        scanner<span class="z-punctuation z-accessor z-dot z-rust">.</span><span class="z-support z-function z-rust">next</span><span class="z-meta z-group z-rust"><span class="z-punctuation z-section z-group z-begin z-rust">(</span></span><span class="z-meta z-group z-rust"><span class="z-punctuation z-section z-group z-end z-rust">)</span></span><span class="z-punctuation z-terminator z-rust">;</span>
+    </span><span class="z-meta z-block z-rust"><span class="z-punctuation z-section z-block z-end z-rust">}</span></span>
+    <span class="z-comment z-line z-double-slash z-rust"><span class="z-punctuation z-definition z-comment z-rust">//</span> Number
+</span>    <span class="z-string z-quoted z-single z-rust"><span class="z-punctuation z-definition z-string z-begin z-rust">&#39;</span>0<span class="z-punctuation z-definition z-string z-end z-rust">&#39;</span></span><span class="z-keyword z-operator z-range z-rust">..</span><span class="z-keyword z-operator z-assignment z-rust">=</span><span class="z-string z-quoted z-single z-rust"><span class="z-punctuation z-definition z-string z-begin z-rust">&#39;</span>9<span class="z-punctuation z-definition z-string z-end z-rust">&#39;</span></span> <span class="z-keyword z-operator z-rust">=&gt;</span> <span class="z-meta z-block z-rust"><span class="z-punctuation z-section z-block z-begin z-rust">{</span>
+        <span class="z-storage z-type z-rust">let</span> <span class="z-storage z-modifier z-rust">mut</span> buf <span class="z-keyword z-operator z-assignment z-rust">=</span> <span class="z-support z-type z-rust">String</span><span class="z-meta z-path z-rust"><span class="z-punctuation z-accessor z-rust">::</span></span>new<span class="z-meta z-group z-rust"><span class="z-punctuation z-section z-group z-begin z-rust">(</span></span><span class="z-meta z-group z-rust"><span class="z-punctuation z-section z-group z-end z-rust">)</span></span><span class="z-punctuation z-terminator z-rust">;</span>
+        <span class="z-keyword z-control z-rust">while</span> <span class="z-storage z-type z-rust">let</span> <span class="z-support z-type z-rust">Some</span><span class="z-meta z-group z-rust"><span class="z-punctuation z-section z-group z-begin z-rust">(</span>ch</span><span class="z-meta z-group z-rust"><span class="z-punctuation z-section z-group z-end z-rust">)</span></span> <span class="z-keyword z-operator z-assignment z-rust">=</span> scanner<span class="z-punctuation z-accessor z-dot z-rust">.</span><span class="z-support z-function z-rust">peek</span><span class="z-meta z-group z-rust"><span class="z-punctuation z-section z-group z-begin z-rust">(</span></span><span class="z-meta z-group z-rust"><span class="z-punctuation z-section z-group z-end z-rust">)</span></span> <span class="z-meta z-block z-rust"><span class="z-punctuation z-section z-block z-begin z-rust">{</span>
+            <span class="z-keyword z-control z-rust">if</span> <span class="z-keyword z-operator z-logical z-rust">!</span><span class="z-meta z-group z-rust"><span class="z-punctuation z-section z-group z-begin z-rust">(</span><span class="z-string z-quoted z-single z-rust"><span class="z-punctuation z-definition z-string z-begin z-rust">&#39;</span>0<span class="z-punctuation z-definition z-string z-end z-rust">&#39;</span></span><span class="z-keyword z-operator z-range z-rust">..</span><span class="z-keyword z-operator z-assignment z-rust">=</span><span class="z-string z-quoted z-single z-rust"><span class="z-punctuation z-definition z-string z-begin z-rust">&#39;</span>9<span class="z-punctuation z-definition z-string z-end z-rust">&#39;</span></span></span><span class="z-meta z-group z-rust"><span class="z-punctuation z-section z-group z-end z-rust">)</span></span><span class="z-punctuation z-accessor z-dot z-rust">.</span><span class="z-support z-function z-rust">contains</span><span class="z-meta z-group z-rust"><span class="z-punctuation z-section z-group z-begin z-rust">(</span><span class="z-keyword z-operator z-bitwise z-rust">&amp;</span>ch</span><span class="z-meta z-group z-rust"><span class="z-punctuation z-section z-group z-end z-rust">)</span></span> <span class="z-meta z-block z-rust"><span class="z-punctuation z-section z-block z-begin z-rust">{</span>
+                <span class="z-keyword z-control z-rust">break</span><span class="z-punctuation z-terminator z-rust">;</span>
+            </span><span class="z-meta z-block z-rust"><span class="z-punctuation z-section z-block z-end z-rust">}</span></span>
+            buf<span class="z-punctuation z-accessor z-dot z-rust">.</span><span class="z-support z-function z-rust">push</span><span class="z-meta z-group z-rust"><span class="z-punctuation z-section z-group z-begin z-rust">(</span>ch</span><span class="z-meta z-group z-rust"><span class="z-punctuation z-section z-group z-end z-rust">)</span></span><span class="z-punctuation z-terminator z-rust">;</span>
+            scanner<span class="z-punctuation z-accessor z-dot z-rust">.</span><span class="z-support z-function z-rust">next</span><span class="z-meta z-group z-rust"><span class="z-punctuation z-section z-group z-begin z-rust">(</span></span><span class="z-meta z-group z-rust"><span class="z-punctuation z-section z-group z-end z-rust">)</span></span><span class="z-punctuation z-terminator z-rust">;</span>
+        </span><span class="z-meta z-block z-rust"><span class="z-punctuation z-section z-block z-end z-rust">}</span></span>
+        tokens<span class="z-punctuation z-accessor z-dot z-rust">.</span><span class="z-support z-function z-rust">push</span><span class="z-meta z-group z-rust"><span class="z-punctuation z-section z-group z-begin z-rust">(</span><span class="z-meta z-path z-rust">Token<span class="z-punctuation z-accessor z-rust">::</span></span>Number<span class="z-meta z-group z-rust"><span class="z-punctuation z-section z-group z-begin z-rust">(</span>
+            buf<span class="z-punctuation z-accessor z-dot z-rust">.</span><span class="z-meta z-path z-rust">parse<span class="z-punctuation z-accessor z-rust">::</span></span><span class="z-meta z-generic z-rust"><span class="z-punctuation z-definition z-generic z-begin z-rust">&lt;</span><span class="z-storage z-type z-rust">i32</span><span class="z-punctuation z-definition z-generic z-end z-rust">&gt;</span></span><span class="z-meta z-group z-rust"><span class="z-punctuation z-section z-group z-begin z-rust">(</span></span><span class="z-meta z-group z-rust"><span class="z-punctuation z-section z-group z-end z-rust">)</span></span>
+                <span class="z-punctuation z-accessor z-dot z-rust">.</span><span class="z-support z-function z-rust">map_err</span><span class="z-meta z-group z-rust"><span class="z-punctuation z-section z-group z-begin z-rust">(</span><span class="z-meta z-function z-closure z-rust"><span class="z-meta z-function z-parameters z-rust"><span class="z-punctuation z-section z-parameters z-begin z-rust">|</span></span></span><span class="z-meta z-function z-closure z-rust"><span class="z-meta z-function z-parameters z-rust">_<span class="z-punctuation z-section z-parameters z-end z-rust">|</span></span> </span><span class="z-meta z-function z-closure z-rust"><span class="z-meta z-path z-rust">LexerError<span class="z-punctuation z-accessor z-rust">::</span></span>NumberFormatError</span></span><span class="z-meta z-group z-rust"><span class="z-punctuation z-section z-group z-end z-rust">)</span></span><span class="z-keyword z-operator z-rust">?</span><span class="z-punctuation z-separator z-rust">,</span>
+        </span><span class="z-meta z-group z-rust"><span class="z-punctuation z-section z-group z-end z-rust">)</span></span></span><span class="z-meta z-group z-rust"><span class="z-punctuation z-section z-group z-end z-rust">)</span></span>
+    </span><span class="z-meta z-block z-rust"><span class="z-punctuation z-section z-block z-end z-rust">}</span></span>
+    <span class="z-comment z-line z-double-slash z-rust"><span class="z-punctuation z-definition z-comment z-rust">//</span> Bracket
+</span>    <span class="z-string z-quoted z-single z-rust"><span class="z-punctuation z-definition z-string z-begin z-rust">&#39;</span>(<span class="z-punctuation z-definition z-string z-end z-rust">&#39;</span></span> <span class="z-keyword z-operator z-bitwise z-rust">|</span> <span class="z-string z-quoted z-single z-rust"><span class="z-punctuation z-definition z-string z-begin z-rust">&#39;</span>)<span class="z-punctuation z-definition z-string z-end z-rust">&#39;</span></span> <span class="z-keyword z-operator z-rust">=&gt;</span> <span class="z-meta z-block z-rust"><span class="z-punctuation z-section z-block z-begin z-rust">{</span>
+        <span class="z-storage z-type z-rust">let</span> br <span class="z-keyword z-operator z-assignment z-rust">=</span> <span class="z-keyword z-control z-rust">match</span> ch <span class="z-meta z-block z-rust"><span class="z-punctuation z-section z-block z-begin z-rust">{</span>
+            <span class="z-string z-quoted z-single z-rust"><span class="z-punctuation z-definition z-string z-begin z-rust">&#39;</span>(<span class="z-punctuation z-definition z-string z-end z-rust">&#39;</span></span> <span class="z-keyword z-operator z-rust">=&gt;</span> <span class="z-meta z-path z-rust">BracketType<span class="z-punctuation z-accessor z-rust">::</span></span>Left<span class="z-punctuation z-separator z-rust">,</span>
+            <span class="z-string z-quoted z-single z-rust"><span class="z-punctuation z-definition z-string z-begin z-rust">&#39;</span>)<span class="z-punctuation z-definition z-string z-end z-rust">&#39;</span></span> <span class="z-keyword z-operator z-rust">=&gt;</span> <span class="z-meta z-path z-rust">BracketType<span class="z-punctuation z-accessor z-rust">::</span></span>Right<span class="z-punctuation z-separator z-rust">,</span>
+            <span class="z-keyword z-operator z-rust">_</span> <span class="z-keyword z-operator z-rust">=&gt;</span> <span class="z-keyword z-control z-rust">return</span> <span class="z-support z-type z-rust">Err</span><span class="z-meta z-group z-rust"><span class="z-punctuation z-section z-group z-begin z-rust">(</span><span class="z-meta z-path z-rust">LexerError<span class="z-punctuation z-accessor z-rust">::</span></span>LexError</span><span class="z-meta z-group z-rust"><span class="z-punctuation z-section z-group z-end z-rust">)</span></span><span class="z-punctuation z-separator z-rust">,</span>
+        </span><span class="z-meta z-block z-rust"><span class="z-punctuation z-section z-block z-end z-rust">}</span></span><span class="z-punctuation z-terminator z-rust">;</span>
+        tokens<span class="z-punctuation z-accessor z-dot z-rust">.</span><span class="z-support z-function z-rust">push</span><span class="z-meta z-group z-rust"><span class="z-punctuation z-section z-group z-begin z-rust">(</span><span class="z-meta z-path z-rust">Token<span class="z-punctuation z-accessor z-rust">::</span></span>Bracket<span class="z-meta z-group z-rust"><span class="z-punctuation z-section z-group z-begin z-rust">(</span>br</span><span class="z-meta z-group z-rust"><span class="z-punctuation z-section z-group z-end z-rust">)</span></span></span><span class="z-meta z-group z-rust"><span class="z-punctuation z-section z-group z-end z-rust">)</span></span><span class="z-punctuation z-terminator z-rust">;</span>
+        scanner<span class="z-punctuation z-accessor z-dot z-rust">.</span><span class="z-support z-function z-rust">next</span><span class="z-meta z-group z-rust"><span class="z-punctuation z-section z-group z-begin z-rust">(</span></span><span class="z-meta z-group z-rust"><span class="z-punctuation z-section z-group z-end z-rust">)</span></span><span class="z-punctuation z-terminator z-rust">;</span>
+    </span><span class="z-meta z-block z-rust"><span class="z-punctuation z-section z-block z-end z-rust">}</span></span>
+    <span class="z-comment z-line z-double-slash z-rust"><span class="z-punctuation z-definition z-comment z-rust">//</span> Skip blank
+</span>    <span class="z-string z-quoted z-single z-rust"><span class="z-punctuation z-definition z-string z-begin z-rust">&#39;</span> <span class="z-punctuation z-definition z-string z-end z-rust">&#39;</span></span> <span class="z-keyword z-operator z-rust">=&gt;</span> <span class="z-meta z-block z-rust"><span class="z-punctuation z-section z-block z-begin z-rust">{</span>
+        scanner<span class="z-punctuation z-accessor z-dot z-rust">.</span><span class="z-support z-function z-rust">next</span><span class="z-meta z-group z-rust"><span class="z-punctuation z-section z-group z-begin z-rust">(</span></span><span class="z-meta z-group z-rust"><span class="z-punctuation z-section z-group z-end z-rust">)</span></span><span class="z-punctuation z-terminator z-rust">;</span>
+    </span><span class="z-meta z-block z-rust"><span class="z-punctuation z-section z-block z-end z-rust">}</span></span>
+    <span class="z-keyword z-operator z-rust">_</span> <span class="z-keyword z-operator z-rust">=&gt;</span> <span class="z-keyword z-control z-rust">return</span> <span class="z-support z-type z-rust">Err</span><span class="z-meta z-group z-rust"><span class="z-punctuation z-section z-group z-begin z-rust">(</span><span class="z-meta z-path z-rust">LexerError<span class="z-punctuation z-accessor z-rust">::</span></span>UnknownChar</span><span class="z-meta z-group z-rust"><span class="z-punctuation z-section z-group z-end z-rust">)</span></span><span class="z-punctuation z-separator z-rust">,</span>
+</span><span class="z-meta z-block z-rust"><span class="z-punctuation z-section z-block z-end z-rust">}</span></span>
+</span></code></pre>
+<h2 id="yu-fa-fen-xi">语法分析</h2>
+<p>我们需要根据上下文无关文法来进行语法分析。下面是带优先级的算数表达式语法。可以看到这有 3 级别优先级，括号优先级最高，乘除第二，加减第三。为了给输入符号串推断出一个推导，我们选用自顶向下分析器，从语法树的根开始构造语法树。</p>
+<pre data-lang="plaintext" class="language-plaintext z-code"><code class="language-plaintext" data-lang="plaintext"><span class="z-text z-plain">Goal   -&gt; Expr
+Expr   -&gt; Expr + Term
+        | Expr - Term
+        | Term
+Term   -&gt; Term * Factor
+        | Term / Factor
+        | Factor
+Factor -&gt; ( Expr )
+        | number
+</span></code></pre>
+<blockquote>
+<p>如果是处理编程语言中的一元运算符，得按照下面的文法进行处理。一元运算符优先级比 Factor 优先级低，比乘除优先级高。</p>
+<pre data-lang="plaintext" class="language-plaintext z-code"><code class="language-plaintext" data-lang="plaintext"><span class="z-text z-plain">Goal   -&gt; Expr
+Expr   -&gt; Expr + Term
+        | Expr - Term
+        | Term
+Term   -&gt; Term * Value
+        | Term / Value
+        | Value
+Value  -&gt; || Factor
+        | Factor
+Factor -&gt; ( Expr )
+        | number
+</span></code></pre>
+</blockquote>
+<h3 id="zuo-di-gui">左递归</h3>
+<p>这个文法的第二个产生式可以一直往 Expr 非终结符推导，不断的递归下去，不能正确解析语法。</p>
+<pre data-lang="plaintext" class="language-plaintext z-code"><code class="language-plaintext" data-lang="plaintext"><span class="z-text z-plain">Expr -&gt; Expr
+Expr -&gt; Expr Expr
+Expr -&gt; Expr Expr Expr
+...
+</span></code></pre>
+<p>导致这种问题的原因是因为产生了左递归。所以通过类似下面文法的做法，消除左递归（产生右递归）。</p>
+<pre data-lang="plaintext" class="language-plaintext z-code"><code class="language-plaintext" data-lang="plaintext"><span class="z-text z-plain">Fee -&gt; Fee a  =&gt; Fee  -&gt; b Fee&#39;
+     | b         Fee&#39; -&gt; a Fee&#39;
+                       | e
+</span></code></pre>
+<p>消除过左递归的文法如下：</p>
+<pre data-lang="plaintext" class="language-plaintext z-code"><code class="language-plaintext" data-lang="plaintext"><span class="z-text z-plain">E  -&gt; T E&#39;
+E&#39; -&gt; + T E&#39;
+    | - T E&#39;
+    | ε
+T  -&gt; F T&#39;
+T&#39; -&gt; * F T&#39;
+    | / F T&#39;
+    | ε
+F  -&gt; ( E )
+    | i
+</span></code></pre>
+<h3 id="hui-su">回溯</h3>
+<p>如果语法分析器用了错误的产生式扩展 AST 的下边缘节点，语法分析树的下边缘和词法分析器返回的 Token 会出现不匹配的情况，这时候就得回溯回之前的状态，重新选择新的产生式子。</p>
+<p>例如在下面的产生式中，可能出现先选择了产生式 1，发现不匹配后又回退到 2。这种情况相比直接选择产生式 2 就浪费了时间。</p>
+<pre data-lang="plaintext" class="language-plaintext z-code"><code class="language-plaintext" data-lang="plaintext"><span class="z-text z-plain">1 Expr   -&gt; Expr + Term
+2         | Expr - Term
+3         | Term
+</span></code></pre>
+<p>下面是为了避免回溯所需要的相关集合。</p>
+<p>FIRST 集合：对于语法符号 $\alpha$ $，FIRST( \alpha)$ 是从 $\alpha$ 推导出的语句开头可能出现的终结符集合通过 FIRST 集前瞻一个符号来避免回溯，选择合适的语句，实现高效解析。</p>
+<p>FOLLOW 集合：对于非终结符 $\alpha$，$FOLLOW(\alpha)$ 是在语句中紧接 $\alpha$ 出现的单词的集合。通过 FOLLOW 集判断能不能将非终结符推导为 ε，来区分当前输入为合法输入还是语法错误。</p>
+<p>通过构造 FIRST+ 集，可以准确规定使得某个语法对自顶向下语法分析器无回溯条件。</p>
+<p>$$
+FIRST^{+}(A\to \beta) =
+\begin{cases}
+FIRST(\beta)                &amp; \text 如果 \epsilon \notin FIRST(\beta) \cr
+FIRST(\beta) \cup FOLLOW(A) &amp; \text 剩余情况 \cr
+\end{cases}
+$$</p>
+<h3 id="dai-ma-shi-xian">代码实现</h3>
+<p>接下来就是编写递归下降语法分析器了。语法分析则是从 lexer 中不断的读取 Token，并使用递归下降进行解析。</p>
+<pre data-lang="rust" class="language-rust z-code"><code class="language-rust" data-lang="rust"><span class="z-source z-rust"><span class="z-comment z-line z-documentation z-rust"><span class="z-punctuation z-definition z-comment z-rust">///</span> A recursive descent parser
+</span><span class="z-meta z-struct z-rust"><span class="z-storage z-modifier z-rust">pub</span> <span class="z-storage z-type z-struct z-rust">struct</span> </span><span class="z-meta z-struct z-rust"><span class="z-entity z-name z-struct z-rust">Parser</span> </span><span class="z-meta z-struct z-rust"><span class="z-meta z-block z-rust"><span class="z-punctuation z-section z-block z-begin z-rust">{</span>
+    <span class="z-variable z-other z-member z-rust">lexer</span><span class="z-punctuation z-separator z-type z-rust">:</span> Lexer,
+</span><span class="z-meta z-block z-rust"><span class="z-punctuation z-section z-block z-end z-rust">}</span></span></span>
+
+<span class="z-meta z-impl z-rust"><span class="z-storage z-type z-impl z-rust">impl</span> </span><span class="z-meta z-impl z-rust"><span class="z-entity z-name z-impl z-rust">Parser</span> </span><span class="z-meta z-impl z-rust"><span class="z-meta z-block z-rust"><span class="z-punctuation z-section z-block z-begin z-rust">{</span>
+    <span class="z-meta z-function z-rust"><span class="z-meta z-function z-rust"><span class="z-storage z-modifier z-rust">pub</span> <span class="z-storage z-type z-function z-rust">fn</span> </span><span class="z-entity z-name z-function z-rust">new</span></span><span class="z-meta z-function z-rust"><span class="z-meta z-function z-parameters z-rust"><span class="z-punctuation z-section z-parameters z-begin z-rust">(</span><span class="z-variable z-parameter z-rust">lexer</span><span class="z-punctuation z-separator z-rust">:</span> Lexer</span><span class="z-meta z-function z-rust"><span class="z-meta z-function z-parameters z-rust"><span class="z-punctuation z-section z-parameters z-end z-rust">)</span></span></span></span><span class="z-meta z-function z-rust"> <span class="z-meta z-function z-return-type z-rust"><span class="z-punctuation z-separator z-rust">-&gt;</span> Parser</span> </span><span class="z-meta z-function z-rust"><span class="z-meta z-block z-rust"><span class="z-punctuation z-section z-block z-begin z-rust">{</span>
+        Parser <span class="z-meta z-block z-rust"><span class="z-punctuation z-section z-block z-begin z-rust">{</span> lexer </span><span class="z-meta z-block z-rust"><span class="z-punctuation z-section z-block z-end z-rust">}</span></span>
+    </span><span class="z-meta z-block z-rust"><span class="z-punctuation z-section z-block z-end z-rust">}</span></span></span>
+
+    <span class="z-meta z-function z-rust"><span class="z-meta z-function z-rust"><span class="z-storage z-modifier z-rust">pub</span> <span class="z-storage z-type z-function z-rust">fn</span> </span><span class="z-entity z-name z-function z-rust">parse</span></span><span class="z-meta z-function z-rust"><span class="z-meta z-function z-parameters z-rust"><span class="z-punctuation z-section z-parameters z-begin z-rust">(</span><span class="z-keyword z-operator z-rust">&amp;</span><span class="z-storage z-modifier z-rust">mut</span> <span class="z-variable z-parameter z-rust">self</span></span><span class="z-meta z-function z-rust"><span class="z-meta z-function z-parameters z-rust"><span class="z-punctuation z-section z-parameters z-end z-rust">)</span></span></span></span><span class="z-meta z-function z-rust"> <span class="z-meta z-function z-return-type z-rust"><span class="z-punctuation z-separator z-rust">-&gt;</span> <span class="z-meta z-generic z-rust"><span class="z-support z-type z-rust">Result</span><span class="z-punctuation z-definition z-generic z-begin z-rust">&lt;</span>Node, ParseError<span class="z-punctuation z-definition z-generic z-end z-rust">&gt;</span></span></span> </span><span class="z-meta z-function z-rust"><span class="z-meta z-block z-rust"><span class="z-punctuation z-section z-block z-begin z-rust">{</span>
+        <span class="z-variable z-language z-rust">self</span><span class="z-punctuation z-accessor z-dot z-rust">.</span><span class="z-support z-function z-rust">e</span><span class="z-meta z-group z-rust"><span class="z-punctuation z-section z-group z-begin z-rust">(</span></span><span class="z-meta z-group z-rust"><span class="z-punctuation z-section z-group z-end z-rust">)</span></span>
+    </span><span class="z-meta z-block z-rust"><span class="z-punctuation z-section z-block z-end z-rust">}</span></span></span>
+    <span class="z-comment z-line z-double-slash z-rust"><span class="z-punctuation z-definition z-comment z-rust">//</span> 省略
+</span></span><span class="z-meta z-block z-rust"><span class="z-punctuation z-section z-block z-end z-rust">}</span></span></span>
+</span></code></pre>
+<p>接下来是代码中最长的部分，按照文法编写递归下降解析器。对于每个非终结符，只需按照产生式依次调用相应的函数即可进行相应的分析。对于终结符，可以直接对 Token 进行处理。在编写程序时，可以将当前步骤产生的 AST 节点传递给下一个函数继续处理，从而实现完整的构造 AST。</p>
+<p>在下面的代码可以看到处理 &quot;E'&quot; 非终结符的 <code>equote</code> 函数，对应的产生式是 &quot;E' -&gt; +TE'|-TE'|ε&quot;。在函数中 match arm 有 3 个 arm。第一个 arm 处理当前 Token 为 &quot;+&quot; 和 &quot;-&quot; 的情况，在这种情况下，继续调用 <code>t</code>, <code>equote</code> 函数进行处理。第二个 arm 则是看下当前 Token 是否在 FIRST+ 集合里，如果在的话，则说明当前语句处理结束。如果前 2 个 arm 都没有匹配上，说明输入有问题，返回错误。</p>
+<pre data-lang="rust" class="language-rust z-code"><code class="language-rust" data-lang="rust"><span class="z-source z-rust"><span class="z-meta z-impl z-rust"><span class="z-storage z-type z-impl z-rust">impl</span> </span><span class="z-meta z-impl z-rust"><span class="z-entity z-name z-impl z-rust">Parser</span> </span><span class="z-meta z-impl z-rust"><span class="z-meta z-block z-rust"><span class="z-punctuation z-section z-block z-begin z-rust">{</span>
+    <span class="z-meta z-function z-rust"><span class="z-meta z-function z-rust"><span class="z-storage z-modifier z-rust">pub</span> <span class="z-storage z-type z-function z-rust">fn</span> </span><span class="z-entity z-name z-function z-rust">parse</span></span><span class="z-meta z-function z-rust"><span class="z-meta z-function z-parameters z-rust"><span class="z-punctuation z-section z-parameters z-begin z-rust">(</span><span class="z-keyword z-operator z-rust">&amp;</span><span class="z-storage z-modifier z-rust">mut</span> <span class="z-variable z-parameter z-rust">self</span></span><span class="z-meta z-function z-rust"><span class="z-meta z-function z-parameters z-rust"><span class="z-punctuation z-section z-parameters z-end z-rust">)</span></span></span></span><span class="z-meta z-function z-rust"> <span class="z-meta z-function z-return-type z-rust"><span class="z-punctuation z-separator z-rust">-&gt;</span> <span class="z-meta z-generic z-rust"><span class="z-support z-type z-rust">Result</span><span class="z-punctuation z-definition z-generic z-begin z-rust">&lt;</span>Node, ParseError<span class="z-punctuation z-definition z-generic z-end z-rust">&gt;</span></span></span> </span><span class="z-meta z-function z-rust"><span class="z-meta z-block z-rust"><span class="z-punctuation z-section z-block z-begin z-rust">{</span>
+        <span class="z-variable z-language z-rust">self</span><span class="z-punctuation z-accessor z-dot z-rust">.</span><span class="z-support z-function z-rust">e</span><span class="z-meta z-group z-rust"><span class="z-punctuation z-section z-group z-begin z-rust">(</span></span><span class="z-meta z-group z-rust"><span class="z-punctuation z-section z-group z-end z-rust">)</span></span>
+    </span><span class="z-meta z-block z-rust"><span class="z-punctuation z-section z-block z-end z-rust">}</span></span></span>
+
+    <span class="z-comment z-line z-double-slash z-rust"><span class="z-punctuation z-definition z-comment z-rust">//</span> E -&gt; TE&#39;
+</span>    <span class="z-meta z-function z-rust"><span class="z-meta z-function z-rust"><span class="z-storage z-type z-function z-rust">fn</span> </span><span class="z-entity z-name z-function z-rust">e</span></span><span class="z-meta z-function z-rust"><span class="z-meta z-function z-parameters z-rust"><span class="z-punctuation z-section z-parameters z-begin z-rust">(</span><span class="z-keyword z-operator z-rust">&amp;</span><span class="z-storage z-modifier z-rust">mut</span> <span class="z-variable z-parameter z-rust">self</span></span><span class="z-meta z-function z-rust"><span class="z-meta z-function z-parameters z-rust"><span class="z-punctuation z-section z-parameters z-end z-rust">)</span></span></span></span><span class="z-meta z-function z-rust"> <span class="z-meta z-function z-return-type z-rust"><span class="z-punctuation z-separator z-rust">-&gt;</span> <span class="z-meta z-generic z-rust"><span class="z-support z-type z-rust">Result</span><span class="z-punctuation z-definition z-generic z-begin z-rust">&lt;</span>Node, ParseError<span class="z-punctuation z-definition z-generic z-end z-rust">&gt;</span></span></span> </span><span class="z-meta z-function z-rust"><span class="z-meta z-block z-rust"><span class="z-punctuation z-section z-block z-begin z-rust">{</span>
+        <span class="z-storage z-type z-rust">let</span> t <span class="z-keyword z-operator z-assignment z-rust">=</span> <span class="z-variable z-language z-rust">self</span><span class="z-punctuation z-accessor z-dot z-rust">.</span><span class="z-support z-function z-rust">t</span><span class="z-meta z-group z-rust"><span class="z-punctuation z-section z-group z-begin z-rust">(</span></span><span class="z-meta z-group z-rust"><span class="z-punctuation z-section z-group z-end z-rust">)</span></span><span class="z-keyword z-operator z-rust">?</span><span class="z-punctuation z-terminator z-rust">;</span>
+        <span class="z-variable z-language z-rust">self</span><span class="z-punctuation z-accessor z-dot z-rust">.</span><span class="z-support z-function z-rust">equote</span><span class="z-meta z-group z-rust"><span class="z-punctuation z-section z-group z-begin z-rust">(</span>t</span><span class="z-meta z-group z-rust"><span class="z-punctuation z-section z-group z-end z-rust">)</span></span>
+    </span><span class="z-meta z-block z-rust"><span class="z-punctuation z-section z-block z-end z-rust">}</span></span></span>
+
+    <span class="z-comment z-line z-double-slash z-rust"><span class="z-punctuation z-definition z-comment z-rust">//</span> E&#39; -&gt; +TE&#39;|-TE&#39;|ε
+</span>    <span class="z-meta z-function z-rust"><span class="z-meta z-function z-rust"><span class="z-storage z-type z-function z-rust">fn</span> </span><span class="z-entity z-name z-function z-rust">equote</span></span><span class="z-meta z-function z-rust"><span class="z-meta z-function z-parameters z-rust"><span class="z-punctuation z-section z-parameters z-begin z-rust">(</span><span class="z-keyword z-operator z-rust">&amp;</span><span class="z-storage z-modifier z-rust">mut</span> <span class="z-variable z-parameter z-rust">self</span>, <span class="z-variable z-parameter z-rust">val</span><span class="z-punctuation z-separator z-rust">:</span> Node</span><span class="z-meta z-function z-rust"><span class="z-meta z-function z-parameters z-rust"><span class="z-punctuation z-section z-parameters z-end z-rust">)</span></span></span></span><span class="z-meta z-function z-rust"> <span class="z-meta z-function z-return-type z-rust"><span class="z-punctuation z-separator z-rust">-&gt;</span> <span class="z-meta z-generic z-rust"><span class="z-support z-type z-rust">Result</span><span class="z-punctuation z-definition z-generic z-begin z-rust">&lt;</span>Node, ParseError<span class="z-punctuation z-definition z-generic z-end z-rust">&gt;</span></span></span> </span><span class="z-meta z-function z-rust"><span class="z-meta z-block z-rust"><span class="z-punctuation z-section z-block z-begin z-rust">{</span>
+        <span class="z-comment z-line z-double-slash z-rust"><span class="z-punctuation z-definition z-comment z-rust">//</span> Select sentence by looking for FIRST+
+</span>        <span class="z-keyword z-control z-rust">match</span> <span class="z-variable z-language z-rust">self</span><span class="z-punctuation z-accessor z-dot z-rust">.</span>lexer<span class="z-punctuation z-accessor z-dot z-rust">.</span><span class="z-support z-function z-rust">peek</span><span class="z-meta z-group z-rust"><span class="z-punctuation z-section z-group z-begin z-rust">(</span></span><span class="z-meta z-group z-rust"><span class="z-punctuation z-section z-group z-end z-rust">)</span></span> <span class="z-meta z-block z-rust"><span class="z-punctuation z-section z-block z-begin z-rust">{</span>
+            <span class="z-comment z-line z-double-slash z-rust"><span class="z-punctuation z-definition z-comment z-rust">//</span> E&#39; -&gt; +TE&#39;|-TE&#39;
+</span>            <span class="z-support z-type z-rust">Some</span><span class="z-meta z-group z-rust"><span class="z-punctuation z-section z-group z-begin z-rust">(</span><span class="z-keyword z-operator z-bitwise z-rust">&amp;</span><span class="z-meta z-path z-rust">Token<span class="z-punctuation z-accessor z-rust">::</span></span>Operator<span class="z-meta z-group z-rust"><span class="z-punctuation z-section z-group z-begin z-rust">(</span><span class="z-storage z-modifier z-rust">ref</span> op <span class="z-keyword z-operator z-rust">@</span> <span class="z-meta z-group z-rust"><span class="z-punctuation z-section z-group z-begin z-rust">(</span><span class="z-meta z-path z-rust">OperatorType<span class="z-punctuation z-accessor z-rust">::</span></span>Plus <span class="z-keyword z-operator z-bitwise z-rust">|</span> <span class="z-meta z-path z-rust">OperatorType<span class="z-punctuation z-accessor z-rust">::</span></span>Sub</span><span class="z-meta z-group z-rust"><span class="z-punctuation z-section z-group z-end z-rust">)</span></span></span><span class="z-meta z-group z-rust"><span class="z-punctuation z-section z-group z-end z-rust">)</span></span></span><span class="z-meta z-group z-rust"><span class="z-punctuation z-section z-group z-end z-rust">)</span></span> <span class="z-keyword z-operator z-rust">=&gt;</span> <span class="z-meta z-block z-rust"><span class="z-punctuation z-section z-block z-begin z-rust">{</span>
+                <span class="z-storage z-type z-rust">let</span> op <span class="z-keyword z-operator z-assignment z-rust">=</span> op<span class="z-punctuation z-accessor z-dot z-rust">.</span><span class="z-support z-function z-rust">clone</span><span class="z-meta z-group z-rust"><span class="z-punctuation z-section z-group z-begin z-rust">(</span></span><span class="z-meta z-group z-rust"><span class="z-punctuation z-section z-group z-end z-rust">)</span></span><span class="z-punctuation z-terminator z-rust">;</span> <span class="z-comment z-line z-double-slash z-rust"><span class="z-punctuation z-definition z-comment z-rust">//</span> Get op from reference
+</span>                <span class="z-variable z-language z-rust">self</span><span class="z-punctuation z-accessor z-dot z-rust">.</span>lexer<span class="z-punctuation z-accessor z-dot z-rust">.</span><span class="z-support z-function z-rust">next</span><span class="z-meta z-group z-rust"><span class="z-punctuation z-section z-group z-begin z-rust">(</span></span><span class="z-meta z-group z-rust"><span class="z-punctuation z-section z-group z-end z-rust">)</span></span><span class="z-punctuation z-terminator z-rust">;</span>
+                <span class="z-storage z-type z-rust">let</span> t <span class="z-keyword z-operator z-assignment z-rust">=</span> <span class="z-variable z-language z-rust">self</span><span class="z-punctuation z-accessor z-dot z-rust">.</span><span class="z-support z-function z-rust">t</span><span class="z-meta z-group z-rust"><span class="z-punctuation z-section z-group z-begin z-rust">(</span></span><span class="z-meta z-group z-rust"><span class="z-punctuation z-section z-group z-end z-rust">)</span></span><span class="z-keyword z-operator z-rust">?</span><span class="z-punctuation z-terminator z-rust">;</span>
+                <span class="z-variable z-language z-rust">self</span><span class="z-punctuation z-accessor z-dot z-rust">.</span><span class="z-support z-function z-rust">equote</span><span class="z-meta z-group z-rust"><span class="z-punctuation z-section z-group z-begin z-rust">(</span><span class="z-meta z-path z-rust">Node<span class="z-punctuation z-accessor z-rust">::</span></span>BinaryExpr <span class="z-meta z-block z-rust"><span class="z-punctuation z-section z-block z-begin z-rust">{</span>
+                    op<span class="z-punctuation z-separator z-rust">,</span>
+                    lhs<span class="z-punctuation z-separator z-rust">:</span> <span class="z-support z-type z-rust">Box</span><span class="z-meta z-path z-rust"><span class="z-punctuation z-accessor z-rust">::</span></span>new<span class="z-meta z-group z-rust"><span class="z-punctuation z-section z-group z-begin z-rust">(</span>val</span><span class="z-meta z-group z-rust"><span class="z-punctuation z-section z-group z-end z-rust">)</span></span><span class="z-punctuation z-separator z-rust">,</span>
+                    rhs<span class="z-punctuation z-separator z-rust">:</span> <span class="z-support z-type z-rust">Box</span><span class="z-meta z-path z-rust"><span class="z-punctuation z-accessor z-rust">::</span></span>new<span class="z-meta z-group z-rust"><span class="z-punctuation z-section z-group z-begin z-rust">(</span>t</span><span class="z-meta z-group z-rust"><span class="z-punctuation z-section z-group z-end z-rust">)</span></span><span class="z-punctuation z-separator z-rust">,</span>
+                </span><span class="z-meta z-block z-rust"><span class="z-punctuation z-section z-block z-end z-rust">}</span></span></span><span class="z-meta z-group z-rust"><span class="z-punctuation z-section z-group z-end z-rust">)</span></span>
+            </span><span class="z-meta z-block z-rust"><span class="z-punctuation z-section z-block z-end z-rust">}</span></span>
+            <span class="z-comment z-line z-double-slash z-rust"><span class="z-punctuation z-definition z-comment z-rust">//</span> E&#39; -&gt; ε
+</span>            <span class="z-support z-type z-rust">Some</span><span class="z-meta z-group z-rust"><span class="z-punctuation z-section z-group z-begin z-rust">(</span><span class="z-keyword z-operator z-bitwise z-rust">&amp;</span><span class="z-meta z-path z-rust">Token<span class="z-punctuation z-accessor z-rust">::</span></span>Bracket<span class="z-meta z-group z-rust"><span class="z-punctuation z-section z-group z-begin z-rust">(</span><span class="z-meta z-path z-rust">BracketType<span class="z-punctuation z-accessor z-rust">::</span></span>Right</span><span class="z-meta z-group z-rust"><span class="z-punctuation z-section z-group z-end z-rust">)</span></span></span><span class="z-meta z-group z-rust"><span class="z-punctuation z-section z-group z-end z-rust">)</span></span> <span class="z-keyword z-operator z-bitwise z-rust">|</span> <span class="z-support z-type z-rust">None</span> <span class="z-keyword z-operator z-rust">=&gt;</span> <span class="z-support z-type z-rust">Ok</span><span class="z-meta z-group z-rust"><span class="z-punctuation z-section z-group z-begin z-rust">(</span>val</span><span class="z-meta z-group z-rust"><span class="z-punctuation z-section z-group z-end z-rust">)</span></span><span class="z-punctuation z-separator z-rust">,</span>
+            <span class="z-keyword z-operator z-rust">_</span> <span class="z-keyword z-operator z-rust">=&gt;</span> <span class="z-support z-type z-rust">Err</span><span class="z-meta z-group z-rust"><span class="z-punctuation z-section z-group z-begin z-rust">(</span><span class="z-meta z-path z-rust">ParseError<span class="z-punctuation z-accessor z-rust">::</span></span>Unmatch</span><span class="z-meta z-group z-rust"><span class="z-punctuation z-section z-group z-end z-rust">)</span></span><span class="z-punctuation z-separator z-rust">,</span>
+        </span><span class="z-meta z-block z-rust"><span class="z-punctuation z-section z-block z-end z-rust">}</span></span>
+    </span><span class="z-meta z-block z-rust"><span class="z-punctuation z-section z-block z-end z-rust">}</span></span></span>
+</span></span></span></code></pre>
+<h2 id="yun-suan">运算</h2>
+<p>这里对 AST 进行了 DFS 来计算 AST 的值。后面有空的话，可以实现个虚拟机来处理。</p>
+<pre data-lang="rust" class="language-rust z-code"><code class="language-rust" data-lang="rust"><span class="z-source z-rust"><span class="z-comment z-line z-documentation z-rust"><span class="z-punctuation z-definition z-comment z-rust">///</span> Eval AST
+</span><span class="z-meta z-function z-rust"><span class="z-meta z-function z-rust"><span class="z-storage z-type z-function z-rust">fn</span> </span><span class="z-entity z-name z-function z-rust">eval</span></span><span class="z-meta z-function z-rust"><span class="z-meta z-function z-parameters z-rust"><span class="z-punctuation z-section z-parameters z-begin z-rust">(</span><span class="z-variable z-parameter z-rust">node</span><span class="z-punctuation z-separator z-rust">:</span> <span class="z-keyword z-operator z-rust">&amp;</span>Node</span><span class="z-meta z-function z-rust"><span class="z-meta z-function z-parameters z-rust"><span class="z-punctuation z-section z-parameters z-end z-rust">)</span></span></span></span><span class="z-meta z-function z-rust"> <span class="z-meta z-function z-return-type z-rust"><span class="z-punctuation z-separator z-rust">-&gt;</span> <span class="z-storage z-type z-rust">i32</span></span> </span><span class="z-meta z-function z-rust"><span class="z-meta z-block z-rust"><span class="z-punctuation z-section z-block z-begin z-rust">{</span>
+    <span class="z-keyword z-control z-rust">match</span> node <span class="z-meta z-block z-rust"><span class="z-punctuation z-section z-block z-begin z-rust">{</span>
+        <span class="z-meta z-path z-rust">Node<span class="z-punctuation z-accessor z-rust">::</span></span>Number<span class="z-meta z-group z-rust"><span class="z-punctuation z-section z-group z-begin z-rust">(</span>n</span><span class="z-meta z-group z-rust"><span class="z-punctuation z-section z-group z-end z-rust">)</span></span> <span class="z-keyword z-operator z-rust">=&gt;</span> <span class="z-keyword z-operator z-arithmetic z-rust">*</span>n<span class="z-punctuation z-separator z-rust">,</span>
+        <span class="z-meta z-path z-rust">Node<span class="z-punctuation z-accessor z-rust">::</span></span>UnaryExpr <span class="z-meta z-block z-rust"><span class="z-punctuation z-section z-block z-begin z-rust">{</span> op<span class="z-punctuation z-separator z-rust">,</span> child </span><span class="z-meta z-block z-rust"><span class="z-punctuation z-section z-block z-end z-rust">}</span></span> <span class="z-keyword z-operator z-rust">=&gt;</span> <span class="z-meta z-block z-rust"><span class="z-punctuation z-section z-block z-begin z-rust">{</span>
+            <span class="z-storage z-type z-rust">let</span> child <span class="z-keyword z-operator z-assignment z-rust">=</span> <span class="z-support z-function z-rust">eval</span><span class="z-meta z-group z-rust"><span class="z-punctuation z-section z-group z-begin z-rust">(</span>child</span><span class="z-meta z-group z-rust"><span class="z-punctuation z-section z-group z-end z-rust">)</span></span><span class="z-punctuation z-terminator z-rust">;</span>
+            <span class="z-keyword z-control z-rust">match</span> op <span class="z-meta z-block z-rust"><span class="z-punctuation z-section z-block z-begin z-rust">{</span>
+                <span class="z-meta z-path z-rust">OperatorType<span class="z-punctuation z-accessor z-rust">::</span></span>Plus <span class="z-keyword z-operator z-rust">=&gt;</span> child<span class="z-punctuation z-separator z-rust">,</span>
+                <span class="z-meta z-path z-rust">OperatorType<span class="z-punctuation z-accessor z-rust">::</span></span>Sub <span class="z-keyword z-operator z-rust">=&gt;</span> <span class="z-keyword z-operator z-arithmetic z-rust">-</span>child<span class="z-punctuation z-separator z-rust">,</span>
+                <span class="z-keyword z-operator z-rust">_</span> <span class="z-keyword z-operator z-rust">=&gt;</span> child<span class="z-punctuation z-separator z-rust">,</span>
+            </span><span class="z-meta z-block z-rust"><span class="z-punctuation z-section z-block z-end z-rust">}</span></span>
+        </span><span class="z-meta z-block z-rust"><span class="z-punctuation z-section z-block z-end z-rust">}</span></span>
+        <span class="z-meta z-path z-rust">Node<span class="z-punctuation z-accessor z-rust">::</span></span>BinaryExpr <span class="z-meta z-block z-rust"><span class="z-punctuation z-section z-block z-begin z-rust">{</span> op<span class="z-punctuation z-separator z-rust">,</span> lhs<span class="z-punctuation z-separator z-rust">,</span> rhs </span><span class="z-meta z-block z-rust"><span class="z-punctuation z-section z-block z-end z-rust">}</span></span> <span class="z-keyword z-operator z-rust">=&gt;</span> <span class="z-meta z-block z-rust"><span class="z-punctuation z-section z-block z-begin z-rust">{</span>
+            <span class="z-storage z-type z-rust">let</span> lhs_ret <span class="z-keyword z-operator z-assignment z-rust">=</span> <span class="z-support z-function z-rust">eval</span><span class="z-meta z-group z-rust"><span class="z-punctuation z-section z-group z-begin z-rust">(</span>lhs</span><span class="z-meta z-group z-rust"><span class="z-punctuation z-section z-group z-end z-rust">)</span></span><span class="z-punctuation z-terminator z-rust">;</span>
+            <span class="z-storage z-type z-rust">let</span> rhs_ret <span class="z-keyword z-operator z-assignment z-rust">=</span> <span class="z-support z-function z-rust">eval</span><span class="z-meta z-group z-rust"><span class="z-punctuation z-section z-group z-begin z-rust">(</span>rhs</span><span class="z-meta z-group z-rust"><span class="z-punctuation z-section z-group z-end z-rust">)</span></span><span class="z-punctuation z-terminator z-rust">;</span>
+
+            <span class="z-keyword z-control z-rust">match</span> op <span class="z-meta z-block z-rust"><span class="z-punctuation z-section z-block z-begin z-rust">{</span>
+                <span class="z-meta z-path z-rust">OperatorType<span class="z-punctuation z-accessor z-rust">::</span></span>Plus <span class="z-keyword z-operator z-rust">=&gt;</span> lhs_ret <span class="z-keyword z-operator z-arithmetic z-rust">+</span> rhs_ret<span class="z-punctuation z-separator z-rust">,</span>
+                <span class="z-meta z-path z-rust">OperatorType<span class="z-punctuation z-accessor z-rust">::</span></span>Sub <span class="z-keyword z-operator z-rust">=&gt;</span> lhs_ret <span class="z-keyword z-operator z-arithmetic z-rust">-</span> rhs_ret<span class="z-punctuation z-separator z-rust">,</span>
+                <span class="z-meta z-path z-rust">OperatorType<span class="z-punctuation z-accessor z-rust">::</span></span>Mul <span class="z-keyword z-operator z-rust">=&gt;</span> lhs_ret <span class="z-keyword z-operator z-arithmetic z-rust">*</span> rhs_ret<span class="z-punctuation z-separator z-rust">,</span>
+                <span class="z-meta z-path z-rust">OperatorType<span class="z-punctuation z-accessor z-rust">::</span></span>Div <span class="z-keyword z-operator z-rust">=&gt;</span> lhs_ret<span class="z-punctuation z-accessor z-dot z-rust">.</span><span class="z-support z-function z-rust">checked_div</span><span class="z-meta z-group z-rust"><span class="z-punctuation z-section z-group z-begin z-rust">(</span>rhs_ret</span><span class="z-meta z-group z-rust"><span class="z-punctuation z-section z-group z-end z-rust">)</span></span><span class="z-punctuation z-accessor z-dot z-rust">.</span><span class="z-support z-function z-rust">unwrap_or</span><span class="z-meta z-group z-rust"><span class="z-punctuation z-section z-group z-begin z-rust">(</span><span class="z-constant z-numeric z-integer z-decimal z-rust">0</span></span><span class="z-meta z-group z-rust"><span class="z-punctuation z-section z-group z-end z-rust">)</span></span><span class="z-punctuation z-separator z-rust">,</span>
+            </span><span class="z-meta z-block z-rust"><span class="z-punctuation z-section z-block z-end z-rust">}</span></span>
+        </span><span class="z-meta z-block z-rust"><span class="z-punctuation z-section z-block z-end z-rust">}</span></span>
+    </span><span class="z-meta z-block z-rust"><span class="z-punctuation z-section z-block z-end z-rust">}</span></span>
+</span><span class="z-meta z-block z-rust"><span class="z-punctuation z-section z-block z-end z-rust">}</span></span></span>
+</span></code></pre>
+<h2 id="zong-jie">总结</h2>
+<p>最后放上代码 <a href="https://gist.github.com/chenx6/4534d36819562dc4eb6b0b32678ad4d0">代码在这</a>。看下代码行数，可以看到只用了 300 行左右（带注视，空格）就完成了个基础的计算器。</p>
+<blockquote>
+<p>这个项目还值 7000 USD，血赚 233</p>
+</blockquote>
+<pre data-lang="plaintext" class="language-plaintext z-code"><code class="language-plaintext" data-lang="plaintext"><span class="z-text z-plain">$ scc
+───────────────────────────────────────────────────────────────────────────────
+Language                 Files     Lines   Blanks  Comments     Code Complexity
+───────────────────────────────────────────────────────────────────────────────
+Rust                         3       334       28        24      282          3
+TOML                         1         8        2         1        5          0
+gitignore                    1         2        0         0        2          0
+───────────────────────────────────────────────────────────────────────────────
+Total                        5       344       30        25      289          3
+───────────────────────────────────────────────────────────────────────────────
+Estimated Cost to Develop (organic) $7,337
+Estimated Schedule Effort (organic) 2.124802 months
+Estimated People Required (organic) 0.306786
+───────────────────────────────────────────────────────────────────────────────
+Processed 9429 bytes, 0.009 megabytes (SI)
+───────────────────────────────────────────────────────────────────────────────
+</span></code></pre>
+<h2 id="refs">Refs</h2>
+<ul>
+<li>《编译器设计》第二版</li>
+<li><a href="https://blog.csdn.net/kafmws/article/details/98319767">语法分析：LL(1)分析</a></li>
+</ul>
+<blockquote>
+<p>知乎上的大佬们推荐的这本《编译器设计》比龙书更加通俗易懂，贴近现实，强烈推荐！</p>
+</blockquote>
+
+  </div>
+</div>
+
+</body>
+
+</html>

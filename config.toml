@@ -1,9 +1,9 @@
-base_url = "https://example.com"
+base_url = "https://chenx6.github.io/"
 compile_sass = false
 build_search_index = false
 
-title = "Title"
-description = "description"
+title = "二进制咸鱼的自我救赎"
+description = "幸福往往是摸的透彻，而敬业的心却常常隐藏。"
 generate_feed = true
 feed_filename = "atom.xml"
 default_language = "zh_CN"

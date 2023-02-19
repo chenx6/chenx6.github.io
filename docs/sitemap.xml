@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  
+  <url>
+    <loc>https://chenx6.github.io/</loc>
+    
+  </url>
+  
+  <url>
+    <loc>https://chenx6.github.io/about/</loc>
+    
+    <lastmod>2000-01-01</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://chenx6.github.io/post/</loc>
+    
+  </url>
+  
+  <url>
+    <loc>https://chenx6.github.io/post/build-pass-out-of-tree/</loc>
+    
+    <lastmod>2020-01-01</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://chenx6.github.io/post/calculator/</loc>
+    
+    <lastmod>2022-06-02</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://chenx6.github.io/post/codeql/</loc>
+    
+    <lastmod>2020-04-20</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://chenx6.github.io/post/compile-cheatsheet/</loc>
+    
+    <lastmod>2022-05-21</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://chenx6.github.io/post/different-rop/</loc>
+    
+    <lastmod>2020-06-01</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://chenx6.github.io/post/elf-backdoor/</loc>
+    
+    <lastmod>2020-01-01</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://chenx6.github.io/post/fail-firm-fuzz/</loc>
+    
+    <lastmod>2021-01-21</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://chenx6.github.io/post/frida-beginner/</loc>
+    
+    <lastmod>2022-02-26</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://chenx6.github.io/post/from-log/</loc>
+    
+    <lastmod>2022-07-24</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://chenx6.github.io/post/lc3-vm/</loc>
+    
+    <lastmod>2020-01-15</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://chenx6.github.io/post/meterpreter/</loc>
+    
+    <lastmod>2022-10-23</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://chenx6.github.io/post/n1-modify/</loc>
+    
+    <lastmod>2020-02-01</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://chenx6.github.io/post/obfuscate-string/</loc>
+    
+    <lastmod>2020-01-01</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://chenx6.github.io/post/plthook/</loc>
+    
+    <lastmod>2022-04-05</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://chenx6.github.io/post/rev-pty/</loc>
+    
+    <lastmod>2022-05-02T19:19:57+08:00</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://chenx6.github.io/post/rewrite-ollvm-bcf/</loc>
+    
+    <lastmod>2020-01-01</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://chenx6.github.io/post/rewrite-ollvm-fla/</loc>
+    
+    <lastmod>2021-01-21</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://chenx6.github.io/tags/</loc>
+    
+  </url>
+  
+</urlset>
