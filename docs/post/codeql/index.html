@@ -36,67 +36,10 @@
   </header>
   
 <div class="container">
-  <aside class="toc">
-    
-    <ul>
-      
-      <li>
-        <a href="https://chenx6.github.io/post/codeql/#gai-yao">概要</a>
-        
-      </li>
-      
-      <li>
-        <a href="https://chenx6.github.io/post/codeql/#ti-qian-zhun-bei">提前准备</a>
-        
-      </li>
-      
-      <li>
-        <a href="https://chenx6.github.io/post/codeql/#huan-jing-da-jian">环境搭建</a>
-        
-      </li>
-      
-      <li>
-        <a href="https://chenx6.github.io/post/codeql/#di-yi-ci-cha-xun-he-pull-request">第一次查询和 Pull request</a>
-        
-      </li>
-      
-      <li>
-        <a href="https://chenx6.github.io/post/codeql/#dao-ru-bu-tong-de-lei-wan-cheng-cha-xun">导入不同的类完成查询</a>
-        
-      </li>
-      
-      <li>
-        <a href="https://chenx6.github.io/post/codeql/#shi-yong-liang-ge-bian-liang-lai-cha-xun-diao-yong-gai-han-shu-de-wei-zhi">使用两个变量来查询调用该函数的位置</a>
-        
-      </li>
-      
-      <li>
-        <a href="https://chenx6.github.io/post/codeql/#cha-kan-hong-de-ding-ceng-biao-da">查看宏的顶层表达</a>
-        
-      </li>
-      
-      <li>
-        <a href="https://chenx6.github.io/post/codeql/#zi-ji-shi-xian-yi-ge-lei">自己实现一个类</a>
-        
-      </li>
-      
-      <li>
-        <a href="https://chenx6.github.io/post/codeql/#shu-ju-liu-he-wu-dian-zhui-zong">数据流和污点追踪</a>
-        
-      </li>
-      
-      <li>
-        <a href="https://chenx6.github.io/post/codeql/#refs">refs</a>
-        
-      </li>
-      
-    </ul>
-    
-  </aside>
   <div class="post">
-    <h2 class="post-title">CodeQL 体验</h1>
-      <span class="post-date">2020-04-20</span>
-      
+    <h2 class="post-title">CodeQL 体验</h2>
+    <span class="post-date">2020-04-20</span>
+    
   
     
       <a href="https://chenx6.github.io/tags/re/">#re</a>
@@ -105,7 +48,67 @@
     
   
 
-      <h2 id="gai-yao">概要</h2>
+    <aside class="toc">
+      
+      <details>
+        <summary>Tabel of contents</summary>
+        <ul>
+          
+          <li>
+            <a href="https://chenx6.github.io/post/codeql/#gai-yao">概要</a>
+            
+          </li>
+          
+          <li>
+            <a href="https://chenx6.github.io/post/codeql/#ti-qian-zhun-bei">提前准备</a>
+            
+          </li>
+          
+          <li>
+            <a href="https://chenx6.github.io/post/codeql/#huan-jing-da-jian">环境搭建</a>
+            
+          </li>
+          
+          <li>
+            <a href="https://chenx6.github.io/post/codeql/#di-yi-ci-cha-xun-he-pull-request">第一次查询和 Pull request</a>
+            
+          </li>
+          
+          <li>
+            <a href="https://chenx6.github.io/post/codeql/#dao-ru-bu-tong-de-lei-wan-cheng-cha-xun">导入不同的类完成查询</a>
+            
+          </li>
+          
+          <li>
+            <a href="https://chenx6.github.io/post/codeql/#shi-yong-liang-ge-bian-liang-lai-cha-xun-diao-yong-gai-han-shu-de-wei-zhi">使用两个变量来查询调用该函数的位置</a>
+            
+          </li>
+          
+          <li>
+            <a href="https://chenx6.github.io/post/codeql/#cha-kan-hong-de-ding-ceng-biao-da">查看宏的顶层表达</a>
+            
+          </li>
+          
+          <li>
+            <a href="https://chenx6.github.io/post/codeql/#zi-ji-shi-xian-yi-ge-lei">自己实现一个类</a>
+            
+          </li>
+          
+          <li>
+            <a href="https://chenx6.github.io/post/codeql/#shu-ju-liu-he-wu-dian-zhui-zong">数据流和污点追踪</a>
+            
+          </li>
+          
+          <li>
+            <a href="https://chenx6.github.io/post/codeql/#refs">refs</a>
+            
+          </li>
+          
+        </ul>
+      </details>
+      
+    </aside>
+    <h2 id="gai-yao">概要</h2>
 <p>之前在 Twitter 上看到有大佬说 Github Learning Club 上搞了个免费的 CodeQL 课程，课程最终目标是使用 CodeQL 这个语言找出 uboot 中的 9 个漏洞。我在克服拖延症后，终于在 4 月底完成了这个课程，于是写文记录。</p>
 <p><a href="https://lab.github.com/githubtraining/codeql-u-boot-challenge-(cc++)">课程链接</a></p>
 <p><a href="https://securitylab.github.com/research/uboot-rce-nfs-vulnerability">通过 CodeQL 找出来的漏洞分析</a></p>

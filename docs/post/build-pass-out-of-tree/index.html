@@ -36,53 +36,10 @@
   </header>
   
 <div class="container">
-  <aside class="toc">
-    
-    <ul>
-      
-      <li>
-        <a href="https://chenx6.github.io/post/build-pass-out-of-tree/#xiang-mu-pei-zhi">项目配置</a>
-        
-        <ul>
-          
-          <li>
-            <a href="https://chenx6.github.io/post/build-pass-out-of-tree/#xiang-mu-mu-lu-jie-gou">项目目录结构</a>
-          </li>
-          
-          <li>
-            <a href="https://chenx6.github.io/post/build-pass-out-of-tree/#liang-ge-cmakelists-txt">两个 CMakeLists.txt</a>
-          </li>
-          
-          <li>
-            <a href="https://chenx6.github.io/post/build-pass-out-of-tree/#dai-ma-mo-gai">代码魔改</a>
-          </li>
-          
-        </ul>
-        
-      </li>
-      
-      <li>
-        <a href="https://chenx6.github.io/post/build-pass-out-of-tree/#kai-shi-bian-yi">开始编译</a>
-        
-      </li>
-      
-      <li>
-        <a href="https://chenx6.github.io/post/build-pass-out-of-tree/#pass-shi-yong">Pass 使用</a>
-        
-      </li>
-      
-      <li>
-        <a href="https://chenx6.github.io/post/build-pass-out-of-tree/#refs">refs</a>
-        
-      </li>
-      
-    </ul>
-    
-  </aside>
   <div class="post">
-    <h2 class="post-title">在 LLVM 代码树外编译 LLVM Pass (使用 OLLVM 示范)</h1>
-      <span class="post-date">2020-01-01</span>
-      
+    <h2 class="post-title">在 LLVM 代码树外编译 LLVM Pass (使用 OLLVM 示范)</h2>
+    <span class="post-date">2020-01-01</span>
+    
   
     
       <a href="https://chenx6.github.io/tags/re/">#re</a>
@@ -91,7 +48,53 @@
     
   
 
-      <p>在网络上流传的编译 LLVM Pass 都需要一份 LLVM 源码，从整个源代码编译，编译非常花时间 (i7 6700HQ 使用 <code>make -j8</code> 编译整个项目花了近 50 分钟)，所以在翻阅文档时发现 LLVM 支持在代码树外编译，在 1 分钟内编译一个 Pass，还是非常香的。</p>
+    <aside class="toc">
+      
+      <details>
+        <summary>Tabel of contents</summary>
+        <ul>
+          
+          <li>
+            <a href="https://chenx6.github.io/post/build-pass-out-of-tree/#xiang-mu-pei-zhi">项目配置</a>
+            
+            <ul>
+              
+              <li>
+                <a href="https://chenx6.github.io/post/build-pass-out-of-tree/#xiang-mu-mu-lu-jie-gou">项目目录结构</a>
+              </li>
+              
+              <li>
+                <a href="https://chenx6.github.io/post/build-pass-out-of-tree/#liang-ge-cmakelists-txt">两个 CMakeLists.txt</a>
+              </li>
+              
+              <li>
+                <a href="https://chenx6.github.io/post/build-pass-out-of-tree/#dai-ma-mo-gai">代码魔改</a>
+              </li>
+              
+            </ul>
+            
+          </li>
+          
+          <li>
+            <a href="https://chenx6.github.io/post/build-pass-out-of-tree/#kai-shi-bian-yi">开始编译</a>
+            
+          </li>
+          
+          <li>
+            <a href="https://chenx6.github.io/post/build-pass-out-of-tree/#pass-shi-yong">Pass 使用</a>
+            
+          </li>
+          
+          <li>
+            <a href="https://chenx6.github.io/post/build-pass-out-of-tree/#refs">refs</a>
+            
+          </li>
+          
+        </ul>
+      </details>
+      
+    </aside>
+    <p>在网络上流传的编译 LLVM Pass 都需要一份 LLVM 源码，从整个源代码编译，编译非常花时间 (i7 6700HQ 使用 <code>make -j8</code> 编译整个项目花了近 50 分钟)，所以在翻阅文档时发现 LLVM 支持在代码树外编译，在 1 分钟内编译一个 Pass，还是非常香的。</p>
 <h2 id="xiang-mu-pei-zhi">项目配置</h2>
 <h3 id="xiang-mu-mu-lu-jie-gou">项目目录结构</h3>
 <p>本次作为示范的 OLLVM 是一个使用 LLVM Pass 进行代码混淆的项目。他的主要文件在于 <code>${LLVM 项目目录}/lib/Transforms/Obfuscation/</code> 和 <code>${LLVM 项目目录}/include/llvm/Transforms/Obfuscation/</code>。将这两个目录下的文件放入对应的目录就可以在代码树外编译 OLLVM 了。OLLVM 相关的文件可以在 <a href="https://github.com/obfuscator-llvm//obfuscator/tree/llvm-4.0">GitHub</a> 找到。</p>

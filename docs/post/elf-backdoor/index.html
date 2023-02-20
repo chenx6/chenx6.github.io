@@ -36,52 +36,10 @@
   </header>
   
 <div class="container">
-  <aside class="toc">
-    
-    <ul>
-      
-      <li>
-        <a href="https://chenx6.github.io/post/elf-backdoor/#jia-hou-men-de-liu-cheng">加后门的流程</a>
-        
-      </li>
-      
-      <li>
-        <a href="https://chenx6.github.io/post/elf-backdoor/#elf-fen-xi-guo-cheng">ELF 分析过程</a>
-        
-      </li>
-      
-      <li>
-        <a href="https://chenx6.github.io/post/elf-backdoor/#elf-bu-ding-guo-cheng">ELF 补丁过程</a>
-        
-      </li>
-      
-      <li>
-        <a href="https://chenx6.github.io/post/elf-backdoor/#shi-zhan">实战</a>
-        
-      </li>
-      
-      <li>
-        <a href="https://chenx6.github.io/post/elf-backdoor/#wan-zheng-dai-ma">完整代码</a>
-        
-      </li>
-      
-      <li>
-        <a href="https://chenx6.github.io/post/elf-backdoor/#wei-wan-cheng-gong-zuo">未完成工作</a>
-        
-      </li>
-      
-      <li>
-        <a href="https://chenx6.github.io/post/elf-backdoor/#refs">refs</a>
-        
-      </li>
-      
-    </ul>
-    
-  </aside>
   <div class="post">
-    <h2 class="post-title">给 ELF 文件加上后门</h1>
-      <span class="post-date">2020-01-01</span>
-      
+    <h2 class="post-title">给 ELF 文件加上后门</h2>
+    <span class="post-date">2020-01-01</span>
+    
   
     
       <a href="https://chenx6.github.io/tags/re/">#re</a>
@@ -92,7 +50,52 @@
     
   
 
-      <p>在渗透测试中，给常用的可执行文件加上后门是很常见的操作。但是之前的加后门 &quot;The backdoor factory&quot; 已经不维护了，而且还是 Python2 写的，代码质量也...所以我自己尝试着重新用 Python3 造了个轮子。在造轮子的过程中，由于 APUE 扔在学校里面了，导致在写和系统相关的汇编时出现了一些翻车情况...</p>
+    <aside class="toc">
+      
+      <details>
+        <summary>Tabel of contents</summary>
+        <ul>
+          
+          <li>
+            <a href="https://chenx6.github.io/post/elf-backdoor/#jia-hou-men-de-liu-cheng">加后门的流程</a>
+            
+          </li>
+          
+          <li>
+            <a href="https://chenx6.github.io/post/elf-backdoor/#elf-fen-xi-guo-cheng">ELF 分析过程</a>
+            
+          </li>
+          
+          <li>
+            <a href="https://chenx6.github.io/post/elf-backdoor/#elf-bu-ding-guo-cheng">ELF 补丁过程</a>
+            
+          </li>
+          
+          <li>
+            <a href="https://chenx6.github.io/post/elf-backdoor/#shi-zhan">实战</a>
+            
+          </li>
+          
+          <li>
+            <a href="https://chenx6.github.io/post/elf-backdoor/#wan-zheng-dai-ma">完整代码</a>
+            
+          </li>
+          
+          <li>
+            <a href="https://chenx6.github.io/post/elf-backdoor/#wei-wan-cheng-gong-zuo">未完成工作</a>
+            
+          </li>
+          
+          <li>
+            <a href="https://chenx6.github.io/post/elf-backdoor/#refs">refs</a>
+            
+          </li>
+          
+        </ul>
+      </details>
+      
+    </aside>
+    <p>在渗透测试中，给常用的可执行文件加上后门是很常见的操作。但是之前的加后门 &quot;The backdoor factory&quot; 已经不维护了，而且还是 Python2 写的，代码质量也...所以我自己尝试着重新用 Python3 造了个轮子。在造轮子的过程中，由于 APUE 扔在学校里面了，导致在写和系统相关的汇编时出现了一些翻车情况...</p>
 <h2 id="jia-hou-men-de-liu-cheng">加后门的流程</h2>
 <p>基本分为两部分，先分析 ELF，然后根据之前的分析来给 ELF 加个&quot;补丁&quot;。</p>
 <ol>

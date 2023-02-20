@@ -58,68 +58,10 @@
   </header>
   
 <div class="container">
-  <aside class="toc">
-    
-    <ul>
-      
-      <li>
-        <a href="https://chenx6.github.io/post/calculator/#qian-zhi-zhi-shi">前置知识</a>
-        
-      </li>
-      
-      <li>
-        <a href="https://chenx6.github.io/post/calculator/#zheng-ti-jia-gou">整体架构</a>
-        
-      </li>
-      
-      <li>
-        <a href="https://chenx6.github.io/post/calculator/#ci-fa-fen-xi">词法分析</a>
-        
-      </li>
-      
-      <li>
-        <a href="https://chenx6.github.io/post/calculator/#yu-fa-fen-xi">语法分析</a>
-        
-        <ul>
-          
-          <li>
-            <a href="https://chenx6.github.io/post/calculator/#zuo-di-gui">左递归</a>
-          </li>
-          
-          <li>
-            <a href="https://chenx6.github.io/post/calculator/#hui-su">回溯</a>
-          </li>
-          
-          <li>
-            <a href="https://chenx6.github.io/post/calculator/#dai-ma-shi-xian">代码实现</a>
-          </li>
-          
-        </ul>
-        
-      </li>
-      
-      <li>
-        <a href="https://chenx6.github.io/post/calculator/#yun-suan">运算</a>
-        
-      </li>
-      
-      <li>
-        <a href="https://chenx6.github.io/post/calculator/#zong-jie">总结</a>
-        
-      </li>
-      
-      <li>
-        <a href="https://chenx6.github.io/post/calculator/#refs">Refs</a>
-        
-      </li>
-      
-    </ul>
-    
-  </aside>
   <div class="post">
-    <h2 class="post-title">使用编译原理的知识，用 Rust 写一个计算器</h1>
-      <span class="post-date">2022-06-02</span>
-      
+    <h2 class="post-title">使用编译原理的知识，用 Rust 写一个计算器</h2>
+    <span class="post-date">2022-06-02</span>
+    
   
     
       <a href="https://chenx6.github.io/tags/plt/">#plt</a>
@@ -128,7 +70,68 @@
     
   
 
-      <p>”想写个计算器“这件事情应该是我刚学会 C 语言时候的事情，当时还看不懂栈，逆波兰式等结构。但是现在不一样了，我不仅学过数据结构，还学过了编译原理。这次我就拿学过的编译原理相关知识写个计算器。</p>
+    <aside class="toc">
+      
+      <details>
+        <summary>Tabel of contents</summary>
+        <ul>
+          
+          <li>
+            <a href="https://chenx6.github.io/post/calculator/#qian-zhi-zhi-shi">前置知识</a>
+            
+          </li>
+          
+          <li>
+            <a href="https://chenx6.github.io/post/calculator/#zheng-ti-jia-gou">整体架构</a>
+            
+          </li>
+          
+          <li>
+            <a href="https://chenx6.github.io/post/calculator/#ci-fa-fen-xi">词法分析</a>
+            
+          </li>
+          
+          <li>
+            <a href="https://chenx6.github.io/post/calculator/#yu-fa-fen-xi">语法分析</a>
+            
+            <ul>
+              
+              <li>
+                <a href="https://chenx6.github.io/post/calculator/#zuo-di-gui">左递归</a>
+              </li>
+              
+              <li>
+                <a href="https://chenx6.github.io/post/calculator/#hui-su">回溯</a>
+              </li>
+              
+              <li>
+                <a href="https://chenx6.github.io/post/calculator/#dai-ma-shi-xian">代码实现</a>
+              </li>
+              
+            </ul>
+            
+          </li>
+          
+          <li>
+            <a href="https://chenx6.github.io/post/calculator/#yun-suan">运算</a>
+            
+          </li>
+          
+          <li>
+            <a href="https://chenx6.github.io/post/calculator/#zong-jie">总结</a>
+            
+          </li>
+          
+          <li>
+            <a href="https://chenx6.github.io/post/calculator/#refs">Refs</a>
+            
+          </li>
+          
+        </ul>
+      </details>
+      
+    </aside>
+    <p>”想写个计算器“这件事情应该是我刚学会 C 语言时候的事情，当时还看不懂栈，逆波兰式等结构。但是现在不一样了，我不仅学过数据结构，还学过了编译原理。这次我就拿学过的编译原理相关知识写个计算器。</p>
 <h2 id="qian-zhi-zhi-shi">前置知识</h2>
 <p>上下文无关语法(CFG)：描述了语句是如何形成的。</p>
 <p>语句：从语法规则里推导出的一个符号串。</p>

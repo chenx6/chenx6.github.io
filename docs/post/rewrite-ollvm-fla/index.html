@@ -36,53 +36,10 @@
   </header>
   
 <div class="container">
-  <aside class="toc">
-    
-    <ul>
-      
-      <li>
-        <a href="https://chenx6.github.io/post/rewrite-ollvm-fla/#shi-yao-shi-kong-zhi-liu-ping-tan-hua">什么是控制流平坦化</a>
-        
-        <ul>
-          
-          <li>
-            <a href="https://chenx6.github.io/post/rewrite-ollvm-fla/#ming-ci-jie-shi">名词解释</a>
-          </li>
-          
-          <li>
-            <a href="https://chenx6.github.io/post/rewrite-ollvm-fla/#yu-yan-miao-shu-kong-zhi-liu-ping-tan-hua-de-shi-xian">语言描述控制流平坦化的实现</a>
-          </li>
-          
-          <li>
-            <a href="https://chenx6.github.io/post/rewrite-ollvm-fla/#ke-xing-de-xiu-fu-fang-fa">可行的修复方法</a>
-          </li>
-          
-        </ul>
-        
-      </li>
-      
-      <li>
-        <a href="https://chenx6.github.io/post/rewrite-ollvm-fla/#zen-yao-shi-xian">怎么实现</a>
-        
-      </li>
-      
-      <li>
-        <a href="https://chenx6.github.io/post/rewrite-ollvm-fla/#zong-jie">总结</a>
-        
-      </li>
-      
-      <li>
-        <a href="https://chenx6.github.io/post/rewrite-ollvm-fla/#refs">refs</a>
-        
-      </li>
-      
-    </ul>
-    
-  </aside>
   <div class="post">
-    <h2 class="post-title">重写 OLLVM 之控制流平坦化</h1>
-      <span class="post-date">2021-01-21</span>
-      
+    <h2 class="post-title">重写 OLLVM 之控制流平坦化</h2>
+    <span class="post-date">2021-01-21</span>
+    
   
     
       <a href="https://chenx6.github.io/tags/re/">#re</a>
@@ -91,7 +48,53 @@
     
   
 
-      <p>OLLVM 的控制流平坦化是逆向老哥最讨厌的混淆了，因为一旦使用就代表着 IDA 的 decompiler 彻底报废了。所以了解并在<a href="https://github.com/chenx6/baby_obfuscator">自己的项目中</a>重写控制流平坦化挺重要的。</p>
+    <aside class="toc">
+      
+      <details>
+        <summary>Tabel of contents</summary>
+        <ul>
+          
+          <li>
+            <a href="https://chenx6.github.io/post/rewrite-ollvm-fla/#shi-yao-shi-kong-zhi-liu-ping-tan-hua">什么是控制流平坦化</a>
+            
+            <ul>
+              
+              <li>
+                <a href="https://chenx6.github.io/post/rewrite-ollvm-fla/#ming-ci-jie-shi">名词解释</a>
+              </li>
+              
+              <li>
+                <a href="https://chenx6.github.io/post/rewrite-ollvm-fla/#yu-yan-miao-shu-kong-zhi-liu-ping-tan-hua-de-shi-xian">语言描述控制流平坦化的实现</a>
+              </li>
+              
+              <li>
+                <a href="https://chenx6.github.io/post/rewrite-ollvm-fla/#ke-xing-de-xiu-fu-fang-fa">可行的修复方法</a>
+              </li>
+              
+            </ul>
+            
+          </li>
+          
+          <li>
+            <a href="https://chenx6.github.io/post/rewrite-ollvm-fla/#zen-yao-shi-xian">怎么实现</a>
+            
+          </li>
+          
+          <li>
+            <a href="https://chenx6.github.io/post/rewrite-ollvm-fla/#zong-jie">总结</a>
+            
+          </li>
+          
+          <li>
+            <a href="https://chenx6.github.io/post/rewrite-ollvm-fla/#refs">refs</a>
+            
+          </li>
+          
+        </ul>
+      </details>
+      
+    </aside>
+    <p>OLLVM 的控制流平坦化是逆向老哥最讨厌的混淆了，因为一旦使用就代表着 IDA 的 decompiler 彻底报废了。所以了解并在<a href="https://github.com/chenx6/baby_obfuscator">自己的项目中</a>重写控制流平坦化挺重要的。</p>
 <h2 id="shi-yao-shi-kong-zhi-liu-ping-tan-hua">什么是控制流平坦化</h2>
 <h3 id="ming-ci-jie-shi">名词解释</h3>
 <h4 id="basicblock">BasicBlock</h4>

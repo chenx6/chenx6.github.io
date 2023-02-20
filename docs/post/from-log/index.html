@@ -36,37 +36,10 @@
   </header>
   
 <div class="container">
-  <aside class="toc">
-    
-    <ul>
-      
-      <li>
-        <a href="https://chenx6.github.io/post/from-log/#ri-zhi-han-shu-chang-shi-yao-yang">日志函数长什么样</a>
-        
-      </li>
-      
-      <li>
-        <a href="https://chenx6.github.io/post/from-log/#zai-ida-zhong-shang-mian-de-dai-ma-chang-shi-yao-yang">在 IDA 中，上面的代码长什么样</a>
-        
-      </li>
-      
-      <li>
-        <a href="https://chenx6.github.io/post/from-log/#idapython-deng-chang">IDAPython 登场</a>
-        
-      </li>
-      
-      <li>
-        <a href="https://chenx6.github.io/post/from-log/#refs">Refs</a>
-        
-      </li>
-      
-    </ul>
-    
-  </aside>
   <div class="post">
-    <h2 class="post-title">从日志函数中回复无符号的函数名字</h1>
-      <span class="post-date">2022-07-24</span>
-      
+    <h2 class="post-title">从日志函数中回复无符号的函数名字</h2>
+    <span class="post-date">2022-07-24</span>
+    
   
     
       <a href="https://chenx6.github.io/tags/ida/">#ida</a>
@@ -75,7 +48,37 @@
     
   
 
-      <p>在逆向二进制程序中，经常碰到将程序 strip 了，但是日志函数中保留着函数名字的情况。所以写文记录在这种情况下，使用 IDAPython 恢复函数名字的过程。</p>
+    <aside class="toc">
+      
+      <details>
+        <summary>Tabel of contents</summary>
+        <ul>
+          
+          <li>
+            <a href="https://chenx6.github.io/post/from-log/#ri-zhi-han-shu-chang-shi-yao-yang">日志函数长什么样</a>
+            
+          </li>
+          
+          <li>
+            <a href="https://chenx6.github.io/post/from-log/#zai-ida-zhong-shang-mian-de-dai-ma-chang-shi-yao-yang">在 IDA 中，上面的代码长什么样</a>
+            
+          </li>
+          
+          <li>
+            <a href="https://chenx6.github.io/post/from-log/#idapython-deng-chang">IDAPython 登场</a>
+            
+          </li>
+          
+          <li>
+            <a href="https://chenx6.github.io/post/from-log/#refs">Refs</a>
+            
+          </li>
+          
+        </ul>
+      </details>
+      
+    </aside>
+    <p>在逆向二进制程序中，经常碰到将程序 strip 了，但是日志函数中保留着函数名字的情况。所以写文记录在这种情况下，使用 IDAPython 恢复函数名字的过程。</p>
 <h2 id="ri-zhi-han-shu-chang-shi-yao-yang">日志函数长什么样</h2>
 <p>下面是我手写的一个日志函数。主要有几个部分：</p>
 <ul>

@@ -36,89 +36,92 @@
   </header>
   
 <div class="container">
-  <aside class="toc">
-    
-    <ul>
-      
-      <li>
-        <a href="https://chenx6.github.io/post/lc3-vm/#lc3-jia-gou">LC3 架构</a>
-        
-        <ul>
-          
-          <li>
-            <a href="https://chenx6.github.io/post/lc3-vm/#nei-cun">内存</a>
-          </li>
-          
-          <li>
-            <a href="https://chenx6.github.io/post/lc3-vm/#zhi-ling">指令</a>
-          </li>
-          
-          <li>
-            <a href="https://chenx6.github.io/post/lc3-vm/#ji-cun-qi">寄存器</a>
-          </li>
-          
-          <li>
-            <a href="https://chenx6.github.io/post/lc3-vm/#qi-ta">其他</a>
-          </li>
-          
-        </ul>
-        
-      </li>
-      
-      <li>
-        <a href="https://chenx6.github.io/post/lc3-vm/#xu-ni-ji-shi-xian">虚拟机实现</a>
-        
-        <ul>
-          
-          <li>
-            <a href="https://chenx6.github.io/post/lc3-vm/#xu-ni-ji-ji-ben-jia-gou">虚拟机基本架构</a>
-          </li>
-          
-          <li>
-            <a href="https://chenx6.github.io/post/lc3-vm/#du-qu-cheng-xu">读取程序</a>
-          </li>
-          
-          <li>
-            <a href="https://chenx6.github.io/post/lc3-vm/#zhi-xing-zhi-ling">执行指令</a>
-          </li>
-          
-          <li>
-            <a href="https://chenx6.github.io/post/lc3-vm/#trap-fan-yi">Trap 翻译</a>
-          </li>
-          
-        </ul>
-        
-      </li>
-      
-      <li>
-        <a href="https://chenx6.github.io/post/lc3-vm/#xu-ni-ji-ce-shi">虚拟机测试</a>
-        
-      </li>
-      
-      <li>
-        <a href="https://chenx6.github.io/post/lc3-vm/#bian-yi">编译</a>
-        
-      </li>
-      
-      <li>
-        <a href="https://chenx6.github.io/post/lc3-vm/#refs">refs</a>
-        
-      </li>
-      
-    </ul>
-    
-  </aside>
   <div class="post">
-    <h2 class="post-title">LC3-VM 学习和实现</h1>
-      <span class="post-date">2020-01-15</span>
-      
+    <h2 class="post-title">LC3-VM 学习和实现</h2>
+    <span class="post-date">2020-01-15</span>
+    
   
     
       <a href="https://chenx6.github.io/tags/vm/">#vm</a>
     
   
 
-      <p>本文是根据 <a href="https://justinmeiners.github.io/lc3-vm">https://justinmeiners.github.io/lc3-vm</a> 和 <a href="https://justinmeiners.github.io/lc3-vm/supplies/lc3-isa.pdf">https://justinmeiners.github.io/lc3-vm/supplies/lc3-isa.pdf</a> ISA 写出 LC3 VM 的实现过程。</p>
+    <aside class="toc">
+      
+      <details>
+        <summary>Tabel of contents</summary>
+        <ul>
+          
+          <li>
+            <a href="https://chenx6.github.io/post/lc3-vm/#lc3-jia-gou">LC3 架构</a>
+            
+            <ul>
+              
+              <li>
+                <a href="https://chenx6.github.io/post/lc3-vm/#nei-cun">内存</a>
+              </li>
+              
+              <li>
+                <a href="https://chenx6.github.io/post/lc3-vm/#zhi-ling">指令</a>
+              </li>
+              
+              <li>
+                <a href="https://chenx6.github.io/post/lc3-vm/#ji-cun-qi">寄存器</a>
+              </li>
+              
+              <li>
+                <a href="https://chenx6.github.io/post/lc3-vm/#qi-ta">其他</a>
+              </li>
+              
+            </ul>
+            
+          </li>
+          
+          <li>
+            <a href="https://chenx6.github.io/post/lc3-vm/#xu-ni-ji-shi-xian">虚拟机实现</a>
+            
+            <ul>
+              
+              <li>
+                <a href="https://chenx6.github.io/post/lc3-vm/#xu-ni-ji-ji-ben-jia-gou">虚拟机基本架构</a>
+              </li>
+              
+              <li>
+                <a href="https://chenx6.github.io/post/lc3-vm/#du-qu-cheng-xu">读取程序</a>
+              </li>
+              
+              <li>
+                <a href="https://chenx6.github.io/post/lc3-vm/#zhi-xing-zhi-ling">执行指令</a>
+              </li>
+              
+              <li>
+                <a href="https://chenx6.github.io/post/lc3-vm/#trap-fan-yi">Trap 翻译</a>
+              </li>
+              
+            </ul>
+            
+          </li>
+          
+          <li>
+            <a href="https://chenx6.github.io/post/lc3-vm/#xu-ni-ji-ce-shi">虚拟机测试</a>
+            
+          </li>
+          
+          <li>
+            <a href="https://chenx6.github.io/post/lc3-vm/#bian-yi">编译</a>
+            
+          </li>
+          
+          <li>
+            <a href="https://chenx6.github.io/post/lc3-vm/#refs">refs</a>
+            
+          </li>
+          
+        </ul>
+      </details>
+      
+    </aside>
+    <p>本文是根据 <a href="https://justinmeiners.github.io/lc3-vm">https://justinmeiners.github.io/lc3-vm</a> 和 <a href="https://justinmeiners.github.io/lc3-vm/supplies/lc3-isa.pdf">https://justinmeiners.github.io/lc3-vm/supplies/lc3-isa.pdf</a> ISA 写出 LC3 VM 的实现过程。</p>
 <p>代码已上传到了 Github 上：<a href="https://github.com/chenx6/lc3-vm">https://github.com/chenx6/lc3-vm</a></p>
 <h2 id="lc3-jia-gou">LC3 架构</h2>
 <h3 id="nei-cun">内存</h3>

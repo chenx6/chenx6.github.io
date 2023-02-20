@@ -36,61 +36,10 @@
   </header>
   
 <div class="container">
-  <aside class="toc">
-    
-    <ul>
-      
-      <li>
-        <a href="https://chenx6.github.io/post/rewrite-ollvm-bcf/#shi-yao-shi-xu-jia-kong-zhi-liu-bogus-control-flow">什么是虚假控制流 (Bogus control flow)</a>
-        
-        <ul>
-          
-          <li>
-            <a href="https://chenx6.github.io/post/rewrite-ollvm-bcf/#ming-ci-jie-shi">名词解释</a>
-          </li>
-          
-          <li>
-            <a href="https://chenx6.github.io/post/rewrite-ollvm-bcf/#xu-jia-kong-zhi-liu-de-liu-cheng-biao-shi">虚假控制流的流程表示</a>
-          </li>
-          
-        </ul>
-        
-      </li>
-      
-      <li>
-        <a href="https://chenx6.github.io/post/rewrite-ollvm-bcf/#zen-yao-shi-xian">怎么实现</a>
-        
-        <ul>
-          
-          <li>
-            <a href="https://chenx6.github.io/post/rewrite-ollvm-bcf/#bie-de-xiang-mu-shi-zen-yao-shi-xian-de">别的项目是怎么实现的</a>
-          </li>
-          
-          <li>
-            <a href="https://chenx6.github.io/post/rewrite-ollvm-bcf/#ju-ti-shi-xian">具体实现</a>
-          </li>
-          
-        </ul>
-        
-      </li>
-      
-      <li>
-        <a href="https://chenx6.github.io/post/rewrite-ollvm-bcf/#xiao-guo-yan-shi">效果演示</a>
-        
-      </li>
-      
-      <li>
-        <a href="https://chenx6.github.io/post/rewrite-ollvm-bcf/#refs">refs</a>
-        
-      </li>
-      
-    </ul>
-    
-  </aside>
   <div class="post">
-    <h2 class="post-title">重写 OLLVM 之虚假控制流</h1>
-      <span class="post-date">2020-01-01</span>
-      
+    <h2 class="post-title">重写 OLLVM 之虚假控制流</h2>
+    <span class="post-date">2020-01-01</span>
+    
   
     
       <a href="https://chenx6.github.io/tags/re/">#re</a>
@@ -99,7 +48,61 @@
     
   
 
-      <p>由于我个人觉得 OLLVM 的代码年久失修，所以就新建了个项目，开始学习并重写 OLLVM。项目地址：<a href="https://github.com/chenx6/baby_obfuscator">https://github.com/chenx6/baby_obfuscator</a>。如果将我的重写项目和 OLLVM 相比的话，我的项目的优点就是编译比较快（编译整个项目只需要不到 1 分钟），代码比较“新”吧...</p>
+    <aside class="toc">
+      
+      <details>
+        <summary>Tabel of contents</summary>
+        <ul>
+          
+          <li>
+            <a href="https://chenx6.github.io/post/rewrite-ollvm-bcf/#shi-yao-shi-xu-jia-kong-zhi-liu-bogus-control-flow">什么是虚假控制流 (Bogus control flow)</a>
+            
+            <ul>
+              
+              <li>
+                <a href="https://chenx6.github.io/post/rewrite-ollvm-bcf/#ming-ci-jie-shi">名词解释</a>
+              </li>
+              
+              <li>
+                <a href="https://chenx6.github.io/post/rewrite-ollvm-bcf/#xu-jia-kong-zhi-liu-de-liu-cheng-biao-shi">虚假控制流的流程表示</a>
+              </li>
+              
+            </ul>
+            
+          </li>
+          
+          <li>
+            <a href="https://chenx6.github.io/post/rewrite-ollvm-bcf/#zen-yao-shi-xian">怎么实现</a>
+            
+            <ul>
+              
+              <li>
+                <a href="https://chenx6.github.io/post/rewrite-ollvm-bcf/#bie-de-xiang-mu-shi-zen-yao-shi-xian-de">别的项目是怎么实现的</a>
+              </li>
+              
+              <li>
+                <a href="https://chenx6.github.io/post/rewrite-ollvm-bcf/#ju-ti-shi-xian">具体实现</a>
+              </li>
+              
+            </ul>
+            
+          </li>
+          
+          <li>
+            <a href="https://chenx6.github.io/post/rewrite-ollvm-bcf/#xiao-guo-yan-shi">效果演示</a>
+            
+          </li>
+          
+          <li>
+            <a href="https://chenx6.github.io/post/rewrite-ollvm-bcf/#refs">refs</a>
+            
+          </li>
+          
+        </ul>
+      </details>
+      
+    </aside>
+    <p>由于我个人觉得 OLLVM 的代码年久失修，所以就新建了个项目，开始学习并重写 OLLVM。项目地址：<a href="https://github.com/chenx6/baby_obfuscator">https://github.com/chenx6/baby_obfuscator</a>。如果将我的重写项目和 OLLVM 相比的话，我的项目的优点就是编译比较快（编译整个项目只需要不到 1 分钟），代码比较“新”吧...</p>
 <p>下面讲讲我个人重写虚假控制流的思路，以及对其他项目中相同功能的理解。</p>
 <h2 id="shi-yao-shi-xu-jia-kong-zhi-liu-bogus-control-flow">什么是虚假控制流 (Bogus control flow)</h2>
 <p>在讲解虚假控制流时，我们先解释一些名词，然后看下流程表示就可以知道大概了。</p>

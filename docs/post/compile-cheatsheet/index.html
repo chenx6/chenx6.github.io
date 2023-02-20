@@ -36,95 +36,10 @@
   </header>
   
 <div class="container">
-  <aside class="toc">
-    
-    <ul>
-      
-      <li>
-        <a href="https://chenx6.github.io/post/compile-cheatsheet/#bian-yi-guo-cheng-jian-shu">编译过程简述</a>
-        
-      </li>
-      
-      <li>
-        <a href="https://chenx6.github.io/post/compile-cheatsheet/#bian-yi-xi-tong">编译系统</a>
-        
-        <ul>
-          
-          <li>
-            <a href="https://chenx6.github.io/post/compile-cheatsheet/#meson">Meson</a>
-          </li>
-          
-          <li>
-            <a href="https://chenx6.github.io/post/compile-cheatsheet/#cmake">CMake</a>
-          </li>
-          
-          <li>
-            <a href="https://chenx6.github.io/post/compile-cheatsheet/#makefile">Makefile</a>
-          </li>
-          
-        </ul>
-        
-      </li>
-      
-      <li>
-        <a href="https://chenx6.github.io/post/compile-cheatsheet/#ku-guan-li-gong-ju">库管理工具</a>
-        
-        <ul>
-          
-          <li>
-            <a href="https://chenx6.github.io/post/compile-cheatsheet/#pkg-config">pkg-config</a>
-          </li>
-          
-        </ul>
-        
-      </li>
-      
-      <li>
-        <a href="https://chenx6.github.io/post/compile-cheatsheet/#bian-yi-qi">编译器</a>
-        
-        <ul>
-          
-          <li>
-            <a href="https://chenx6.github.io/post/compile-cheatsheet/#gccbian-yi-xuan-xiang">GCC编译选项</a>
-          </li>
-          
-          <li>
-            <a href="https://chenx6.github.io/post/compile-cheatsheet/#shi-yong-zig-cc-jin-xing-kua-ping-tai-bian-yi">使用 zig cc 进行跨平台编译</a>
-          </li>
-          
-        </ul>
-        
-      </li>
-      
-      <li>
-        <a href="https://chenx6.github.io/post/compile-cheatsheet/#huan-jing-pei-zhi">环境配置</a>
-        
-        <ul>
-          
-          <li>
-            <a href="https://chenx6.github.io/post/compile-cheatsheet/#docker-podman">Docker&#x2F;Podman</a>
-          </li>
-          
-          <li>
-            <a href="https://chenx6.github.io/post/compile-cheatsheet/#glibc-symver">Glibc symver</a>
-          </li>
-          
-        </ul>
-        
-      </li>
-      
-      <li>
-        <a href="https://chenx6.github.io/post/compile-cheatsheet/#refs">Refs</a>
-        
-      </li>
-      
-    </ul>
-    
-  </aside>
   <div class="post">
-    <h2 class="post-title">关于 C 语言编译的那些破事</h1>
-      <span class="post-date">2022-05-21</span>
-      
+    <h2 class="post-title">关于 C 语言编译的那些破事</h2>
+    <span class="post-date">2022-05-21</span>
+    
   
     
       <a href="https://chenx6.github.io/tags/cpp/">#cpp</a>
@@ -135,7 +50,95 @@
     
   
 
-      <p>C 和 C++ 的编译是真的痛苦，会出现一堆离谱的问题。所以我特地写一篇文章讲一下这些破事，并且提供一些样例代码方便复制黏贴。</p>
+    <aside class="toc">
+      
+      <details>
+        <summary>Tabel of contents</summary>
+        <ul>
+          
+          <li>
+            <a href="https://chenx6.github.io/post/compile-cheatsheet/#bian-yi-guo-cheng-jian-shu">编译过程简述</a>
+            
+          </li>
+          
+          <li>
+            <a href="https://chenx6.github.io/post/compile-cheatsheet/#bian-yi-xi-tong">编译系统</a>
+            
+            <ul>
+              
+              <li>
+                <a href="https://chenx6.github.io/post/compile-cheatsheet/#meson">Meson</a>
+              </li>
+              
+              <li>
+                <a href="https://chenx6.github.io/post/compile-cheatsheet/#cmake">CMake</a>
+              </li>
+              
+              <li>
+                <a href="https://chenx6.github.io/post/compile-cheatsheet/#makefile">Makefile</a>
+              </li>
+              
+            </ul>
+            
+          </li>
+          
+          <li>
+            <a href="https://chenx6.github.io/post/compile-cheatsheet/#ku-guan-li-gong-ju">库管理工具</a>
+            
+            <ul>
+              
+              <li>
+                <a href="https://chenx6.github.io/post/compile-cheatsheet/#pkg-config">pkg-config</a>
+              </li>
+              
+            </ul>
+            
+          </li>
+          
+          <li>
+            <a href="https://chenx6.github.io/post/compile-cheatsheet/#bian-yi-qi">编译器</a>
+            
+            <ul>
+              
+              <li>
+                <a href="https://chenx6.github.io/post/compile-cheatsheet/#gccbian-yi-xuan-xiang">GCC编译选项</a>
+              </li>
+              
+              <li>
+                <a href="https://chenx6.github.io/post/compile-cheatsheet/#shi-yong-zig-cc-jin-xing-kua-ping-tai-bian-yi">使用 zig cc 进行跨平台编译</a>
+              </li>
+              
+            </ul>
+            
+          </li>
+          
+          <li>
+            <a href="https://chenx6.github.io/post/compile-cheatsheet/#huan-jing-pei-zhi">环境配置</a>
+            
+            <ul>
+              
+              <li>
+                <a href="https://chenx6.github.io/post/compile-cheatsheet/#docker-podman">Docker&#x2F;Podman</a>
+              </li>
+              
+              <li>
+                <a href="https://chenx6.github.io/post/compile-cheatsheet/#glibc-symver">Glibc symver</a>
+              </li>
+              
+            </ul>
+            
+          </li>
+          
+          <li>
+            <a href="https://chenx6.github.io/post/compile-cheatsheet/#refs">Refs</a>
+            
+          </li>
+          
+        </ul>
+      </details>
+      
+    </aside>
+    <p>C 和 C++ 的编译是真的痛苦，会出现一堆离谱的问题。所以我特地写一篇文章讲一下这些破事，并且提供一些样例代码方便复制黏贴。</p>
 <h2 id="bian-yi-guo-cheng-jian-shu">编译过程简述</h2>
 <p>在网上能找到一堆的编译流程相关的博客，而且肯定比我讲的正确，所以这里我就简单概括下。</p>
 <p>现在很少有程序能只依赖与 C 标准库和系统 API 了，所以会有一堆的外部依赖库。要想编译成功，得让编译器和链接器都知道去哪找这些库，怎么链接上。于是就有了一堆的编译管理工具。像 CMake 和 Meson 是负责生成编译的脚本，make 和 ninja 则是负责执行编译任务，然后是 gcc 和 clang 将代码编译成目标文件，最后有 ld, gold, mold 将目标文件进行链接生成可执行文件。</p>

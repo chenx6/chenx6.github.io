@@ -36,37 +36,10 @@
   </header>
   
 <div class="container">
-  <aside class="toc">
-    
-    <ul>
-      
-      <li>
-        <a href="https://chenx6.github.io/post/plthook/#yuan-li-fen-xi">原理分析</a>
-        
-      </li>
-      
-      <li>
-        <a href="https://chenx6.github.io/post/plthook/#xiang-mu-dai-ma-fen-xi">项目代码分析</a>
-        
-      </li>
-      
-      <li>
-        <a href="https://chenx6.github.io/post/plthook/#zhong-xin-fu-xian">重新复现</a>
-        
-      </li>
-      
-      <li>
-        <a href="https://chenx6.github.io/post/plthook/#refs">Refs</a>
-        
-      </li>
-      
-    </ul>
-    
-  </aside>
   <div class="post">
-    <h2 class="post-title">plt hook 项目代码分析和最小实现</h1>
-      <span class="post-date">2022-04-05</span>
-      
+    <h2 class="post-title">plt hook 项目代码分析和最小实现</h2>
+    <span class="post-date">2022-04-05</span>
+    
   
     
       <a href="https://chenx6.github.io/tags/re/">#re</a>
@@ -77,7 +50,37 @@
     
   
 
-      <p>虽然知道可以通过魔改 plt 表实现 hook 函数，但是不知道具体实现...碰巧最近用到了 plthook 这个库，于是我就研究了下 plthook 这个库，并且仿照着这个库重新实现一份代码。</p>
+    <aside class="toc">
+      
+      <details>
+        <summary>Tabel of contents</summary>
+        <ul>
+          
+          <li>
+            <a href="https://chenx6.github.io/post/plthook/#yuan-li-fen-xi">原理分析</a>
+            
+          </li>
+          
+          <li>
+            <a href="https://chenx6.github.io/post/plthook/#xiang-mu-dai-ma-fen-xi">项目代码分析</a>
+            
+          </li>
+          
+          <li>
+            <a href="https://chenx6.github.io/post/plthook/#zhong-xin-fu-xian">重新复现</a>
+            
+          </li>
+          
+          <li>
+            <a href="https://chenx6.github.io/post/plthook/#refs">Refs</a>
+            
+          </li>
+          
+        </ul>
+      </details>
+      
+    </aside>
+    <p>虽然知道可以通过魔改 plt 表实现 hook 函数，但是不知道具体实现...碰巧最近用到了 plthook 这个库，于是我就研究了下 plthook 这个库，并且仿照着这个库重新实现一份代码。</p>
 <h2 id="yuan-li-fen-xi">原理分析</h2>
 <p>根据命名规则，.rela.plt 表是负责 plt 表的重定位信息。.rela 表中有每项都有 2 个成员，r_offset 指向了该重定位入口所要修正的位置的第一个字节的虚拟地址， r_info 则是表示相关信息，可以通过 <code>ELF[32|64]_R_SYM</code> 获得其指向的 .dynsym 项的下标。</p>
 <p>.dynsym 表（动态链接表）中存放动态链接需要的信息，可以通过 .dynsym 表从 .strtab 表中获得要链接的函数名字。</p>

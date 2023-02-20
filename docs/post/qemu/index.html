@@ -36,58 +36,10 @@
   </header>
   
 <div class="container">
-  <aside class="toc">
-    
-    <ul>
-      
-      <li>
-        <a href="https://chenx6.github.io/post/qemu/#cpu-pei-zhi">CPU 配置</a>
-        
-      </li>
-      
-      <li>
-        <a href="https://chenx6.github.io/post/qemu/#nei-cun">内存</a>
-        
-      </li>
-      
-      <li>
-        <a href="https://chenx6.github.io/post/qemu/#wang-luo">网络</a>
-        
-        <ul>
-          
-          <li>
-            <a href="https://chenx6.github.io/post/qemu/#ru-he-chuang-jian-tap-she-bei">如何创建 tap 设备</a>
-          </li>
-          
-          <li>
-            <a href="https://chenx6.github.io/post/qemu/#shi-yong-dnsmasq-pei-zhi-dhcp">使用 dnsmasq 配置 DHCP</a>
-          </li>
-          
-          <li>
-            <a href="https://chenx6.github.io/post/qemu/#bie-de-xuan-xiang">别的选项</a>
-          </li>
-          
-        </ul>
-        
-      </li>
-      
-      <li>
-        <a href="https://chenx6.github.io/post/qemu/#zui-hou-cheng-guo">最后成果</a>
-        
-      </li>
-      
-      <li>
-        <a href="https://chenx6.github.io/post/qemu/#refs">Refs</a>
-        
-      </li>
-      
-    </ul>
-    
-  </aside>
   <div class="post">
-    <h2 class="post-title">QEMU 简易配置（CPU&#x2F;内存&#x2F;网络&#x2F;...）</h1>
-      <span class="post-date">2023-02-19</span>
-      
+    <h2 class="post-title">QEMU 简易配置（CPU&#x2F;内存&#x2F;网络&#x2F;...）</h2>
+    <span class="post-date">2023-02-19</span>
+    
   
     
       <a href="https://chenx6.github.io/tags/linux/">#linux</a>
@@ -96,7 +48,58 @@
     
   
 
-      <p>从大学开始，我看过了一堆的 QEMU 配置的文章，这些文章要不就是从别的地方复制黏贴出来的，要不就是使用了已经停止维护的工具。所以我决定从网上找一手资料（QEMU Wiki，文档, man qemu，...）来写一篇文章来讲讲怎么简单的配置 QEMU 模拟虚拟机。在文章的最后放了最终运行的命令，大家复制了保存成脚本就可以使用，或者根据自己的要求来配置。（这个脚本已经经过 2 个人使用了，很好用 233）</p>
+    <aside class="toc">
+      
+      <details>
+        <summary>Tabel of contents</summary>
+        <ul>
+          
+          <li>
+            <a href="https://chenx6.github.io/post/qemu/#cpu-pei-zhi">CPU 配置</a>
+            
+          </li>
+          
+          <li>
+            <a href="https://chenx6.github.io/post/qemu/#nei-cun">内存</a>
+            
+          </li>
+          
+          <li>
+            <a href="https://chenx6.github.io/post/qemu/#wang-luo">网络</a>
+            
+            <ul>
+              
+              <li>
+                <a href="https://chenx6.github.io/post/qemu/#ru-he-chuang-jian-tap-she-bei">如何创建 tap 设备</a>
+              </li>
+              
+              <li>
+                <a href="https://chenx6.github.io/post/qemu/#shi-yong-dnsmasq-pei-zhi-dhcp">使用 dnsmasq 配置 DHCP</a>
+              </li>
+              
+              <li>
+                <a href="https://chenx6.github.io/post/qemu/#bie-de-xuan-xiang">别的选项</a>
+              </li>
+              
+            </ul>
+            
+          </li>
+          
+          <li>
+            <a href="https://chenx6.github.io/post/qemu/#zui-hou-cheng-guo">最后成果</a>
+            
+          </li>
+          
+          <li>
+            <a href="https://chenx6.github.io/post/qemu/#refs">Refs</a>
+            
+          </li>
+          
+        </ul>
+      </details>
+      
+    </aside>
+    <p>从大学开始，我看过了一堆的 QEMU 配置的文章，这些文章要不就是从别的地方复制黏贴出来的，要不就是使用了已经停止维护的工具。所以我决定从网上找一手资料（QEMU Wiki，文档, man qemu，...）来写一篇文章来讲讲怎么简单的配置 QEMU 模拟虚拟机。在文章的最后放了最终运行的命令，大家复制了保存成脚本就可以使用，或者根据自己的要求来配置。（这个脚本已经经过 2 个人使用了，很好用 233）</p>
 <h2 id="cpu-pei-zhi">CPU 配置</h2>
 <p>下面的选项开启 KVM 全虚拟化支持，能提升虚拟机的速度。</p>
 <pre data-lang="bash" class="language-bash z-code"><code class="language-bash" data-lang="bash"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">--enable-kvm</span></span>

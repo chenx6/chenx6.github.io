@@ -36,73 +36,10 @@
   </header>
   
 <div class="container">
-  <aside class="toc">
-    
-    <ul>
-      
-      <li>
-        <a href="https://chenx6.github.io/post/n1-modify/#zhun-bei-gong-zuo">准备工作</a>
-        
-      </li>
-      
-      <li>
-        <a href="https://chenx6.github.io/post/n1-modify/#an-zhuang-xi-tong">安装系统</a>
-        
-        <ul>
-          
-          <li>
-            <a href="https://chenx6.github.io/post/n1-modify/#n1-jiang-ji">N1 降级</a>
-          </li>
-          
-          <li>
-            <a href="https://chenx6.github.io/post/n1-modify/#jing-xiang-an-zhuang">镜像安装</a>
-          </li>
-          
-        </ul>
-        
-      </li>
-      
-      <li>
-        <a href="https://chenx6.github.io/post/n1-modify/#xi-tong-pei-zhi">系统配置</a>
-        
-        <ul>
-          
-          <li>
-            <a href="https://chenx6.github.io/post/n1-modify/#lian-jie-wifi">连接 WIFI</a>
-          </li>
-          
-          <li>
-            <a href="https://chenx6.github.io/post/n1-modify/#pei-zhi-apt-yuan">配置 apt 源</a>
-          </li>
-          
-          <li>
-            <a href="https://chenx6.github.io/post/n1-modify/#qi-dong-sshd">启动 sshd</a>
-          </li>
-          
-        </ul>
-        
-      </li>
-      
-      <li>
-        <a href="https://chenx6.github.io/post/n1-modify/#pei-zhi-xiang-ying-de-ruan-jian-wei-wan">配置相应的软件（未完）</a>
-        
-        <ul>
-          
-          <li>
-            <a href="https://chenx6.github.io/post/n1-modify/#aria2-http-bt-xia-zai">aria2：HTTP&#x2F;Bt 下载</a>
-          </li>
-          
-        </ul>
-        
-      </li>
-      
-    </ul>
-    
-  </aside>
   <div class="post">
-    <h2 class="post-title">斐讯 N1 折腾&#x2F;避坑笔记</h1>
-      <span class="post-date">2020-02-01</span>
-      
+    <h2 class="post-title">斐讯 N1 折腾&#x2F;避坑笔记</h2>
+    <span class="post-date">2020-02-01</span>
+    
   
     
       <a href="https://chenx6.github.io/tags/arm/">#arm</a>
@@ -111,7 +48,73 @@
     
   
 
-      <p>最近想搞一台小服务器来做 Git 服务器，下载 Bt 等事情，所以就在一堆便宜的 ARM 机顶盒/NAS 中间挑选。最后看上了 100 RMB 左右的斐讯 N1，因为 N1 不用拆机就可以刷机。</p>
+    <aside class="toc">
+      
+      <details>
+        <summary>Tabel of contents</summary>
+        <ul>
+          
+          <li>
+            <a href="https://chenx6.github.io/post/n1-modify/#zhun-bei-gong-zuo">准备工作</a>
+            
+          </li>
+          
+          <li>
+            <a href="https://chenx6.github.io/post/n1-modify/#an-zhuang-xi-tong">安装系统</a>
+            
+            <ul>
+              
+              <li>
+                <a href="https://chenx6.github.io/post/n1-modify/#n1-jiang-ji">N1 降级</a>
+              </li>
+              
+              <li>
+                <a href="https://chenx6.github.io/post/n1-modify/#jing-xiang-an-zhuang">镜像安装</a>
+              </li>
+              
+            </ul>
+            
+          </li>
+          
+          <li>
+            <a href="https://chenx6.github.io/post/n1-modify/#xi-tong-pei-zhi">系统配置</a>
+            
+            <ul>
+              
+              <li>
+                <a href="https://chenx6.github.io/post/n1-modify/#lian-jie-wifi">连接 WIFI</a>
+              </li>
+              
+              <li>
+                <a href="https://chenx6.github.io/post/n1-modify/#pei-zhi-apt-yuan">配置 apt 源</a>
+              </li>
+              
+              <li>
+                <a href="https://chenx6.github.io/post/n1-modify/#qi-dong-sshd">启动 sshd</a>
+              </li>
+              
+            </ul>
+            
+          </li>
+          
+          <li>
+            <a href="https://chenx6.github.io/post/n1-modify/#pei-zhi-xiang-ying-de-ruan-jian-wei-wan">配置相应的软件（未完）</a>
+            
+            <ul>
+              
+              <li>
+                <a href="https://chenx6.github.io/post/n1-modify/#aria2-http-bt-xia-zai">aria2：HTTP&#x2F;Bt 下载</a>
+              </li>
+              
+            </ul>
+            
+          </li>
+          
+        </ul>
+      </details>
+      
+    </aside>
+    <p>最近想搞一台小服务器来做 Git 服务器，下载 Bt 等事情，所以就在一堆便宜的 ARM 机顶盒/NAS 中间挑选。最后看上了 100 RMB 左右的斐讯 N1，因为 N1 不用拆机就可以刷机。</p>
 <h2 id="zhun-bei-gong-zuo">准备工作</h2>
 <ul>
 <li>空 U 盘</li>
