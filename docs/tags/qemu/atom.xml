@@ -51,7 +51,7 @@
 &lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
 &lt;h3 id=&quot;shi-yong-dnsmasq-pei-zhi-dhcp&quot;&gt;使用 dnsmasq 配置 DHCP&lt;&#x2F;h3&gt;
 &lt;p&gt;如果需要让虚拟机走 DHCP 协议获取 IP 的话，最简单的方式就是在宿主机上使用 dnsmasq 来给虚拟机分配 IP。下面是 dnsmasq 的配置，配合上面的 IP 配置，可以让宿主机的 IP 设置为 192.168.122.1，虚拟机的 IP 在 192.168.122.2,192.168.122.200 这个范围内。&lt;&#x2F;p&gt;
-&lt;pre data-lang=&quot;plaintext&quot; class=&quot;language-plaintext z-code&quot;&gt;&lt;code class=&quot;language-plaintext&quot; data-lang=&quot;plaintext&quot;&gt;&lt;span class=&quot;z-text z-plain&quot;&gt;listen-address=192.168.122.1
+&lt;pre data-lang=&quot;txt&quot; class=&quot;language-txt z-code&quot;&gt;&lt;code class=&quot;language-txt&quot; data-lang=&quot;txt&quot;&gt;&lt;span class=&quot;z-text z-plain&quot;&gt;listen-address=192.168.122.1
 dhcp-range=192.168.122.2,192.168.122.200
 &lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
 &lt;h3 id=&quot;bie-de-xuan-xiang&quot;&gt;别的选项&lt;&#x2F;h3&gt;

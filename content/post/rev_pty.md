@@ -13,13 +13,13 @@ tags = ["linux"]
 
 而 pty 则是模拟终端的设备。平时使用的终端模拟器是和 pty master 进行沟通，而里面的 shell 是和 pty slave 进行沟通，两者通过 pty 进行沟通。
 
-```plaintext
+```txt
 终端模拟器 <=> | pty master | pty | pty slave | <=> shell
 ```
 
 所以我们的实现也很简单，通过 socket 将被控端的 master 和控制端连接起来就好了。
 
-```plaintext
+```txt
 终端模拟器 <=> 控制端 <=(socket 通信)=> 被控端 <=> | pty master | pty | pty slave | <=> shell
 ```
 
@@ -42,7 +42,7 @@ tags = ["linux"]
 
 需要注意的是 `forkpty` 函数，在 FreeBSD 的 `man` 手册的说明如下
 
-```man
+```txt
 The  forkpty()  function  combines  openpty(),  fork(2),  and  login_tty() to create a new
 process operating in a pseudoterminal.  A file descriptor referring to master side of  the
 pseudoterminal  is  returned  in amaster.  If name is not NULL, the buffer it points to is

@@ -23,7 +23,7 @@
 &lt;h2 id=&quot;zheng-ti-jia-gou&quot;&gt;整体架构&lt;&#x2F;h2&gt;
 &lt;p&gt;整体流程就是 “词法分析 -&amp;gt; 语法分析 -&amp;gt; 解析语法树” 进行计算。&lt;&#x2F;p&gt;
 &lt;p&gt;几个文件分布如下：&lt;&#x2F;p&gt;
-&lt;pre data-lang=&quot;plaintext&quot; class=&quot;language-plaintext z-code&quot;&gt;&lt;code class=&quot;language-plaintext&quot; data-lang=&quot;plaintext&quot;&gt;&lt;span class=&quot;z-text z-plain&quot;&gt;.
+&lt;pre data-lang=&quot;txt&quot; class=&quot;language-txt z-code&quot;&gt;&lt;code class=&quot;language-txt&quot; data-lang=&quot;txt&quot;&gt;&lt;span class=&quot;z-text z-plain&quot;&gt;.
 ├── Cargo.lock
 ├── Cargo.toml
 └── src
@@ -157,7 +157,7 @@
 &lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
 &lt;h2 id=&quot;yu-fa-fen-xi&quot;&gt;语法分析&lt;&#x2F;h2&gt;
 &lt;p&gt;我们需要根据上下文无关文法来进行语法分析。下面是带优先级的算数表达式语法。可以看到这有 3 级别优先级，括号优先级最高，乘除第二，加减第三。为了给输入符号串推断出一个推导，我们选用自顶向下分析器，从语法树的根开始构造语法树。&lt;&#x2F;p&gt;
-&lt;pre data-lang=&quot;plaintext&quot; class=&quot;language-plaintext z-code&quot;&gt;&lt;code class=&quot;language-plaintext&quot; data-lang=&quot;plaintext&quot;&gt;&lt;span class=&quot;z-text z-plain&quot;&gt;Goal   -&amp;gt; Expr
+&lt;pre data-lang=&quot;txt&quot; class=&quot;language-txt z-code&quot;&gt;&lt;code class=&quot;language-txt&quot; data-lang=&quot;txt&quot;&gt;&lt;span class=&quot;z-text z-plain&quot;&gt;Goal   -&amp;gt; Expr
 Expr   -&amp;gt; Expr + Term
         | Expr - Term
         | Term
@@ -169,7 +169,7 @@ Factor -&amp;gt; ( Expr )
 &lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
 &lt;blockquote&gt;
 &lt;p&gt;如果是处理编程语言中的一元运算符，得按照下面的文法进行处理。一元运算符优先级比 Factor 优先级低，比乘除优先级高。&lt;&#x2F;p&gt;
-&lt;pre data-lang=&quot;plaintext&quot; class=&quot;language-plaintext z-code&quot;&gt;&lt;code class=&quot;language-plaintext&quot; data-lang=&quot;plaintext&quot;&gt;&lt;span class=&quot;z-text z-plain&quot;&gt;Goal   -&amp;gt; Expr
+&lt;pre data-lang=&quot;txt&quot; class=&quot;language-txt z-code&quot;&gt;&lt;code class=&quot;language-txt&quot; data-lang=&quot;txt&quot;&gt;&lt;span class=&quot;z-text z-plain&quot;&gt;Goal   -&amp;gt; Expr
 Expr   -&amp;gt; Expr + Term
         | Expr - Term
         | Term
@@ -184,18 +184,18 @@ Factor -&amp;gt; ( Expr )
 &lt;&#x2F;blockquote&gt;
 &lt;h3 id=&quot;zuo-di-gui&quot;&gt;左递归&lt;&#x2F;h3&gt;
 &lt;p&gt;这个文法的第二个产生式可以一直往 Expr 非终结符推导，不断的递归下去，不能正确解析语法。&lt;&#x2F;p&gt;
-&lt;pre data-lang=&quot;plaintext&quot; class=&quot;language-plaintext z-code&quot;&gt;&lt;code class=&quot;language-plaintext&quot; data-lang=&quot;plaintext&quot;&gt;&lt;span class=&quot;z-text z-plain&quot;&gt;Expr -&amp;gt; Expr
+&lt;pre data-lang=&quot;txt&quot; class=&quot;language-txt z-code&quot;&gt;&lt;code class=&quot;language-txt&quot; data-lang=&quot;txt&quot;&gt;&lt;span class=&quot;z-text z-plain&quot;&gt;Expr -&amp;gt; Expr
 Expr -&amp;gt; Expr Expr
 Expr -&amp;gt; Expr Expr Expr
 ...
 &lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
 &lt;p&gt;导致这种问题的原因是因为产生了左递归。所以通过类似下面文法的做法，消除左递归（产生右递归）。&lt;&#x2F;p&gt;
-&lt;pre data-lang=&quot;plaintext&quot; class=&quot;language-plaintext z-code&quot;&gt;&lt;code class=&quot;language-plaintext&quot; data-lang=&quot;plaintext&quot;&gt;&lt;span class=&quot;z-text z-plain&quot;&gt;Fee -&amp;gt; Fee a  =&amp;gt; Fee  -&amp;gt; b Fee&amp;#39;
+&lt;pre data-lang=&quot;txt&quot; class=&quot;language-txt z-code&quot;&gt;&lt;code class=&quot;language-txt&quot; data-lang=&quot;txt&quot;&gt;&lt;span class=&quot;z-text z-plain&quot;&gt;Fee -&amp;gt; Fee a  =&amp;gt; Fee  -&amp;gt; b Fee&amp;#39;
      | b         Fee&amp;#39; -&amp;gt; a Fee&amp;#39;
                        | e
 &lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
 &lt;p&gt;消除过左递归的文法如下：&lt;&#x2F;p&gt;
-&lt;pre data-lang=&quot;plaintext&quot; class=&quot;language-plaintext z-code&quot;&gt;&lt;code class=&quot;language-plaintext&quot; data-lang=&quot;plaintext&quot;&gt;&lt;span class=&quot;z-text z-plain&quot;&gt;E  -&amp;gt; T E&amp;#39;
+&lt;pre data-lang=&quot;txt&quot; class=&quot;language-txt z-code&quot;&gt;&lt;code class=&quot;language-txt&quot; data-lang=&quot;txt&quot;&gt;&lt;span class=&quot;z-text z-plain&quot;&gt;E  -&amp;gt; T E&amp;#39;
 E&amp;#39; -&amp;gt; + T E&amp;#39;
     | - T E&amp;#39;
     | ε
@@ -209,7 +209,7 @@ F  -&amp;gt; ( E )
 &lt;h3 id=&quot;hui-su&quot;&gt;回溯&lt;&#x2F;h3&gt;
 &lt;p&gt;如果语法分析器用了错误的产生式扩展 AST 的下边缘节点，语法分析树的下边缘和词法分析器返回的 Token 会出现不匹配的情况，这时候就得回溯回之前的状态，重新选择新的产生式子。&lt;&#x2F;p&gt;
 &lt;p&gt;例如在下面的产生式中，可能出现先选择了产生式 1，发现不匹配后又回退到 2。这种情况相比直接选择产生式 2 就浪费了时间。&lt;&#x2F;p&gt;
-&lt;pre data-lang=&quot;plaintext&quot; class=&quot;language-plaintext z-code&quot;&gt;&lt;code class=&quot;language-plaintext&quot; data-lang=&quot;plaintext&quot;&gt;&lt;span class=&quot;z-text z-plain&quot;&gt;1 Expr   -&amp;gt; Expr + Term
+&lt;pre data-lang=&quot;txt&quot; class=&quot;language-txt z-code&quot;&gt;&lt;code class=&quot;language-txt&quot; data-lang=&quot;txt&quot;&gt;&lt;span class=&quot;z-text z-plain&quot;&gt;1 Expr   -&amp;gt; Expr + Term
 2         | Expr - Term
 3         | Term
 &lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
@@ -309,7 +309,7 @@ $$&lt;&#x2F;p&gt;
 &lt;blockquote&gt;
 &lt;p&gt;这个项目还值 7000 USD，血赚 233&lt;&#x2F;p&gt;
 &lt;&#x2F;blockquote&gt;
-&lt;pre data-lang=&quot;plaintext&quot; class=&quot;language-plaintext z-code&quot;&gt;&lt;code class=&quot;language-plaintext&quot; data-lang=&quot;plaintext&quot;&gt;&lt;span class=&quot;z-text z-plain&quot;&gt;$ scc
+&lt;pre data-lang=&quot;txt&quot; class=&quot;language-txt z-code&quot;&gt;&lt;code class=&quot;language-txt&quot; data-lang=&quot;txt&quot;&gt;&lt;span class=&quot;z-text z-plain&quot;&gt;$ scc
 ───────────────────────────────────────────────────────────────────────────────
 Language                 Files     Lines   Blanks  Comments     Code Complexity
 ───────────────────────────────────────────────────────────────────────────────

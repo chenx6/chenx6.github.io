@@ -17,7 +17,7 @@
 &lt;h2 id=&quot;bian-yi-guo-cheng-jian-shu&quot;&gt;编译过程简述&lt;&#x2F;h2&gt;
 &lt;p&gt;在网上能找到一堆的编译流程相关的博客，而且肯定比我讲的正确，所以这里我就简单概括下。&lt;&#x2F;p&gt;
 &lt;p&gt;现在很少有程序能只依赖与 C 标准库和系统 API 了，所以会有一堆的外部依赖库。要想编译成功，得让编译器和链接器都知道去哪找这些库，怎么链接上。于是就有了一堆的编译管理工具。像 CMake 和 Meson 是负责生成编译的脚本，make 和 ninja 则是负责执行编译任务，然后是 gcc 和 clang 将代码编译成目标文件，最后有 ld, gold, mold 将目标文件进行链接生成可执行文件。&lt;&#x2F;p&gt;
-&lt;pre data-lang=&quot;plaintext&quot; class=&quot;language-plaintext z-code&quot;&gt;&lt;code class=&quot;language-plaintext&quot; data-lang=&quot;plaintext&quot;&gt;&lt;span class=&quot;z-text z-plain&quot;&gt;CMake -&amp;gt; make  -&amp;gt; gcc   -&amp;gt; ld   -&amp;gt; 可执行文件
+&lt;pre data-lang=&quot;txt&quot; class=&quot;language-txt z-code&quot;&gt;&lt;code class=&quot;language-txt&quot; data-lang=&quot;txt&quot;&gt;&lt;span class=&quot;z-text z-plain&quot;&gt;CMake -&amp;gt; make  -&amp;gt; gcc   -&amp;gt; ld   -&amp;gt; 可执行文件
 Meson    ninja    clang    gold
 Bazel    ...      zig cc   lld
 ...               ...      mold

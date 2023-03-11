@@ -219,7 +219,7 @@ for xref_addr in refs:
 
 有些地方需要注意：判断函数地址是否在程序运行虚拟地址，读取 C 式字符串，获得当前指令所属的函数地址是自己写的函数，可能有更好的内置函数来辅助判断。还有 `get_arg_addrs` 函数，获得的是给参数赋值的指令地址，例如对下面的代码，使用 `["%x" % i for i in idaapi.get_arg_addrs(0x4012d6)]`，得到的返回值是 `['4012cc', '4012c7', '4012c2']`，而不是字符串地址，所以得对指令使用 `idaapi.decode_insn` 进行解码，获得立即数的地址，即字符串的地址。还有就是日志函数有可能类型定义有问题，会导致 `get_arg_addrs` 返回 None，这种情况下，对着日志函数按 "y" 对参数类型和数量进行编辑，编辑后再次运行脚本即可获取参数。
 
-```assembly
+```asm
 .text:00000000004012C2                 mov     edx, offset aMain ; "main"
 .text:00000000004012C7                 mov     esi, offset aDebugSDebugWor ; "[DEBUG]   [%s] Debug, world!"
 .text:00000000004012CC                 mov     edi, 0          ; a1
@@ -229,7 +229,7 @@ for xref_addr in refs:
 
 代码运行结果如下，可以看到，补全了没有符号的 `a_important_function` 函数名字，达到了基本效果。
 
-```log
+```txt
 [+] ref len 4
 [+] 40127b a_important_function
 [+] 4012a4 main

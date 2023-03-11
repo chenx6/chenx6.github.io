@@ -31,7 +31,7 @@
 &lt;span class=&quot;z-meta z-qualified-name z-python&quot;&gt;&lt;span class=&quot;z-variable z-other z-constant z-python&quot;&gt;TRY_TO_FORK&lt;&#x2F;span&gt;&lt;&#x2F;span&gt; &lt;span class=&quot;z-keyword z-operator z-assignment z-python&quot;&gt;=&lt;&#x2F;span&gt; &lt;span class=&quot;z-constant z-language z-python&quot;&gt;False&lt;&#x2F;span&gt;
 &lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
 &lt;p&gt;接下来启动就可以看到相关的日志了。&lt;&#x2F;p&gt;
-&lt;pre data-lang=&quot;log&quot; class=&quot;language-log z-code&quot;&gt;&lt;code class=&quot;language-log&quot; data-lang=&quot;log&quot;&gt;&lt;span class=&quot;z-text z-plain&quot;&gt;~&#x2F;d&#x2F;t&#x2F;meterpreter &amp;gt; python3 download.py                            
+&lt;pre data-lang=&quot;txt&quot; class=&quot;language-txt z-code&quot;&gt;&lt;code class=&quot;language-txt&quot; data-lang=&quot;txt&quot;&gt;&lt;span class=&quot;z-text z-plain&quot;&gt;~&#x2F;d&#x2F;t&#x2F;meterpreter &amp;gt; python3 download.py                            
 download.py:1713: DeprecationWarning: the imp module is deprecated in favour of importlib and slated for removal in Python 3.12; see the module&amp;#39;s documentation for alternative uses
   import codecs,imp,base64,zlib
 DEBUG:root:[*] running method core_negotiate_tlv_encryption
@@ -252,7 +252,7 @@ DEBUG:root:[*] sending response packet
 &lt;h2 id=&quot;gong-neng-fen-xi&quot;&gt;功能分析&lt;&#x2F;h2&gt;
 &lt;h3 id=&quot;duan-kou-zhuan-fa&quot;&gt;端口转发&lt;&#x2F;h3&gt;
 &lt;p&gt;开启端口转发后，访问端口可以看到下面的日志，配合日志可以对代码进行分析。&lt;&#x2F;p&gt;
-&lt;pre data-lang=&quot;plaintext&quot; class=&quot;language-plaintext z-code&quot;&gt;&lt;code class=&quot;language-plaintext&quot; data-lang=&quot;plaintext&quot;&gt;&lt;span class=&quot;z-text z-plain&quot;&gt;DEBUG:root:[*] running method core_channel_open
+&lt;pre data-lang=&quot;txt&quot; class=&quot;language-txt z-code&quot;&gt;&lt;code class=&quot;language-txt&quot; data-lang=&quot;txt&quot;&gt;&lt;span class=&quot;z-text z-plain&quot;&gt;DEBUG:root:[*] running method core_channel_open
 DEBUG:root:[*] core_channel_open dispatching to handler: channel_open_stdapi_net_tcp_client
 DEBUG:root:[*] added channel id: 2 type: MeterpreterSocketTCPClient
 DEBUG:root:[*] sending response packet

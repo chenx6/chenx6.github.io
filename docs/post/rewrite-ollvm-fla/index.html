@@ -116,7 +116,7 @@
 </blockquote>
 <h2 id="zen-yao-shi-xian">怎么实现</h2>
 <p>在开始前，先展示一个普通的，带有 <code>if</code> 语句的程序的控制流图。</p>
-<pre data-lang="plaintext" class="language-plaintext z-code"><code class="language-plaintext" data-lang="plaintext"><span class="z-text z-plain">   +--------------------------------------+
+<pre data-lang="txt" class="language-txt z-code"><code class="language-txt" data-lang="txt"><span class="z-text z-plain">   +--------------------------------------+
    | entry:                               |
    |  ...                                 |
    |  compare instruction                 |
@@ -174,7 +174,7 @@
 </span>firstBB<span class="z-punctuation z-accessor z-arrow z-c++">-&gt;</span><span class="z-meta z-method-call z-c++"><span class="z-variable z-function z-member z-c++">getTerminator</span><span class="z-meta z-group z-c++"><span class="z-punctuation z-section z-group z-begin z-c++">(</span></span></span><span class="z-meta z-method-call z-c++"></span><span class="z-meta z-method-call z-c++"><span class="z-meta z-group z-c++"><span class="z-punctuation z-section z-group z-end z-c++">)</span></span></span><span class="z-punctuation z-accessor z-arrow z-c++">-&gt;</span><span class="z-meta z-method-call z-c++"><span class="z-variable z-function z-member z-c++">eraseFromParent</span><span class="z-meta z-group z-c++"><span class="z-punctuation z-section z-group z-begin z-c++">(</span></span></span><span class="z-meta z-method-call z-c++"></span><span class="z-meta z-method-call z-c++"><span class="z-meta z-group z-c++"><span class="z-punctuation z-section z-group z-end z-c++">)</span></span></span><span class="z-punctuation z-terminator z-c++">;</span>
 </span></code></pre>
 <p>经过处理后程序控制流图如下。</p>
-<pre data-lang="plaintext" class="language-plaintext z-code"><code class="language-plaintext" data-lang="plaintext"><span class="z-text z-plain">   +--------------------------------------+
+<pre data-lang="txt" class="language-txt z-code"><code class="language-txt" data-lang="txt"><span class="z-text z-plain">   +--------------------------------------+
    | entry:                               |
    |  ...                                 |
    +--------------------------------------+
@@ -219,7 +219,7 @@ BranchInst <span class="z-keyword z-operator z-c++">*</span>dfTerminator <span c
 BranchInst <span class="z-keyword z-operator z-c++">*</span>toLoopEnd <span class="z-keyword z-operator z-assignment z-c">=</span> <span class="z-meta z-function-call z-c++">BranchInst<span class="z-punctuation z-accessor z-double-colon z-c++">::</span><span class="z-variable z-function z-c++">Create</span><span class="z-meta z-group z-c++"><span class="z-punctuation z-section z-group z-begin z-c++">(</span></span></span><span class="z-meta z-function-call z-c++"><span class="z-meta z-group z-c++">loopEntry<span class="z-punctuation z-separator z-c++">,</span> loopEnd</span></span><span class="z-meta z-function-call z-c++"><span class="z-meta z-group z-c++"><span class="z-punctuation z-section z-group z-end z-c++">)</span></span></span><span class="z-punctuation z-terminator z-c++">;</span>
 </span></code></pre>
 <p>经过处理后的程序控制流图如下</p>
-<pre data-lang="plaintext" class="language-plaintext z-code"><code class="language-plaintext" data-lang="plaintext"><span class="z-text z-plain">   +--------------------------------------+            +--------------------------------------+
+<pre data-lang="txt" class="language-txt z-code"><code class="language-txt" data-lang="txt"><span class="z-text z-plain">   +--------------------------------------+            +--------------------------------------+
    | entry:                               |            | tempBB:                              |
    |  ...                                 |            |  compare instruction                 |
    +-------------------+------------------+            |  br %cmp_res, label %if, label %else |

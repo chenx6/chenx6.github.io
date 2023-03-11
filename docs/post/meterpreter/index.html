@@ -139,7 +139,7 @@
 <span class="z-meta z-qualified-name z-python"><span class="z-variable z-other z-constant z-python">TRY_TO_FORK</span></span> <span class="z-keyword z-operator z-assignment z-python">=</span> <span class="z-constant z-language z-python">False</span>
 </span></code></pre>
 <p>接下来启动就可以看到相关的日志了。</p>
-<pre data-lang="log" class="language-log z-code"><code class="language-log" data-lang="log"><span class="z-text z-plain">~/d/t/meterpreter &gt; python3 download.py                            
+<pre data-lang="txt" class="language-txt z-code"><code class="language-txt" data-lang="txt"><span class="z-text z-plain">~/d/t/meterpreter &gt; python3 download.py                            
 download.py:1713: DeprecationWarning: the imp module is deprecated in favour of importlib and slated for removal in Python 3.12; see the module&#39;s documentation for alternative uses
   import codecs,imp,base64,zlib
 DEBUG:root:[*] running method core_negotiate_tlv_encryption
@@ -360,7 +360,7 @@ DEBUG:root:[*] sending response packet
 <h2 id="gong-neng-fen-xi">功能分析</h2>
 <h3 id="duan-kou-zhuan-fa">端口转发</h3>
 <p>开启端口转发后，访问端口可以看到下面的日志，配合日志可以对代码进行分析。</p>
-<pre data-lang="plaintext" class="language-plaintext z-code"><code class="language-plaintext" data-lang="plaintext"><span class="z-text z-plain">DEBUG:root:[*] running method core_channel_open
+<pre data-lang="txt" class="language-txt z-code"><code class="language-txt" data-lang="txt"><span class="z-text z-plain">DEBUG:root:[*] running method core_channel_open
 DEBUG:root:[*] core_channel_open dispatching to handler: channel_open_stdapi_net_tcp_client
 DEBUG:root:[*] added channel id: 2 type: MeterpreterSocketTCPClient
 DEBUG:root:[*] sending response packet

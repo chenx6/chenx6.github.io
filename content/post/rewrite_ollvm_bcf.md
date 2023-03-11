@@ -32,7 +32,7 @@ tags = ["re", "llvm"]
 
 > 下面这个图大部分项目都没修正啊...
 
-```plaintext
+```txt
  Before :
                         entry
                           |
@@ -179,7 +179,7 @@ tags = ["re", "llvm"]
     targetBB->getTerminator()->eraseFromParent();
 ```
 
-最后通过 IRBuilder 创建不透明谓词 `(x * (x + 1) % 2 == 0)`，将两个 BasicBlock 按照一定的逻辑相连（生成代码的逻辑则是在开头的[虚假控制流的流程表示](#)）。这个不透明谓词的变量 `x` 选择的是之前在 `runOnFunction` 收集的 alloca 指令，即在高级语言中的各种变量，这样能更强的干扰反编译器（虽然还是可能被符号执行优化掉）。
+最后通过 IRBuilder 创建不透明谓词 `(x * (x + 1) % 2 == 0)`，将两个 BasicBlock 按照一定的逻辑相连（生成代码的逻辑则是在开头的 虚假控制流的流程表示）。这个不透明谓词的变量 `x` 选择的是之前在 `runOnFunction` 收集的 alloca 指令，即在高级语言中的各种变量，这样能更强的干扰反编译器（虽然还是可能被符号执行优化掉）。
 
 ```cpp
     // Add opaque predicate

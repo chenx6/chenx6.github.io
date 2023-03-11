@@ -32,7 +32,7 @@ TRY_TO_FORK = False
 
 接下来启动就可以看到相关的日志了。
 
-```log
+```txt
 ~/d/t/meterpreter > python3 download.py                            
 download.py:1713: DeprecationWarning: the imp module is deprecated in favour of importlib and slated for removal in Python 3.12; see the module's documentation for alternative uses
   import codecs,imp,base64,zlib
@@ -289,7 +289,7 @@ core 是 meterpreter 的基础功能，包括 channel 和 transport 的管理等
 
 开启端口转发后，访问端口可以看到下面的日志，配合日志可以对代码进行分析。
 
-```plaintext
+```txt
 DEBUG:root:[*] running method core_channel_open
 DEBUG:root:[*] core_channel_open dispatching to handler: channel_open_stdapi_net_tcp_client
 DEBUG:root:[*] added channel id: 2 type: MeterpreterSocketTCPClient

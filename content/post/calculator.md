@@ -27,7 +27,7 @@ katex = true
 
 几个文件分布如下：
 
-```plaintext
+```txt
 .
 ├── Cargo.lock
 ├── Cargo.toml
@@ -178,7 +178,7 @@ match ch {
 
 我们需要根据上下文无关文法来进行语法分析。下面是带优先级的算数表达式语法。可以看到这有 3 级别优先级，括号优先级最高，乘除第二，加减第三。为了给输入符号串推断出一个推导，我们选用自顶向下分析器，从语法树的根开始构造语法树。
 
-```plaintext
+```txt
 Goal   -> Expr
 Expr   -> Expr + Term
         | Expr - Term
@@ -192,7 +192,7 @@ Factor -> ( Expr )
 
 > 如果是处理编程语言中的一元运算符，得按照下面的文法进行处理。一元运算符优先级比 Factor 优先级低，比乘除优先级高。
 > 
-> ```plaintext
+> ```txt
 > Goal   -> Expr
 > Expr   -> Expr + Term
 >         | Expr - Term
@@ -210,7 +210,7 @@ Factor -> ( Expr )
 
 这个文法的第二个产生式可以一直往 Expr 非终结符推导，不断的递归下去，不能正确解析语法。
 
-```plaintext
+```txt
 Expr -> Expr
 Expr -> Expr Expr
 Expr -> Expr Expr Expr
@@ -219,7 +219,7 @@ Expr -> Expr Expr Expr
 
 导致这种问题的原因是因为产生了左递归。所以通过类似下面文法的做法，消除左递归（产生右递归）。
 
-```plaintext
+```txt
 Fee -> Fee a  => Fee  -> b Fee'
      | b         Fee' -> a Fee'
                        | e
@@ -227,7 +227,7 @@ Fee -> Fee a  => Fee  -> b Fee'
 
 消除过左递归的文法如下：
 
-```plaintext
+```txt
 E  -> T E'
 E' -> + T E'
     | - T E'
@@ -246,7 +246,7 @@ F  -> ( E )
 
 例如在下面的产生式中，可能出现先选择了产生式 1，发现不匹配后又回退到 2。这种情况相比直接选择产生式 2 就浪费了时间。
 
-```plaintext
+```txt
 1 Expr   -> Expr + Term
 2         | Expr - Term
 3         | Term
@@ -366,7 +366,7 @@ fn eval(node: &Node) -> i32 {
 
 > 这个项目还值 7000 USD，血赚 233
 
-```plaintext
+```txt
 $ scc
 ───────────────────────────────────────────────────────────────────────────────
 Language                 Files     Lines   Blanks  Comments     Code Complexity
