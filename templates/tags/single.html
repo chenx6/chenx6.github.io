@@ -1,6 +1,7 @@
 {% import "macros/post_macros.html" as post_macros %}
 {% extends "base.html" %}
 
+{% block title %}{{ term.name }} - {% endblock title %}
 {% block content %}
     <h1>{{ term.name }}</h1>
 
