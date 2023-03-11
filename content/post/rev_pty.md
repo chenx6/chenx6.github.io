@@ -168,7 +168,7 @@ int main() {
 
 可以看到，很少的代码就能创建一个交互式反弹 Shell，还能复习 UNIX 知识。
 
-完整代码在这：<https://gist.github.com/chenx6/7a51c3cda5c0055a4df5cee66f762fea>
+完整代码在这：<https://github.com/chenx6/gadget/tree/master/rev_pty>
 
 ## Refs
 

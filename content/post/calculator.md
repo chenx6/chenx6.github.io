@@ -362,7 +362,7 @@ fn eval(node: &Node) -> i32 {
 
 ## 总结
 
-最后放上代码 [代码在这](https://gist.github.com/chenx6/4534d36819562dc4eb6b0b32678ad4d0)。看下代码行数，可以看到只用了 300 行左右（带注视，空格）就完成了个基础的计算器。
+最后放上代码 [代码在这](https://github.com/chenx6/gadget/tree/master/calc)。看下代码行数，可以看到只用了 300 行左右（带注视，空格）就完成了个基础的计算器。
 
 > 这个项目还值 7000 USD，血赚 233
 

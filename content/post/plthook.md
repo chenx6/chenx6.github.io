@@ -105,11 +105,11 @@ plthook_status plt_hook_replace(plthook_info *info, char *name,
 }
 ```
 
-完整代码：<https://gist.github.com/chenx6/2624aae29873ffabbeb74b75d2351f22>
+完整代码：<https://github.com/chenx6/gadget/tree/master/plt_hook>
 
 将代码和 `test_main.c` 一起编译(别忘了加上 -ldl)后，应该可以看到 `atoi` 的返回值从正确的 "123456" 变成了 "114514"，说明这个 POC 实现成功了。也可以通过用 ((constructor)) 修饰函数，通过 so 注入进行修改。
 
-# Refs
+## Refs
 
 - [kubo/plthook](https://github.com/kubo/plthook)
 - `man elf`

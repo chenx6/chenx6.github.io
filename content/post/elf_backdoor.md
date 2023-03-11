@@ -269,7 +269,7 @@ int main()
 
 ## 完整代码
 
-由于代码太长了，所以我将代码放在了 gist 上了 <https://gist.github.com/chenx6/0cedc163bea2aaefd433fff7d02cd4c1>，如果访问不了的话可以手动复制粘贴代码，应该可以拼接成可以运行的程序。
+由于代码太长了，所以我将代码放在了 [Github](https://github.com/chenx6/gadget/tree/master/elf_backdoor) 上了。
 
 ## 未完成工作
 
