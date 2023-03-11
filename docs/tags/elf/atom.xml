@@ -105,9 +105,9 @@
   &lt;span class=&quot;z-keyword z-control z-flow z-return z-c&quot;&gt;return&lt;&#x2F;span&gt; PLTHOOK_NOT_FOUND&lt;span class=&quot;z-punctuation z-terminator z-c&quot;&gt;;&lt;&#x2F;span&gt;
 &lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;span class=&quot;z-meta z-function z-c&quot;&gt;&lt;span class=&quot;z-meta z-block z-c&quot;&gt;&lt;span class=&quot;z-punctuation z-section z-block z-end z-c&quot;&gt;}&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
 &lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
-&lt;p&gt;完整代码：&lt;a href=&quot;https:&#x2F;&#x2F;gist.github.com&#x2F;chenx6&#x2F;2624aae29873ffabbeb74b75d2351f22&quot;&gt;https:&#x2F;&#x2F;gist.github.com&#x2F;chenx6&#x2F;2624aae29873ffabbeb74b75d2351f22&lt;&#x2F;a&gt;&lt;&#x2F;p&gt;
+&lt;p&gt;完整代码：&lt;a href=&quot;https:&#x2F;&#x2F;github.com&#x2F;chenx6&#x2F;gadget&#x2F;tree&#x2F;master&#x2F;plt_hook&quot;&gt;https:&#x2F;&#x2F;github.com&#x2F;chenx6&#x2F;gadget&#x2F;tree&#x2F;master&#x2F;plt_hook&lt;&#x2F;a&gt;&lt;&#x2F;p&gt;
 &lt;p&gt;将代码和 &lt;code&gt;test_main.c&lt;&#x2F;code&gt; 一起编译(别忘了加上 -ldl)后，应该可以看到 &lt;code&gt;atoi&lt;&#x2F;code&gt; 的返回值从正确的 &amp;quot;123456&amp;quot; 变成了 &amp;quot;114514&amp;quot;，说明这个 POC 实现成功了。也可以通过用 ((constructor)) 修饰函数，通过 so 注入进行修改。&lt;&#x2F;p&gt;
-&lt;h1 id=&quot;Refs&quot;&gt;Refs&lt;&#x2F;h1&gt;
+&lt;h2 id=&quot;Refs&quot;&gt;Refs&lt;&#x2F;h2&gt;
 &lt;ul&gt;
 &lt;li&gt;&lt;a href=&quot;https:&#x2F;&#x2F;github.com&#x2F;kubo&#x2F;plthook&quot;&gt;kubo&#x2F;plthook&lt;&#x2F;a&gt;&lt;&#x2F;li&gt;
 &lt;li&gt;&lt;code&gt;man elf&lt;&#x2F;code&gt;&lt;&#x2F;li&gt;

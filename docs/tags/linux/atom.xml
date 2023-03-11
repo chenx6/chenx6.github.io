@@ -227,7 +227,7 @@ determine the terminal attributes and window size of the slave side of the pseud
 &lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;span class=&quot;z-meta z-function z-c&quot;&gt;&lt;span class=&quot;z-meta z-block z-c&quot;&gt;&lt;span class=&quot;z-punctuation z-section z-block z-end z-c&quot;&gt;}&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
 &lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
 &lt;p&gt;可以看到，很少的代码就能创建一个交互式反弹 Shell，还能复习 UNIX 知识。&lt;&#x2F;p&gt;
-&lt;p&gt;完整代码在这：&lt;a href=&quot;https:&#x2F;&#x2F;gist.github.com&#x2F;chenx6&#x2F;7a51c3cda5c0055a4df5cee66f762fea&quot;&gt;https:&#x2F;&#x2F;gist.github.com&#x2F;chenx6&#x2F;7a51c3cda5c0055a4df5cee66f762fea&lt;&#x2F;a&gt;&lt;&#x2F;p&gt;
+&lt;p&gt;完整代码在这：&lt;a href=&quot;https:&#x2F;&#x2F;github.com&#x2F;chenx6&#x2F;gadget&#x2F;tree&#x2F;master&#x2F;rev_pty&quot;&gt;https:&#x2F;&#x2F;github.com&#x2F;chenx6&#x2F;gadget&#x2F;tree&#x2F;master&#x2F;rev_pty&lt;&#x2F;a&gt;&lt;&#x2F;p&gt;
 &lt;h2 id=&quot;Refs&quot;&gt;Refs&lt;&#x2F;h2&gt;
 &lt;ul&gt;
 &lt;li&gt;基于原本的项目，魔改了下，兼容 Python3 &lt;a href=&quot;https:&#x2F;&#x2F;github.com&#x2F;chenx6&#x2F;python-pty-shells&quot;&gt;https:&#x2F;&#x2F;github.com&#x2F;chenx6&#x2F;python-pty-shells&lt;&#x2F;a&gt;&lt;&#x2F;li&gt;

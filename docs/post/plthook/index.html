@@ -172,9 +172,9 @@
   <span class="z-keyword z-control z-flow z-return z-c">return</span> PLTHOOK_NOT_FOUND<span class="z-punctuation z-terminator z-c">;</span>
 </span></span><span class="z-meta z-function z-c"><span class="z-meta z-block z-c"><span class="z-punctuation z-section z-block z-end z-c">}</span></span></span>
 </span></code></pre>
-<p>完整代码：<a href="https://gist.github.com/chenx6/2624aae29873ffabbeb74b75d2351f22">https://gist.github.com/chenx6/2624aae29873ffabbeb74b75d2351f22</a></p>
+<p>完整代码：<a href="https://github.com/chenx6/gadget/tree/master/plt_hook">https://github.com/chenx6/gadget/tree/master/plt_hook</a></p>
 <p>将代码和 <code>test_main.c</code> 一起编译(别忘了加上 -ldl)后，应该可以看到 <code>atoi</code> 的返回值从正确的 &quot;123456&quot; 变成了 &quot;114514&quot;，说明这个 POC 实现成功了。也可以通过用 ((constructor)) 修饰函数，通过 so 注入进行修改。</p>
-<h1 id="Refs">Refs</h1>
+<h2 id="Refs">Refs</h2>
 <ul>
 <li><a href="https://github.com/kubo/plthook">kubo/plthook</a></li>
 <li><code>man elf</code></li>
