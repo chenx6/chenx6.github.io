@@ -55,25 +55,25 @@
         <ul>
           
           <li>
-            <a href="https://chenx6.github.io/post/different-rop/#shi-yao-shi-rop">什么是 ROP</a>
+            <a href="https://chenx6.github.io/post/different-rop/#什么是_ROP">什么是 ROP</a>
             
           </li>
           
           <li>
-            <a href="https://chenx6.github.io/post/different-rop/#zen-yao-jin-xing-rop">怎么进行 ROP</a>
+            <a href="https://chenx6.github.io/post/different-rop/#怎么进行_ROP">怎么进行 ROP</a>
             
             <ul>
               
               <li>
-                <a href="https://chenx6.github.io/post/different-rop/#hui-bian-fu-xi">汇编复习</a>
+                <a href="https://chenx6.github.io/post/different-rop/#汇编复习">汇编复习</a>
               </li>
               
               <li>
-                <a href="https://chenx6.github.io/post/different-rop/#jie-chi-yi-ci-pu-tong-de-cheng-xu-diao-yong">劫持一次“普通”的程序调用</a>
+                <a href="https://chenx6.github.io/post/different-rop/#劫持一次“普通”的程序调用">劫持一次“普通”的程序调用</a>
               </li>
               
               <li>
-                <a href="https://chenx6.github.io/post/different-rop/#gadgets-he-rop-lian">gadgets 和 ROP 链</a>
+                <a href="https://chenx6.github.io/post/different-rop/#gadgets_和_ROP_链">gadgets 和 ROP 链</a>
               </li>
               
             </ul>
@@ -81,7 +81,7 @@
           </li>
           
           <li>
-            <a href="https://chenx6.github.io/post/different-rop/#kuo-zhan-mian-dui-chang-jian-de-dai-ma-bao-hu-cuo-shi">扩展：面对常见的代码保护措施</a>
+            <a href="https://chenx6.github.io/post/different-rop/#扩展：面对常见的代码保护措施">扩展：面对常见的代码保护措施</a>
             
           </li>
           
@@ -90,15 +90,15 @@
       
     </aside>
     <p>看了许多讲 ROP 的文章，发现很多只是讲了怎么利用，但是没有讲为什么这么利用。所以写文记录。</p>
-<h2 id="shi-yao-shi-rop">什么是 ROP</h2>
+<h2 id="什么是_ROP">什么是 ROP</h2>
 <p>ROP (Return orient programming) 是一种漏洞利用方法，使得攻击者绕过保护(例如 NX 栈不可执行)执行恶意代码。攻击者通过栈溢出等手段实现覆盖返回地址劫持程序控制流，并且通过不同的代码片段(Gadgets)来拼接出攻击者希望执行的代码。</p>
-<h2 id="zen-yao-jin-xing-rop">怎么进行 ROP</h2>
-<h3 id="hui-bian-fu-xi">汇编复习</h3>
+<h2 id="怎么进行_ROP">怎么进行 ROP</h2>
+<h3 id="汇编复习">汇编复习</h3>
 <p>我们先复习一下 x86 架构下的一些指令。</p>
 <p>调用一个函数一般使用 <code>call</code> 指令，<code>call func</code> 这条指令相当于 <code>push ip, jmp func</code>，即将当前 IP(instruction pointer 指令寄存器) 的地址存入栈中，并将 IP 改为被调用函数的地址。</p>
 <p><code>leave</code> 指令由于效率低于等价指令 <code>mov sp, bp; pop bp</code>，且可以被等价替换所以比较少见。</p>
 <p>ROP 中经常出现 <code>ret</code> 这一条汇编语句。<code>ret</code> 这一条指令是配合 <code>call</code> 指令使用的。<code>ret</code> 相当于 <code>pop ip</code>，配合 <code>call</code> 使用时，功能为返回原来的控制流。</p>
-<h3 id="jie-chi-yi-ci-pu-tong-de-cheng-xu-diao-yong">劫持一次“普通”的程序调用</h3>
+<h3 id="劫持一次“普通”的程序调用">劫持一次“普通”的程序调用</h3>
 <p>当 C 程序调用函数时，会通过将函数参数压入栈中，来传递函数参数。然后通过 <code>call</code> 指令将控制流转移到函数的代码中。并且函数会将之前控制流的 <code>bp</code> 保存，用于函数结束时恢复栈环境。</p>
 <p>例如下面的程序，将两个数字相加，并且将结果作为返回值。</p>
 <pre data-lang="c" class="language-c z-code"><code class="language-c" data-lang="c"><span class="z-source z-c"><span class="z-meta z-preprocessor z-include z-c"><span class="z-keyword z-control z-import z-include z-c">#include</span> <span class="z-string z-quoted z-other z-lt-gt z-include z-c"><span class="z-punctuation z-definition z-string z-begin z-c">&lt;</span>stdio.h<span class="z-punctuation z-definition z-string z-end z-c">&gt;</span></span>
@@ -216,7 +216,7 @@ _add ENDP
 <span class="z-keyword z-operator z-arithmetic z-c">|</span>       <span class="z-keyword z-operator z-arithmetic z-c">|</span>ret addr<span class="z-keyword z-operator z-arithmetic z-c">|</span>
 <span class="z-keyword z-operator z-arithmetic z-c">+</span><span class="z-keyword z-operator z-arithmetic z-c">--</span><span class="z-keyword z-operator z-arithmetic z-c">--</span><span class="z-keyword z-operator z-arithmetic z-c">--</span><span class="z-keyword z-operator z-arithmetic z-c">--</span><span class="z-keyword z-operator z-arithmetic z-c">--</span><span class="z-keyword z-operator z-arithmetic z-c">--</span><span class="z-keyword z-operator z-arithmetic z-c">--</span><span class="z-keyword z-operator z-arithmetic z-c">--</span><span class="z-keyword z-operator z-arithmetic z-c">+</span>
 </span></code></pre>
-<h3 id="gadgets-he-rop-lian">gadgets 和 ROP 链</h3>
+<h3 id="gadgets_和_ROP_链">gadgets 和 ROP 链</h3>
 <p>之前的操作只能劫持一次控制流，如果想用这一次机会将控制流劫持到 shellcode 上的话，在 NX 开启的情况下就会失效，又或者不能一次劫持就完成我们想达到的目标，这时候就需要 ROP 和 gadgets 了。这里的 gadget 指的是程序本体中出现的指令片段，通常以 <code>ret</code> 指令结尾。</p>
 <p>将 gadget 的地址按执行顺序写入栈中，就可以实现 ROP 链。ROP 链将按照在栈中的顺序执行。</p>
 <p>例如下图中，CPU 先执行 <code>ret</code> 指令，将 IP 置为 0x1000，然后执行 0x1000 处的两条指令，最后执行 <code>ret</code> 指令，将 IP 置为 0x500。CPU 执行 0x500 处的指令，最后 <code>ret</code> 指令执行时，将 IP 置为 <code>main</code> 函数所在的地址，CPU 开始执行 <code>main</code> 函数里的指令。</p>
@@ -279,7 +279,7 @@ _add ENDP
 <span class="z-keyword z-operator z-arithmetic z-c">+</span><span class="z-keyword z-operator z-arithmetic z-c">--</span><span class="z-keyword z-operator z-arithmetic z-c">--</span><span class="z-keyword z-operator z-arithmetic z-c">--</span><span class="z-keyword z-operator z-arithmetic z-c">--</span><span class="z-keyword z-operator z-arithmetic z-c">--</span><span class="z-keyword z-operator z-arithmetic z-c">--</span><span class="z-keyword z-operator z-arithmetic z-c">--</span><span class="z-keyword z-operator z-arithmetic z-c">--</span><span class="z-keyword z-operator z-arithmetic z-c">+</span>
 </span></code></pre>
 <p>如果需要了解更多，则请查询相关系统和 CPU 架构的 ABI，例如<a href="https://stackoverflow.com/questions/2535989/what-are-the-calling-conventions-for-unix-linux-system-calls-on-i386-and-x86-6">https://stackoverflow.com/questions/2535989/what-are-the-calling-conventions-for-unix-linux-system-calls-on-i386-and-x86-6</a> 和 <a href="https://docs.microsoft.com/en-us/cpp/build/x64-calling-convention?view=vs-2019">https://docs.microsoft.com/en-us/cpp/build/x64-calling-convention?view=vs-2019</a></p>
-<h2 id="kuo-zhan-mian-dui-chang-jian-de-dai-ma-bao-hu-cuo-shi">扩展：面对常见的代码保护措施</h2>
+<h2 id="扩展：面对常见的代码保护措施">扩展：面对常见的代码保护措施</h2>
 <p>如果出现 NX 时，就需要使用 ROP 技术绕过。</p>
 <p>如果出现 canary 时需要想怎么泄露 canary，通过 off by one 或者格式化字符串实现泄露，还有少见的报错泄露法和覆盖 canary 法。</p>
 <p>如果出现 pie 的话泄露地址也是必须的，off by one 或者格式化字符串实现泄露，或者 partical overwrite 实现构造 rop 链也是可以的。</p>

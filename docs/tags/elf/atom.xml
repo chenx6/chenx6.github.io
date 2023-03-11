@@ -14,10 +14,10 @@
 		<link rel="alternate" href="https://chenx6.github.io/post/plthook/" type="text/html"/>
 		<id>https://chenx6.github.io/post/plthook/</id>
 		<content type="html">&lt;p&gt;虽然知道可以通过魔改 plt 表实现 hook 函数，但是不知道具体实现...碰巧最近用到了 plthook 这个库，于是我就研究了下 plthook 这个库，并且仿照着这个库重新实现一份代码。&lt;&#x2F;p&gt;
-&lt;h2 id=&quot;yuan-li-fen-xi&quot;&gt;原理分析&lt;&#x2F;h2&gt;
+&lt;h2 id=&quot;原理分析&quot;&gt;原理分析&lt;&#x2F;h2&gt;
 &lt;p&gt;根据命名规则，.rela.plt 表是负责 plt 表的重定位信息。.rela 表中有每项都有 2 个成员，r_offset 指向了该重定位入口所要修正的位置的第一个字节的虚拟地址， r_info 则是表示相关信息，可以通过 &lt;code&gt;ELF[32|64]_R_SYM&lt;&#x2F;code&gt; 获得其指向的 .dynsym 项的下标。&lt;&#x2F;p&gt;
 &lt;p&gt;.dynsym 表（动态链接表）中存放动态链接需要的信息，可以通过 .dynsym 表从 .strtab 表中获得要链接的函数名字。&lt;&#x2F;p&gt;
-&lt;h2 id=&quot;xiang-mu-dai-ma-fen-xi&quot;&gt;项目代码分析&lt;&#x2F;h2&gt;
+&lt;h2 id=&quot;项目代码分析&quot;&gt;项目代码分析&lt;&#x2F;h2&gt;
 &lt;p&gt;经过阅读代码后，我大致了解了 plthook 在 Linux&#x2F;x86_64 平台上的逻辑。&lt;&#x2F;p&gt;
 &lt;blockquote&gt;
 &lt;p&gt;由于项目的代码支持多个 UNIX 系统（Windows 下则是实现了 IAT Hook），所以原项目中有一堆的宏和封装，下面的逻辑只对应着 Linux&#x2F;x86_64 平台。&lt;&#x2F;p&gt;
@@ -37,7 +37,7 @@
 &lt;li&gt;在 rela 表中获得其在 dynsym 中的位置，然后通过 dynsym 获得名字&lt;&#x2F;li&gt;
 &lt;li&gt;如果是被替换函数，就通过修改 PLT 表进行替换。&lt;&#x2F;li&gt;
 &lt;&#x2F;ol&gt;
-&lt;h2 id=&quot;zhong-xin-fu-xian&quot;&gt;重新复现&lt;&#x2F;h2&gt;
+&lt;h2 id=&quot;重新复现&quot;&gt;重新复现&lt;&#x2F;h2&gt;
 &lt;p&gt;首先是通过 &lt;code&gt;dlopen&lt;&#x2F;code&gt; &lt;code&gt;dlinfo&lt;&#x2F;code&gt; 获得 &lt;code&gt;link_map&lt;&#x2F;code&gt;。使用 &lt;code&gt;sysconf&lt;&#x2F;code&gt; 则是获得了页的大小。&lt;&#x2F;p&gt;
 &lt;pre data-lang=&quot;c&quot; class=&quot;language-c z-code&quot;&gt;&lt;code class=&quot;language-c&quot; data-lang=&quot;c&quot;&gt;&lt;span class=&quot;z-source z-c&quot;&gt;&lt;span class=&quot;z-comment z-line z-double-slash z-c&quot;&gt;&lt;span class=&quot;z-punctuation z-definition z-comment z-c&quot;&gt;&#x2F;&#x2F;&lt;&#x2F;span&gt;&#x2F; @brief Initlize plthook_info
 &lt;&#x2F;span&gt;&lt;span class=&quot;z-comment z-line z-double-slash z-c&quot;&gt;&lt;span class=&quot;z-punctuation z-definition z-comment z-c&quot;&gt;&#x2F;&#x2F;&lt;&#x2F;span&gt;&#x2F; @param info empty plthook_info variable
@@ -107,7 +107,7 @@
 &lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
 &lt;p&gt;完整代码：&lt;a href=&quot;https:&#x2F;&#x2F;gist.github.com&#x2F;chenx6&#x2F;2624aae29873ffabbeb74b75d2351f22&quot;&gt;https:&#x2F;&#x2F;gist.github.com&#x2F;chenx6&#x2F;2624aae29873ffabbeb74b75d2351f22&lt;&#x2F;a&gt;&lt;&#x2F;p&gt;
 &lt;p&gt;将代码和 &lt;code&gt;test_main.c&lt;&#x2F;code&gt; 一起编译(别忘了加上 -ldl)后，应该可以看到 &lt;code&gt;atoi&lt;&#x2F;code&gt; 的返回值从正确的 &amp;quot;123456&amp;quot; 变成了 &amp;quot;114514&amp;quot;，说明这个 POC 实现成功了。也可以通过用 ((constructor)) 修饰函数，通过 so 注入进行修改。&lt;&#x2F;p&gt;
-&lt;h1 id=&quot;refs&quot;&gt;Refs&lt;&#x2F;h1&gt;
+&lt;h1 id=&quot;Refs&quot;&gt;Refs&lt;&#x2F;h1&gt;
 &lt;ul&gt;
 &lt;li&gt;&lt;a href=&quot;https:&#x2F;&#x2F;github.com&#x2F;kubo&#x2F;plthook&quot;&gt;kubo&#x2F;plthook&lt;&#x2F;a&gt;&lt;&#x2F;li&gt;
 &lt;li&gt;&lt;code&gt;man elf&lt;&#x2F;code&gt;&lt;&#x2F;li&gt;

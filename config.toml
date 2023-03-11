@@ -21,6 +21,11 @@ highlight_themes_css = [
   { theme = "ayu-light", filename = "syntax-theme-light.css" },
 ]
 
+[slugify]
+paths = "safe"
+taxonomies = "safe"
+anchors = "safe"
+
 [extra]
 menu = [
     {url = "$BASE_URL/about", name = "About"}

@@ -55,34 +55,34 @@
         <ul>
           
           <li>
-            <a href="https://chenx6.github.io/post/obfuscate-string/#pass-si-lu-gai-shu">Pass 思路概述</a>
+            <a href="https://chenx6.github.io/post/obfuscate_string/#Pass_思路概述">Pass 思路概述</a>
             
           </li>
           
           <li>
-            <a href="https://chenx6.github.io/post/obfuscate-string/#kai-fa-huan-jing-zhun-bei">开发环境准备</a>
+            <a href="https://chenx6.github.io/post/obfuscate_string/#开发环境准备">开发环境准备</a>
             
           </li>
           
           <li>
-            <a href="https://chenx6.github.io/post/obfuscate-string/#dai-ma-jiang-jie">代码讲解</a>
+            <a href="https://chenx6.github.io/post/obfuscate_string/#代码讲解">代码讲解</a>
             
             <ul>
               
               <li>
-                <a href="https://chenx6.github.io/post/obfuscate-string/#ji-ben-kuang-jia">基本框架</a>
+                <a href="https://chenx6.github.io/post/obfuscate_string/#基本框架">基本框架</a>
               </li>
               
               <li>
-                <a href="https://chenx6.github.io/post/obfuscate-string/#runonmodule-han-shu">runOnModule 函数</a>
+                <a href="https://chenx6.github.io/post/obfuscate_string/#runOnModule_函数">runOnModule 函数</a>
               </li>
               
               <li>
-                <a href="https://chenx6.github.io/post/obfuscate-string/#obfuscatestring-han-shu">obfuscateString 函数</a>
+                <a href="https://chenx6.github.io/post/obfuscate_string/#obfuscateString_函数">obfuscateString 函数</a>
               </li>
               
               <li>
-                <a href="https://chenx6.github.io/post/obfuscate-string/#encrypt-he-decrypt-han-shu">__encrypt 和 __decrypt 函数</a>
+                <a href="https://chenx6.github.io/post/obfuscate_string/#__encrypt_和___decrypt_函数">__encrypt 和 __decrypt 函数</a>
               </li>
               
             </ul>
@@ -90,17 +90,17 @@
           </li>
           
           <li>
-            <a href="https://chenx6.github.io/post/obfuscate-string/#pass-de-jian-dan-shi-yong">Pass 的简单使用</a>
+            <a href="https://chenx6.github.io/post/obfuscate_string/#Pass_的简单使用">Pass 的简单使用</a>
             
           </li>
           
           <li>
-            <a href="https://chenx6.github.io/post/obfuscate-string/#hun-yao-xiao-guo">混淆效果</a>
+            <a href="https://chenx6.github.io/post/obfuscate_string/#混淆效果">混淆效果</a>
             
           </li>
           
           <li>
-            <a href="https://chenx6.github.io/post/obfuscate-string/#wan-zheng-dai-ma">完整代码</a>
+            <a href="https://chenx6.github.io/post/obfuscate_string/#完整代码">完整代码</a>
             
           </li>
           
@@ -114,9 +114,9 @@
 </blockquote>
 <p>为了写 LLVM Pass ，首先得看看 <a href="https://llvm.org/docs/ProgrammersManual.html">LLVM Programmers' Manual</a>，里面讲了许多代码样例，API 讲解和类的层次结构。当然这只是基础，具体的使用得看使用 doxygen 生成的文档。</p>
 <p>当然也得对 LLVM IR 也得有一定了解 <a href="https://llvm.org/docs/LangRef.html">https://llvm.org/docs/LangRef.html</a></p>
-<h2 id="pass-si-lu-gai-shu">Pass 思路概述</h2>
+<h2 id="Pass_思路概述">Pass 思路概述</h2>
 <p>首先是找到字符串，其次是找到用这个字符串的函数，在这个函数被调用前，先调用解密函数进行解密。最后加密原本字符串。</p>
-<h2 id="kai-fa-huan-jing-zhun-bei">开发环境准备</h2>
+<h2 id="开发环境准备">开发环境准备</h2>
 <p>编译环境请参考<a href="https://zhuanlan.zhihu.com/p/104295455">上一篇文章</a>，只是写个 Pass 而已，不要再从整个 LLVM 项目开始编译了好吗...</p>
 <p>这里使用的是 VSCode + WSL 搭建开发环境，在项目文件夹的 &quot;.vscode/c_cpp_properties.json&quot; 加上对应的 &quot;includePath&quot; 就有智能提示了。</p>
 <pre data-lang="json" class="language-json z-code"><code class="language-json" data-lang="json"><span class="z-source z-json"><span class="z-meta z-mapping z-json"><span class="z-punctuation z-section z-mapping z-begin z-json">{</span>
@@ -128,8 +128,8 @@
 <span class="z-punctuation z-section z-mapping z-end z-json">}</span></span>
 </span></code></pre>
 <p>由于使用 CMake 来管理编译依赖，所以给 VSCode 加上 CMake 插件，可以实现小部分 CMake GUI 的功能。</p>
-<h2 id="dai-ma-jiang-jie">代码讲解</h2>
-<h3 id="ji-ben-kuang-jia">基本框架</h3>
+<h2 id="代码讲解">代码讲解</h2>
+<h3 id="基本框架">基本框架</h3>
 <p>首先是 include 的头文件，项目里用了 LLVM 自己的 <code>SmallVector</code>，还有 IR 下面的 <code>Function</code>, <code>GlobalVariable</code>, <code>IRBuilder</code>, <code>Instructions</code>，还有些 Pass 必备的一些头文件，<code>raw_ostream</code> 用来调试输出。</p>
 <pre data-lang="cpp" class="language-cpp z-code"><code class="language-cpp" data-lang="cpp"><span class="z-source z-c++"><span class="z-meta z-preprocessor z-include z-c++"><span class="z-keyword z-control z-import z-include z-c++">#include</span> <span class="z-string z-quoted z-double z-include z-c++"><span class="z-punctuation z-definition z-string z-begin z-c++">&quot;</span>llvm/ADT/SmallVector.h<span class="z-punctuation z-definition z-string z-end z-c++">&quot;</span></span>
 </span><span class="z-meta z-preprocessor z-include z-c++"><span class="z-keyword z-control z-import z-include z-c++">#include</span> <span class="z-string z-quoted z-double z-include z-c++"><span class="z-punctuation z-definition z-string z-begin z-c++">&quot;</span>llvm/IR/Function.h<span class="z-punctuation z-definition z-string z-end z-c++">&quot;</span></span>
@@ -172,7 +172,7 @@
 <span class="z-storage z-type z-c">char</span> ObfuscatePass<span class="z-punctuation z-accessor z-double-colon z-c++">::</span>ID <span class="z-keyword z-operator z-assignment z-c">=</span> <span class="z-constant z-numeric z-integer z-decimal z-c++">0</span><span class="z-punctuation z-terminator z-c++">;</span>
 <span class="z-storage z-modifier z-c++">static</span> RegisterPass<span class="z-punctuation z-section z-generic z-begin z-c++">&lt;</span>ObfuscatePass<span class="z-punctuation z-section z-generic z-end z-c++">&gt;</span> <span class="z-meta z-function z-c++"><span class="z-meta z-toc-list z-full-identifier z-c++"><span class="z-entity z-name z-function z-c++">X</span></span></span><span class="z-meta z-function z-parameters z-c++"><span class="z-meta z-group z-c++"><span class="z-punctuation z-section z-group z-begin z-c++">(</span></span></span><span class="z-meta z-function z-parameters z-c++"><span class="z-meta z-group z-c++"><span class="z-string z-quoted z-double z-c"><span class="z-punctuation z-definition z-string z-begin z-c">&quot;</span>obfstr<span class="z-punctuation z-definition z-string z-end z-c">&quot;</span></span><span class="z-punctuation z-separator z-c++">,</span> <span class="z-string z-quoted z-double z-c"><span class="z-punctuation z-definition z-string z-begin z-c">&quot;</span>obfuscate string<span class="z-punctuation z-definition z-string z-end z-c">&quot;</span></span><span class="z-punctuation z-section z-group z-end z-c++">)</span></span></span><span class="z-punctuation z-terminator z-c++">;</span>
 </span></code></pre>
-<h3 id="runonmodule-han-shu"><code>runOnModule</code> 函数</h3>
+<h3 id="runOnModule_函数"><code>runOnModule</code> 函数</h3>
 <p>然后开始讲解具体的代码。下面的代码是在寻找全局变量，并且找到他的使用者。</p>
 <p>首先通过 <code>GlobalVariable GVar-&gt;users()</code> 来找到使用者。如果使用者不是单独的指令，而是类似 <code>i8* getelementptr ...</code> 这样的语句，则寻找这个语句的使用者。如果发现这个语句只有 <code>CallInst</code> 类型的使用者，则对字符串进行加密，并去除对应字符串的常量属性。</p>
 <pre data-lang="cpp" class="language-cpp z-code"><code class="language-cpp" data-lang="cpp"><span class="z-source z-c++">  <span class="z-storage z-modifier z-c++">virtual</span> <span class="z-storage z-type z-c">bool</span> <span class="z-meta z-function z-c++"><span class="z-meta z-toc-list z-full-identifier z-c++"><span class="z-entity z-name z-function z-c++">runOnModule</span></span></span><span class="z-meta z-function z-parameters z-c++"><span class="z-meta z-group z-c++"><span class="z-punctuation z-section z-group z-begin z-c++">(</span></span></span><span class="z-meta z-function z-parameters z-c++"><span class="z-meta z-group z-c++">Module <span class="z-keyword z-operator z-c">&amp;</span><span class="z-variable z-parameter z-c++">M</span><span class="z-punctuation z-section z-group z-end z-c++">)</span></span></span><span class="z-meta z-function z-c++"> </span><span class="z-meta z-function z-c++"><span class="z-meta z-block z-c++"><span class="z-punctuation z-section z-block z-begin z-c++">{</span></span></span><span class="z-meta z-function z-c++"><span class="z-meta z-block z-c++">
@@ -215,7 +215,7 @@
     <span class="z-keyword z-control z-flow z-return z-c++">return</span> <span class="z-constant z-language z-c">true</span><span class="z-punctuation z-terminator z-c++">;</span>
   </span></span><span class="z-meta z-function z-c++"><span class="z-meta z-block z-c++"><span class="z-punctuation z-section z-block z-end z-c++">}</span></span></span>
 </span></code></pre>
-<h3 id="obfuscatestring-han-shu"><code>obfuscateString</code> 函数</h3>
+<h3 id="obfuscateString_函数"><code>obfuscateString</code> 函数</h3>
 <p>函数中主要分为下面三个部分</p>
 <ol>
 <li>替换字符串为加密字符串</li>
@@ -256,7 +256,7 @@ CallInst <span class="z-keyword z-operator z-c++">*</span>DecryptInst <span clas
 CallInst <span class="z-keyword z-operator z-c++">*</span>EncryptInst <span class="z-keyword z-operator z-assignment z-c">=</span> <span class="z-meta z-function-call z-c++">CallInst<span class="z-punctuation z-accessor z-double-colon z-c++">::</span><span class="z-variable z-function z-c++">Create</span><span class="z-meta z-group z-c++"><span class="z-punctuation z-section z-group z-begin z-c++">(</span></span></span><span class="z-meta z-function-call z-c++"><span class="z-meta z-group z-c++">FuncType<span class="z-punctuation z-separator z-c++">,</span> EncryptFunc<span class="z-punctuation z-separator z-c++">,</span> CallArgs</span></span><span class="z-meta z-function-call z-c++"><span class="z-meta z-group z-c++"><span class="z-punctuation z-section z-group z-end z-c++">)</span></span></span><span class="z-punctuation z-terminator z-c++">;</span>
 EncryptInst<span class="z-punctuation z-accessor z-arrow z-c++">-&gt;</span><span class="z-meta z-method-call z-c++"><span class="z-variable z-function z-member z-c++">insertAfter</span><span class="z-meta z-group z-c++"><span class="z-punctuation z-section z-group z-begin z-c++">(</span></span></span><span class="z-meta z-method-call z-c++"><span class="z-meta z-group z-c++">Inst</span></span><span class="z-meta z-method-call z-c++"><span class="z-meta z-group z-c++"><span class="z-punctuation z-section z-group z-end z-c++">)</span></span></span><span class="z-punctuation z-terminator z-c++">;</span>
 </span></code></pre>
-<h3 id="encrypt-he-decrypt-han-shu"><code>__encrypt</code> 和 <code>__decrypt</code> 函数</h3>
+<h3 id="__encrypt_和___decrypt_函数"><code>__encrypt</code> 和 <code>__decrypt</code> 函数</h3>
 <p>由于只是 xor，所以函数的代码很相似。</p>
 <pre data-lang="c" class="language-c z-code"><code class="language-c" data-lang="c"><span class="z-source z-c"><span class="z-storage z-type z-c">char</span> <span class="z-keyword z-operator z-c">*</span><span class="z-meta z-function z-c"><span class="z-entity z-name z-function z-c">__decrypt</span></span><span class="z-meta z-function z-parameters z-c"><span class="z-meta z-group z-c"><span class="z-punctuation z-section z-group z-begin z-c">(</span></span></span><span class="z-meta z-function z-parameters z-c"><span class="z-meta z-group z-c"><span class="z-storage z-type z-c">char</span> <span class="z-keyword z-operator z-c">*</span><span class="z-variable z-parameter z-c">encStr</span><span class="z-punctuation z-section z-group z-end z-c">)</span></span></span><span class="z-meta z-function z-c"> </span><span class="z-meta z-function z-c"><span class="z-meta z-block z-c"><span class="z-punctuation z-section z-block z-begin z-c">{</span></span></span><span class="z-meta z-function z-c"><span class="z-meta z-block z-c">
   <span class="z-storage z-type z-c">char</span> <span class="z-keyword z-operator z-c">*</span>curr <span class="z-keyword z-operator z-assignment z-c">=</span> encStr<span class="z-punctuation z-terminator z-c">;</span>
@@ -276,7 +276,7 @@ EncryptInst<span class="z-punctuation z-accessor z-arrow z-c++">-&gt;</span><spa
   <span class="z-keyword z-control z-flow z-return z-c">return</span> originStr<span class="z-punctuation z-terminator z-c">;</span>
 </span></span><span class="z-meta z-function z-c"><span class="z-meta z-block z-c"><span class="z-punctuation z-section z-block z-end z-c">}</span></span></span>
 </span></code></pre>
-<h2 id="pass-de-jian-dan-shi-yong">Pass 的简单使用</h2>
+<h2 id="Pass_的简单使用">Pass 的简单使用</h2>
 <p>首先将需要加密的文件和含有加密函数的文件编译成后缀为 <code>.ll</code> 的 LLVM IR 形式，然后使用 <code>opt</code> 来对需要加密的文件进行加密，最后则是将含有加密函数的文件和需要加密的文件进行链接，生成二进制文件。</p>
 <p>将下面的脚本保存为 &quot;run.sh&quot; 后，就可以使用 <code>bash run.sh test.c</code> 来编译程序了。</p>
 <pre data-lang="bash" class="language-bash z-code"><code class="language-bash" data-lang="bash"><span class="z-source z-shell z-bash"><span class="z-variable z-other z-readwrite z-assignment z-shell">fullname</span><span class="z-keyword z-operator z-assignment z-shell">=</span><span class="z-string z-unquoted z-shell"><span class="z-meta z-group z-expansion z-parameter z-shell"><span class="z-punctuation z-definition z-variable z-shell">$</span><span class="z-punctuation z-section z-expansion z-parameter z-begin z-shell">{</span></span><span class="z-meta z-group z-expansion z-parameter z-shell"><span class="z-variable z-other z-readwrite z-shell">1</span></span><span class="z-meta z-group z-expansion z-parameter z-shell"><span class="z-punctuation z-section z-expansion z-parameter z-end z-shell">}</span></span></span>
@@ -290,7 +290,7 @@ EncryptInst<span class="z-punctuation z-accessor z-arrow z-c++">-&gt;</span><spa
 <span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">llvm-link-8</span></span><span class="z-meta z-function-call z-arguments z-shell"> encrypt.ll <span class="z-meta z-group z-expansion z-parameter z-shell"><span class="z-punctuation z-definition z-variable z-shell">$</span><span class="z-punctuation z-section z-expansion z-parameter z-begin z-shell">{</span></span><span class="z-meta z-group z-expansion z-parameter z-shell"><span class="z-variable z-other z-readwrite z-shell">basename</span></span><span class="z-meta z-group z-expansion z-parameter z-shell"><span class="z-punctuation z-section z-expansion z-parameter z-end z-shell">}</span></span>_out.bc<span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>o</span> final.bc</span>
 <span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">clang-8</span></span><span class="z-meta z-function-call z-arguments z-shell"> final.bc<span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>o</span> final.out</span>
 </span></code></pre>
-<h2 id="hun-yao-xiao-guo">混淆效果</h2>
+<h2 id="混淆效果">混淆效果</h2>
 <p>下面是测试程序的代码。</p>
 <pre data-lang="c" class="language-c z-code"><code class="language-c" data-lang="c"><span class="z-source z-c"><span class="z-meta z-preprocessor z-include z-c"><span class="z-keyword z-control z-import z-include z-c">#include</span> <span class="z-string z-quoted z-other z-lt-gt z-include z-c"><span class="z-punctuation z-definition z-string z-begin z-c">&lt;</span>stdio.h<span class="z-punctuation z-definition z-string z-end z-c">&gt;</span></span>
 </span>
@@ -377,7 +377,7 @@ define dso_local i32 @main() #0 {
 </span></code></pre>
 <p>在 IDA 中也可以看到混淆的效果。</p>
 <p><a href="http://">0</a></p>
-<h2 id="wan-zheng-dai-ma">完整代码</h2>
+<h2 id="完整代码">完整代码</h2>
 <p>obfuscate.cpp</p>
 <pre data-lang="cpp" class="language-cpp z-code"><code class="language-cpp" data-lang="cpp"><span class="z-source z-c++"><span class="z-comment z-line z-double-slash z-c"><span class="z-punctuation z-definition z-comment z-c">//</span>===-- obfuscate/obfuscate.cpp - main file of obfuscate_string -*- C++ -*-===//
 </span><span class="z-comment z-line z-double-slash z-c"><span class="z-punctuation z-definition z-comment z-c">//</span>

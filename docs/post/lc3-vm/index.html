@@ -53,24 +53,24 @@
         <ul>
           
           <li>
-            <a href="https://chenx6.github.io/post/lc3-vm/#lc3-jia-gou">LC3 架构</a>
+            <a href="https://chenx6.github.io/post/lc3-vm/#LC3_架构">LC3 架构</a>
             
             <ul>
               
               <li>
-                <a href="https://chenx6.github.io/post/lc3-vm/#nei-cun">内存</a>
+                <a href="https://chenx6.github.io/post/lc3-vm/#内存">内存</a>
               </li>
               
               <li>
-                <a href="https://chenx6.github.io/post/lc3-vm/#zhi-ling">指令</a>
+                <a href="https://chenx6.github.io/post/lc3-vm/#指令">指令</a>
               </li>
               
               <li>
-                <a href="https://chenx6.github.io/post/lc3-vm/#ji-cun-qi">寄存器</a>
+                <a href="https://chenx6.github.io/post/lc3-vm/#寄存器">寄存器</a>
               </li>
               
               <li>
-                <a href="https://chenx6.github.io/post/lc3-vm/#qi-ta">其他</a>
+                <a href="https://chenx6.github.io/post/lc3-vm/#其他">其他</a>
               </li>
               
             </ul>
@@ -78,24 +78,24 @@
           </li>
           
           <li>
-            <a href="https://chenx6.github.io/post/lc3-vm/#xu-ni-ji-shi-xian">虚拟机实现</a>
+            <a href="https://chenx6.github.io/post/lc3-vm/#虚拟机实现">虚拟机实现</a>
             
             <ul>
               
               <li>
-                <a href="https://chenx6.github.io/post/lc3-vm/#xu-ni-ji-ji-ben-jia-gou">虚拟机基本架构</a>
+                <a href="https://chenx6.github.io/post/lc3-vm/#虚拟机基本架构">虚拟机基本架构</a>
               </li>
               
               <li>
-                <a href="https://chenx6.github.io/post/lc3-vm/#du-qu-cheng-xu">读取程序</a>
+                <a href="https://chenx6.github.io/post/lc3-vm/#读取程序">读取程序</a>
               </li>
               
               <li>
-                <a href="https://chenx6.github.io/post/lc3-vm/#zhi-xing-zhi-ling">执行指令</a>
+                <a href="https://chenx6.github.io/post/lc3-vm/#执行指令">执行指令</a>
               </li>
               
               <li>
-                <a href="https://chenx6.github.io/post/lc3-vm/#trap-fan-yi">Trap 翻译</a>
+                <a href="https://chenx6.github.io/post/lc3-vm/#Trap_翻译">Trap 翻译</a>
               </li>
               
             </ul>
@@ -103,12 +103,12 @@
           </li>
           
           <li>
-            <a href="https://chenx6.github.io/post/lc3-vm/#xu-ni-ji-ce-shi">虚拟机测试</a>
+            <a href="https://chenx6.github.io/post/lc3-vm/#虚拟机测试">虚拟机测试</a>
             
           </li>
           
           <li>
-            <a href="https://chenx6.github.io/post/lc3-vm/#bian-yi">编译</a>
+            <a href="https://chenx6.github.io/post/lc3-vm/#编译">编译</a>
             
           </li>
           
@@ -123,12 +123,12 @@
     </aside>
     <p>本文是根据 <a href="https://justinmeiners.github.io/lc3-vm">https://justinmeiners.github.io/lc3-vm</a> 和 <a href="https://justinmeiners.github.io/lc3-vm/supplies/lc3-isa.pdf">https://justinmeiners.github.io/lc3-vm/supplies/lc3-isa.pdf</a> ISA 写出 LC3 VM 的实现过程。</p>
 <p>代码已上传到了 Github 上：<a href="https://github.com/chenx6/lc3-vm">https://github.com/chenx6/lc3-vm</a></p>
-<h2 id="lc3-jia-gou">LC3 架构</h2>
-<h3 id="nei-cun">内存</h3>
+<h2 id="LC3_架构">LC3 架构</h2>
+<h3 id="内存">内存</h3>
 <p>LC3 架构有 2^16 个地址，每个地址包含一个 word (2 byte, 16 bit)。是大端序存储。所以用 C 表示如下。</p>
 <pre data-lang="c" class="language-c z-code"><code class="language-c" data-lang="c"><span class="z-source z-c"><span class="z-support z-type z-stdint z-c">uint16_t</span> <span class="z-keyword z-operator z-c">*</span>memory <span class="z-keyword z-operator z-assignment z-c">=</span> <span class="z-meta z-function-call z-c"><span class="z-support z-function z-C99 z-c">malloc</span><span class="z-meta z-group z-c"><span class="z-punctuation z-section z-group z-begin z-c">(</span></span></span><span class="z-meta z-function-call z-c"><span class="z-meta z-group z-c">UINT16_MAX <span class="z-keyword z-operator z-c">*</span> <span class="z-keyword z-operator z-word z-c">sizeof</span><span class="z-meta z-group z-c"><span class="z-punctuation z-section z-group z-begin z-c">(</span></span><span class="z-meta z-group z-c"><span class="z-support z-type z-stdint z-c">uint16_t</span></span><span class="z-meta z-group z-c"><span class="z-punctuation z-section z-group z-end z-c">)</span></span></span></span><span class="z-meta z-function-call z-c"><span class="z-meta z-group z-c"><span class="z-punctuation z-section z-group z-end z-c">)</span></span></span><span class="z-punctuation z-terminator z-c">;</span>
 </span></code></pre>
-<h3 id="zhi-ling">指令</h3>
+<h3 id="指令">指令</h3>
 <p>指令长度为固定 16 bit (不定长的 x86 出来挨打)。12-15 bit 用于表示 opcode，其他部分则是根据 opcode 来发挥其用途。下面是使用枚举类型表示出 LC3 指令的 opcode。</p>
 <pre data-lang="c" class="language-c z-code"><code class="language-c" data-lang="c"><span class="z-source z-c"><span class="z-meta z-enum z-c"><span class="z-storage z-type z-c">enum</span> <span class="z-meta z-enum z-c"><span class="z-entity z-name z-enum z-c">Opcode</span></span></span><span class="z-meta z-enum z-c">
 <span class="z-meta z-block z-c"><span class="z-punctuation z-section z-block z-begin z-c">{</span></span></span><span class="z-meta z-enum z-c"><span class="z-meta z-block z-c">
@@ -150,7 +150,7 @@
     OP_TRAP    <span class="z-comment z-block z-c"><span class="z-punctuation z-definition z-comment z-c">/*</span> execute trap <span class="z-punctuation z-definition z-comment z-c">*/</span></span>
 </span></span><span class="z-meta z-enum z-c"><span class="z-meta z-block z-c"><span class="z-punctuation z-section z-block z-end z-c">}</span></span></span><span class="z-punctuation z-terminator z-c">;</span>
 </span></code></pre>
-<h3 id="ji-cun-qi">寄存器</h3>
+<h3 id="寄存器">寄存器</h3>
 <p>LC3 有三种寄存器，通用寄存器 (R0-R7)，指令计数器 (PC)，条件寄存器 (COND)。</p>
 <p>条件寄存器则是存储着三种状态：负数 (N)，零 (Z)，正 (P)。</p>
 <p>下面是使用枚举类型表示出寄存器的下标，还有条件寄存器的条件。</p>
@@ -179,7 +179,7 @@
     FL_NEG <span class="z-keyword z-operator z-assignment z-c">=</span> <span class="z-constant z-numeric z-integer z-decimal z-c">1</span> <span class="z-keyword z-operator z-arithmetic z-c">&lt;&lt;</span> <span class="z-constant z-numeric z-integer z-decimal z-c">2</span><span class="z-punctuation z-separator z-c">,</span> <span class="z-comment z-block z-c"><span class="z-punctuation z-definition z-comment z-c">/*</span> Negative <span class="z-punctuation z-definition z-comment z-c">*/</span></span>
 </span></span><span class="z-meta z-enum z-c"><span class="z-meta z-block z-c"><span class="z-punctuation z-section z-block z-end z-c">}</span></span></span><span class="z-punctuation z-terminator z-c">;</span>
 </span></code></pre>
-<h3 id="qi-ta">其他</h3>
+<h3 id="其他">其他</h3>
 <p>LC3 还有中断，内存映射的 IO，优先级等。</p>
 <p>在 LC3 中有个类似 x86 int 的 TRAP，实现输入输出等功能。</p>
 <pre data-lang="c" class="language-c z-code"><code class="language-c" data-lang="c"><span class="z-source z-c"><span class="z-meta z-enum z-c"><span class="z-storage z-type z-c">enum</span> <span class="z-meta z-enum z-c"><span class="z-entity z-name z-enum z-c">Trap</span></span></span><span class="z-meta z-enum z-c">
@@ -202,8 +202,8 @@
     MCR <span class="z-keyword z-operator z-assignment z-c">=</span> <span class="z-constant z-numeric z-integer z-hexadecimal z-c"><span class="z-punctuation z-definition z-numeric z-base z-c">0x</span>FFFE</span>       <span class="z-comment z-block z-c"><span class="z-punctuation z-definition z-comment z-c">/*</span> machine control <span class="z-punctuation z-definition z-comment z-c">*/</span></span>
 </span></span><span class="z-meta z-enum z-c"><span class="z-meta z-block z-c"><span class="z-punctuation z-section z-block z-end z-c">}</span></span></span><span class="z-punctuation z-terminator z-c">;</span>
 </span></code></pre>
-<h2 id="xu-ni-ji-shi-xian">虚拟机实现</h2>
-<h3 id="xu-ni-ji-ji-ben-jia-gou">虚拟机基本架构</h3>
+<h2 id="虚拟机实现">虚拟机实现</h2>
+<h3 id="虚拟机基本架构">虚拟机基本架构</h3>
 <p>原文将读取文件和解析指令耦合在了一起，并且将内存和寄存器都变成了全局变量，那样就不能同时跑多个虚拟机了。所以在我的实现中，将读取文件，和解析指令并执行进行了拆分，将存储内存和寄存器的数组从全局变量变成了动态内存，还从别的项目里偷了测试样例 <a href="https://github.com/viking/lc3-vm/">https://github.com/viking/lc3-vm/</a>，最后写个 CMake 来负责处理编译依赖。</p>
 <p>通过一个结构体表示虚拟机的状态 (内存和寄存器) 会方便管理一些。</p>
 <pre data-lang="c" class="language-c z-code"><code class="language-c" data-lang="c"><span class="z-source z-c"><span class="z-storage z-type z-c">typedef</span> <span class="z-storage z-type z-c">struct</span> _vm_ctx
@@ -249,7 +249,7 @@ vm_ctx <span class="z-keyword z-operator z-c">*</span><span class="z-meta z-func
     <span class="z-keyword z-control z-flow z-return z-c">return</span> <span class="z-constant z-numeric z-integer z-decimal z-c">0</span><span class="z-punctuation z-terminator z-c">;</span>
 </span></span><span class="z-meta z-function z-c"><span class="z-meta z-block z-c"><span class="z-punctuation z-section z-block z-end z-c">}</span></span></span>
 </span></code></pre>
-<h3 id="du-qu-cheng-xu">读取程序</h3>
+<h3 id="读取程序">读取程序</h3>
 <p>就是上面代码中出现的 <code>read_image</code> 函数。</p>
 <p>由于程序为大端序，而平时使用的 x86 PC 是小端序，所以在读取时需要将程序转换成小端序以方便后面的解析。</p>
 <p>我们通过 <code>read_image</code> 函数来将程序加载到内存中，并且转换为小端序的操作。</p>
@@ -289,9 +289,9 @@ vm_ctx <span class="z-keyword z-operator z-c">*</span><span class="z-meta z-func
     <span class="z-keyword z-control z-flow z-return z-c">return</span> memory<span class="z-punctuation z-terminator z-c">;</span>
 </span></span><span class="z-meta z-function z-c"><span class="z-meta z-block z-c"><span class="z-punctuation z-section z-block z-end z-c">}</span></span></span>
 </span></code></pre>
-<h3 id="zhi-xing-zhi-ling">执行指令</h3>
+<h3 id="执行指令">执行指令</h3>
 <p>执行指令前得解析指令格式，我们可以从前面的链接中拿到 ISA，根据上面的格式来进行解析。</p>
-<h4 id="add">ADD</h4>
+<h4 id="ADD">ADD</h4>
 <p>例如 ADD 指令编码如下</p>
 <pre data-lang="bash" class="language-bash z-code"><code class="language-bash" data-lang="bash"><span class="z-source z-shell z-bash"> <span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">15</span></span><span class="z-meta z-function-call z-arguments z-shell"> 14 13 12 11 10  9  8  7  6  5  4  3  2  1  0</span>
 <span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">+--------------------+--------+--------+--------+</span></span>
@@ -364,7 +364,7 @@ ADD DR<span class="z-punctuation z-separator z-c">,</span> SR1<span class="z-pun
     <span class="z-punctuation z-section z-block z-end z-c">}</span></span>
 </span></span><span class="z-meta z-function z-c"><span class="z-meta z-block z-c"><span class="z-punctuation z-section z-block z-end z-c">}</span></span></span>
 </span></code></pre>
-<h4 id="ld">LD</h4>
+<h4 id="LD">LD</h4>
 <p>同样我们可以解析并执行 LD 语句的 C 语言代码。</p>
 <pre data-lang="c" class="language-c z-code"><code class="language-c" data-lang="c"><span class="z-source z-c"> 15 <span class="z-constant z-numeric z-integer z-decimal z-c">14</span> <span class="z-constant z-numeric z-integer z-decimal z-c">13</span> <span class="z-constant z-numeric z-integer z-decimal z-c">12</span> <span class="z-constant z-numeric z-integer z-decimal z-c">11</span> <span class="z-constant z-numeric z-integer z-decimal z-c">10</span>  <span class="z-constant z-numeric z-integer z-decimal z-c">9</span>  <span class="z-constant z-numeric z-integer z-decimal z-c">8</span>  <span class="z-constant z-numeric z-integer z-decimal z-c">7</span>  <span class="z-constant z-numeric z-integer z-decimal z-c">6</span>  <span class="z-constant z-numeric z-integer z-decimal z-c">5</span>  <span class="z-constant z-numeric z-integer z-decimal z-c">4</span>  <span class="z-constant z-numeric z-integer z-decimal z-c">3</span>  <span class="z-constant z-numeric z-integer z-decimal z-c">2</span>  <span class="z-constant z-numeric z-integer z-decimal z-c">1</span>  <span class="z-constant z-numeric z-integer z-decimal z-c">0</span>
 <span class="z-keyword z-operator z-arithmetic z-c">+</span><span class="z-keyword z-operator z-arithmetic z-c">--</span><span class="z-keyword z-operator z-arithmetic z-c">--</span><span class="z-keyword z-operator z-arithmetic z-c">--</span><span class="z-keyword z-operator z-arithmetic z-c">--</span><span class="z-keyword z-operator z-arithmetic z-c">--</span><span class="z-keyword z-operator z-arithmetic z-c">--</span><span class="z-keyword z-operator z-arithmetic z-c">--</span><span class="z-keyword z-operator z-arithmetic z-c">--</span><span class="z-keyword z-operator z-arithmetic z-c">--</span><span class="z-keyword z-operator z-arithmetic z-c">--</span><span class="z-keyword z-operator z-arithmetic z-c">+</span><span class="z-keyword z-operator z-arithmetic z-c">--</span><span class="z-keyword z-operator z-arithmetic z-c">--</span><span class="z-keyword z-operator z-arithmetic z-c">--</span><span class="z-keyword z-operator z-arithmetic z-c">--</span><span class="z-keyword z-operator z-arithmetic z-c">--</span><span class="z-keyword z-operator z-arithmetic z-c">--</span><span class="z-keyword z-operator z-arithmetic z-c">--</span><span class="z-keyword z-operator z-arithmetic z-c">--</span><span class="z-keyword z-operator z-arithmetic z-c">--</span><span class="z-keyword z-operator z-arithmetic z-c">--</span><span class="z-keyword z-operator z-arithmetic z-c">--</span><span class="z-keyword z-operator z-arithmetic z-c">--</span><span class="z-keyword z-operator z-arithmetic z-c">--</span><span class="z-keyword z-operator z-arithmetic z-c">+</span>
@@ -381,7 +381,7 @@ ADD DR<span class="z-punctuation z-separator z-c">,</span> SR1<span class="z-pun
     <span class="z-meta z-function-call z-c"><span class="z-variable z-function z-c">update_flags</span><span class="z-meta z-group z-c"><span class="z-punctuation z-section z-group z-begin z-c">(</span></span></span><span class="z-meta z-function-call z-c"><span class="z-meta z-group z-c">dr<span class="z-punctuation z-separator z-c">,</span> curr_vm<span class="z-punctuation z-accessor z-c">-&gt;</span>regs</span></span><span class="z-meta z-function-call z-c"><span class="z-meta z-group z-c"><span class="z-punctuation z-section z-group z-end z-c">)</span></span></span><span class="z-punctuation z-terminator z-c">;</span>
 <span class="z-punctuation z-section z-block z-end z-c">}</span></span>
 </span></code></pre>
-<h4 id="br">BR</h4>
+<h4 id="BR">BR</h4>
 <p>而 BR 语句则是负责条件跳转，条件则为指令中的 9-11 bit 进行决定。例如指令中 N 位为 1，而且寄存器中的条件寄存器 N 也为 1，则跳转。N, P, Z 这三种条件可以自由组合，只要满足某一个条件就跳转。跳转表示为 PC 指针加上偏移值。</p>
 <pre data-lang="c" class="language-c z-code"><code class="language-c" data-lang="c"><span class="z-source z-c"><span class="z-keyword z-control z-c">case</span> OP_BR<span class="z-punctuation z-separator z-c">:</span>
 <span class="z-meta z-block z-c"><span class="z-punctuation z-section z-block z-begin z-c">{</span>
@@ -399,7 +399,7 @@ ADD DR<span class="z-punctuation z-separator z-c">,</span> SR1<span class="z-pun
     <span class="z-punctuation z-section z-block z-end z-c">}</span></span>
 <span class="z-punctuation z-section z-block z-end z-c">}</span></span>
 </span></code></pre>
-<h4 id="mem-read-han-shu">mem_read 函数</h4>
+<h4 id="mem_read_函数">mem_read 函数</h4>
 <p>由于有内存映射的寄存器的存在，所以要将访问某些特殊地址时实际上是想访问某些寄存器，所以在读写特殊内存地址时要进行魔改。例如在访问 MR_KBSR 地址时候就需要将按键状态返回。</p>
 <pre data-lang="c" class="language-c z-code"><code class="language-c" data-lang="c"><span class="z-source z-c"><span class="z-support z-type z-stdint z-c">uint16_t</span> <span class="z-meta z-function z-c"><span class="z-entity z-name z-function z-c">mem_read</span></span><span class="z-meta z-function z-parameters z-c"><span class="z-meta z-group z-c"><span class="z-punctuation z-section z-group z-begin z-c">(</span></span></span><span class="z-meta z-function z-parameters z-c"><span class="z-meta z-group z-c"><span class="z-support z-type z-stdint z-c">uint16_t</span> <span class="z-variable z-parameter z-c">address</span><span class="z-punctuation z-separator z-c">,</span> <span class="z-support z-type z-stdint z-c">uint16_t</span> <span class="z-keyword z-operator z-c">*</span><span class="z-variable z-parameter z-c">memory</span><span class="z-punctuation z-section z-group z-end z-c">)</span></span></span><span class="z-meta z-function z-c">
 </span><span class="z-meta z-function z-c"><span class="z-meta z-block z-c"><span class="z-punctuation z-section z-block z-begin z-c">{</span></span></span><span class="z-meta z-function z-c"><span class="z-meta z-block z-c">
@@ -433,7 +433,7 @@ ADD DR<span class="z-punctuation z-separator z-c">,</span> SR1<span class="z-pun
     <span class="z-keyword z-control z-flow z-return z-c">return</span> <span class="z-meta z-function-call z-c"><span class="z-variable z-function z-c">select</span><span class="z-meta z-group z-c"><span class="z-punctuation z-section z-group z-begin z-c">(</span></span></span><span class="z-meta z-function-call z-c"><span class="z-meta z-group z-c"><span class="z-constant z-numeric z-integer z-decimal z-c">1</span><span class="z-punctuation z-separator z-c">,</span> <span class="z-keyword z-operator z-c">&amp;</span>readfds<span class="z-punctuation z-separator z-c">,</span> <span class="z-constant z-language z-c">NULL</span><span class="z-punctuation z-separator z-c">,</span> <span class="z-constant z-language z-c">NULL</span><span class="z-punctuation z-separator z-c">,</span> <span class="z-keyword z-operator z-c">&amp;</span>timeout</span></span><span class="z-meta z-function-call z-c"><span class="z-meta z-group z-c"><span class="z-punctuation z-section z-group z-end z-c">)</span></span></span> <span class="z-keyword z-operator z-comparison z-c">!=</span> <span class="z-constant z-numeric z-integer z-decimal z-c">0</span><span class="z-punctuation z-terminator z-c">;</span>
 </span></span><span class="z-meta z-function z-c"><span class="z-meta z-block z-c"><span class="z-punctuation z-section z-block z-end z-c">}</span></span></span>
 </span></code></pre>
-<h4 id="trap">TRAP</h4>
+<h4 id="TRAP">TRAP</h4>
 <p>在处理中断时使用函数来进行处理，降低代码耦合度。</p>
 <pre data-lang="c" class="language-c z-code"><code class="language-c" data-lang="c"><span class="z-source z-c"><span class="z-keyword z-control z-c">case</span> OP_TRAP<span class="z-punctuation z-separator z-c">:</span>
 <span class="z-meta z-block z-c"><span class="z-punctuation z-section z-block z-begin z-c">{</span>
@@ -441,7 +441,7 @@ ADD DR<span class="z-punctuation z-separator z-c">,</span> SR1<span class="z-pun
 <span class="z-punctuation z-section z-block z-end z-c">}</span></span>
 <span class="z-keyword z-control z-flow z-break z-c">break</span><span class="z-punctuation z-terminator z-c">;</span>
 </span></code></pre>
-<h3 id="trap-fan-yi">Trap 翻译</h3>
+<h3 id="Trap_翻译">Trap 翻译</h3>
 <p>将不同中断用 C 语言表示就行。由 ISA 可以知道 Trap 向量由 0-7 bit 表示。上面已经提及过了 Trap 的路径和功能，所以相关功能使用 C 语言表示如下。</p>
 <pre data-lang="c" class="language-c z-code"><code class="language-c" data-lang="c"><span class="z-source z-c"><span class="z-keyword z-control z-c">switch</span> <span class="z-meta z-group z-c"><span class="z-punctuation z-section z-group z-begin z-c">(</span>instr <span class="z-keyword z-operator z-c">&amp;</span> <span class="z-constant z-numeric z-integer z-hexadecimal z-c"><span class="z-punctuation z-definition z-numeric z-base z-c">0x</span>FF</span><span class="z-punctuation z-section z-group z-end z-c">)</span></span>
 <span class="z-meta z-block z-c"><span class="z-punctuation z-section z-block z-begin z-c">{</span>
@@ -455,7 +455,7 @@ ADD DR<span class="z-punctuation z-separator z-c">,</span> SR1<span class="z-pun
 <span class="z-punctuation z-section z-block z-end z-c">}</span></span>
 <span class="z-keyword z-control z-flow z-break z-c">break</span><span class="z-punctuation z-terminator z-c">;</span>
 </span></code></pre>
-<h2 id="xu-ni-ji-ce-shi">虚拟机测试</h2>
+<h2 id="虚拟机测试">虚拟机测试</h2>
 <p>通过位运算构造相应的指令，然后运行此指令，看看预期和结果是否相符。如果不相符就是挂了，返回 0；如果通过了那就返回 1。</p>
 <pre data-lang="c" class="language-c z-code"><code class="language-c" data-lang="c"><span class="z-source z-c"><span class="z-storage z-type z-c">int</span> <span class="z-meta z-function z-c"><span class="z-entity z-name z-function z-c">test_add_1</span></span><span class="z-meta z-function z-parameters z-c"><span class="z-meta z-group z-c"><span class="z-punctuation z-section z-group z-begin z-c">(</span></span></span><span class="z-meta z-function z-parameters z-c"><span class="z-meta z-group z-c">vm_ctx <span class="z-keyword z-operator z-c">*</span><span class="z-variable z-parameter z-c">curr_vm</span><span class="z-punctuation z-section z-group z-end z-c">)</span></span></span><span class="z-meta z-function z-c">
 </span><span class="z-meta z-function z-c"><span class="z-meta z-block z-c"><span class="z-punctuation z-section z-block z-begin z-c">{</span></span></span><span class="z-meta z-function z-c"><span class="z-meta z-block z-c">
@@ -527,7 +527,7 @@ ADD DR<span class="z-punctuation z-separator z-c">,</span> SR1<span class="z-pun
 </span></span><span class="z-meta z-function z-c"><span class="z-meta z-block z-c"><span class="z-punctuation z-section z-block z-end z-c">}</span></span></span>
 </span></code></pre>
 <p>原文中还有编译好的 2048 和 rouge，可以试着跑一下。</p>
-<h2 id="bian-yi">编译</h2>
+<h2 id="编译">编译</h2>
 <p>使用 CMake 进行依赖处理，将测试程序和源程序分开，并且使用 <code>make test</code> 就可以跑测试了。</p>
 <pre data-lang="cmake" class="language-cmake z-code"><code class="language-cmake" data-lang="cmake"><span class="z-source z-cmake"><span class="z-meta z-function-call z-cmake"><span class="z-keyword z-control z-if z-cmake">if</span></span><span class="z-meta z-group z-if z-cmake"><span class="z-meta z-function-call z-arguments z-cmake"><span class="z-punctuation z-section z-parens z-begin z-cmake">(</span> <span class="z-variable z-parameter z-if z-POLICY z-cmake">POLICY</span> <span class="z-meta z-string z-unquoted z-cmake">CMP0048</span> <span class="z-punctuation z-section z-parens z-end z-cmake">)</span></span>
   <span class="z-meta z-function-call z-cmake"><span class="z-support z-function z-cmake_policy z-cmake">cmake_policy</span></span><span class="z-meta z-function-call z-arguments z-cmake"><span class="z-punctuation z-section z-parens z-begin z-cmake">(</span> <span class="z-variable z-parameter z-SET z-cmake">SET</span> <span class="z-meta z-string z-unquoted z-cmake">CMP0048</span> <span class="z-variable z-parameter z-NEW z-cmake">NEW</span> <span class="z-punctuation z-section z-parens z-end z-cmake">)</span></span> <span class="z-comment z-line z-cmake"><span class="z-punctuation z-definition z-comment z-cmake">#</span> CMake 3.0</span>

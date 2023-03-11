@@ -19,7 +19,7 @@
   </url>
   
   <url>
-    <loc>https://chenx6.github.io/post/build-pass-out-of-tree/</loc>
+    <loc>https://chenx6.github.io/post/build_pass_out_of_tree/</loc>
     
     <lastmod>2020-01-01</lastmod>
     
@@ -40,7 +40,7 @@
   </url>
   
   <url>
-    <loc>https://chenx6.github.io/post/compile-cheatsheet/</loc>
+    <loc>https://chenx6.github.io/post/compile_cheatsheet/</loc>
     
     <lastmod>2022-05-21</lastmod>
     
@@ -54,28 +54,28 @@
   </url>
   
   <url>
-    <loc>https://chenx6.github.io/post/elf-backdoor/</loc>
+    <loc>https://chenx6.github.io/post/elf_backdoor/</loc>
     
     <lastmod>2020-01-01</lastmod>
     
   </url>
   
   <url>
-    <loc>https://chenx6.github.io/post/fail-firm-fuzz/</loc>
+    <loc>https://chenx6.github.io/post/fail_firm_fuzz/</loc>
     
     <lastmod>2021-01-21</lastmod>
     
   </url>
   
   <url>
-    <loc>https://chenx6.github.io/post/frida-beginner/</loc>
+    <loc>https://chenx6.github.io/post/frida_beginner/</loc>
     
     <lastmod>2022-02-26</lastmod>
     
   </url>
   
   <url>
-    <loc>https://chenx6.github.io/post/from-log/</loc>
+    <loc>https://chenx6.github.io/post/from_log/</loc>
     
     <lastmod>2022-07-24</lastmod>
     
@@ -103,14 +103,14 @@
   </url>
   
   <url>
-    <loc>https://chenx6.github.io/post/n1-modify/</loc>
+    <loc>https://chenx6.github.io/post/n1_modify/</loc>
     
     <lastmod>2020-02-01</lastmod>
     
   </url>
   
   <url>
-    <loc>https://chenx6.github.io/post/obfuscate-string/</loc>
+    <loc>https://chenx6.github.io/post/obfuscate_string/</loc>
     
     <lastmod>2020-01-01</lastmod>
     
@@ -131,21 +131,21 @@
   </url>
   
   <url>
-    <loc>https://chenx6.github.io/post/rev-pty/</loc>
+    <loc>https://chenx6.github.io/post/rev_pty/</loc>
     
     <lastmod>2022-05-02T19:19:57+08:00</lastmod>
     
   </url>
   
   <url>
-    <loc>https://chenx6.github.io/post/rewrite-ollvm-bcf/</loc>
+    <loc>https://chenx6.github.io/post/rewrite_ollvm_bcf/</loc>
     
     <lastmod>2020-01-01</lastmod>
     
   </url>
   
   <url>
-    <loc>https://chenx6.github.io/post/rewrite-ollvm-fla/</loc>
+    <loc>https://chenx6.github.io/post/rewrite_ollvm_fla/</loc>
     
     <lastmod>2021-01-21</lastmod>
     

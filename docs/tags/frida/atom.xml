@@ -11,14 +11,14 @@
 		<title>Frida 在一次离谱比赛中的应用</title>
 		<published>2022-02-26T00:00:00+00:00</published>
 		<updated>2022-02-26T00:00:00+00:00</updated>
-		<link rel="alternate" href="https://chenx6.github.io/post/frida-beginner/" type="text/html"/>
-		<id>https://chenx6.github.io/post/frida-beginner/</id>
+		<link rel="alternate" href="https://chenx6.github.io/post/frida_beginner/" type="text/html"/>
+		<id>https://chenx6.github.io/post/frida_beginner/</id>
 		<content type="html">&lt;p&gt;在某次离谱比赛中，我使用了 Frida 解出了题目，下面是一些简单的笔记。&lt;&#x2F;p&gt;
 &lt;blockquote&gt;
 &lt;p&gt;在 2021 年 10 月 24 日，我浪费了2小时的时间解出了一个某弹幕网站办的比赛的离谱安卓题，解出之后的内心就是：rnm，退时间！更加嘲讽的是，他还在一个月后转给了我 0.56 元作为奖励！&lt;&#x2F;p&gt;
 &lt;p&gt;那天比较欣慰的是在某弹幕网站上看完了 A·ZU·NA 的 FMT（&lt;&#x2F;p&gt;
 &lt;&#x2F;blockquote&gt;
-&lt;h2 id=&quot;di-yi-guan&quot;&gt;第一关&lt;&#x2F;h2&gt;
+&lt;h2 id=&quot;第一关&quot;&gt;第一关&lt;&#x2F;h2&gt;
 &lt;p&gt;首先找到程序入口点，可以直接看到程序的逻辑，就是将用户输入的帐号和密码用 &lt;code&gt;Encrypt.a&lt;&#x2F;code&gt; 和 &lt;code&gt;Encrypt.b&lt;&#x2F;code&gt; 进行加密，然后对比内容。那接下来就直接照抄一遍加密函数中的代码进行反向解密。&lt;&#x2F;p&gt;
 &lt;pre data-lang=&quot;java&quot; class=&quot;language-java z-code&quot;&gt;&lt;code class=&quot;language-java&quot; data-lang=&quot;java&quot;&gt;&lt;span class=&quot;z-source z-java&quot;&gt;&lt;span class=&quot;z-meta z-class z-java&quot;&gt;&lt;span class=&quot;z-storage z-modifier z-java&quot;&gt;public&lt;&#x2F;span&gt; &lt;span class=&quot;z-meta z-class z-identifier z-java&quot;&gt;&lt;span class=&quot;z-storage z-type z-java&quot;&gt;class&lt;&#x2F;span&gt; &lt;span class=&quot;z-entity z-name z-class z-java&quot;&gt;MainActivity&lt;&#x2F;span&gt;&lt;&#x2F;span&gt; &lt;span class=&quot;z-meta z-class z-extends z-java&quot;&gt;&lt;span class=&quot;z-keyword z-declaration z-extends z-java&quot;&gt;extends&lt;&#x2F;span&gt; &lt;span class=&quot;z-entity z-other z-inherited-class z-java&quot;&gt;AppCompatActivity&lt;&#x2F;span&gt; &lt;&#x2F;span&gt;&lt;span class=&quot;z-meta z-class z-body z-java&quot;&gt;&lt;span class=&quot;z-meta z-block z-java&quot;&gt;&lt;span class=&quot;z-punctuation z-section z-block z-begin z-java&quot;&gt;{&lt;&#x2F;span&gt;
     &lt;span class=&quot;z-comment z-line z-double-slash z-java&quot;&gt;&lt;span class=&quot;z-punctuation z-definition z-comment z-java&quot;&gt;&#x2F;&#x2F;&lt;&#x2F;span&gt; ...
@@ -105,7 +105,7 @@
 &lt;span class=&quot;z-meta z-function-call z-python&quot;&gt;&lt;span class=&quot;z-meta z-qualified-name z-python&quot;&gt;&lt;span class=&quot;z-variable z-function z-python&quot;&gt;&lt;span class=&quot;z-support z-function z-builtin z-python&quot;&gt;print&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;span class=&quot;z-meta z-function-call z-arguments z-python&quot;&gt;&lt;span class=&quot;z-punctuation z-section z-arguments z-begin z-python&quot;&gt;(&lt;&#x2F;span&gt;&lt;span class=&quot;z-meta z-function-call z-python&quot;&gt;&lt;span class=&quot;z-meta z-qualified-name z-python&quot;&gt;&lt;span class=&quot;z-variable z-function z-python&quot;&gt;&lt;span class=&quot;z-meta z-generic-name z-python&quot;&gt;dec&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;span class=&quot;z-meta z-function-call z-arguments z-python&quot;&gt;&lt;span class=&quot;z-punctuation z-section z-arguments z-begin z-python&quot;&gt;(&lt;&#x2F;span&gt;&lt;span class=&quot;z-meta z-qualified-name z-python&quot;&gt;&lt;span class=&quot;z-meta z-generic-name z-python&quot;&gt;enc_password&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;span class=&quot;z-punctuation z-section z-arguments z-end z-python&quot;&gt;)&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;span class=&quot;z-punctuation z-section z-arguments z-end z-python&quot;&gt;)&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
 
 &lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
-&lt;h2 id=&quot;di-er-guan&quot;&gt;第二关&lt;&#x2F;h2&gt;
+&lt;h2 id=&quot;第二关&quot;&gt;第二关&lt;&#x2F;h2&gt;
 &lt;p&gt;没想到吧，还有第二关。只剩下 &lt;code&gt;libMylib.so&lt;&#x2F;code&gt; 没分析过了。根据 Java 层的代码，第二关应该在 &lt;code&gt;Mylib&lt;&#x2F;code&gt; 的 &lt;code&gt;i&lt;&#x2F;code&gt; 函数中。&lt;&#x2F;p&gt;
 &lt;pre data-lang=&quot;java&quot; class=&quot;language-java z-code&quot;&gt;&lt;code class=&quot;language-java&quot; data-lang=&quot;java&quot;&gt;&lt;span class=&quot;z-source z-java&quot;&gt;&lt;span class=&quot;z-storage z-modifier z-java&quot;&gt;public&lt;&#x2F;span&gt; &lt;span class=&quot;z-storage z-modifier z-java&quot;&gt;native&lt;&#x2F;span&gt; &lt;span class=&quot;z-support z-class z-java&quot;&gt;String&lt;&#x2F;span&gt; &lt;span class=&quot;z-meta z-function-call z-java&quot;&gt;&lt;span class=&quot;z-variable z-function z-java&quot;&gt;i&lt;&#x2F;span&gt;&lt;span class=&quot;z-punctuation z-section z-parens z-begin z-java&quot;&gt;(&lt;&#x2F;span&gt;&lt;span class=&quot;z-punctuation z-section z-parens z-end z-java&quot;&gt;)&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;span class=&quot;z-punctuation z-terminator z-java&quot;&gt;;&lt;&#x2F;span&gt;
 
@@ -255,7 +255,7 @@
     &lt;&#x2F;span&gt;&lt;span class=&quot;z-punctuation z-definition z-block z-ts&quot;&gt;}&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;span class=&quot;z-meta z-brace z-round z-ts&quot;&gt;)&lt;&#x2F;span&gt;&lt;span class=&quot;z-punctuation z-terminator z-statement z-ts&quot;&gt;;&lt;&#x2F;span&gt;
 &lt;span class=&quot;z-punctuation z-definition z-block z-ts&quot;&gt;}&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;span class=&quot;z-meta z-brace z-round z-ts&quot;&gt;)&lt;&#x2F;span&gt;&lt;span class=&quot;z-punctuation z-terminator z-statement z-ts&quot;&gt;;&lt;&#x2F;span&gt;
 &lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
-&lt;h2 id=&quot;zui-zhong-dai-ma&quot;&gt;最终代码&lt;&#x2F;h2&gt;
+&lt;h2 id=&quot;最终代码&quot;&gt;最终代码&lt;&#x2F;h2&gt;
 &lt;pre data-lang=&quot;javascript&quot; class=&quot;language-javascript z-code&quot;&gt;&lt;code class=&quot;language-javascript&quot; data-lang=&quot;javascript&quot;&gt;&lt;span class=&quot;z-source z-ts&quot;&gt;&lt;span class=&quot;z-comment z-block z-documentation z-ts&quot;&gt;&lt;span class=&quot;z-punctuation z-definition z-comment z-ts&quot;&gt;&#x2F;**&lt;&#x2F;span&gt;b13981f45ae996d4bc04be5b34662a78&lt;span class=&quot;z-punctuation z-definition z-comment z-ts&quot;&gt;*&#x2F;&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
 
 &lt;span class=&quot;z-comment z-line z-double-slash z-ts&quot;&gt;&lt;span class=&quot;z-punctuation z-definition z-comment z-ts&quot;&gt;&#x2F;&#x2F;&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;span class=&quot;z-comment z-line z-double-slash z-ts&quot;&gt; hook system_property_get&lt;&#x2F;span&gt;
@@ -332,9 +332,9 @@
     &lt;&#x2F;span&gt;&lt;span class=&quot;z-punctuation z-definition z-block z-ts&quot;&gt;}&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;span class=&quot;z-meta z-brace z-round z-ts&quot;&gt;)&lt;&#x2F;span&gt;&lt;span class=&quot;z-punctuation z-terminator z-statement z-ts&quot;&gt;;&lt;&#x2F;span&gt;
 &lt;span class=&quot;z-punctuation z-definition z-block z-ts&quot;&gt;}&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;span class=&quot;z-meta z-brace z-round z-ts&quot;&gt;)&lt;&#x2F;span&gt;&lt;span class=&quot;z-punctuation z-terminator z-statement z-ts&quot;&gt;;&lt;&#x2F;span&gt;
 &lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
-&lt;h2 id=&quot;hou-ji&quot;&gt;后记&lt;&#x2F;h2&gt;
+&lt;h2 id=&quot;后记&quot;&gt;后记&lt;&#x2F;h2&gt;
 &lt;p&gt;得到解密的结果后还得加上 &#x27;-&#x27; 作为分隔符，才能正确提交，然而题目中也没有提示...&lt;&#x2F;p&gt;
-&lt;h2 id=&quot;refs&quot;&gt;Refs&lt;&#x2F;h2&gt;
+&lt;h2 id=&quot;Refs&quot;&gt;Refs&lt;&#x2F;h2&gt;
 &lt;ul&gt;
 &lt;li&gt;&lt;a href=&quot;https:&#x2F;&#x2F;frida.re&#x2F;docs&#x2F;javascript-api&#x2F;&quot;&gt;javascript-api&lt;&#x2F;a&gt;&lt;&#x2F;li&gt;
 &lt;li&gt;&lt;a href=&quot;https:&#x2F;&#x2F;www.cnblogs.com&#x2F;shlyd&#x2F;p&#x2F;14726850.html&quot;&gt;使用 Frida Hook 不同类型的函数（失效文章）&lt;&#x2F;a&gt;&lt;&#x2F;li&gt;

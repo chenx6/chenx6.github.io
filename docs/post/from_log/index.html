@@ -55,22 +55,22 @@
         <ul>
           
           <li>
-            <a href="https://chenx6.github.io/post/from-log/#ri-zhi-han-shu-chang-shi-yao-yang">日志函数长什么样</a>
+            <a href="https://chenx6.github.io/post/from_log/#日志函数长什么样">日志函数长什么样</a>
             
           </li>
           
           <li>
-            <a href="https://chenx6.github.io/post/from-log/#zai-ida-zhong-shang-mian-de-dai-ma-chang-shi-yao-yang">在 IDA 中，上面的代码长什么样</a>
+            <a href="https://chenx6.github.io/post/from_log/#在_IDA_中，上面的代码长什么样">在 IDA 中，上面的代码长什么样</a>
             
           </li>
           
           <li>
-            <a href="https://chenx6.github.io/post/from-log/#idapython-deng-chang">IDAPython 登场</a>
+            <a href="https://chenx6.github.io/post/from_log/#IDAPython_登场">IDAPython 登场</a>
             
           </li>
           
           <li>
-            <a href="https://chenx6.github.io/post/from-log/#refs">Refs</a>
+            <a href="https://chenx6.github.io/post/from_log/#Refs">Refs</a>
             
           </li>
           
@@ -79,7 +79,7 @@
       
     </aside>
     <p>在逆向二进制程序中，经常碰到将程序 strip 了，但是日志函数中保留着函数名字的情况。所以写文记录在这种情况下，使用 IDAPython 恢复函数名字的过程。</p>
-<h2 id="ri-zhi-han-shu-chang-shi-yao-yang">日志函数长什么样</h2>
+<h2 id="日志函数长什么样">日志函数长什么样</h2>
 <p>下面是我手写的一个日志函数。主要有几个部分：</p>
 <ul>
 <li>日志级别 <code>LogLevel</code>，记录日志的最低级别 <code>do_log_level</code>，用来在不同的情况下过滤日志。</li>
@@ -154,7 +154,7 @@
 <span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">[WARNING]</span></span><span class="z-meta z-function-call z-arguments z-shell"> <span class="z-keyword z-control z-regexp z-set z-begin z-shell">[</span>a_important_function<span class="z-keyword z-control z-regexp z-set z-end z-shell">]</span> Warning world, return value: 114514</span>
 <span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">[ERROR]</span></span><span class="z-meta z-function-call z-arguments z-shell">   <span class="z-keyword z-control z-regexp z-set z-begin z-shell">[</span>main<span class="z-keyword z-control z-regexp z-set z-end z-shell">]</span> Error world, exit code: 1919810</span>
 </span></code></pre>
-<h2 id="zai-ida-zhong-shang-mian-de-dai-ma-chang-shi-yao-yang">在 IDA 中，上面的代码长什么样</h2>
+<h2 id="在_IDA_中，上面的代码长什么样">在 IDA 中，上面的代码长什么样</h2>
 <p>在反汇编结果中，可以看到虽然 DEBUG 级别的日志没有输出，但是相关的函数调用仍然在代码中保留着。并且每个日志函数的调用，在参数中都有函数名字。在这种情况下，就可以使用 IDAPython 进行自动化提取函数名字并且恢复回去了。</p>
 <pre data-lang="c" class="language-c z-code"><code class="language-c" data-lang="c"><span class="z-source z-c"><span class="z-storage z-type z-c">int</span> <span class="z-meta z-function z-c"><span class="z-entity z-name z-function z-c">sub_401156</span></span><span class="z-meta z-function z-parameters z-c"><span class="z-meta z-group z-c"><span class="z-punctuation z-section z-group z-begin z-c">(</span></span></span><span class="z-meta z-function z-parameters z-c"><span class="z-meta z-group z-c"><span class="z-storage z-type z-c">int</span> <span class="z-variable z-parameter z-c">a1</span><span class="z-punctuation z-separator z-c">,</span> <span class="z-storage z-modifier z-c">const</span> <span class="z-storage z-type z-c">char</span> <span class="z-keyword z-operator z-c">*</span><span class="z-variable z-parameter z-c">a2</span><span class="z-punctuation z-separator z-c">,</span> <span class="z-keyword z-operator z-variadic z-c">...</span><span class="z-punctuation z-section z-group z-end z-c">)</span></span></span><span class="z-meta z-function z-c">
 </span><span class="z-meta z-function z-c"><span class="z-meta z-block z-c"><span class="z-punctuation z-section z-block z-begin z-c">{</span></span></span><span class="z-meta z-function z-c"><span class="z-meta z-block z-c">
@@ -187,7 +187,7 @@
   <span class="z-keyword z-control z-flow z-return z-c">return</span> <span class="z-constant z-numeric z-integer z-decimal z-c">0<span class="z-storage z-type z-numeric z-c">LL</span></span><span class="z-punctuation z-terminator z-c">;</span>
 </span></span><span class="z-meta z-function z-c"><span class="z-meta z-block z-c"><span class="z-punctuation z-section z-block z-end z-c">}</span></span></span>
 </span></code></pre>
-<h2 id="idapython-deng-chang">IDAPython 登场</h2>
+<h2 id="IDAPython_登场">IDAPython 登场</h2>
 <p>下面是脚本。思路则是使用 <code>idautils.CodeRefsTo</code> 获取日志函数的调用，并且从调用处使用 <code>idaapi.get_arg_addrs</code> 获得带函数名字参数的地址，然后从这个地址读取出函数名字，调用 <code>idc.set_name</code> 重命名当前函数。</p>
 <pre data-lang="python" class="language-python z-code"><code class="language-python" data-lang="python"><span class="z-source z-python"><span class="z-meta z-statement z-import z-python"><span class="z-keyword z-control z-import z-python">import</span> <span class="z-meta z-qualified-name z-python"><span class="z-meta z-generic-name z-python">idaapi</span></span></span>
 <span class="z-meta z-statement z-import z-python"><span class="z-keyword z-control z-import z-python">import</span> <span class="z-meta z-qualified-name z-python"><span class="z-meta z-generic-name z-python">idautils</span></span></span>
@@ -285,7 +285,7 @@
 [+] 4012a4 main
 [+] 4012a4 main
 </span></code></pre>
-<h2 id="refs">Refs</h2>
+<h2 id="Refs">Refs</h2>
 <ul>
 <li>The Beginner’s Guide to IDAPython Version 6.0</li>
 <li><a href="https://reverseengineering.stackexchange.com/questions/25301/getting-function-arguments-in-ida">Getting function arguments in ida</a></li>

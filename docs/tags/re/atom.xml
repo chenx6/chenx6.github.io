@@ -14,7 +14,7 @@
 		<link rel="alternate" href="https://chenx6.github.io/post/hikvision/" type="text/html"/>
 		<id>https://chenx6.github.io/post/hikvision/</id>
 		<content type="html">&lt;p&gt;高中时候曾经当过一段时间的脚本小子，通过 CVE-2017-7921 拿下过一波摄像头，体验了一把游戏里看门狗的感觉。所以在今天，在掌握了一定的技术之后，我将尝试对海康威视的固件进行重新分析。&lt;&#x2F;p&gt;
-&lt;h2 id=&quot;gu-jian-ge-shi&quot;&gt;固件格式&lt;&#x2F;h2&gt;
+&lt;h2 id=&quot;固件格式&quot;&gt;固件格式&lt;&#x2F;h2&gt;
 &lt;p&gt;海康威视的固件可能有几种格式。在对文件开头进行 xor 运算之后，得到的文件开头如果是 0x484b5753(&amp;quot;HKWS&amp;quot;) 的话，那么固件本身是没有被加密的，可以通过文件头，得到固件中包含的文件名字和文件偏移。有一种格式是文件开头为 0x484b3230(HK02)，再通过 xor 运算解密后面的文件内容时，才会出现 0x484b5753 字段，如下图所示。&lt;&#x2F;p&gt;
 &lt;pre data-lang=&quot;txt&quot; class=&quot;language-txt z-code&quot;&gt;&lt;code class=&quot;language-txt&quot; data-lang=&quot;txt&quot;&gt;&lt;span class=&quot;z-text z-plain&quot;&gt;Magic: 484b3230, Size: 152, Checksum: 29ca, Count: 0
  0  1  2  3  4  5  6  7  8  9  a  b  c  d  e  f  0123456789abcdef
@@ -76,7 +76,7 @@ c0 0e 00 00 64 02 00 00 78 5e 63 cc 74 fd e8 40  À   d   x cÌtýè
 &lt;blockquote&gt;
 &lt;p&gt;在 Refs 我还放了 hikpack 的下载链接，hikpack 可以解密 r0,r1,r6,g0 设备的固件。我本来想看下 hikpack 是怎么进行文件解密的，但是 hikpack 居然用了 OLLVM 混淆，有必要吗...&lt;&#x2F;p&gt;
 &lt;&#x2F;blockquote&gt;
-&lt;h2 id=&quot;cve-2017-7921&quot;&gt;CVE-2017-7921&lt;&#x2F;h2&gt;
+&lt;h2 id=&quot;CVE-2017-7921&quot;&gt;CVE-2017-7921&lt;&#x2F;h2&gt;
 &lt;p&gt;从 packetstormsecurity 上的邮件可以看到绕过 HIKCGI 权限验证的方法，只要在链接上加上一串以 base64 编码后的 &lt;code&gt;&amp;quot;username:password&amp;quot;&lt;&#x2F;code&gt;，就可以绕过权限检查了。&lt;&#x2F;p&gt;
 &lt;pre data-lang=&quot;txt&quot; class=&quot;language-txt z-code&quot;&gt;&lt;code class=&quot;language-txt&quot; data-lang=&quot;txt&quot;&gt;&lt;span class=&quot;z-text z-plain&quot;&gt;Vulnerability details:
 ----------------------
@@ -113,7 +113,7 @@ Obtain a camera snapshot without authentication:
   &lt;span class=&quot;z-comment z-line z-double-slash z-c&quot;&gt;&lt;span class=&quot;z-punctuation z-definition z-comment z-c&quot;&gt;&#x2F;&#x2F;&lt;&#x2F;span&gt; ...
 &lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;span class=&quot;z-meta z-function z-c&quot;&gt;&lt;span class=&quot;z-meta z-block z-c&quot;&gt;&lt;span class=&quot;z-punctuation z-section z-block z-end z-c&quot;&gt;}&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
 &lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
-&lt;h2 id=&quot;cve-2018-6414&quot;&gt;CVE-2018-6414&lt;&#x2F;h2&gt;
+&lt;h2 id=&quot;CVE-2018-6414&quot;&gt;CVE-2018-6414&lt;&#x2F;h2&gt;
 &lt;p&gt;这个漏洞只有网上的一篇文章提到过，然后原文失效了，只能看到一篇翻译的很烂的译文。不过根据截图，我们还是可以通过 搜索汇编&#x2F;查找 &lt;code&gt;sscanf&lt;&#x2F;code&gt; 的 xref ，在 5.5.0 版本的固件中，来定位到相应的代码。&lt;&#x2F;p&gt;
 &lt;pre data-lang=&quot;asm&quot; class=&quot;language-asm z-code&quot;&gt;&lt;code class=&quot;language-asm&quot; data-lang=&quot;asm&quot;&gt;&lt;span class=&quot;z-source z-assembly&quot;&gt;&lt;span class=&quot;z-entity z-name z-function z-assembly&quot;&gt;.&lt;&#x2F;span&gt;&lt;span class=&quot;z-entity z-name z-function z-assembly&quot;&gt;t&lt;&#x2F;span&gt;&lt;span class=&quot;z-entity z-name z-function z-assembly&quot;&gt;e&lt;&#x2F;span&gt;&lt;span class=&quot;z-entity z-name z-function z-assembly&quot;&gt;x&lt;&#x2F;span&gt;&lt;span class=&quot;z-entity z-name z-function z-assembly&quot;&gt;t&lt;&#x2F;span&gt;&lt;span class=&quot;z-entity z-name z-function z-assembly&quot;&gt;:&lt;&#x2F;span&gt;&lt;span class=&quot;z-entity z-name z-function z-assembly&quot;&gt;0&lt;&#x2F;span&gt;&lt;span class=&quot;z-entity z-name z-function z-assembly&quot;&gt;0&lt;&#x2F;span&gt;&lt;span class=&quot;z-entity z-name z-function z-assembly&quot;&gt;2&lt;&#x2F;span&gt;&lt;span class=&quot;z-entity z-name z-function z-assembly&quot;&gt;4&lt;&#x2F;span&gt;&lt;span class=&quot;z-entity z-name z-function z-assembly&quot;&gt;A&lt;&#x2F;span&gt;&lt;span class=&quot;z-entity z-name z-function z-assembly&quot;&gt;2&lt;&#x2F;span&gt;&lt;span class=&quot;z-entity z-name z-function z-assembly&quot;&gt;4&lt;&#x2F;span&gt;&lt;span class=&quot;z-entity z-name z-function z-assembly&quot;&gt;E&lt;&#x2F;span&gt;&lt;span class=&quot;z-entity z-name z-function z-assembly&quot;&gt; &lt;&#x2F;span&gt;&lt;span class=&quot;z-entity z-name z-function z-assembly&quot;&gt; &lt;&#x2F;span&gt;&lt;span class=&quot;z-entity z-name z-function z-assembly&quot;&gt; &lt;&#x2F;span&gt;&lt;span class=&quot;z-entity z-name z-function z-assembly&quot;&gt; &lt;&#x2F;span&gt;&lt;span class=&quot;z-entity z-name z-function z-assembly&quot;&gt; &lt;&#x2F;span&gt;&lt;span class=&quot;z-entity z-name z-function z-assembly&quot;&gt; &lt;&#x2F;span&gt;&lt;span class=&quot;z-entity z-name z-function z-assembly&quot;&gt; &lt;&#x2F;span&gt;&lt;span class=&quot;z-entity z-name z-function z-assembly&quot;&gt; &lt;&#x2F;span&gt;&lt;span class=&quot;z-entity z-name z-function z-assembly&quot;&gt; &lt;&#x2F;span&gt;&lt;span class=&quot;z-entity z-name z-function z-assembly&quot;&gt; &lt;&#x2F;span&gt;&lt;span class=&quot;z-entity z-name z-function z-assembly&quot;&gt; &lt;&#x2F;span&gt;&lt;span class=&quot;z-entity z-name z-function z-assembly&quot;&gt; &lt;&#x2F;span&gt;&lt;span class=&quot;z-entity z-name z-function z-assembly&quot;&gt; &lt;&#x2F;span&gt;&lt;span class=&quot;z-entity z-name z-function z-assembly&quot;&gt; &lt;&#x2F;span&gt;&lt;span class=&quot;z-entity z-name z-function z-assembly&quot;&gt; &lt;&#x2F;span&gt;&lt;span class=&quot;z-entity z-name z-function z-assembly&quot;&gt; &lt;&#x2F;span&gt;&lt;span class=&quot;z-entity z-name z-function z-assembly&quot;&gt; &lt;&#x2F;span&gt;&lt;span class=&quot;z-keyword z-control z-assembly&quot;&gt;MOV&lt;&#x2F;span&gt;&lt;span class=&quot;z-entity z-name z-function z-assembly&quot;&gt; &lt;&#x2F;span&gt;&lt;span class=&quot;z-entity z-name z-function z-assembly&quot;&gt; &lt;&#x2F;span&gt;&lt;span class=&quot;z-entity z-name z-function z-assembly&quot;&gt; &lt;&#x2F;span&gt;&lt;span class=&quot;z-entity z-name z-function z-assembly&quot;&gt; &lt;&#x2F;span&gt;&lt;span class=&quot;z-entity z-name z-function z-assembly&quot;&gt; &lt;&#x2F;span&gt;&lt;span class=&quot;z-entity z-name z-function z-assembly&quot;&gt; &lt;&#x2F;span&gt;&lt;span class=&quot;z-entity z-name z-function z-assembly&quot;&gt; &lt;&#x2F;span&gt;&lt;span class=&quot;z-entity z-name z-function z-assembly&quot;&gt; &lt;&#x2F;span&gt;&lt;span class=&quot;z-entity z-name z-function z-assembly&quot;&gt; &lt;&#x2F;span&gt;&lt;span class=&quot;z-entity z-name z-function z-assembly&quot;&gt; &lt;&#x2F;span&gt;&lt;span class=&quot;z-entity z-name z-function z-assembly&quot;&gt; &lt;&#x2F;span&gt;&lt;span class=&quot;z-entity z-name z-function z-assembly&quot;&gt; &lt;&#x2F;span&gt;&lt;span class=&quot;z-entity z-name z-function z-assembly&quot;&gt; &lt;&#x2F;span&gt;&lt;span class=&quot;z-entity z-name z-function z-assembly&quot;&gt;R&lt;&#x2F;span&gt;&lt;span class=&quot;z-entity z-name z-function z-assembly&quot;&gt;1&lt;&#x2F;span&gt;&lt;span class=&quot;z-source z-assembly&quot;&gt;,&lt;&#x2F;span&gt;&lt;span class=&quot;z-entity z-name z-function z-assembly&quot;&gt; &lt;&#x2F;span&gt;&lt;span class=&quot;z-entity z-name z-function z-assembly&quot;&gt;R&lt;&#x2F;span&gt;&lt;span class=&quot;z-entity z-name z-function z-assembly&quot;&gt;4&lt;&#x2F;span&gt;&lt;span class=&quot;z-comment z-assembly&quot;&gt;  ; c&lt;&#x2F;span&gt;
 &lt;span class=&quot;z-entity z-name z-function z-assembly&quot;&gt;.&lt;&#x2F;span&gt;&lt;span class=&quot;z-entity z-name z-function z-assembly&quot;&gt;t&lt;&#x2F;span&gt;&lt;span class=&quot;z-entity z-name z-function z-assembly&quot;&gt;e&lt;&#x2F;span&gt;&lt;span class=&quot;z-entity z-name z-function z-assembly&quot;&gt;x&lt;&#x2F;span&gt;&lt;span class=&quot;z-entity z-name z-function z-assembly&quot;&gt;t&lt;&#x2F;span&gt;&lt;span class=&quot;z-entity z-name z-function z-assembly&quot;&gt;:&lt;&#x2F;span&gt;&lt;span class=&quot;z-entity z-name z-function z-assembly&quot;&gt;0&lt;&#x2F;span&gt;&lt;span class=&quot;z-entity z-name z-function z-assembly&quot;&gt;0&lt;&#x2F;span&gt;&lt;span class=&quot;z-entity z-name z-function z-assembly&quot;&gt;2&lt;&#x2F;span&gt;&lt;span class=&quot;z-entity z-name z-function z-assembly&quot;&gt;4&lt;&#x2F;span&gt;&lt;span class=&quot;z-entity z-name z-function z-assembly&quot;&gt;A&lt;&#x2F;span&gt;&lt;span class=&quot;z-entity z-name z-function z-assembly&quot;&gt;2&lt;&#x2F;span&gt;&lt;span class=&quot;z-entity z-name z-function z-assembly&quot;&gt;5&lt;&#x2F;span&gt;&lt;span class=&quot;z-entity z-name z-function z-assembly&quot;&gt;0&lt;&#x2F;span&gt;&lt;span class=&quot;z-entity z-name z-function z-assembly&quot;&gt; &lt;&#x2F;span&gt;&lt;span class=&quot;z-entity z-name z-function z-assembly&quot;&gt; &lt;&#x2F;span&gt;&lt;span class=&quot;z-entity z-name z-function z-assembly&quot;&gt; &lt;&#x2F;span&gt;&lt;span class=&quot;z-entity z-name z-function z-assembly&quot;&gt; &lt;&#x2F;span&gt;&lt;span class=&quot;z-entity z-name z-function z-assembly&quot;&gt; &lt;&#x2F;span&gt;&lt;span class=&quot;z-entity z-name z-function z-assembly&quot;&gt; &lt;&#x2F;span&gt;&lt;span class=&quot;z-entity z-name z-function z-assembly&quot;&gt; &lt;&#x2F;span&gt;&lt;span class=&quot;z-entity z-name z-function z-assembly&quot;&gt; &lt;&#x2F;span&gt;&lt;span class=&quot;z-entity z-name z-function z-assembly&quot;&gt; &lt;&#x2F;span&gt;&lt;span class=&quot;z-entity z-name z-function z-assembly&quot;&gt; &lt;&#x2F;span&gt;&lt;span class=&quot;z-entity z-name z-function z-assembly&quot;&gt; &lt;&#x2F;span&gt;&lt;span class=&quot;z-entity z-name z-function z-assembly&quot;&gt; &lt;&#x2F;span&gt;&lt;span class=&quot;z-entity z-name z-function z-assembly&quot;&gt; &lt;&#x2F;span&gt;&lt;span class=&quot;z-entity z-name z-function z-assembly&quot;&gt; &lt;&#x2F;span&gt;&lt;span class=&quot;z-entity z-name z-function z-assembly&quot;&gt; &lt;&#x2F;span&gt;&lt;span class=&quot;z-entity z-name z-function z-assembly&quot;&gt; &lt;&#x2F;span&gt;&lt;span class=&quot;z-entity z-name z-function z-assembly&quot;&gt; &lt;&#x2F;span&gt;&lt;span class=&quot;z-keyword z-control z-assembly&quot;&gt;MOVS&lt;&#x2F;span&gt;&lt;span class=&quot;z-entity z-name z-function z-assembly&quot;&gt; &lt;&#x2F;span&gt;&lt;span class=&quot;z-entity z-name z-function z-assembly&quot;&gt; &lt;&#x2F;span&gt;&lt;span class=&quot;z-entity z-name z-function z-assembly&quot;&gt; &lt;&#x2F;span&gt;&lt;span class=&quot;z-entity z-name z-function z-assembly&quot;&gt; &lt;&#x2F;span&gt;&lt;span class=&quot;z-entity z-name z-function z-assembly&quot;&gt; &lt;&#x2F;span&gt;&lt;span class=&quot;z-entity z-name z-function z-assembly&quot;&gt; &lt;&#x2F;span&gt;&lt;span class=&quot;z-entity z-name z-function z-assembly&quot;&gt; &lt;&#x2F;span&gt;&lt;span class=&quot;z-entity z-name z-function z-assembly&quot;&gt; &lt;&#x2F;span&gt;&lt;span class=&quot;z-entity z-name z-function z-assembly&quot;&gt; &lt;&#x2F;span&gt;&lt;span class=&quot;z-entity z-name z-function z-assembly&quot;&gt; &lt;&#x2F;span&gt;&lt;span class=&quot;z-entity z-name z-function z-assembly&quot;&gt; &lt;&#x2F;span&gt;&lt;span class=&quot;z-entity z-name z-function z-assembly&quot;&gt; &lt;&#x2F;span&gt;&lt;span class=&quot;z-entity z-name z-function z-assembly&quot;&gt;R&lt;&#x2F;span&gt;&lt;span class=&quot;z-entity z-name z-function z-assembly&quot;&gt;2&lt;&#x2F;span&gt;&lt;span class=&quot;z-source z-assembly&quot;&gt;,&lt;&#x2F;span&gt;&lt;span class=&quot;z-entity z-name z-function z-assembly&quot;&gt; &lt;&#x2F;span&gt;&lt;span class=&quot;z-entity z-name z-function z-assembly&quot;&gt;#&lt;&#x2F;span&gt;&lt;span class=&quot;z-constant z-character z-hexadecimal z-assembly&quot;&gt;0x10&lt;&#x2F;span&gt;&lt;span class=&quot;z-comment z-assembly&quot;&gt; ; n&lt;&#x2F;span&gt;
@@ -157,7 +157,7 @@ Obtain a camera snapshot without authentication:
 &lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;span class=&quot;z-meta z-function z-c&quot;&gt;&lt;span class=&quot;z-meta z-block z-c&quot;&gt;&lt;span class=&quot;z-punctuation z-section z-block z-end z-c&quot;&gt;}&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
 &lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
 &lt;p&gt;可以发现 s1 在 [bp-378h] 的位置，而 URL 的长度为 0x400，如果输入长度为 0x400 的 URL 就会导致栈溢出。理论上通过 ROP 即可达成利用。&lt;&#x2F;p&gt;
-&lt;h2 id=&quot;cve-2021-36260&quot;&gt;CVE-2021-36260&lt;&#x2F;h2&gt;
+&lt;h2 id=&quot;CVE-2021-36260&quot;&gt;CVE-2021-36260&lt;&#x2F;h2&gt;
 &lt;p&gt;在 5.4.5 版本的固件中，出现漏洞的代码如下。可以看到程序使用了格式化字符串拼接命令，并且未对用户输入进行过滤，造成命令注入。具体的利用方法请参考 &lt;a href=&quot;https:&#x2F;&#x2F;chenx6.github.io&#x2F;post&#x2F;hikvision&#x2F;#refs&quot;&gt;Refs&lt;&#x2F;a&gt; 中的 &amp;quot;hikvision CVE-2021-36260 分析以及教训&amp;quot;&lt;&#x2F;p&gt;
 &lt;blockquote&gt;
 &lt;p&gt;在 5.5 版本的固件中，海康加入了 &lt;code&gt;filter_quotation_and_punctuation_mark&lt;&#x2F;code&gt; 函数来过滤用户输入，但是还是可以通过 &amp;quot;$()&amp;quot; 进行绕过，直到漏洞爆出后加入了 &lt;code&gt;hwif_is_all_language_character_legal&lt;&#x2F;code&gt; 函数才完全修复。&lt;&#x2F;p&gt;
@@ -193,10 +193,10 @@ Obtain a camera snapshot without authentication:
       &lt;span class=&quot;z-keyword z-control z-c&quot;&gt;if&lt;&#x2F;span&gt; &lt;span class=&quot;z-meta z-group z-c&quot;&gt;&lt;span class=&quot;z-punctuation z-section z-group z-begin z-c&quot;&gt;(&lt;&#x2F;span&gt; &lt;span class=&quot;z-meta z-function-call z-c&quot;&gt;&lt;span class=&quot;z-support z-function z-C99 z-c&quot;&gt;system&lt;&#x2F;span&gt;&lt;span class=&quot;z-meta z-group z-c&quot;&gt;&lt;span class=&quot;z-punctuation z-section z-group z-begin z-c&quot;&gt;(&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;span class=&quot;z-meta z-function-call z-c&quot;&gt;&lt;span class=&quot;z-meta z-group z-c&quot;&gt;v4&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;span class=&quot;z-meta z-function-call z-c&quot;&gt;&lt;span class=&quot;z-meta z-group z-c&quot;&gt;&lt;span class=&quot;z-punctuation z-section z-group z-end z-c&quot;&gt;)&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;&#x2F;span&gt; &lt;span class=&quot;z-keyword z-operator z-comparison z-c&quot;&gt;&amp;gt;=&lt;&#x2F;span&gt; &lt;span class=&quot;z-constant z-numeric z-integer z-decimal z-c&quot;&gt;0&lt;&#x2F;span&gt; &lt;span class=&quot;z-punctuation z-section z-group z-end z-c&quot;&gt;)&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
       &lt;span class=&quot;z-comment z-line z-double-slash z-c&quot;&gt;&lt;span class=&quot;z-punctuation z-definition z-comment z-c&quot;&gt;&#x2F;&#x2F;&lt;&#x2F;span&gt; ...
 &lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
-&lt;h2 id=&quot;zong-jie&quot;&gt;总结&lt;&#x2F;h2&gt;
+&lt;h2 id=&quot;总结&quot;&gt;总结&lt;&#x2F;h2&gt;
 &lt;p&gt;从开发的角度来说，这三个漏洞都是完全可以避免的漏洞，第二个漏洞可以通过给格式化字符串加上长度限制，例如 &amp;quot;%16s&amp;quot;，来防止栈溢出。第三个漏洞可以通过加强对用户输入的校验，或者使用 &amp;quot;fork + execve&amp;quot; 进行执行程序，而不是使用 system 函数，来规避命令注入。&lt;&#x2F;p&gt;
 &lt;p&gt;从漏洞挖掘的角度来说，可以去追踪 system, popen 等函数的输入用户是否可控，来发现命令注入漏洞。通过加强污点分析，或者人肉分析 &amp;quot;scanf&amp;quot;, &amp;quot;gets&amp;quot; 等和内存直接交互的函数，判断用户输入是否会影响内存中的数据存取，从而发现栈溢出漏洞和命令注入漏洞。&lt;&#x2F;p&gt;
-&lt;h2 id=&quot;refs&quot;&gt;Refs&lt;&#x2F;h2&gt;
+&lt;h2 id=&quot;Refs&quot;&gt;Refs&lt;&#x2F;h2&gt;
 &lt;ul&gt;
 &lt;li&gt;&lt;a href=&quot;https:&#x2F;&#x2F;sudonull.com&#x2F;post&#x2F;64821-Hik-or-hack-NOT-IoT-Security-Using-Hikvision-IP-Cameras-NeoBIT-Blog&quot;&gt;(转载文章)Hik or hack? (NOT) IoT Security Using Hikvision IP Cameras&lt;&#x2F;a&gt;&lt;&#x2F;li&gt;
 &lt;li&gt;&lt;a href=&quot;https:&#x2F;&#x2F;ipcamtalk.com&#x2F;threads&#x2F;mcr-hikvision-packer-unpacker-for-5-3-x-and-newer-firmware.15710&#x2F;page-15#post-387358&quot;&gt;https:&#x2F;&#x2F;ipcamtalk.com&#x2F;threads&#x2F;mcr-hikvision-packer-unpacker-for-5-3-x-and-newer-firmware.15710&#x2F;page-15#post-387358&lt;&#x2F;a&gt;&lt;&#x2F;li&gt;
@@ -219,10 +219,10 @@ Obtain a camera snapshot without authentication:
 		<link rel="alternate" href="https://chenx6.github.io/post/plthook/" type="text/html"/>
 		<id>https://chenx6.github.io/post/plthook/</id>
 		<content type="html">&lt;p&gt;虽然知道可以通过魔改 plt 表实现 hook 函数，但是不知道具体实现...碰巧最近用到了 plthook 这个库，于是我就研究了下 plthook 这个库，并且仿照着这个库重新实现一份代码。&lt;&#x2F;p&gt;
-&lt;h2 id=&quot;yuan-li-fen-xi&quot;&gt;原理分析&lt;&#x2F;h2&gt;
+&lt;h2 id=&quot;原理分析&quot;&gt;原理分析&lt;&#x2F;h2&gt;
 &lt;p&gt;根据命名规则，.rela.plt 表是负责 plt 表的重定位信息。.rela 表中有每项都有 2 个成员，r_offset 指向了该重定位入口所要修正的位置的第一个字节的虚拟地址， r_info 则是表示相关信息，可以通过 &lt;code&gt;ELF[32|64]_R_SYM&lt;&#x2F;code&gt; 获得其指向的 .dynsym 项的下标。&lt;&#x2F;p&gt;
 &lt;p&gt;.dynsym 表（动态链接表）中存放动态链接需要的信息，可以通过 .dynsym 表从 .strtab 表中获得要链接的函数名字。&lt;&#x2F;p&gt;
-&lt;h2 id=&quot;xiang-mu-dai-ma-fen-xi&quot;&gt;项目代码分析&lt;&#x2F;h2&gt;
+&lt;h2 id=&quot;项目代码分析&quot;&gt;项目代码分析&lt;&#x2F;h2&gt;
 &lt;p&gt;经过阅读代码后，我大致了解了 plthook 在 Linux&#x2F;x86_64 平台上的逻辑。&lt;&#x2F;p&gt;
 &lt;blockquote&gt;
 &lt;p&gt;由于项目的代码支持多个 UNIX 系统（Windows 下则是实现了 IAT Hook），所以原项目中有一堆的宏和封装，下面的逻辑只对应着 Linux&#x2F;x86_64 平台。&lt;&#x2F;p&gt;
@@ -242,7 +242,7 @@ Obtain a camera snapshot without authentication:
 &lt;li&gt;在 rela 表中获得其在 dynsym 中的位置，然后通过 dynsym 获得名字&lt;&#x2F;li&gt;
 &lt;li&gt;如果是被替换函数，就通过修改 PLT 表进行替换。&lt;&#x2F;li&gt;
 &lt;&#x2F;ol&gt;
-&lt;h2 id=&quot;zhong-xin-fu-xian&quot;&gt;重新复现&lt;&#x2F;h2&gt;
+&lt;h2 id=&quot;重新复现&quot;&gt;重新复现&lt;&#x2F;h2&gt;
 &lt;p&gt;首先是通过 &lt;code&gt;dlopen&lt;&#x2F;code&gt; &lt;code&gt;dlinfo&lt;&#x2F;code&gt; 获得 &lt;code&gt;link_map&lt;&#x2F;code&gt;。使用 &lt;code&gt;sysconf&lt;&#x2F;code&gt; 则是获得了页的大小。&lt;&#x2F;p&gt;
 &lt;pre data-lang=&quot;c&quot; class=&quot;language-c z-code&quot;&gt;&lt;code class=&quot;language-c&quot; data-lang=&quot;c&quot;&gt;&lt;span class=&quot;z-source z-c&quot;&gt;&lt;span class=&quot;z-comment z-line z-double-slash z-c&quot;&gt;&lt;span class=&quot;z-punctuation z-definition z-comment z-c&quot;&gt;&#x2F;&#x2F;&lt;&#x2F;span&gt;&#x2F; @brief Initlize plthook_info
 &lt;&#x2F;span&gt;&lt;span class=&quot;z-comment z-line z-double-slash z-c&quot;&gt;&lt;span class=&quot;z-punctuation z-definition z-comment z-c&quot;&gt;&#x2F;&#x2F;&lt;&#x2F;span&gt;&#x2F; @param info empty plthook_info variable
@@ -312,7 +312,7 @@ Obtain a camera snapshot without authentication:
 &lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
 &lt;p&gt;完整代码：&lt;a href=&quot;https:&#x2F;&#x2F;gist.github.com&#x2F;chenx6&#x2F;2624aae29873ffabbeb74b75d2351f22&quot;&gt;https:&#x2F;&#x2F;gist.github.com&#x2F;chenx6&#x2F;2624aae29873ffabbeb74b75d2351f22&lt;&#x2F;a&gt;&lt;&#x2F;p&gt;
 &lt;p&gt;将代码和 &lt;code&gt;test_main.c&lt;&#x2F;code&gt; 一起编译(别忘了加上 -ldl)后，应该可以看到 &lt;code&gt;atoi&lt;&#x2F;code&gt; 的返回值从正确的 &amp;quot;123456&amp;quot; 变成了 &amp;quot;114514&amp;quot;，说明这个 POC 实现成功了。也可以通过用 ((constructor)) 修饰函数，通过 so 注入进行修改。&lt;&#x2F;p&gt;
-&lt;h1 id=&quot;refs&quot;&gt;Refs&lt;&#x2F;h1&gt;
+&lt;h1 id=&quot;Refs&quot;&gt;Refs&lt;&#x2F;h1&gt;
 &lt;ul&gt;
 &lt;li&gt;&lt;a href=&quot;https:&#x2F;&#x2F;github.com&#x2F;kubo&#x2F;plthook&quot;&gt;kubo&#x2F;plthook&lt;&#x2F;a&gt;&lt;&#x2F;li&gt;
 &lt;li&gt;&lt;code&gt;man elf&lt;&#x2F;code&gt;&lt;&#x2F;li&gt;
@@ -325,17 +325,17 @@ Obtain a camera snapshot without authentication:
 		<title>重写 OLLVM 之控制流平坦化</title>
 		<published>2021-01-21T00:00:00+00:00</published>
 		<updated>2021-01-21T00:00:00+00:00</updated>
-		<link rel="alternate" href="https://chenx6.github.io/post/rewrite-ollvm-fla/" type="text/html"/>
-		<id>https://chenx6.github.io/post/rewrite-ollvm-fla/</id>
+		<link rel="alternate" href="https://chenx6.github.io/post/rewrite_ollvm_fla/" type="text/html"/>
+		<id>https://chenx6.github.io/post/rewrite_ollvm_fla/</id>
 		<content type="html">&lt;p&gt;OLLVM 的控制流平坦化是逆向老哥最讨厌的混淆了，因为一旦使用就代表着 IDA 的 decompiler 彻底报废了。所以了解并在&lt;a href=&quot;https:&#x2F;&#x2F;github.com&#x2F;chenx6&#x2F;baby_obfuscator&quot;&gt;自己的项目中&lt;&#x2F;a&gt;重写控制流平坦化挺重要的。&lt;&#x2F;p&gt;
-&lt;h2 id=&quot;shi-yao-shi-kong-zhi-liu-ping-tan-hua&quot;&gt;什么是控制流平坦化&lt;&#x2F;h2&gt;
-&lt;h3 id=&quot;ming-ci-jie-shi&quot;&gt;名词解释&lt;&#x2F;h3&gt;
-&lt;h4 id=&quot;basicblock&quot;&gt;BasicBlock&lt;&#x2F;h4&gt;
+&lt;h2 id=&quot;什么是控制流平坦化&quot;&gt;什么是控制流平坦化&lt;&#x2F;h2&gt;
+&lt;h3 id=&quot;名词解释&quot;&gt;名词解释&lt;&#x2F;h3&gt;
+&lt;h4 id=&quot;BasicBlock&quot;&gt;BasicBlock&lt;&#x2F;h4&gt;
 &lt;p&gt;代码块，以跳转语句结尾的一段代码。&lt;&#x2F;p&gt;
-&lt;h3 id=&quot;yu-yan-miao-shu-kong-zhi-liu-ping-tan-hua-de-shi-xian&quot;&gt;语言描述控制流平坦化的实现&lt;&#x2F;h3&gt;
+&lt;h3 id=&quot;语言描述控制流平坦化的实现&quot;&gt;语言描述控制流平坦化的实现&lt;&#x2F;h3&gt;
 &lt;p&gt;在 OLLVM 中，Pass 先实现一个永真循环，然后再在这个循环中放入 switch 语句，将代码中除了开始块的所有 BasicBlock 放入这个 switch 语句的不同 case 中，通过修改 switch 的条件，来实现 BasicBlock 之间的跳转。&lt;&#x2F;p&gt;
-&lt;h3 id=&quot;ke-xing-de-xiu-fu-fang-fa&quot;&gt;可行的修复方法&lt;&#x2F;h3&gt;
-&lt;p&gt;在 &lt;a href=&quot;https:&#x2F;&#x2F;chenx6.github.io&#x2F;post&#x2F;rewrite-ollvm-fla&#x2F;#refs&quot;&gt;利用符号执行去除控制流平坦化&lt;&#x2F;a&gt; 讲解了恢复控制流平坦化的方法，并且在 &lt;a href=&quot;https:&#x2F;&#x2F;chenx6.github.io&#x2F;post&#x2F;rewrite-ollvm-fla&#x2F;#refs&quot;&gt;cq674350529&#x2F;deflat&lt;&#x2F;a&gt; 使用了 angr 进行实现。&lt;&#x2F;p&gt;
+&lt;h3 id=&quot;可行的修复方法&quot;&gt;可行的修复方法&lt;&#x2F;h3&gt;
+&lt;p&gt;在 &lt;a href=&quot;https:&#x2F;&#x2F;chenx6.github.io&#x2F;post&#x2F;rewrite_ollvm_fla&#x2F;#refs&quot;&gt;利用符号执行去除控制流平坦化&lt;&#x2F;a&gt; 讲解了恢复控制流平坦化的方法，并且在 &lt;a href=&quot;https:&#x2F;&#x2F;chenx6.github.io&#x2F;post&#x2F;rewrite_ollvm_fla&#x2F;#refs&quot;&gt;cq674350529&#x2F;deflat&lt;&#x2F;a&gt; 使用了 angr 进行实现。&lt;&#x2F;p&gt;
 &lt;p&gt;这里引用腾讯 SRC 的思路概括&lt;&#x2F;p&gt;
 &lt;blockquote&gt;
 &lt;ol&gt;
@@ -347,7 +347,7 @@ Obtain a camera snapshot without authentication:
 &lt;li&gt;剩下的为无用块&lt;&#x2F;li&gt;
 &lt;&#x2F;ol&gt;
 &lt;&#x2F;blockquote&gt;
-&lt;h2 id=&quot;zen-yao-shi-xian&quot;&gt;怎么实现&lt;&#x2F;h2&gt;
+&lt;h2 id=&quot;怎么实现&quot;&gt;怎么实现&lt;&#x2F;h2&gt;
 &lt;p&gt;在开始前，先展示一个普通的，带有 &lt;code&gt;if&lt;&#x2F;code&gt; 语句的程序的控制流图。&lt;&#x2F;p&gt;
 &lt;pre data-lang=&quot;txt&quot; class=&quot;language-txt z-code&quot;&gt;&lt;code class=&quot;language-txt&quot; data-lang=&quot;txt&quot;&gt;&lt;span class=&quot;z-text z-plain&quot;&gt;   +--------------------------------------+
    | entry:                               |
@@ -538,9 +538,9 @@ BranchInst &lt;span class=&quot;z-keyword z-operator z-c++&quot;&gt;*&lt;&#x2F;s
 storeRng&lt;span class=&quot;z-punctuation z-accessor z-arrow z-c++&quot;&gt;-&amp;gt;&lt;&#x2F;span&gt;&lt;span class=&quot;z-meta z-method-call z-c++&quot;&gt;&lt;span class=&quot;z-variable z-function z-member z-c++&quot;&gt;setOperand&lt;&#x2F;span&gt;&lt;span class=&quot;z-meta z-group z-c++&quot;&gt;&lt;span class=&quot;z-punctuation z-section z-group z-begin z-c++&quot;&gt;(&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;span class=&quot;z-meta z-method-call z-c++&quot;&gt;&lt;span class=&quot;z-meta z-group z-c++&quot;&gt;&lt;span class=&quot;z-constant z-numeric z-integer z-decimal z-c++&quot;&gt;0&lt;&#x2F;span&gt;&lt;span class=&quot;z-punctuation z-separator z-c++&quot;&gt;,&lt;&#x2F;span&gt; caseCond&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;span class=&quot;z-meta z-method-call z-c++&quot;&gt;&lt;span class=&quot;z-meta z-group z-c++&quot;&gt;&lt;span class=&quot;z-punctuation z-section z-group z-end z-c++&quot;&gt;)&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;span class=&quot;z-punctuation z-terminator z-c++&quot;&gt;;&lt;&#x2F;span&gt;
 &lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
 &lt;blockquote&gt;
-&lt;p&gt;图请参考 &lt;a href=&quot;https:&#x2F;&#x2F;chenx6.github.io&#x2F;post&#x2F;rewrite-ollvm-fla&#x2F;#refs&quot;&gt;Obfuscator-llvm源码分析&lt;&#x2F;a&gt;，用 ASCII 画图有点麻烦...&lt;&#x2F;p&gt;
+&lt;p&gt;图请参考 &lt;a href=&quot;https:&#x2F;&#x2F;chenx6.github.io&#x2F;post&#x2F;rewrite_ollvm_fla&#x2F;#refs&quot;&gt;Obfuscator-llvm源码分析&lt;&#x2F;a&gt;，用 ASCII 画图有点麻烦...&lt;&#x2F;p&gt;
 &lt;&#x2F;blockquote&gt;
-&lt;h2 id=&quot;zong-jie&quot;&gt;总结&lt;&#x2F;h2&gt;
+&lt;h2 id=&quot;总结&quot;&gt;总结&lt;&#x2F;h2&gt;
 &lt;p&gt;这个控制流平坦化的代码数量也不多，而且程序的逻辑在理清后很容易理解，所以文章的篇幅很短。&lt;&#x2F;p&gt;
 &lt;h2 id=&quot;refs&quot;&gt;refs&lt;&#x2F;h2&gt;
 &lt;p&gt;&lt;a href=&quot;https:&#x2F;&#x2F;github.com&#x2F;chenx6&#x2F;baby_obfuscator&quot;&gt;chenx6&#x2F;baby_obfuscator&lt;&#x2F;a&gt;&lt;&#x2F;p&gt;
@@ -556,18 +556,18 @@ storeRng&lt;span class=&quot;z-punctuation z-accessor z-arrow z-c++&quot;&gt;-&a
 		<updated>2020-04-20T00:00:00+00:00</updated>
 		<link rel="alternate" href="https://chenx6.github.io/post/codeql/" type="text/html"/>
 		<id>https://chenx6.github.io/post/codeql/</id>
-		<content type="html">&lt;h2 id=&quot;gai-yao&quot;&gt;概要&lt;&#x2F;h2&gt;
+		<content type="html">&lt;h2 id=&quot;概要&quot;&gt;概要&lt;&#x2F;h2&gt;
 &lt;p&gt;之前在 Twitter 上看到有大佬说 Github Learning Club 上搞了个免费的 CodeQL 课程，课程最终目标是使用 CodeQL 这个语言找出 uboot 中的 9 个漏洞。我在克服拖延症后，终于在 4 月底完成了这个课程，于是写文记录。&lt;&#x2F;p&gt;
 &lt;p&gt;&lt;a href=&quot;https:&#x2F;&#x2F;lab.github.com&#x2F;githubtraining&#x2F;codeql-u-boot-challenge-(cc++)&quot;&gt;课程链接&lt;&#x2F;a&gt;&lt;&#x2F;p&gt;
 &lt;p&gt;&lt;a href=&quot;https:&#x2F;&#x2F;securitylab.github.com&#x2F;research&#x2F;uboot-rce-nfs-vulnerability&quot;&gt;通过 CodeQL 找出来的漏洞分析&lt;&#x2F;a&gt;&lt;&#x2F;p&gt;
-&lt;h2 id=&quot;ti-qian-zhun-bei&quot;&gt;提前准备&lt;&#x2F;h2&gt;
+&lt;h2 id=&quot;提前准备&quot;&gt;提前准备&lt;&#x2F;h2&gt;
 &lt;ol&gt;
 &lt;li&gt;VSCode  &#x2F;&#x2F; VSC 天下第一&lt;&#x2F;li&gt;
 &lt;li&gt;本机上的 Git 和 Github 帐号  &#x2F;&#x2F; 废话&lt;&#x2F;li&gt;
 &lt;li&gt;在线翻译  &#x2F;&#x2F; 文档和课程的英文文本量有点大&lt;&#x2F;li&gt;
 &lt;li&gt;C&#x2F;C++ 基础  &#x2F;&#x2F; 不会 C 语言怎么挖洞啊&lt;&#x2F;li&gt;
 &lt;&#x2F;ol&gt;
-&lt;h2 id=&quot;huan-jing-da-jian&quot;&gt;环境搭建&lt;&#x2F;h2&gt;
+&lt;h2 id=&quot;环境搭建&quot;&gt;环境搭建&lt;&#x2F;h2&gt;
 &lt;p&gt;首先先在课程链接中选择 &amp;quot;Start free course&amp;quot;，然后 Github 机器人会在你的帐号下新建项目。先将这个项目 Clone 到本地。Github 机器人会通过 Issue 和 Pull request 和你进行沟通。&lt;&#x2F;p&gt;
 &lt;p&gt;官方推荐使用 VSCode，那我们就使用 VSC。当然，其他 IDE 应该也是可以的。&lt;&#x2F;p&gt;
 &lt;p&gt;然后安装&lt;a href=&quot;https:&#x2F;&#x2F;marketplace.visualstudio.com&#x2F;items?itemName=github.vscode-codeql&quot;&gt;CodeQL 插件&lt;&#x2F;a&gt;。&lt;&#x2F;p&gt;
@@ -580,7 +580,7 @@ storeRng&lt;span class=&quot;z-punctuation z-accessor z-arrow z-c++&quot;&gt;-&a
 &lt;p&gt;使用 VSCode 快捷键 &amp;quot;ctrl + shift + p&amp;quot; 进入命令模式，输入 &amp;quot;codeql choose database&amp;quot; 看到相应的选项后，点击就可以添加上前面解压的 uboot codeql 数据库。&lt;&#x2F;p&gt;
 &lt;p&gt;在前面打开工作区 VSCode 中使用 &lt;code&gt;File -&amp;gt; Add Folder to Workspace&lt;&#x2F;code&gt; 添加前面机器人新建的项目文件夹到当前工作区。&lt;&#x2F;p&gt;
 &lt;p&gt;到此环境配置完成。&lt;&#x2F;p&gt;
-&lt;h2 id=&quot;di-yi-ci-cha-xun-he-pull-request&quot;&gt;第一次查询和 Pull request&lt;&#x2F;h2&gt;
+&lt;h2 id=&quot;第一次查询和_Pull_request&quot;&gt;第一次查询和 Pull request&lt;&#x2F;h2&gt;
 &lt;p&gt;机器人创建的项目中有等着我们编辑的空文件和 &lt;code&gt;solution&lt;&#x2F;code&gt; 文件夹。接下来是教程中的第三步，编辑 &lt;code&gt;3_function_definitions.ql&lt;&#x2F;code&gt; 这个文件，借助补全填入下面内容，以查询 &lt;code&gt;strlen&lt;&#x2F;code&gt; 的声明和定义。&lt;&#x2F;p&gt;
 &lt;pre data-lang=&quot;ql&quot; class=&quot;language-ql z-code&quot;&gt;&lt;code class=&quot;language-ql&quot; data-lang=&quot;ql&quot;&gt;&lt;span class=&quot;z-text z-plain&quot;&gt;import cpp
 
@@ -610,7 +610,7 @@ select f, &amp;quot;a function named strlen&amp;quot;
 &lt;blockquote&gt;
 &lt;p&gt;所以在这几分钟内可以看点泡面番，或者打开邦邦清下火（逃&lt;&#x2F;p&gt;
 &lt;&#x2F;blockquote&gt;
-&lt;h2 id=&quot;dao-ru-bu-tong-de-lei-wan-cheng-cha-xun&quot;&gt;导入不同的类完成查询&lt;&#x2F;h2&gt;
+&lt;h2 id=&quot;导入不同的类完成查询&quot;&gt;导入不同的类完成查询&lt;&#x2F;h2&gt;
 &lt;p&gt;前面我们查询了函数，在第五步我们可以通过引入 &amp;quot;Macro&amp;quot; 类查询 &lt;code&gt;ntohl, ntohll, ntohs&lt;&#x2F;code&gt; 这三个转换字节序的宏。代码类似第一次查询，这里使用正则表达式可以缩短查询语句。&lt;&#x2F;p&gt;
 &lt;pre data-lang=&quot;ql&quot; class=&quot;language-ql z-code&quot;&gt;&lt;code class=&quot;language-ql&quot; data-lang=&quot;ql&quot;&gt;&lt;span class=&quot;z-text z-plain&quot;&gt;import cpp
 
@@ -618,7 +618,7 @@ from Macro m
 where m.getName().regexpMatch(&amp;quot;ntoh(s|l|ll)&amp;quot;)
 select m
 &lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
-&lt;h2 id=&quot;shi-yong-liang-ge-bian-liang-lai-cha-xun-diao-yong-gai-han-shu-de-wei-zhi&quot;&gt;使用两个变量来查询调用该函数的位置&lt;&#x2F;h2&gt;
+&lt;h2 id=&quot;使用两个变量来查询调用该函数的位置&quot;&gt;使用两个变量来查询调用该函数的位置&lt;&#x2F;h2&gt;
 &lt;p&gt;在代码中的 &lt;code&gt;from&lt;&#x2F;code&gt; 语句处可以声明多个变量，然后在 &lt;code&gt;where&lt;&#x2F;code&gt; 中进行联系，以查询相关函数调用。如果无从下手的话可以看看&lt;a href=&quot;https:&#x2F;&#x2F;help.semmle.com&#x2F;wiki&#x2F;display&#x2F;CBCPP&#x2F;Call+to+function&quot;&gt;使用 CodeQL 查询 C++ 的样例&lt;&#x2F;a&gt;&lt;&#x2F;p&gt;
 &lt;pre data-lang=&quot;ql&quot; class=&quot;language-ql z-code&quot;&gt;&lt;code class=&quot;language-ql&quot; data-lang=&quot;ql&quot;&gt;&lt;span class=&quot;z-text z-plain&quot;&gt;import cpp
 
@@ -628,7 +628,7 @@ where
     func.getName() = &amp;quot;memcpy&amp;quot;
 select call
 &lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
-&lt;h2 id=&quot;cha-kan-hong-de-ding-ceng-biao-da&quot;&gt;查看宏的顶层表达&lt;&#x2F;h2&gt;
+&lt;h2 id=&quot;查看宏的顶层表达&quot;&gt;查看宏的顶层表达&lt;&#x2F;h2&gt;
 &lt;blockquote&gt;
 &lt;p&gt;应该是展开宏吧...但是英文原文是 &amp;quot;Gets a top-level expression associated with this macro invocation&amp;quot;&lt;&#x2F;p&gt;
 &lt;&#x2F;blockquote&gt;
@@ -640,7 +640,7 @@ where mi.getMacro().getName().regexpMatch(&amp;quot;ntoh(s|l|ll)&amp;quot;)
 select mi.getExpr()
 
 &lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
-&lt;h2 id=&quot;zi-ji-shi-xian-yi-ge-lei&quot;&gt;自己实现一个类&lt;&#x2F;h2&gt;
+&lt;h2 id=&quot;自己实现一个类&quot;&gt;自己实现一个类&lt;&#x2F;h2&gt;
 &lt;p&gt;前面&lt;a href=&quot;#&quot;&gt;第一次查询&lt;&#x2F;a&gt;说了，一个类代表了一种数据的集合。通过实现一个自己的类，能自定义一个自己想要的数据集合。如果有点懵可以看看 CodeQL 关于类的&lt;a href=&quot;https:&#x2F;&#x2F;help.semmle.com&#x2F;QL&#x2F;ql-handbook&#x2F;types.html#classes&quot;&gt;相关文档&lt;&#x2F;a&gt;。查询语句中的类中，先通过 &lt;code&gt;exists&lt;&#x2F;code&gt; 量词创建一个临时变量 &lt;code&gt;mi&lt;&#x2F;code&gt; 来表示被调用的宏的名字，如果被调用的的宏展开后和当前代码片段相等，则这个表达式属于这个集合。&lt;&#x2F;p&gt;
 &lt;pre data-lang=&quot;ql&quot; class=&quot;language-ql z-code&quot;&gt;&lt;code class=&quot;language-ql&quot; data-lang=&quot;ql&quot;&gt;&lt;span class=&quot;z-text z-plain&quot;&gt;import cpp
 
@@ -656,7 +656,7 @@ class NetworkByteSwap extends Expr {
 from NetworkByteSwap n
 select n, &amp;quot;Network byte swap&amp;quot;
 &lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
-&lt;h2 id=&quot;shu-ju-liu-he-wu-dian-zhui-zong&quot;&gt;数据流和污点追踪&lt;&#x2F;h2&gt;
+&lt;h2 id=&quot;数据流和污点追踪&quot;&gt;数据流和污点追踪&lt;&#x2F;h2&gt;
 &lt;p&gt;借助前面几步，我们基本了解了 CodeQL 的使用。最后一个测试是使用 CodeQL 进行污点追踪。这里使用了 CodeQL 的全局污点追踪(Global taint tracking)。可以先看看&lt;a href=&quot;https:&#x2F;&#x2F;help.semmle.com&#x2F;QL&#x2F;learn-ql&#x2F;cpp&#x2F;dataflow.html&quot;&gt;使用 CodeQL 追踪数据流的文档&lt;&#x2F;a&gt;了解相关概念。新定义的 &lt;code&gt;Config&lt;&#x2F;code&gt; 类继承于 &lt;code&gt;TaintTracking::Configuration&lt;&#x2F;code&gt;。类中重载的 &lt;code&gt;isSource&lt;&#x2F;code&gt; 谓语定义为污点的源头，而 &lt;code&gt;isSink&lt;&#x2F;code&gt; 定义为污点的去处。&lt;&#x2F;p&gt;
 &lt;p&gt;有时候，远程输入的数据可能经过 &lt;code&gt;ntoh&lt;&#x2F;code&gt; 函数处理，通过转换字节序得到相应的数字。而 &lt;code&gt;memcpy&lt;&#x2F;code&gt; 的第 2 个参数如果控制不当，可造成数据溢出。将上面两个结论结合起来，如果有一个远程输入的数据通过字节序变换得到的数字，在未经过校验的情况下，作为了 &lt;code&gt;memcpy&lt;&#x2F;code&gt; 的第二个参数，那么就有可能造成数据溢出。&lt;&#x2F;p&gt;
 &lt;p&gt;照着 &lt;a href=&quot;https:&#x2F;&#x2F;securitylab.github.com&#x2F;research&#x2F;cve-2018-4259-macos-nfs-vulnerability&quot;&gt;Github 自家安全团队的文章&lt;&#x2F;a&gt;，可以照猫画虎的补全数据查询语句。&lt;&#x2F;p&gt;
@@ -710,11 +710,11 @@ select sink, source, sink, &amp;quot;Network byte swap flows to memcpy&amp;quot;
 		<title>在 LLVM 代码树外编译 LLVM Pass (使用 OLLVM 示范)</title>
 		<published>2020-01-01T00:00:00+00:00</published>
 		<updated>2020-01-01T00:00:00+00:00</updated>
-		<link rel="alternate" href="https://chenx6.github.io/post/build-pass-out-of-tree/" type="text/html"/>
-		<id>https://chenx6.github.io/post/build-pass-out-of-tree/</id>
+		<link rel="alternate" href="https://chenx6.github.io/post/build_pass_out_of_tree/" type="text/html"/>
+		<id>https://chenx6.github.io/post/build_pass_out_of_tree/</id>
 		<content type="html">&lt;p&gt;在网络上流传的编译 LLVM Pass 都需要一份 LLVM 源码，从整个源代码编译，编译非常花时间 (i7 6700HQ 使用 &lt;code&gt;make -j8&lt;&#x2F;code&gt; 编译整个项目花了近 50 分钟)，所以在翻阅文档时发现 LLVM 支持在代码树外编译，在 1 分钟内编译一个 Pass，还是非常香的。&lt;&#x2F;p&gt;
-&lt;h2 id=&quot;xiang-mu-pei-zhi&quot;&gt;项目配置&lt;&#x2F;h2&gt;
-&lt;h3 id=&quot;xiang-mu-mu-lu-jie-gou&quot;&gt;项目目录结构&lt;&#x2F;h3&gt;
+&lt;h2 id=&quot;项目配置&quot;&gt;项目配置&lt;&#x2F;h2&gt;
+&lt;h3 id=&quot;项目目录结构&quot;&gt;项目目录结构&lt;&#x2F;h3&gt;
 &lt;p&gt;本次作为示范的 OLLVM 是一个使用 LLVM Pass 进行代码混淆的项目。他的主要文件在于 &lt;code&gt;${LLVM 项目目录}&#x2F;lib&#x2F;Transforms&#x2F;Obfuscation&#x2F;&lt;&#x2F;code&gt; 和 &lt;code&gt;${LLVM 项目目录}&#x2F;include&#x2F;llvm&#x2F;Transforms&#x2F;Obfuscation&#x2F;&lt;&#x2F;code&gt;。将这两个目录下的文件放入对应的目录就可以在代码树外编译 OLLVM 了。OLLVM 相关的文件可以在 &lt;a href=&quot;https:&#x2F;&#x2F;github.com&#x2F;obfuscator-llvm&#x2F;&#x2F;obfuscator&#x2F;tree&#x2F;llvm-4.0&quot;&gt;GitHub&lt;&#x2F;a&gt; 找到。&lt;&#x2F;p&gt;
 &lt;p&gt;在项目根目录放置主要的 &lt;code&gt;CMakeLists.txt&lt;&#x2F;code&gt; 和 代码目录，然后在代码目录中放代码和编译相关的 &lt;code&gt;CMakeLists.txt&lt;&#x2F;code&gt; 。项目结构类似下面。&lt;&#x2F;p&gt;
 &lt;pre data-lang=&quot;bash&quot; class=&quot;language-bash z-code&quot;&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;&lt;span class=&quot;z-source z-shell z-bash&quot;&gt;&lt;span class=&quot;z-meta z-function-call z-shell&quot;&gt;&lt;span class=&quot;z-variable z-function z-shell&quot;&gt;$&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;span class=&quot;z-meta z-function-call z-arguments z-shell&quot;&gt; tree ollvm&lt;&#x2F;span&gt;
@@ -738,7 +738,7 @@ select sink, source, sink, &amp;quot;Network byte swap flows to memcpy&amp;quot;
 
 &lt;span class=&quot;z-meta z-function-call z-shell&quot;&gt;&lt;span class=&quot;z-variable z-function z-shell&quot;&gt;2&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;span class=&quot;z-meta z-function-call z-arguments z-shell&quot;&gt; directories, 14 files&lt;&#x2F;span&gt;
 &lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
-&lt;h3 id=&quot;liang-ge-cmakelists-txt&quot;&gt;两个 CMakeLists.txt&lt;&#x2F;h3&gt;
+&lt;h3 id=&quot;两个_CMakeLists.txt&quot;&gt;两个 CMakeLists.txt&lt;&#x2F;h3&gt;
 &lt;p&gt;第一个是项目目录下的 &lt;code&gt;CMakeLists.txt&lt;&#x2F;code&gt;，用来关联 LLVM 的文件，CMake 会按照一定的顺序寻找 LLVM 这个 Package，如果要手动指定的话使用 &lt;code&gt;-DLLVM_DIR=&lt;&#x2F;code&gt; 这个选项来指定。&lt;&#x2F;p&gt;
 &lt;pre data-lang=&quot;cmake&quot; class=&quot;language-cmake z-code&quot;&gt;&lt;code class=&quot;language-cmake&quot; data-lang=&quot;cmake&quot;&gt;&lt;span class=&quot;z-source z-cmake&quot;&gt;&lt;span class=&quot;z-meta z-function-call z-cmake&quot;&gt;&lt;span class=&quot;z-support z-function z-cmake_minimum_required z-cmake&quot;&gt;cmake_minimum_required&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;span class=&quot;z-meta z-function-call z-arguments z-cmake&quot;&gt;&lt;span class=&quot;z-punctuation z-section z-parens z-begin z-cmake&quot;&gt;(&lt;&#x2F;span&gt;&lt;span class=&quot;z-variable z-parameter z-VERSION z-cmake&quot;&gt;VERSION&lt;&#x2F;span&gt; &lt;span class=&quot;z-meta z-string z-unquoted z-cmake&quot;&gt;3.10&lt;&#x2F;span&gt;&lt;span class=&quot;z-punctuation z-section z-parens z-end z-cmake&quot;&gt;)&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
 
@@ -766,7 +766,7 @@ select sink, source, sink, &amp;quot;Network byte swap flows to memcpy&amp;quot;
 
 &lt;span class=&quot;z-meta z-function-call z-cmake&quot;&gt;&lt;span class=&quot;z-support z-function z-add_dependencies z-cmake&quot;&gt;add_dependencies&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;span class=&quot;z-meta z-function-call z-arguments z-cmake&quot;&gt;&lt;span class=&quot;z-punctuation z-section z-parens z-begin z-cmake&quot;&gt;(&lt;&#x2F;span&gt;&lt;span class=&quot;z-meta z-string z-unquoted z-cmake&quot;&gt;LLVMObfuscation&lt;&#x2F;span&gt; &lt;span class=&quot;z-meta z-string z-unquoted z-cmake&quot;&gt;intrinsics_gen&lt;&#x2F;span&gt;&lt;span class=&quot;z-punctuation z-section z-parens z-end z-cmake&quot;&gt;)&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
 &lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
-&lt;h3 id=&quot;dai-ma-mo-gai&quot;&gt;代码魔改&lt;&#x2F;h3&gt;
+&lt;h3 id=&quot;代码魔改&quot;&gt;代码魔改&lt;&#x2F;h3&gt;
 &lt;p&gt;由于 OLLVM 的代码是放在主代码树中的，所以在提取出代码树外后可能需要进行一点魔改才能让 Pass 正常工作。以 &lt;code&gt;BogusControlFlow.cpp&lt;&#x2F;code&gt; 为例，源代码的 &lt;code&gt;runOnFunction()&lt;&#x2F;code&gt; 函数中检测了 &amp;quot;bcf&amp;quot; 是否在全局声明中存在，但是将文件提取出来后，直接在 &lt;code&gt;opt&lt;&#x2F;code&gt; 加上相关参数就可以进行使用 Pass 了，所以将 &lt;code&gt;if (toObfuscate(flag, &amp;amp;F, &amp;quot;bcf&amp;quot;))&lt;&#x2F;code&gt; 语句直接去除，留下混淆部分就行。&lt;&#x2F;p&gt;
 &lt;pre data-lang=&quot;cpp&quot; class=&quot;language-cpp z-code&quot;&gt;&lt;code class=&quot;language-cpp&quot; data-lang=&quot;cpp&quot;&gt;&lt;span class=&quot;z-source z-c++&quot;&gt;  &lt;span class=&quot;z-storage z-modifier z-c++&quot;&gt;virtual&lt;&#x2F;span&gt; &lt;span class=&quot;z-storage z-type z-c&quot;&gt;bool&lt;&#x2F;span&gt; &lt;span class=&quot;z-meta z-function z-c++&quot;&gt;&lt;span class=&quot;z-meta z-toc-list z-full-identifier z-c++&quot;&gt;&lt;span class=&quot;z-entity z-name z-function z-c++&quot;&gt;runOnFunction&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;span class=&quot;z-meta z-function z-parameters z-c++&quot;&gt;&lt;span class=&quot;z-meta z-group z-c++&quot;&gt;&lt;span class=&quot;z-punctuation z-section z-group z-begin z-c++&quot;&gt;(&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;span class=&quot;z-meta z-function z-parameters z-c++&quot;&gt;&lt;span class=&quot;z-meta z-group z-c++&quot;&gt;Function &lt;span class=&quot;z-keyword z-operator z-c&quot;&gt;&amp;amp;&lt;&#x2F;span&gt;&lt;span class=&quot;z-variable z-parameter z-c++&quot;&gt;F&lt;&#x2F;span&gt;&lt;span class=&quot;z-punctuation z-section z-group z-end z-c++&quot;&gt;)&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;span class=&quot;z-meta z-function z-c++&quot;&gt; &lt;&#x2F;span&gt;&lt;span class=&quot;z-meta z-function z-c++&quot;&gt;&lt;span class=&quot;z-meta z-block z-c++&quot;&gt;&lt;span class=&quot;z-punctuation z-section z-block z-begin z-c++&quot;&gt;{&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;span class=&quot;z-meta z-function z-c++&quot;&gt;&lt;span class=&quot;z-meta z-block z-c++&quot;&gt;
     &lt;span class=&quot;z-comment z-line z-double-slash z-c&quot;&gt;&lt;span class=&quot;z-punctuation z-definition z-comment z-c&quot;&gt;&#x2F;&#x2F;&lt;&#x2F;span&gt; Check if the percentage is correct
@@ -808,7 +808,7 @@ select sink, source, sink, &amp;quot;Network byte swap flows to memcpy&amp;quot;
     &lt;span class=&quot;z-keyword z-control z-flow z-return z-c++&quot;&gt;return&lt;&#x2F;span&gt; &lt;span class=&quot;z-constant z-language z-c&quot;&gt;true&lt;&#x2F;span&gt;&lt;span class=&quot;z-punctuation z-terminator z-c++&quot;&gt;;&lt;&#x2F;span&gt;
   &lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;span class=&quot;z-meta z-function z-c++&quot;&gt;&lt;span class=&quot;z-meta z-block z-c++&quot;&gt;&lt;span class=&quot;z-punctuation z-section z-block z-end z-c++&quot;&gt;}&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;&#x2F;span&gt; &lt;span class=&quot;z-comment z-line z-double-slash z-c&quot;&gt;&lt;span class=&quot;z-punctuation z-definition z-comment z-c&quot;&gt;&#x2F;&#x2F;&lt;&#x2F;span&gt; end of runOnFunction()
 &lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
-&lt;h2 id=&quot;kai-shi-bian-yi&quot;&gt;开始编译&lt;&#x2F;h2&gt;
+&lt;h2 id=&quot;开始编译&quot;&gt;开始编译&lt;&#x2F;h2&gt;
 &lt;p&gt;首先安装相关依赖，本文默认环境是 WSL Ubuntu 18.04&lt;&#x2F;p&gt;
 &lt;pre data-lang=&quot;bash&quot; class=&quot;language-bash z-code&quot;&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;&lt;span class=&quot;z-source z-shell z-bash&quot;&gt;&lt;span class=&quot;z-meta z-function-call z-shell&quot;&gt;&lt;span class=&quot;z-variable z-function z-shell&quot;&gt;$&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;span class=&quot;z-meta z-function-call z-arguments z-shell&quot;&gt; apt update&lt;&#x2F;span&gt;
 &lt;span class=&quot;z-meta z-function-call z-shell&quot;&gt;&lt;span class=&quot;z-variable z-function z-shell&quot;&gt;$&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;span class=&quot;z-meta z-function-call z-arguments z-shell&quot;&gt; apt install cmake llvm-8 llvm-8-dev gcc &lt;span class=&quot;z-comment z-line z-number-sign z-shell&quot;&gt;&lt;span class=&quot;z-punctuation z-definition z-comment z-begin z-shell&quot;&gt;#&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;span class=&quot;z-comment z-line z-number-sign z-shell&quot;&gt; gcc&#x2F;clang 都行&lt;&#x2F;span&gt;&lt;span class=&quot;z-comment z-line z-number-sign z-shell&quot;&gt;
@@ -819,7 +819,7 @@ select sink, source, sink, &amp;quot;Network byte swap flows to memcpy&amp;quot;
 &lt;span class=&quot;z-meta z-function-call z-shell&quot;&gt;&lt;span class=&quot;z-variable z-function z-shell&quot;&gt;$&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;span class=&quot;z-meta z-function-call z-arguments z-shell&quot;&gt; cmake&lt;span class=&quot;z-variable z-parameter z-option z-shell&quot;&gt;&lt;span class=&quot;z-punctuation z-definition z-parameter z-shell&quot;&gt; --&lt;&#x2F;span&gt;build&lt;&#x2F;span&gt; .&lt;span class=&quot;z-keyword z-operator z-end-of-options z-shell&quot;&gt; --&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;span class=&quot;z-meta z-function-call z-arguments z-shell&quot;&gt; -j&lt;span class=&quot;z-meta z-group z-expansion z-command z-parens z-shell&quot;&gt;&lt;span class=&quot;z-punctuation z-definition z-variable z-shell&quot;&gt;$&lt;&#x2F;span&gt;&lt;span class=&quot;z-punctuation z-section z-parens z-begin z-shell&quot;&gt;(&lt;&#x2F;span&gt;&lt;span class=&quot;z-meta z-function-call z-shell&quot;&gt;&lt;span class=&quot;z-variable z-function z-shell&quot;&gt;nproc&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;span class=&quot;z-punctuation z-section z-parens z-end z-shell&quot;&gt;)&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
 &lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
 &lt;p&gt;然后在 &lt;code&gt;build&#x2F;Obfuscation&lt;&#x2F;code&gt; 下就会生成 &lt;code&gt;libLLVMObfuscation.so&lt;&#x2F;code&gt;&lt;&#x2F;p&gt;
-&lt;h2 id=&quot;pass-shi-yong&quot;&gt;Pass 使用&lt;&#x2F;h2&gt;
+&lt;h2 id=&quot;Pass_使用&quot;&gt;Pass 使用&lt;&#x2F;h2&gt;
 &lt;p&gt;找了份 OJ 上题目的代码&lt;&#x2F;p&gt;
 &lt;pre data-lang=&quot;c&quot; class=&quot;language-c z-code&quot;&gt;&lt;code class=&quot;language-c&quot; data-lang=&quot;c&quot;&gt;&lt;span class=&quot;z-source z-c&quot;&gt;&lt;span class=&quot;z-meta z-preprocessor z-include z-c&quot;&gt;&lt;span class=&quot;z-keyword z-control z-import z-include z-c&quot;&gt;#include&lt;&#x2F;span&gt; &lt;span class=&quot;z-string z-quoted z-other z-lt-gt z-include z-c&quot;&gt;&lt;span class=&quot;z-punctuation z-definition z-string z-begin z-c&quot;&gt;&amp;lt;&lt;&#x2F;span&gt;stdio.h&lt;span class=&quot;z-punctuation z-definition z-string z-end z-c&quot;&gt;&amp;gt;&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
 &lt;&#x2F;span&gt;
@@ -1018,10 +1018,10 @@ _UNKNOWN unk_400F24&lt;span class=&quot;z-punctuation z-terminator z-c&quot;&gt;
 		<title>给 ELF 文件加上后门</title>
 		<published>2020-01-01T00:00:00+00:00</published>
 		<updated>2020-01-01T00:00:00+00:00</updated>
-		<link rel="alternate" href="https://chenx6.github.io/post/elf-backdoor/" type="text/html"/>
-		<id>https://chenx6.github.io/post/elf-backdoor/</id>
+		<link rel="alternate" href="https://chenx6.github.io/post/elf_backdoor/" type="text/html"/>
+		<id>https://chenx6.github.io/post/elf_backdoor/</id>
 		<content type="html">&lt;p&gt;在渗透测试中，给常用的可执行文件加上后门是很常见的操作。但是之前的加后门 &amp;quot;The backdoor factory&amp;quot; 已经不维护了，而且还是 Python2 写的，代码质量也...所以我自己尝试着重新用 Python3 造了个轮子。在造轮子的过程中，由于 APUE 扔在学校里面了，导致在写和系统相关的汇编时出现了一些翻车情况...&lt;&#x2F;p&gt;
-&lt;h2 id=&quot;jia-hou-men-de-liu-cheng&quot;&gt;加后门的流程&lt;&#x2F;h2&gt;
+&lt;h2 id=&quot;加后门的流程&quot;&gt;加后门的流程&lt;&#x2F;h2&gt;
 &lt;p&gt;基本分为两部分，先分析 ELF，然后根据之前的分析来给 ELF 加个&amp;quot;补丁&amp;quot;。&lt;&#x2F;p&gt;
 &lt;ol&gt;
 &lt;li&gt;先分析 ELF 结构，拿到 ELF File Header 和 ELF Program Headers (Segments) 的相关信息&lt;&#x2F;li&gt;
@@ -1030,7 +1030,7 @@ _UNKNOWN unk_400F24&lt;span class=&quot;z-punctuation z-terminator z-c&quot;&gt;
 &lt;li&gt;将 ELF File Header 的 e_entry 指向后门代码，让后门代码可以运行&lt;&#x2F;li&gt;
 &lt;li&gt;在空白处加入后门代码和相应的辅助代码&lt;&#x2F;li&gt;
 &lt;&#x2F;ol&gt;
-&lt;h2 id=&quot;elf-fen-xi-guo-cheng&quot;&gt;ELF 分析过程&lt;&#x2F;h2&gt;
+&lt;h2 id=&quot;ELF_分析过程&quot;&gt;ELF 分析过程&lt;&#x2F;h2&gt;
 &lt;p&gt;介绍 ELF 结构的文章非常多，这里我推荐 &lt;a href=&quot;https:&#x2F;&#x2F;uclibc.org&#x2F;docs&#x2F;elf-64-gen.pdf&quot;&gt;UClib 的文档&lt;&#x2F;a&gt; ，里面讲了 ELF 的不同结构及其作用。有了这个文档后 ELF 文件的分析就非常简单了，可以使用 Python 的 &lt;code&gt;struct&lt;&#x2F;code&gt; 库来提取数据进行分析。首先通过 ELF File Header 获取到 &lt;code&gt;e_phoff&lt;&#x2F;code&gt; Program header 的文件偏移，然后 &lt;code&gt;seek&lt;&#x2F;code&gt; 到相应位置解析 Program header。&lt;&#x2F;p&gt;
 &lt;pre data-lang=&quot;python&quot; class=&quot;language-python z-code&quot;&gt;&lt;code class=&quot;language-python&quot; data-lang=&quot;python&quot;&gt;&lt;span class=&quot;z-source z-python&quot;&gt;&lt;span class=&quot;z-meta z-class z-python&quot;&gt;&lt;span class=&quot;z-storage z-type z-class z-python&quot;&gt;&lt;span class=&quot;z-keyword z-declaration z-class z-python&quot;&gt;class&lt;&#x2F;span&gt;&lt;&#x2F;span&gt; &lt;span class=&quot;z-entity z-name z-class z-python&quot;&gt;&lt;span class=&quot;z-meta z-generic-name z-python&quot;&gt;elf_info&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;span class=&quot;z-punctuation z-section z-class z-begin z-python&quot;&gt;:&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
     &lt;span class=&quot;z-comment z-block z-documentation z-python&quot;&gt;&lt;span class=&quot;z-punctuation z-definition z-comment z-begin z-python&quot;&gt;&amp;#39;&amp;#39;&amp;#39;&lt;&#x2F;span&gt;
@@ -1097,7 +1097,7 @@ _UNKNOWN unk_400F24&lt;span class=&quot;z-punctuation z-terminator z-c&quot;&gt;
             &lt;span class=&quot;z-meta z-function-call z-python&quot;&gt;&lt;span class=&quot;z-meta z-qualified-name z-python&quot;&gt;&lt;span class=&quot;z-meta z-generic-name z-python&quot;&gt;segments&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;span class=&quot;z-meta z-qualified-name z-python&quot;&gt;&lt;span class=&quot;z-punctuation z-accessor z-dot z-python&quot;&gt;.&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;span class=&quot;z-meta z-qualified-name z-python&quot;&gt;&lt;span class=&quot;z-variable z-function z-python&quot;&gt;&lt;span class=&quot;z-meta z-generic-name z-python&quot;&gt;append&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;span class=&quot;z-meta z-function-call z-arguments z-python&quot;&gt;&lt;span class=&quot;z-punctuation z-section z-arguments z-begin z-python&quot;&gt;(&lt;&#x2F;span&gt;&lt;span class=&quot;z-meta z-qualified-name z-python&quot;&gt;&lt;span class=&quot;z-meta z-generic-name z-python&quot;&gt;seg&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;span class=&quot;z-punctuation z-section z-arguments z-end z-python&quot;&gt;)&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
         &lt;span class=&quot;z-keyword z-control z-flow z-return z-python&quot;&gt;return&lt;&#x2F;span&gt; &lt;span class=&quot;z-meta z-qualified-name z-python&quot;&gt;&lt;span class=&quot;z-meta z-generic-name z-python&quot;&gt;segments&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
 &lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
-&lt;h2 id=&quot;elf-bu-ding-guo-cheng&quot;&gt;ELF 补丁过程&lt;&#x2F;h2&gt;
+&lt;h2 id=&quot;ELF_补丁过程&quot;&gt;ELF 补丁过程&lt;&#x2F;h2&gt;
 &lt;p&gt;下面是 Patch 程序的主要流程了，首先是找到合适大小的 Code Cave，然后修改 ELF File Header 和 ELF Program Header 为后门代码准备相应的内存，并让后门代码得以运行，最后往这个 Code Cave 里填上辅助代码和相应后门。&lt;&#x2F;p&gt;
 &lt;pre data-lang=&quot;python&quot; class=&quot;language-python z-code&quot;&gt;&lt;code class=&quot;language-python&quot; data-lang=&quot;python&quot;&gt;&lt;span class=&quot;z-source z-python&quot;&gt;&lt;span class=&quot;z-meta z-class z-python&quot;&gt;&lt;span class=&quot;z-storage z-type z-class z-python&quot;&gt;&lt;span class=&quot;z-keyword z-declaration z-class z-python&quot;&gt;class&lt;&#x2F;span&gt;&lt;&#x2F;span&gt; &lt;span class=&quot;z-entity z-name z-class z-python&quot;&gt;&lt;span class=&quot;z-meta z-generic-name z-python&quot;&gt;injector&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;span class=&quot;z-punctuation z-section z-class z-begin z-python&quot;&gt;:&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
 &lt;span class=&quot;z-meta z-function z-python&quot;&gt;    &lt;span class=&quot;z-storage z-type z-function z-python&quot;&gt;&lt;span class=&quot;z-keyword z-declaration z-function z-python&quot;&gt;def&lt;&#x2F;span&gt;&lt;&#x2F;span&gt; &lt;span class=&quot;z-entity z-name z-function z-python&quot;&gt;&lt;span class=&quot;z-support z-function z-magic z-python&quot;&gt;__init__&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;span class=&quot;z-meta z-function z-parameters z-python&quot;&gt;&lt;span class=&quot;z-punctuation z-section z-parameters z-begin z-python&quot;&gt;(&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;span class=&quot;z-meta z-function z-parameters z-python&quot;&gt;&lt;span class=&quot;z-variable z-parameter z-python&quot;&gt;self&lt;&#x2F;span&gt;&lt;span class=&quot;z-punctuation z-separator z-parameters z-python&quot;&gt;,&lt;&#x2F;span&gt; &lt;span class=&quot;z-variable z-parameter z-python&quot;&gt;file&lt;&#x2F;span&gt;&lt;span class=&quot;z-punctuation z-separator z-parameters z-python&quot;&gt;,&lt;&#x2F;span&gt; &lt;span class=&quot;z-variable z-parameter z-python&quot;&gt;inject_code&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;span class=&quot;z-meta z-function z-parameters z-annotation z-python&quot;&gt;&lt;span class=&quot;z-punctuation z-separator z-annotation z-parameter z-python&quot;&gt;:&lt;&#x2F;span&gt; &lt;span class=&quot;z-meta z-qualified-name z-python&quot;&gt;&lt;span class=&quot;z-support z-type z-python&quot;&gt;bytes&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;span class=&quot;z-meta z-function z-parameters z-python&quot;&gt;&lt;span class=&quot;z-punctuation z-section z-parameters z-end z-python&quot;&gt;)&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;span class=&quot;z-meta z-function z-python&quot;&gt;&lt;span class=&quot;z-punctuation z-section z-function z-begin z-python&quot;&gt;:&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
@@ -1244,7 +1244,7 @@ _UNKNOWN unk_400F24&lt;span class=&quot;z-punctuation z-terminator z-c&quot;&gt;
     &lt;span class=&quot;z-meta z-function-call z-python&quot;&gt;&lt;span class=&quot;z-meta z-qualified-name z-python&quot;&gt;&lt;span class=&quot;z-variable z-language z-python&quot;&gt;self&lt;&#x2F;span&gt;&lt;span class=&quot;z-punctuation z-accessor z-dot z-python&quot;&gt;.&lt;&#x2F;span&gt;&lt;span class=&quot;z-meta z-generic-name z-python&quot;&gt;file&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;span class=&quot;z-meta z-qualified-name z-python&quot;&gt;&lt;span class=&quot;z-punctuation z-accessor z-dot z-python&quot;&gt;.&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;span class=&quot;z-meta z-qualified-name z-python&quot;&gt;&lt;span class=&quot;z-variable z-function z-python&quot;&gt;&lt;span class=&quot;z-meta z-generic-name z-python&quot;&gt;seek&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;span class=&quot;z-meta z-function-call z-arguments z-python&quot;&gt;&lt;span class=&quot;z-punctuation z-section z-arguments z-begin z-python&quot;&gt;(&lt;&#x2F;span&gt;&lt;span class=&quot;z-meta z-qualified-name z-python&quot;&gt;&lt;span class=&quot;z-meta z-generic-name z-python&quot;&gt;pos&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;span class=&quot;z-punctuation z-section z-arguments z-end z-python&quot;&gt;)&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
     &lt;span class=&quot;z-meta z-function-call z-python&quot;&gt;&lt;span class=&quot;z-meta z-qualified-name z-python&quot;&gt;&lt;span class=&quot;z-variable z-language z-python&quot;&gt;self&lt;&#x2F;span&gt;&lt;span class=&quot;z-punctuation z-accessor z-dot z-python&quot;&gt;.&lt;&#x2F;span&gt;&lt;span class=&quot;z-meta z-generic-name z-python&quot;&gt;file&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;span class=&quot;z-meta z-qualified-name z-python&quot;&gt;&lt;span class=&quot;z-punctuation z-accessor z-dot z-python&quot;&gt;.&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;span class=&quot;z-meta z-qualified-name z-python&quot;&gt;&lt;span class=&quot;z-variable z-function z-python&quot;&gt;&lt;span class=&quot;z-meta z-generic-name z-python&quot;&gt;write&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;span class=&quot;z-meta z-function-call z-arguments z-python&quot;&gt;&lt;span class=&quot;z-punctuation z-section z-arguments z-begin z-python&quot;&gt;(&lt;&#x2F;span&gt;&lt;span class=&quot;z-meta z-qualified-name z-python&quot;&gt;&lt;span class=&quot;z-meta z-generic-name z-python&quot;&gt;code&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;span class=&quot;z-punctuation z-section z-arguments z-end z-python&quot;&gt;)&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
 &lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
-&lt;h2 id=&quot;shi-zhan&quot;&gt;实战&lt;&#x2F;h2&gt;
+&lt;h2 id=&quot;实战&quot;&gt;实战&lt;&#x2F;h2&gt;
 &lt;p&gt;首先先准备个傀儡，使用 &lt;code&gt;gcc test.c -o test.elf&lt;&#x2F;code&gt; 进行编译，由于辅助汇编代码对 The backdoor factory 进行了修改，所以位置无关代码也是可以 Patch 的。&lt;&#x2F;p&gt;
 &lt;pre data-lang=&quot;c&quot; class=&quot;language-c z-code&quot;&gt;&lt;code class=&quot;language-c&quot; data-lang=&quot;c&quot;&gt;&lt;span class=&quot;z-source z-c&quot;&gt;&lt;span class=&quot;z-meta z-preprocessor z-include z-c&quot;&gt;&lt;span class=&quot;z-keyword z-control z-import z-include z-c&quot;&gt;#include&lt;&#x2F;span&gt; &lt;span class=&quot;z-string z-quoted z-other z-lt-gt z-include z-c&quot;&gt;&lt;span class=&quot;z-punctuation z-definition z-string z-begin z-c&quot;&gt;&amp;lt;&lt;&#x2F;span&gt;stdio.h&lt;span class=&quot;z-punctuation z-definition z-string z-end z-c&quot;&gt;&amp;gt;&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
 &lt;&#x2F;span&gt;
@@ -1255,10 +1255,10 @@ _UNKNOWN unk_400F24&lt;span class=&quot;z-punctuation z-terminator z-c&quot;&gt;
 &lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;span class=&quot;z-meta z-function z-c&quot;&gt;&lt;span class=&quot;z-meta z-block z-c&quot;&gt;&lt;span class=&quot;z-punctuation z-section z-block z-end z-c&quot;&gt;}&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
 &lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
 &lt;p&gt;我使用了 &lt;a href=&quot;https:&#x2F;&#x2F;www.exploit-db.com&#x2F;shellcodes&#x2F;41128&quot;&gt;https:&#x2F;&#x2F;www.exploit-db.com&#x2F;shellcodes&#x2F;41128&lt;&#x2F;a&gt; 的正向 Shell 代码，可以发现原程序正常运行，而后门代码也运行了。&lt;&#x2F;p&gt;
-&lt;p&gt;&lt;img src=&quot;https:&#x2F;&#x2F;chenx6.github.io&#x2F;post&#x2F;elf-backdoor&#x2F;.&#x2F;pictures&#x2F;elf_backdoor.png&quot; alt=&quot;0&quot; &#x2F;&gt;&lt;&#x2F;p&gt;
-&lt;h2 id=&quot;wan-zheng-dai-ma&quot;&gt;完整代码&lt;&#x2F;h2&gt;
+&lt;p&gt;&lt;img src=&quot;https:&#x2F;&#x2F;chenx6.github.io&#x2F;post&#x2F;elf_backdoor&#x2F;.&#x2F;pictures&#x2F;elf_backdoor.png&quot; alt=&quot;0&quot; &#x2F;&gt;&lt;&#x2F;p&gt;
+&lt;h2 id=&quot;完整代码&quot;&gt;完整代码&lt;&#x2F;h2&gt;
 &lt;p&gt;由于代码太长了，所以我将代码放在了 gist 上了 &lt;a href=&quot;https:&#x2F;&#x2F;gist.github.com&#x2F;chenx6&#x2F;0cedc163bea2aaefd433fff7d02cd4c1&quot;&gt;https:&#x2F;&#x2F;gist.github.com&#x2F;chenx6&#x2F;0cedc163bea2aaefd433fff7d02cd4c1&lt;&#x2F;a&gt;，如果访问不了的话可以手动复制粘贴代码，应该可以拼接成可以运行的程序。&lt;&#x2F;p&gt;
-&lt;h2 id=&quot;wei-wan-cheng-gong-zuo&quot;&gt;未完成工作&lt;&#x2F;h2&gt;
+&lt;h2 id=&quot;未完成工作&quot;&gt;未完成工作&lt;&#x2F;h2&gt;
 &lt;p&gt;这个代码只是一个简单的 DEMO，想要扩展成可维护的软件的话，我个人有下面几个发展方向&lt;&#x2F;p&gt;
 &lt;ol&gt;
 &lt;li&gt;将 pack 和 unpack 进行封装，类似 pwntools。&lt;&#x2F;li&gt;
@@ -1278,17 +1278,17 @@ _UNKNOWN unk_400F24&lt;span class=&quot;z-punctuation z-terminator z-c&quot;&gt;
 		<title>使用 LLVM Pass 实现字符串加密</title>
 		<published>2020-01-01T00:00:00+00:00</published>
 		<updated>2020-01-01T00:00:00+00:00</updated>
-		<link rel="alternate" href="https://chenx6.github.io/post/obfuscate-string/" type="text/html"/>
-		<id>https://chenx6.github.io/post/obfuscate-string/</id>
+		<link rel="alternate" href="https://chenx6.github.io/post/obfuscate_string/" type="text/html"/>
+		<id>https://chenx6.github.io/post/obfuscate_string/</id>
 		<content type="html">&lt;p&gt;这个项目可以作为我看了这么久 LLVM 的 Docs 助眠的一个小总结吧。这个项目主要就是给函数使用的常量字符串进行加密，在程序被静态分析的时候干扰分析。当然找到思路后，这个混淆还是很容易解开的。&lt;&#x2F;p&gt;
 &lt;blockquote&gt;
 &lt;p&gt;吐槽下，网上的文章质量参差不齐，写的让人不知所云的，真的恐怖。所以还是面向 Stackoverflow 和官方文档编程吧...&lt;&#x2F;p&gt;
 &lt;&#x2F;blockquote&gt;
 &lt;p&gt;为了写 LLVM Pass ，首先得看看 &lt;a href=&quot;https:&#x2F;&#x2F;llvm.org&#x2F;docs&#x2F;ProgrammersManual.html&quot;&gt;LLVM Programmers&#x27; Manual&lt;&#x2F;a&gt;，里面讲了许多代码样例，API 讲解和类的层次结构。当然这只是基础，具体的使用得看使用 doxygen 生成的文档。&lt;&#x2F;p&gt;
 &lt;p&gt;当然也得对 LLVM IR 也得有一定了解 &lt;a href=&quot;https:&#x2F;&#x2F;llvm.org&#x2F;docs&#x2F;LangRef.html&quot;&gt;https:&#x2F;&#x2F;llvm.org&#x2F;docs&#x2F;LangRef.html&lt;&#x2F;a&gt;&lt;&#x2F;p&gt;
-&lt;h2 id=&quot;pass-si-lu-gai-shu&quot;&gt;Pass 思路概述&lt;&#x2F;h2&gt;
+&lt;h2 id=&quot;Pass_思路概述&quot;&gt;Pass 思路概述&lt;&#x2F;h2&gt;
 &lt;p&gt;首先是找到字符串，其次是找到用这个字符串的函数，在这个函数被调用前，先调用解密函数进行解密。最后加密原本字符串。&lt;&#x2F;p&gt;
-&lt;h2 id=&quot;kai-fa-huan-jing-zhun-bei&quot;&gt;开发环境准备&lt;&#x2F;h2&gt;
+&lt;h2 id=&quot;开发环境准备&quot;&gt;开发环境准备&lt;&#x2F;h2&gt;
 &lt;p&gt;编译环境请参考&lt;a href=&quot;https:&#x2F;&#x2F;zhuanlan.zhihu.com&#x2F;p&#x2F;104295455&quot;&gt;上一篇文章&lt;&#x2F;a&gt;，只是写个 Pass 而已，不要再从整个 LLVM 项目开始编译了好吗...&lt;&#x2F;p&gt;
 &lt;p&gt;这里使用的是 VSCode + WSL 搭建开发环境，在项目文件夹的 &amp;quot;.vscode&#x2F;c_cpp_properties.json&amp;quot; 加上对应的 &amp;quot;includePath&amp;quot; 就有智能提示了。&lt;&#x2F;p&gt;
 &lt;pre data-lang=&quot;json&quot; class=&quot;language-json z-code&quot;&gt;&lt;code class=&quot;language-json&quot; data-lang=&quot;json&quot;&gt;&lt;span class=&quot;z-source z-json&quot;&gt;&lt;span class=&quot;z-meta z-mapping z-json&quot;&gt;&lt;span class=&quot;z-punctuation z-section z-mapping z-begin z-json&quot;&gt;{&lt;&#x2F;span&gt;
@@ -1300,8 +1300,8 @@ _UNKNOWN unk_400F24&lt;span class=&quot;z-punctuation z-terminator z-c&quot;&gt;
 &lt;span class=&quot;z-punctuation z-section z-mapping z-end z-json&quot;&gt;}&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
 &lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
 &lt;p&gt;由于使用 CMake 来管理编译依赖，所以给 VSCode 加上 CMake 插件，可以实现小部分 CMake GUI 的功能。&lt;&#x2F;p&gt;
-&lt;h2 id=&quot;dai-ma-jiang-jie&quot;&gt;代码讲解&lt;&#x2F;h2&gt;
-&lt;h3 id=&quot;ji-ben-kuang-jia&quot;&gt;基本框架&lt;&#x2F;h3&gt;
+&lt;h2 id=&quot;代码讲解&quot;&gt;代码讲解&lt;&#x2F;h2&gt;
+&lt;h3 id=&quot;基本框架&quot;&gt;基本框架&lt;&#x2F;h3&gt;
 &lt;p&gt;首先是 include 的头文件，项目里用了 LLVM 自己的 &lt;code&gt;SmallVector&lt;&#x2F;code&gt;，还有 IR 下面的 &lt;code&gt;Function&lt;&#x2F;code&gt;, &lt;code&gt;GlobalVariable&lt;&#x2F;code&gt;, &lt;code&gt;IRBuilder&lt;&#x2F;code&gt;, &lt;code&gt;Instructions&lt;&#x2F;code&gt;，还有些 Pass 必备的一些头文件，&lt;code&gt;raw_ostream&lt;&#x2F;code&gt; 用来调试输出。&lt;&#x2F;p&gt;
 &lt;pre data-lang=&quot;cpp&quot; class=&quot;language-cpp z-code&quot;&gt;&lt;code class=&quot;language-cpp&quot; data-lang=&quot;cpp&quot;&gt;&lt;span class=&quot;z-source z-c++&quot;&gt;&lt;span class=&quot;z-meta z-preprocessor z-include z-c++&quot;&gt;&lt;span class=&quot;z-keyword z-control z-import z-include z-c++&quot;&gt;#include&lt;&#x2F;span&gt; &lt;span class=&quot;z-string z-quoted z-double z-include z-c++&quot;&gt;&lt;span class=&quot;z-punctuation z-definition z-string z-begin z-c++&quot;&gt;&amp;quot;&lt;&#x2F;span&gt;llvm&#x2F;ADT&#x2F;SmallVector.h&lt;span class=&quot;z-punctuation z-definition z-string z-end z-c++&quot;&gt;&amp;quot;&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
 &lt;&#x2F;span&gt;&lt;span class=&quot;z-meta z-preprocessor z-include z-c++&quot;&gt;&lt;span class=&quot;z-keyword z-control z-import z-include z-c++&quot;&gt;#include&lt;&#x2F;span&gt; &lt;span class=&quot;z-string z-quoted z-double z-include z-c++&quot;&gt;&lt;span class=&quot;z-punctuation z-definition z-string z-begin z-c++&quot;&gt;&amp;quot;&lt;&#x2F;span&gt;llvm&#x2F;IR&#x2F;Function.h&lt;span class=&quot;z-punctuation z-definition z-string z-end z-c++&quot;&gt;&amp;quot;&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
@@ -1344,7 +1344,7 @@ _UNKNOWN unk_400F24&lt;span class=&quot;z-punctuation z-terminator z-c&quot;&gt;
 &lt;span class=&quot;z-storage z-type z-c&quot;&gt;char&lt;&#x2F;span&gt; ObfuscatePass&lt;span class=&quot;z-punctuation z-accessor z-double-colon z-c++&quot;&gt;::&lt;&#x2F;span&gt;ID &lt;span class=&quot;z-keyword z-operator z-assignment z-c&quot;&gt;=&lt;&#x2F;span&gt; &lt;span class=&quot;z-constant z-numeric z-integer z-decimal z-c++&quot;&gt;0&lt;&#x2F;span&gt;&lt;span class=&quot;z-punctuation z-terminator z-c++&quot;&gt;;&lt;&#x2F;span&gt;
 &lt;span class=&quot;z-storage z-modifier z-c++&quot;&gt;static&lt;&#x2F;span&gt; RegisterPass&lt;span class=&quot;z-punctuation z-section z-generic z-begin z-c++&quot;&gt;&amp;lt;&lt;&#x2F;span&gt;ObfuscatePass&lt;span class=&quot;z-punctuation z-section z-generic z-end z-c++&quot;&gt;&amp;gt;&lt;&#x2F;span&gt; &lt;span class=&quot;z-meta z-function z-c++&quot;&gt;&lt;span class=&quot;z-meta z-toc-list z-full-identifier z-c++&quot;&gt;&lt;span class=&quot;z-entity z-name z-function z-c++&quot;&gt;X&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;span class=&quot;z-meta z-function z-parameters z-c++&quot;&gt;&lt;span class=&quot;z-meta z-group z-c++&quot;&gt;&lt;span class=&quot;z-punctuation z-section z-group z-begin z-c++&quot;&gt;(&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;span class=&quot;z-meta z-function z-parameters z-c++&quot;&gt;&lt;span class=&quot;z-meta z-group z-c++&quot;&gt;&lt;span class=&quot;z-string z-quoted z-double z-c&quot;&gt;&lt;span class=&quot;z-punctuation z-definition z-string z-begin z-c&quot;&gt;&amp;quot;&lt;&#x2F;span&gt;obfstr&lt;span class=&quot;z-punctuation z-definition z-string z-end z-c&quot;&gt;&amp;quot;&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;span class=&quot;z-punctuation z-separator z-c++&quot;&gt;,&lt;&#x2F;span&gt; &lt;span class=&quot;z-string z-quoted z-double z-c&quot;&gt;&lt;span class=&quot;z-punctuation z-definition z-string z-begin z-c&quot;&gt;&amp;quot;&lt;&#x2F;span&gt;obfuscate string&lt;span class=&quot;z-punctuation z-definition z-string z-end z-c&quot;&gt;&amp;quot;&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;span class=&quot;z-punctuation z-section z-group z-end z-c++&quot;&gt;)&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;span class=&quot;z-punctuation z-terminator z-c++&quot;&gt;;&lt;&#x2F;span&gt;
 &lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
-&lt;h3 id=&quot;runonmodule-han-shu&quot;&gt;&lt;code&gt;runOnModule&lt;&#x2F;code&gt; 函数&lt;&#x2F;h3&gt;
+&lt;h3 id=&quot;runOnModule_函数&quot;&gt;&lt;code&gt;runOnModule&lt;&#x2F;code&gt; 函数&lt;&#x2F;h3&gt;
 &lt;p&gt;然后开始讲解具体的代码。下面的代码是在寻找全局变量，并且找到他的使用者。&lt;&#x2F;p&gt;
 &lt;p&gt;首先通过 &lt;code&gt;GlobalVariable GVar-&amp;gt;users()&lt;&#x2F;code&gt; 来找到使用者。如果使用者不是单独的指令，而是类似 &lt;code&gt;i8* getelementptr ...&lt;&#x2F;code&gt; 这样的语句，则寻找这个语句的使用者。如果发现这个语句只有 &lt;code&gt;CallInst&lt;&#x2F;code&gt; 类型的使用者，则对字符串进行加密，并去除对应字符串的常量属性。&lt;&#x2F;p&gt;
 &lt;pre data-lang=&quot;cpp&quot; class=&quot;language-cpp z-code&quot;&gt;&lt;code class=&quot;language-cpp&quot; data-lang=&quot;cpp&quot;&gt;&lt;span class=&quot;z-source z-c++&quot;&gt;  &lt;span class=&quot;z-storage z-modifier z-c++&quot;&gt;virtual&lt;&#x2F;span&gt; &lt;span class=&quot;z-storage z-type z-c&quot;&gt;bool&lt;&#x2F;span&gt; &lt;span class=&quot;z-meta z-function z-c++&quot;&gt;&lt;span class=&quot;z-meta z-toc-list z-full-identifier z-c++&quot;&gt;&lt;span class=&quot;z-entity z-name z-function z-c++&quot;&gt;runOnModule&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;span class=&quot;z-meta z-function z-parameters z-c++&quot;&gt;&lt;span class=&quot;z-meta z-group z-c++&quot;&gt;&lt;span class=&quot;z-punctuation z-section z-group z-begin z-c++&quot;&gt;(&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;span class=&quot;z-meta z-function z-parameters z-c++&quot;&gt;&lt;span class=&quot;z-meta z-group z-c++&quot;&gt;Module &lt;span class=&quot;z-keyword z-operator z-c&quot;&gt;&amp;amp;&lt;&#x2F;span&gt;&lt;span class=&quot;z-variable z-parameter z-c++&quot;&gt;M&lt;&#x2F;span&gt;&lt;span class=&quot;z-punctuation z-section z-group z-end z-c++&quot;&gt;)&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;span class=&quot;z-meta z-function z-c++&quot;&gt; &lt;&#x2F;span&gt;&lt;span class=&quot;z-meta z-function z-c++&quot;&gt;&lt;span class=&quot;z-meta z-block z-c++&quot;&gt;&lt;span class=&quot;z-punctuation z-section z-block z-begin z-c++&quot;&gt;{&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;span class=&quot;z-meta z-function z-c++&quot;&gt;&lt;span class=&quot;z-meta z-block z-c++&quot;&gt;
@@ -1387,7 +1387,7 @@ _UNKNOWN unk_400F24&lt;span class=&quot;z-punctuation z-terminator z-c&quot;&gt;
     &lt;span class=&quot;z-keyword z-control z-flow z-return z-c++&quot;&gt;return&lt;&#x2F;span&gt; &lt;span class=&quot;z-constant z-language z-c&quot;&gt;true&lt;&#x2F;span&gt;&lt;span class=&quot;z-punctuation z-terminator z-c++&quot;&gt;;&lt;&#x2F;span&gt;
   &lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;span class=&quot;z-meta z-function z-c++&quot;&gt;&lt;span class=&quot;z-meta z-block z-c++&quot;&gt;&lt;span class=&quot;z-punctuation z-section z-block z-end z-c++&quot;&gt;}&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
 &lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
-&lt;h3 id=&quot;obfuscatestring-han-shu&quot;&gt;&lt;code&gt;obfuscateString&lt;&#x2F;code&gt; 函数&lt;&#x2F;h3&gt;
+&lt;h3 id=&quot;obfuscateString_函数&quot;&gt;&lt;code&gt;obfuscateString&lt;&#x2F;code&gt; 函数&lt;&#x2F;h3&gt;
 &lt;p&gt;函数中主要分为下面三个部分&lt;&#x2F;p&gt;
 &lt;ol&gt;
 &lt;li&gt;替换字符串为加密字符串&lt;&#x2F;li&gt;
@@ -1428,7 +1428,7 @@ CallInst &lt;span class=&quot;z-keyword z-operator z-c++&quot;&gt;*&lt;&#x2F;spa
 CallInst &lt;span class=&quot;z-keyword z-operator z-c++&quot;&gt;*&lt;&#x2F;span&gt;EncryptInst &lt;span class=&quot;z-keyword z-operator z-assignment z-c&quot;&gt;=&lt;&#x2F;span&gt; &lt;span class=&quot;z-meta z-function-call z-c++&quot;&gt;CallInst&lt;span class=&quot;z-punctuation z-accessor z-double-colon z-c++&quot;&gt;::&lt;&#x2F;span&gt;&lt;span class=&quot;z-variable z-function z-c++&quot;&gt;Create&lt;&#x2F;span&gt;&lt;span class=&quot;z-meta z-group z-c++&quot;&gt;&lt;span class=&quot;z-punctuation z-section z-group z-begin z-c++&quot;&gt;(&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;span class=&quot;z-meta z-function-call z-c++&quot;&gt;&lt;span class=&quot;z-meta z-group z-c++&quot;&gt;FuncType&lt;span class=&quot;z-punctuation z-separator z-c++&quot;&gt;,&lt;&#x2F;span&gt; EncryptFunc&lt;span class=&quot;z-punctuation z-separator z-c++&quot;&gt;,&lt;&#x2F;span&gt; CallArgs&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;span class=&quot;z-meta z-function-call z-c++&quot;&gt;&lt;span class=&quot;z-meta z-group z-c++&quot;&gt;&lt;span class=&quot;z-punctuation z-section z-group z-end z-c++&quot;&gt;)&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;span class=&quot;z-punctuation z-terminator z-c++&quot;&gt;;&lt;&#x2F;span&gt;
 EncryptInst&lt;span class=&quot;z-punctuation z-accessor z-arrow z-c++&quot;&gt;-&amp;gt;&lt;&#x2F;span&gt;&lt;span class=&quot;z-meta z-method-call z-c++&quot;&gt;&lt;span class=&quot;z-variable z-function z-member z-c++&quot;&gt;insertAfter&lt;&#x2F;span&gt;&lt;span class=&quot;z-meta z-group z-c++&quot;&gt;&lt;span class=&quot;z-punctuation z-section z-group z-begin z-c++&quot;&gt;(&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;span class=&quot;z-meta z-method-call z-c++&quot;&gt;&lt;span class=&quot;z-meta z-group z-c++&quot;&gt;Inst&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;span class=&quot;z-meta z-method-call z-c++&quot;&gt;&lt;span class=&quot;z-meta z-group z-c++&quot;&gt;&lt;span class=&quot;z-punctuation z-section z-group z-end z-c++&quot;&gt;)&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;span class=&quot;z-punctuation z-terminator z-c++&quot;&gt;;&lt;&#x2F;span&gt;
 &lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
-&lt;h3 id=&quot;encrypt-he-decrypt-han-shu&quot;&gt;&lt;code&gt;__encrypt&lt;&#x2F;code&gt; 和 &lt;code&gt;__decrypt&lt;&#x2F;code&gt; 函数&lt;&#x2F;h3&gt;
+&lt;h3 id=&quot;__encrypt_和___decrypt_函数&quot;&gt;&lt;code&gt;__encrypt&lt;&#x2F;code&gt; 和 &lt;code&gt;__decrypt&lt;&#x2F;code&gt; 函数&lt;&#x2F;h3&gt;
 &lt;p&gt;由于只是 xor，所以函数的代码很相似。&lt;&#x2F;p&gt;
 &lt;pre data-lang=&quot;c&quot; class=&quot;language-c z-code&quot;&gt;&lt;code class=&quot;language-c&quot; data-lang=&quot;c&quot;&gt;&lt;span class=&quot;z-source z-c&quot;&gt;&lt;span class=&quot;z-storage z-type z-c&quot;&gt;char&lt;&#x2F;span&gt; &lt;span class=&quot;z-keyword z-operator z-c&quot;&gt;*&lt;&#x2F;span&gt;&lt;span class=&quot;z-meta z-function z-c&quot;&gt;&lt;span class=&quot;z-entity z-name z-function z-c&quot;&gt;__decrypt&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;span class=&quot;z-meta z-function z-parameters z-c&quot;&gt;&lt;span class=&quot;z-meta z-group z-c&quot;&gt;&lt;span class=&quot;z-punctuation z-section z-group z-begin z-c&quot;&gt;(&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;span class=&quot;z-meta z-function z-parameters z-c&quot;&gt;&lt;span class=&quot;z-meta z-group z-c&quot;&gt;&lt;span class=&quot;z-storage z-type z-c&quot;&gt;char&lt;&#x2F;span&gt; &lt;span class=&quot;z-keyword z-operator z-c&quot;&gt;*&lt;&#x2F;span&gt;&lt;span class=&quot;z-variable z-parameter z-c&quot;&gt;encStr&lt;&#x2F;span&gt;&lt;span class=&quot;z-punctuation z-section z-group z-end z-c&quot;&gt;)&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;span class=&quot;z-meta z-function z-c&quot;&gt; &lt;&#x2F;span&gt;&lt;span class=&quot;z-meta z-function z-c&quot;&gt;&lt;span class=&quot;z-meta z-block z-c&quot;&gt;&lt;span class=&quot;z-punctuation z-section z-block z-begin z-c&quot;&gt;{&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;span class=&quot;z-meta z-function z-c&quot;&gt;&lt;span class=&quot;z-meta z-block z-c&quot;&gt;
   &lt;span class=&quot;z-storage z-type z-c&quot;&gt;char&lt;&#x2F;span&gt; &lt;span class=&quot;z-keyword z-operator z-c&quot;&gt;*&lt;&#x2F;span&gt;curr &lt;span class=&quot;z-keyword z-operator z-assignment z-c&quot;&gt;=&lt;&#x2F;span&gt; encStr&lt;span class=&quot;z-punctuation z-terminator z-c&quot;&gt;;&lt;&#x2F;span&gt;
@@ -1448,7 +1448,7 @@ EncryptInst&lt;span class=&quot;z-punctuation z-accessor z-arrow z-c++&quot;&gt;
   &lt;span class=&quot;z-keyword z-control z-flow z-return z-c&quot;&gt;return&lt;&#x2F;span&gt; originStr&lt;span class=&quot;z-punctuation z-terminator z-c&quot;&gt;;&lt;&#x2F;span&gt;
 &lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;span class=&quot;z-meta z-function z-c&quot;&gt;&lt;span class=&quot;z-meta z-block z-c&quot;&gt;&lt;span class=&quot;z-punctuation z-section z-block z-end z-c&quot;&gt;}&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
 &lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
-&lt;h2 id=&quot;pass-de-jian-dan-shi-yong&quot;&gt;Pass 的简单使用&lt;&#x2F;h2&gt;
+&lt;h2 id=&quot;Pass_的简单使用&quot;&gt;Pass 的简单使用&lt;&#x2F;h2&gt;
 &lt;p&gt;首先将需要加密的文件和含有加密函数的文件编译成后缀为 &lt;code&gt;.ll&lt;&#x2F;code&gt; 的 LLVM IR 形式，然后使用 &lt;code&gt;opt&lt;&#x2F;code&gt; 来对需要加密的文件进行加密，最后则是将含有加密函数的文件和需要加密的文件进行链接，生成二进制文件。&lt;&#x2F;p&gt;
 &lt;p&gt;将下面的脚本保存为 &amp;quot;run.sh&amp;quot; 后，就可以使用 &lt;code&gt;bash run.sh test.c&lt;&#x2F;code&gt; 来编译程序了。&lt;&#x2F;p&gt;
 &lt;pre data-lang=&quot;bash&quot; class=&quot;language-bash z-code&quot;&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;&lt;span class=&quot;z-source z-shell z-bash&quot;&gt;&lt;span class=&quot;z-variable z-other z-readwrite z-assignment z-shell&quot;&gt;fullname&lt;&#x2F;span&gt;&lt;span class=&quot;z-keyword z-operator z-assignment z-shell&quot;&gt;=&lt;&#x2F;span&gt;&lt;span class=&quot;z-string z-unquoted z-shell&quot;&gt;&lt;span class=&quot;z-meta z-group z-expansion z-parameter z-shell&quot;&gt;&lt;span class=&quot;z-punctuation z-definition z-variable z-shell&quot;&gt;$&lt;&#x2F;span&gt;&lt;span class=&quot;z-punctuation z-section z-expansion z-parameter z-begin z-shell&quot;&gt;{&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;span class=&quot;z-meta z-group z-expansion z-parameter z-shell&quot;&gt;&lt;span class=&quot;z-variable z-other z-readwrite z-shell&quot;&gt;1&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;span class=&quot;z-meta z-group z-expansion z-parameter z-shell&quot;&gt;&lt;span class=&quot;z-punctuation z-section z-expansion z-parameter z-end z-shell&quot;&gt;}&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
@@ -1462,7 +1462,7 @@ EncryptInst&lt;span class=&quot;z-punctuation z-accessor z-arrow z-c++&quot;&gt;
 &lt;span class=&quot;z-meta z-function-call z-shell&quot;&gt;&lt;span class=&quot;z-variable z-function z-shell&quot;&gt;llvm-link-8&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;span class=&quot;z-meta z-function-call z-arguments z-shell&quot;&gt; encrypt.ll &lt;span class=&quot;z-meta z-group z-expansion z-parameter z-shell&quot;&gt;&lt;span class=&quot;z-punctuation z-definition z-variable z-shell&quot;&gt;$&lt;&#x2F;span&gt;&lt;span class=&quot;z-punctuation z-section z-expansion z-parameter z-begin z-shell&quot;&gt;{&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;span class=&quot;z-meta z-group z-expansion z-parameter z-shell&quot;&gt;&lt;span class=&quot;z-variable z-other z-readwrite z-shell&quot;&gt;basename&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;span class=&quot;z-meta z-group z-expansion z-parameter z-shell&quot;&gt;&lt;span class=&quot;z-punctuation z-section z-expansion z-parameter z-end z-shell&quot;&gt;}&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;_out.bc&lt;span class=&quot;z-variable z-parameter z-option z-shell&quot;&gt;&lt;span class=&quot;z-punctuation z-definition z-parameter z-shell&quot;&gt; -&lt;&#x2F;span&gt;o&lt;&#x2F;span&gt; final.bc&lt;&#x2F;span&gt;
 &lt;span class=&quot;z-meta z-function-call z-shell&quot;&gt;&lt;span class=&quot;z-variable z-function z-shell&quot;&gt;clang-8&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;span class=&quot;z-meta z-function-call z-arguments z-shell&quot;&gt; final.bc&lt;span class=&quot;z-variable z-parameter z-option z-shell&quot;&gt;&lt;span class=&quot;z-punctuation z-definition z-parameter z-shell&quot;&gt; -&lt;&#x2F;span&gt;o&lt;&#x2F;span&gt; final.out&lt;&#x2F;span&gt;
 &lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
-&lt;h2 id=&quot;hun-yao-xiao-guo&quot;&gt;混淆效果&lt;&#x2F;h2&gt;
+&lt;h2 id=&quot;混淆效果&quot;&gt;混淆效果&lt;&#x2F;h2&gt;
 &lt;p&gt;下面是测试程序的代码。&lt;&#x2F;p&gt;
 &lt;pre data-lang=&quot;c&quot; class=&quot;language-c z-code&quot;&gt;&lt;code class=&quot;language-c&quot; data-lang=&quot;c&quot;&gt;&lt;span class=&quot;z-source z-c&quot;&gt;&lt;span class=&quot;z-meta z-preprocessor z-include z-c&quot;&gt;&lt;span class=&quot;z-keyword z-control z-import z-include z-c&quot;&gt;#include&lt;&#x2F;span&gt; &lt;span class=&quot;z-string z-quoted z-other z-lt-gt z-include z-c&quot;&gt;&lt;span class=&quot;z-punctuation z-definition z-string z-begin z-c&quot;&gt;&amp;lt;&lt;&#x2F;span&gt;stdio.h&lt;span class=&quot;z-punctuation z-definition z-string z-end z-c&quot;&gt;&amp;gt;&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
 &lt;&#x2F;span&gt;
@@ -1549,7 +1549,7 @@ define dso_local i32 @main() #0 {
 &lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
 &lt;p&gt;在 IDA 中也可以看到混淆的效果。&lt;&#x2F;p&gt;
 &lt;p&gt;&lt;a href=&quot;http:&#x2F;&#x2F;&quot;&gt;0&lt;&#x2F;a&gt;&lt;&#x2F;p&gt;
-&lt;h2 id=&quot;wan-zheng-dai-ma&quot;&gt;完整代码&lt;&#x2F;h2&gt;
+&lt;h2 id=&quot;完整代码&quot;&gt;完整代码&lt;&#x2F;h2&gt;
 &lt;p&gt;obfuscate.cpp&lt;&#x2F;p&gt;
 &lt;pre data-lang=&quot;cpp&quot; class=&quot;language-cpp z-code&quot;&gt;&lt;code class=&quot;language-cpp&quot; data-lang=&quot;cpp&quot;&gt;&lt;span class=&quot;z-source z-c++&quot;&gt;&lt;span class=&quot;z-comment z-line z-double-slash z-c&quot;&gt;&lt;span class=&quot;z-punctuation z-definition z-comment z-c&quot;&gt;&#x2F;&#x2F;&lt;&#x2F;span&gt;===-- obfuscate&#x2F;obfuscate.cpp - main file of obfuscate_string -*- C++ -*-===&#x2F;&#x2F;
 &lt;&#x2F;span&gt;&lt;span class=&quot;z-comment z-line z-double-slash z-c&quot;&gt;&lt;span class=&quot;z-punctuation z-definition z-comment z-c&quot;&gt;&#x2F;&#x2F;&lt;&#x2F;span&gt;
@@ -1703,21 +1703,21 @@ define dso_local i32 @main() #0 {
 		<title>重写 OLLVM 之虚假控制流</title>
 		<published>2020-01-01T00:00:00+00:00</published>
 		<updated>2020-01-01T00:00:00+00:00</updated>
-		<link rel="alternate" href="https://chenx6.github.io/post/rewrite-ollvm-bcf/" type="text/html"/>
-		<id>https://chenx6.github.io/post/rewrite-ollvm-bcf/</id>
+		<link rel="alternate" href="https://chenx6.github.io/post/rewrite_ollvm_bcf/" type="text/html"/>
+		<id>https://chenx6.github.io/post/rewrite_ollvm_bcf/</id>
 		<content type="html">&lt;p&gt;由于我个人觉得 OLLVM 的代码年久失修，所以就新建了个项目，开始学习并重写 OLLVM。项目地址：&lt;a href=&quot;https:&#x2F;&#x2F;github.com&#x2F;chenx6&#x2F;baby_obfuscator&quot;&gt;https:&#x2F;&#x2F;github.com&#x2F;chenx6&#x2F;baby_obfuscator&lt;&#x2F;a&gt;。如果将我的重写项目和 OLLVM 相比的话，我的项目的优点就是编译比较快（编译整个项目只需要不到 1 分钟），代码比较“新”吧...&lt;&#x2F;p&gt;
 &lt;p&gt;下面讲讲我个人重写虚假控制流的思路，以及对其他项目中相同功能的理解。&lt;&#x2F;p&gt;
-&lt;h2 id=&quot;shi-yao-shi-xu-jia-kong-zhi-liu-bogus-control-flow&quot;&gt;什么是虚假控制流 (Bogus control flow)&lt;&#x2F;h2&gt;
+&lt;h2 id=&quot;什么是虚假控制流_(Bogus_control_flow)&quot;&gt;什么是虚假控制流 (Bogus control flow)&lt;&#x2F;h2&gt;
 &lt;p&gt;在讲解虚假控制流时，我们先解释一些名词，然后看下流程表示就可以知道大概了。&lt;&#x2F;p&gt;
-&lt;h3 id=&quot;ming-ci-jie-shi&quot;&gt;名词解释&lt;&#x2F;h3&gt;
-&lt;h4 id=&quot;bu-tou-ming-wei-ci-opaque-predicate&quot;&gt;不透明谓词 (Opaque predicate)&lt;&#x2F;h4&gt;
+&lt;h3 id=&quot;名词解释&quot;&gt;名词解释&lt;&#x2F;h3&gt;
+&lt;h4 id=&quot;不透明谓词_(Opaque_predicate)&quot;&gt;不透明谓词 (Opaque predicate)&lt;&#x2F;h4&gt;
 &lt;p&gt;这里引用知乎上大佬的回答：&lt;a href=&quot;https:&#x2F;&#x2F;www.zhihu.com&#x2F;question&#x2F;46259412&#x2F;answer&#x2F;199689652&quot;&gt;利用不透明谓词混淆代码的原理是什么？ - 张建涛的回答 - 知乎&lt;&#x2F;a&gt;&lt;&#x2F;p&gt;
 &lt;blockquote&gt;
 &lt;p&gt;不透明谓词是指一个表达式，他的值在执行到某处时，对程序员而言必然是已知的，但是由于某种原因，编译器或者说静态分析器无法推断出这个值，只能在运行时确定。&lt;&#x2F;p&gt;
 &lt;&#x2F;blockquote&gt;
-&lt;h4 id=&quot;zhong-jian-biao-shi-ir&quot;&gt;中间表示 (IR)&lt;&#x2F;h4&gt;
+&lt;h4 id=&quot;中间表示_(IR)&quot;&gt;中间表示 (IR)&lt;&#x2F;h4&gt;
 &lt;p&gt;在将代码转换成汇编和机器码之前的一种代码表示形式，可以理解为具有跨平台性和其他特性的汇编。&lt;&#x2F;p&gt;
-&lt;h3 id=&quot;xu-jia-kong-zhi-liu-de-liu-cheng-biao-shi&quot;&gt;虚假控制流的流程表示&lt;&#x2F;h3&gt;
+&lt;h3 id=&quot;虚假控制流的流程表示&quot;&gt;虚假控制流的流程表示&lt;&#x2F;h3&gt;
 &lt;p&gt;用 OLLVM 项目中的注释部分就可以清晰表示出什么是虚假控制流。可以看到，相对于原程序中的单个代码块，混淆后的程序中加入了一个由不透明谓词组成的条件语句，由于混淆器知道他的值，所以可以保证被混淆程序的正确性，而编译器和反编译器都无法对这个表达式进行求值，只能保留此谓词，达到干扰静态分析的目的。&lt;&#x2F;p&gt;
 &lt;blockquote&gt;
 &lt;p&gt;下面这个图大部分项目都没修正啊...&lt;&#x2F;p&gt;
@@ -1749,12 +1749,12 @@ define dso_local i32 @main() #0 {
                |   |_____________|
                |__________|
 &lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
-&lt;h2 id=&quot;zen-yao-shi-xian&quot;&gt;怎么实现&lt;&#x2F;h2&gt;
-&lt;h3 id=&quot;bie-de-xiang-mu-shi-zen-yao-shi-xian-de&quot;&gt;别的项目是怎么实现的&lt;&#x2F;h3&gt;
+&lt;h2 id=&quot;怎么实现&quot;&gt;怎么实现&lt;&#x2F;h2&gt;
+&lt;h3 id=&quot;别的项目是怎么实现的&quot;&gt;别的项目是怎么实现的&lt;&#x2F;h3&gt;
 &lt;p&gt;在 OLLVM 中，使用了 &lt;code&gt;y &amp;gt; 10 || x * (x + 1) % 2 == 0&lt;&#x2F;code&gt; 这个不透明谓词，学过数学的都知道，&lt;code&gt;x * (x + 1) % 2 == 0&lt;&#x2F;code&gt; 是个永真式。也就是说，混淆器已经知道了 &lt;code&gt;y &amp;gt; 10 || x * (x + 1) % 2 == 0&lt;&#x2F;code&gt; 这个式子的值，所以可以将其放在条件语句中，控制代码的走向；而编译器和反编译器都认为这个表达式需要进行运行后才能求值，会保留这段代码，进而干扰到反编译器。&lt;&#x2F;p&gt;
 &lt;p&gt;在&lt;a href=&quot;https:&#x2F;&#x2F;github.com&#x2F;HikariObfuscator&#x2F;Core&quot;&gt;HikariObfuscator&lt;&#x2F;a&gt;这个项目中使用 IRBuilder 生成一箩筐的整数运算，由于 LLVM 的 IRBuilder 会折叠常量，混淆器就能知道了之前生成的一箩筐的整数运算的最终结果，而编译器和反编译器都不知道生成的表达式的值，所以就获得了一个崭新的不透明谓词。&lt;&#x2F;p&gt;
 &lt;p&gt;当然，上面的两个混淆都有较为简单的破解方法，就是将不透明谓词中的变量修改成常量，并且设置一个初始值，这时候 Hex-rays 等反编译器会对不透明谓词进行求值，如果不透明谓词的结果可知，那么这个表达式将会被优化。&lt;&#x2F;p&gt;
-&lt;h3 id=&quot;ju-ti-shi-xian&quot;&gt;具体实现&lt;&#x2F;h3&gt;
+&lt;h3 id=&quot;具体实现&quot;&gt;具体实现&lt;&#x2F;h3&gt;
 &lt;p&gt;这里用的是旧的 LLVM Pass 格式，所以 Pass 的主要逻辑都在 &lt;code&gt;runOnFunction&lt;&#x2F;code&gt; 这个函数中。程序先收集函数中所有的 BasicBlock 和 alloca 指令，然后再随机挑选 BasicBlock 加上虚假控制流。这个 Pass 通过被选中的 BasicBlock 生成虚假的 BasicBlock，然后再使用不透明谓词将这两个 BasicBlock 粘在一起。&lt;&#x2F;p&gt;
 &lt;pre data-lang=&quot;cpp&quot; class=&quot;language-cpp z-code&quot;&gt;&lt;code class=&quot;language-cpp&quot; data-lang=&quot;cpp&quot;&gt;&lt;span class=&quot;z-source z-c++&quot;&gt;  &lt;span class=&quot;z-storage z-modifier z-c++&quot;&gt;virtual&lt;&#x2F;span&gt; &lt;span class=&quot;z-storage z-type z-c&quot;&gt;bool&lt;&#x2F;span&gt; &lt;span class=&quot;z-meta z-function z-c++&quot;&gt;&lt;span class=&quot;z-meta z-toc-list z-full-identifier z-c++&quot;&gt;&lt;span class=&quot;z-entity z-name z-function z-c++&quot;&gt;runOnFunction&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;span class=&quot;z-meta z-function z-parameters z-c++&quot;&gt;&lt;span class=&quot;z-meta z-group z-c++&quot;&gt;&lt;span class=&quot;z-punctuation z-section z-group z-begin z-c++&quot;&gt;(&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;span class=&quot;z-meta z-function z-parameters z-c++&quot;&gt;&lt;span class=&quot;z-meta z-group z-c++&quot;&gt;Function &lt;span class=&quot;z-keyword z-operator z-c&quot;&gt;&amp;amp;&lt;&#x2F;span&gt;&lt;span class=&quot;z-variable z-parameter z-c++&quot;&gt;F&lt;&#x2F;span&gt;&lt;span class=&quot;z-punctuation z-section z-group z-end z-c++&quot;&gt;)&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;span class=&quot;z-meta z-function z-c++&quot;&gt; &lt;&#x2F;span&gt;&lt;span class=&quot;z-meta z-function z-c++&quot;&gt;&lt;span class=&quot;z-meta z-block z-c++&quot;&gt;&lt;span class=&quot;z-punctuation z-section z-block z-begin z-c++&quot;&gt;{&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;span class=&quot;z-meta z-function z-c++&quot;&gt;&lt;span class=&quot;z-meta z-block z-c++&quot;&gt;
     &lt;span class=&quot;z-comment z-line z-double-slash z-c&quot;&gt;&lt;span class=&quot;z-punctuation z-definition z-comment z-c&quot;&gt;&#x2F;&#x2F;&lt;&#x2F;span&gt; Put origin BB into vector.
@@ -1880,7 +1880,7 @@ define dso_local i32 @main() #0 {
   &lt;span class=&quot;z-invalid z-illegal z-stray-bracket-end z-c++&quot;&gt;}&lt;&#x2F;span&gt;
 &lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
 &lt;p&gt;基本的代码就是上面所讲的了。相比与 OLLVM，重写的代码中省略了大部分虚假 BasicBlock 中的随机生成代码的部分，并改写了虚假谓词生成的逻辑，在 OLLVM 中，先是先生成了 (1.0 == 1.0) 来进行占位，然后再在后面替换前面的永真式，我个人觉得没必要，直接生成不透明谓词不就好了吗...所以代码看起来比较精简（在本文撰写时，带注释的代码行数为180行左右）。&lt;&#x2F;p&gt;
-&lt;h2 id=&quot;xiao-guo-yan-shi&quot;&gt;效果演示&lt;&#x2F;h2&gt;
+&lt;h2 id=&quot;效果演示&quot;&gt;效果演示&lt;&#x2F;h2&gt;
 &lt;p&gt;原程序反编译结果，和原代码基本一样：&lt;&#x2F;p&gt;
 &lt;pre data-lang=&quot;cpp&quot; class=&quot;language-cpp z-code&quot;&gt;&lt;code class=&quot;language-cpp&quot; data-lang=&quot;cpp&quot;&gt;&lt;span class=&quot;z-source z-c++&quot;&gt;&lt;span class=&quot;z-storage z-type z-c&quot;&gt;int&lt;&#x2F;span&gt; __cdecl &lt;span class=&quot;z-meta z-function z-c++&quot;&gt;&lt;span class=&quot;z-meta z-toc-list z-full-identifier z-c++&quot;&gt;&lt;span class=&quot;z-entity z-name z-function z-c++&quot;&gt;main&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;span class=&quot;z-meta z-function z-parameters z-c++&quot;&gt;&lt;span class=&quot;z-meta z-group z-c++&quot;&gt;&lt;span class=&quot;z-punctuation z-section z-group z-begin z-c++&quot;&gt;(&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;span class=&quot;z-meta z-function z-parameters z-c++&quot;&gt;&lt;span class=&quot;z-meta z-group z-c++&quot;&gt;&lt;span class=&quot;z-storage z-type z-c&quot;&gt;int&lt;&#x2F;span&gt; &lt;span class=&quot;z-variable z-parameter z-c++&quot;&gt;argc&lt;&#x2F;span&gt;&lt;span class=&quot;z-punctuation z-separator z-c++&quot;&gt;,&lt;&#x2F;span&gt; &lt;span class=&quot;z-storage z-modifier z-c++&quot;&gt;const&lt;&#x2F;span&gt; &lt;span class=&quot;z-storage z-type z-c&quot;&gt;char&lt;&#x2F;span&gt; &lt;span class=&quot;z-keyword z-operator z-c&quot;&gt;*&lt;&#x2F;span&gt;&lt;span class=&quot;z-keyword z-operator z-c&quot;&gt;*&lt;&#x2F;span&gt;&lt;span class=&quot;z-variable z-parameter z-c++&quot;&gt;argv&lt;&#x2F;span&gt;&lt;span class=&quot;z-punctuation z-separator z-c++&quot;&gt;,&lt;&#x2F;span&gt; &lt;span class=&quot;z-storage z-modifier z-c++&quot;&gt;const&lt;&#x2F;span&gt; &lt;span class=&quot;z-storage z-type z-c&quot;&gt;char&lt;&#x2F;span&gt; &lt;span class=&quot;z-keyword z-operator z-c&quot;&gt;*&lt;&#x2F;span&gt;&lt;span class=&quot;z-keyword z-operator z-c&quot;&gt;*&lt;&#x2F;span&gt;&lt;span class=&quot;z-variable z-parameter z-c++&quot;&gt;envp&lt;&#x2F;span&gt;&lt;span class=&quot;z-punctuation z-section z-group z-end z-c++&quot;&gt;)&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;span class=&quot;z-meta z-function z-c++&quot;&gt;
 &lt;&#x2F;span&gt;&lt;span class=&quot;z-meta z-function z-c++&quot;&gt;&lt;span class=&quot;z-meta z-block z-c++&quot;&gt;&lt;span class=&quot;z-punctuation z-section z-block z-begin z-c++&quot;&gt;{&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;span class=&quot;z-meta z-function z-c++&quot;&gt;&lt;span class=&quot;z-meta z-block z-c++&quot;&gt;

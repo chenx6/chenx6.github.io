@@ -11,10 +11,10 @@
 		<title>记录一次失败的固件 fuzz</title>
 		<published>2021-01-21T00:00:00+00:00</published>
 		<updated>2021-01-21T00:00:00+00:00</updated>
-		<link rel="alternate" href="https://chenx6.github.io/post/fail-firm-fuzz/" type="text/html"/>
-		<id>https://chenx6.github.io/post/fail-firm-fuzz/</id>
+		<link rel="alternate" href="https://chenx6.github.io/post/fail_firm_fuzz/" type="text/html"/>
+		<id>https://chenx6.github.io/post/fail_firm_fuzz/</id>
 		<content type="html">&lt;p&gt;这是我第一次对华硕路由器的 httpd 进行 fuzz。结果 fuzz 出来的结果没有经过实机测试，就提交上去了，然后就是华硕的安全团队复现不出来...为什么复现不出来，在本文总结处进行分析。本文主要讲我在进行固件 fuzz 时的具体过程。&lt;&#x2F;p&gt;
-&lt;h2 id=&quot;dai-ma-fen-xi-ni-xiang-gong-cheng&quot;&gt;代码分析&#x2F;逆向工程&lt;&#x2F;h2&gt;
+&lt;h2 id=&quot;代码分析&#x2F;逆向工程&quot;&gt;代码分析&#x2F;逆向工程&lt;&#x2F;h2&gt;
 &lt;p&gt;华硕路由器的大部分源代码是公开的，可以在官网上下载到，并且有个开源的 &lt;a href=&quot;https:&#x2F;&#x2F;github.com&#x2F;RMerl&#x2F;asuswrt-merlin.ng&quot;&gt;RMerl&#x2F;asuswrt-merlin.ng&lt;&#x2F;a&gt;。阅读源代码发现， httpd 的源代码中间调用了些博通的库，没法直接用编译器进行插桩。所以就当作源码不存在，直接下载二进制文件进行无文件 fuzz 了...&lt;&#x2F;p&gt;
 &lt;blockquote&gt;
 &lt;p&gt;2021 年 1 月 15 日，官网上突然载不到源代码了，所以请照着 RMerl&#x2F;asuswrt-merlin.ng 项目进行代码审计。&lt;&#x2F;p&gt;
@@ -46,8 +46,8 @@
     &lt;span class=&quot;z-meta z-function-call z-c&quot;&gt;&lt;span class=&quot;z-variable z-function z-c&quot;&gt;fflush&lt;&#x2F;span&gt;&lt;span class=&quot;z-meta z-group z-c&quot;&gt;&lt;span class=&quot;z-punctuation z-section z-group z-begin z-c&quot;&gt;(&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;span class=&quot;z-meta z-function-call z-c&quot;&gt;&lt;span class=&quot;z-meta z-group z-c&quot;&gt;conn_fp&lt;&#x2F;span&gt;&lt;span class=&quot;z-meta z-group z-c&quot;&gt;&lt;span class=&quot;z-punctuation z-section z-group z-end z-c&quot;&gt;)&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;span class=&quot;z-punctuation z-terminator z-c&quot;&gt;;&lt;&#x2F;span&gt;
 &lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
 &lt;p&gt;之前爆出的漏洞很多都是在 &lt;code&gt;handle_request&lt;&#x2F;code&gt; 中的，并且这个函数的代码量比较大，简单的代码审计已经看不出问题来了...所以就对这个函数进行 fuzz。&lt;&#x2F;p&gt;
-&lt;h2 id=&quot;mo-ni-huan-jing-pei-zhi&quot;&gt;模拟环境配置&lt;&#x2F;h2&gt;
-&lt;h3 id=&quot;kua-ping-tai-bian-yi-lian-shi-yong&quot;&gt;跨平台编译链使用&lt;&#x2F;h3&gt;
+&lt;h2 id=&quot;模拟环境配置&quot;&gt;模拟环境配置&lt;&#x2F;h2&gt;
+&lt;h3 id=&quot;跨平台编译链使用&quot;&gt;跨平台编译链使用&lt;&#x2F;h3&gt;
 &lt;p&gt;这里我使用了 &lt;a href=&quot;https:&#x2F;&#x2F;github.com&#x2F;RMerl&#x2F;am-toolchains&quot;&gt;RMerl&#x2F;am-toolchains&lt;&#x2F;a&gt;。通过使用 &lt;code&gt;LD_LIBRARY_PATH&lt;&#x2F;code&gt; 指定链接库的位置，这样才能链接上相应的库。&lt;&#x2F;p&gt;
 &lt;pre data-lang=&quot;bash&quot; class=&quot;language-bash z-code&quot;&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;&lt;span class=&quot;z-source z-shell z-bash&quot;&gt;&lt;span class=&quot;z-meta z-function-call z-shell&quot;&gt;&lt;span class=&quot;z-variable z-function z-shell&quot;&gt;$&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;span class=&quot;z-meta z-function-call z-arguments z-shell&quot;&gt; export LD_LIBRARY_PATH=&lt;span class=&quot;z-string z-quoted z-double z-shell&quot;&gt;&lt;span class=&quot;z-punctuation z-definition z-string z-begin z-shell&quot;&gt;&amp;quot;&lt;&#x2F;span&gt;&#x2F;part&#x2F;to&#x2F;am-toolchains&#x2F;brcm-arm-sdk&#x2F;hndtools-arm-linux-2.6.36-uclibc-4.5.3&#x2F;lib&lt;span class=&quot;z-punctuation z-definition z-string z-end z-shell&quot;&gt;&amp;quot;&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
 &lt;span class=&quot;z-meta z-function-call z-shell&quot;&gt;&lt;span class=&quot;z-variable z-function z-shell&quot;&gt;$&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;span class=&quot;z-meta z-function-call z-arguments z-shell&quot;&gt; &#x2F;part&#x2F;to&#x2F;am-toolchains&#x2F;brcm-arm-sdk&#x2F;hndtools-arm-linux-2.6.36-uclibc-4.5.3&#x2F;bin&#x2F;arm-uclibc-gcc&lt;&#x2F;span&gt;
@@ -56,10 +56,10 @@
 &lt;p&gt;出现隐式声明函数时，但是这个函数又是 GNU 标准实现的函数的话，可以试着加入下面这句宏定义到代码开头。例如我在编译 libnvram 时出现 &lt;code&gt;警告： 隐式声明函数‘strndup’&lt;&#x2F;code&gt;，加上下面这句宏定义就可以正常编译了。&lt;&#x2F;p&gt;
 &lt;pre data-lang=&quot;c&quot; class=&quot;language-c z-code&quot;&gt;&lt;code class=&quot;language-c&quot; data-lang=&quot;c&quot;&gt;&lt;span class=&quot;z-source z-c&quot;&gt;&lt;span class=&quot;z-meta z-preprocessor z-macro z-c&quot;&gt;&lt;span class=&quot;z-keyword z-control z-import z-define z-c&quot;&gt;#define&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;span class=&quot;z-meta z-preprocessor z-macro z-c&quot;&gt; &lt;span class=&quot;z-entity z-name z-constant z-preprocessor z-c&quot;&gt;_GNU_SOURCE&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
 &lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
-&lt;h3 id=&quot;chu-xian-dev-nvram-permission-denied&quot;&gt;出现 &lt;code&gt;&#x2F;dev&#x2F;nvram: Permission denied&lt;&#x2F;code&gt;&lt;&#x2F;h3&gt;
+&lt;h3 id=&quot;出现_&#x2F;dev&#x2F;nvram:_Permission_denied&quot;&gt;出现 &lt;code&gt;&#x2F;dev&#x2F;nvram: Permission denied&lt;&#x2F;code&gt;&lt;&#x2F;h3&gt;
 &lt;p&gt;宿主机上肯定没有 &lt;code&gt;&#x2F;dev&#x2F;nvram&lt;&#x2F;code&gt; 啊，所以使用 QEMU 进行模拟时使用了 &lt;a href=&quot;https:&#x2F;&#x2F;github.com&#x2F;firmadyne&#x2F;libnvram&quot;&gt;firmadyne&#x2F;libnvram&lt;&#x2F;a&gt; 这个库 Hook 掉 nvram 的相关操作，然后将这个库添加到 &lt;code&gt;LD_PRELOAD&lt;&#x2F;code&gt; 中。在使用时如果发现这个库没有创建 tmpfs 进行存储的话，那就手动用 &lt;code&gt;sudo mount -t tmpfs -o size=10M tmpfs $挂载路径&lt;&#x2F;code&gt; 创建一个。可以修改 &lt;code&gt;config.h&lt;&#x2F;code&gt; 实现将挂载路径放在别的目录下。例如我将挂载路径改动到了 &lt;code&gt;&#x2F;mnt&#x2F;libnvram&lt;&#x2F;code&gt;。&lt;&#x2F;p&gt;
-&lt;h3 id=&quot;hook-uclibc-main-zhi-jie-diao-yong-handle-request&quot;&gt;Hook &lt;code&gt;__uClibc_main&lt;&#x2F;code&gt; 直接调用 &lt;code&gt;handle_request&lt;&#x2F;code&gt;&lt;&#x2F;h3&gt;
-&lt;p&gt;根据 &lt;a href=&quot;https:&#x2F;&#x2F;chenx6.github.io&#x2F;post&#x2F;fail-firm-fuzz&#x2F;#refs&quot;&gt;Modern Vulnerability Research Techniques on Embedded Systems&lt;&#x2F;a&gt; 这篇文章，我通过 Hook &lt;code&gt;__uClibc_main&lt;&#x2F;code&gt; 来实现直接 fuzz &lt;code&gt;handle_request&lt;&#x2F;code&gt; 函数。&lt;&#x2F;p&gt;
+&lt;h3 id=&quot;Hook___uClibc_main_直接调用_handle_request&quot;&gt;Hook &lt;code&gt;__uClibc_main&lt;&#x2F;code&gt; 直接调用 &lt;code&gt;handle_request&lt;&#x2F;code&gt;&lt;&#x2F;h3&gt;
+&lt;p&gt;根据 &lt;a href=&quot;https:&#x2F;&#x2F;chenx6.github.io&#x2F;post&#x2F;fail_firm_fuzz&#x2F;#refs&quot;&gt;Modern Vulnerability Research Techniques on Embedded Systems&lt;&#x2F;a&gt; 这篇文章，我通过 Hook &lt;code&gt;__uClibc_main&lt;&#x2F;code&gt; 来实现直接 fuzz &lt;code&gt;handle_request&lt;&#x2F;code&gt; 函数。&lt;&#x2F;p&gt;
 &lt;p&gt;由于在解析 http 请求时，程序使用了 fgets 等 c 语言相关函数，所以我决定使用普通的文件流代替 TCP 流。&lt;&#x2F;p&gt;
 &lt;p&gt;动态库的主要功能就是初始化被 fuzz 程序的相关变量，将 fuzz 的输入塞到程序中，然后运行函数，最后查看运行结果。&lt;&#x2F;p&gt;
 &lt;pre data-lang=&quot;c&quot; class=&quot;language-c z-code&quot;&gt;&lt;code class=&quot;language-c&quot; data-lang=&quot;c&quot;&gt;&lt;span class=&quot;z-source z-c&quot;&gt;&lt;span class=&quot;z-comment z-line z-double-slash z-c&quot;&gt;&lt;span class=&quot;z-punctuation z-definition z-comment z-c&quot;&gt;&#x2F;&#x2F;&lt;&#x2F;span&gt; gcc main_hook.c -o main_hook.so -fPIC -shared -ldl
@@ -117,7 +117,7 @@
     &lt;span class=&quot;z-keyword z-control z-flow z-return z-c&quot;&gt;return&lt;&#x2F;span&gt; &lt;span class=&quot;z-meta z-function-call z-c&quot;&gt;&lt;span class=&quot;z-variable z-function z-c&quot;&gt;orig&lt;&#x2F;span&gt;&lt;span class=&quot;z-meta z-group z-c&quot;&gt;&lt;span class=&quot;z-punctuation z-section z-group z-begin z-c&quot;&gt;(&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;span class=&quot;z-meta z-function-call z-c&quot;&gt;&lt;span class=&quot;z-meta z-group z-c&quot;&gt;main_hook&lt;span class=&quot;z-punctuation z-separator z-c&quot;&gt;,&lt;&#x2F;span&gt; argc&lt;span class=&quot;z-punctuation z-separator z-c&quot;&gt;,&lt;&#x2F;span&gt; argv&lt;span class=&quot;z-punctuation z-separator z-c&quot;&gt;,&lt;&#x2F;span&gt; init&lt;span class=&quot;z-punctuation z-separator z-c&quot;&gt;,&lt;&#x2F;span&gt; fini&lt;span class=&quot;z-punctuation z-separator z-c&quot;&gt;,&lt;&#x2F;span&gt; rtld_fini&lt;span class=&quot;z-punctuation z-separator z-c&quot;&gt;,&lt;&#x2F;span&gt; stack_end&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;span class=&quot;z-meta z-function-call z-c&quot;&gt;&lt;span class=&quot;z-meta z-group z-c&quot;&gt;&lt;span class=&quot;z-punctuation z-section z-group z-end z-c&quot;&gt;)&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;span class=&quot;z-punctuation z-terminator z-c&quot;&gt;;&lt;&#x2F;span&gt;
 &lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;span class=&quot;z-meta z-function z-c&quot;&gt;&lt;span class=&quot;z-meta z-block z-c&quot;&gt;&lt;span class=&quot;z-punctuation z-section z-block z-end z-c&quot;&gt;}&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
 &lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
-&lt;h3 id=&quot;shi-yong-qemu-arm-jin-xing-mo-ni&quot;&gt;使用 qemu-arm 进行模拟&lt;&#x2F;h3&gt;
+&lt;h3 id=&quot;使用_qemu-arm_进行模拟&quot;&gt;使用 qemu-arm 进行模拟&lt;&#x2F;h3&gt;
 &lt;p&gt;这里使用了 qemu-arm 进行用户态模拟，在 &lt;code&gt;-L&lt;&#x2F;code&gt; 参数中加上解压出来的 &lt;code&gt;squashfs-root&lt;&#x2F;code&gt; 的路径，并在 &lt;code&gt;-E&lt;&#x2F;code&gt; 参数后的 &lt;code&gt;LD_PRELOAD&lt;&#x2F;code&gt; 变量加上 Hook 的库。&lt;&#x2F;p&gt;
 &lt;p&gt;如果出现下面的情况，那就手动写入到缺失的文件中。&lt;&#x2F;p&gt;
 &lt;pre data-lang=&quot;bash&quot; class=&quot;language-bash z-code&quot;&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;&lt;span class=&quot;z-source z-shell z-bash&quot;&gt;&lt;span class=&quot;z-meta z-function-call z-shell&quot;&gt;&lt;span class=&quot;z-variable z-function z-shell&quot;&gt;nvram_get_buf:&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;span class=&quot;z-meta z-function-call z-arguments z-shell&quot;&gt; Unable to open key: &#x2F;mnt&#x2F;libnvram&#x2F;某些字段&lt;&#x2F;span&gt;
@@ -134,8 +134,8 @@
 &lt;span class=&quot;z-meta z-function-call z-shell&quot;&gt;&lt;span class=&quot;z-variable z-function z-shell&quot;&gt;nvram_get_buf:&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;span class=&quot;z-meta z-function-call z-arguments z-shell&quot;&gt; = &lt;span class=&quot;z-string z-quoted z-double z-shell&quot;&gt;&lt;span class=&quot;z-punctuation z-definition z-string z-begin z-shell&quot;&gt;&amp;quot;&lt;&#x2F;span&gt;0&lt;span class=&quot;z-punctuation z-definition z-string z-end z-shell&quot;&gt;&amp;quot;&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
 &lt;span class=&quot;z-meta z-function-call z-shell&quot;&gt;&lt;span class=&quot;z-variable z-function z-shell&quot;&gt;...&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
 &lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
-&lt;h2 id=&quot;fuzz-qian-zhun-bei&quot;&gt;fuzz 前准备&lt;&#x2F;h2&gt;
-&lt;h3 id=&quot;huo-qu-shu-ru-shu-ju&quot;&gt;获取输入数据&lt;&#x2F;h3&gt;
+&lt;h2 id=&quot;fuzz_前准备&quot;&gt;fuzz 前准备&lt;&#x2F;h2&gt;
+&lt;h3 id=&quot;获取输入数据&quot;&gt;获取输入数据&lt;&#x2F;h3&gt;
 &lt;p&gt;可以去别的项目中寻找他们的测试样例，然后用脚本提取出来。下面是提取 &amp;quot;http-parser&amp;quot; 这个项目的样例，并写入文件中。&lt;&#x2F;p&gt;
 &lt;pre data-lang=&quot;python&quot; class=&quot;language-python z-code&quot;&gt;&lt;code class=&quot;language-python&quot; data-lang=&quot;python&quot;&gt;&lt;span class=&quot;z-source z-python&quot;&gt;&lt;span class=&quot;z-meta z-statement z-import z-python&quot;&gt;&lt;span class=&quot;z-keyword z-control z-import z-from z-python&quot;&gt;from&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;span class=&quot;z-meta z-statement z-import z-python&quot;&gt;&lt;span class=&quot;z-meta z-import-source z-python&quot;&gt; &lt;span class=&quot;z-meta z-import-path z-python&quot;&gt;&lt;span class=&quot;z-meta z-import-name z-python&quot;&gt;re&lt;&#x2F;span&gt;&lt;&#x2F;span&gt; &lt;span class=&quot;z-meta z-statement z-import z-python&quot;&gt;&lt;span class=&quot;z-keyword z-control z-import z-python&quot;&gt;import&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;span class=&quot;z-meta z-statement z-import z-python&quot;&gt;&lt;&#x2F;span&gt;&lt;span class=&quot;z-meta z-statement z-import z-python&quot;&gt; &lt;span class=&quot;z-support z-function z-builtin z-python&quot;&gt;compile&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
 
@@ -165,14 +165,14 @@
         &lt;span class=&quot;z-meta z-qualified-name z-python&quot;&gt;&lt;span class=&quot;z-meta z-generic-name z-python&quot;&gt;begin_record&lt;&#x2F;span&gt;&lt;&#x2F;span&gt; &lt;span class=&quot;z-keyword z-operator z-assignment z-python&quot;&gt;=&lt;&#x2F;span&gt; &lt;span class=&quot;z-constant z-language z-python&quot;&gt;False&lt;&#x2F;span&gt;
 
 &lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
-&lt;h3 id=&quot;huo-qu-zi-dian&quot;&gt;获取字典&lt;&#x2F;h3&gt;
-&lt;p&gt;&lt;a href=&quot;https:&#x2F;&#x2F;chenx6.github.io&#x2F;post&#x2F;fail-firm-fuzz&#x2F;#refs&quot;&gt;AFLplusplus&#x2F;AFLplusplus&lt;&#x2F;a&gt; 项目中的 &lt;code&gt;dictionaries&lt;&#x2F;code&gt; 目录中就有一些字典，可以拿来使用。&lt;&#x2F;p&gt;
-&lt;h3 id=&quot;shi-yong-ramdisk&quot;&gt;使用 ramdisk&lt;&#x2F;h3&gt;
+&lt;h3 id=&quot;获取字典&quot;&gt;获取字典&lt;&#x2F;h3&gt;
+&lt;p&gt;&lt;a href=&quot;https:&#x2F;&#x2F;chenx6.github.io&#x2F;post&#x2F;fail_firm_fuzz&#x2F;#refs&quot;&gt;AFLplusplus&#x2F;AFLplusplus&lt;&#x2F;a&gt; 项目中的 &lt;code&gt;dictionaries&lt;&#x2F;code&gt; 目录中就有一些字典，可以拿来使用。&lt;&#x2F;p&gt;
+&lt;h3 id=&quot;使用_ramdisk&quot;&gt;使用 ramdisk&lt;&#x2F;h3&gt;
 &lt;p&gt;由于 fuzz 比较消耗硬盘读写，所以通过下面的命令，使用内存盘减少硬盘消耗。&lt;&#x2F;p&gt;
 &lt;pre data-lang=&quot;bash&quot; class=&quot;language-bash z-code&quot;&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;&lt;span class=&quot;z-source z-shell z-bash&quot;&gt;&lt;span class=&quot;z-meta z-function-call z-shell&quot;&gt;&lt;span class=&quot;z-variable z-function z-shell&quot;&gt;mkdir&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;span class=&quot;z-meta z-function-call z-arguments z-shell&quot;&gt; &#x2F;mnt&#x2F;ramdisk&lt;&#x2F;span&gt;
 &lt;span class=&quot;z-meta z-function-call z-shell&quot;&gt;&lt;span class=&quot;z-variable z-function z-shell&quot;&gt;mount&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;span class=&quot;z-meta z-function-call z-arguments z-shell&quot;&gt;&lt;span class=&quot;z-variable z-parameter z-option z-shell&quot;&gt;&lt;span class=&quot;z-punctuation z-definition z-parameter z-shell&quot;&gt; -&lt;&#x2F;span&gt;t&lt;&#x2F;span&gt; tmpfs&lt;span class=&quot;z-variable z-parameter z-option z-shell&quot;&gt;&lt;span class=&quot;z-punctuation z-definition z-parameter z-shell&quot;&gt; -&lt;&#x2F;span&gt;o&lt;&#x2F;span&gt; size=2048M tmpfs &#x2F;mnt&#x2F;ramdisk&lt;&#x2F;span&gt;
 &lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
-&lt;h2 id=&quot;shi-yong-afl-jin-xing-yi-jia-gou-fuzz&quot;&gt;使用 AFL++ 进行异架构 Fuzz&lt;&#x2F;h2&gt;
+&lt;h2 id=&quot;使用_AFL++_进行异架构_Fuzz&quot;&gt;使用 AFL++ 进行异架构 Fuzz&lt;&#x2F;h2&gt;
 &lt;p&gt;AFL++ 是个不错的项目，扩展了原版 AFL，并且有详细的文档和样例代码（有这两项就已经超越了90%++的开源项目了）。&lt;&#x2F;p&gt;
 &lt;p&gt;AFL++ 用了 git submodule 进行导入其他项目，编译时建议使用 proxychains 或者设置 &lt;code&gt;http_proxy&lt;&#x2F;code&gt; 环境变量来强制 git 走代理进行 clone，加快速度。其他的编译事项在 &lt;code&gt;README&lt;&#x2F;code&gt; 里写的非常详细了。我们需要 fuzz 的程序是 arm 架构的，所以在编译 QEMU 时加上 &lt;code&gt;CPU_TARGET=arm&lt;&#x2F;code&gt; 环境变量，指定 QEMU 编译架构。&lt;&#x2F;p&gt;
 &lt;p&gt;最后就是运行 AFL++ 了。参数中 &lt;code&gt;-Q&lt;&#x2F;code&gt; 指定 QEMU 模式，&lt;code&gt;-m none&lt;&#x2F;code&gt; 指定内存限制为没有，&lt;code&gt;-i&lt;&#x2F;code&gt; 和 &lt;code&gt;-o&lt;&#x2F;code&gt; 对应的则是输入和输出。程序使用文件方式读入数据，所以最后加上 &lt;code&gt;@@&lt;&#x2F;code&gt;。&lt;&#x2F;p&gt;
@@ -183,19 +183,19 @@
 &lt;span class=&quot;z-meta z-function-call z-shell&quot;&gt;&lt;span class=&quot;z-variable z-function z-shell&quot;&gt;&#x2F;part&#x2F;to&#x2F;AFLplusplus&#x2F;afl-fuzz&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;span class=&quot;z-meta z-function-call z-arguments z-shell&quot;&gt;&lt;span class=&quot;z-variable z-parameter z-option z-shell&quot;&gt;&lt;span class=&quot;z-punctuation z-definition z-parameter z-shell&quot;&gt; -&lt;&#x2F;span&gt;Q&lt;&#x2F;span&gt;&lt;span class=&quot;z-variable z-parameter z-option z-shell&quot;&gt;&lt;span class=&quot;z-punctuation z-definition z-parameter z-shell&quot;&gt; -&lt;&#x2F;span&gt;m&lt;&#x2F;span&gt; none&lt;span class=&quot;z-variable z-parameter z-option z-shell&quot;&gt;&lt;span class=&quot;z-punctuation z-definition z-parameter z-shell&quot;&gt; -&lt;&#x2F;span&gt;i&lt;&#x2F;span&gt; corpus&#x2F;&lt;span class=&quot;z-variable z-parameter z-option z-shell&quot;&gt;&lt;span class=&quot;z-punctuation z-definition z-parameter z-shell&quot;&gt; -&lt;&#x2F;span&gt;o&lt;&#x2F;span&gt; output&#x2F; .&#x2F;squashfs-root&#x2F;usr&#x2F;sbin&#x2F;httpd @@&lt;&#x2F;span&gt;
 &lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
 &lt;p&gt;然后就是喜闻乐见的显示信息窗口了。&lt;&#x2F;p&gt;
-&lt;p&gt;&lt;img src=&quot;https:&#x2F;&#x2F;chenx6.github.io&#x2F;post&#x2F;fail-firm-fuzz&#x2F;.&#x2F;pictures&#x2F;fail_firm_fuzz_0.png&quot; alt=&quot;afl&quot; &#x2F;&gt;&lt;&#x2F;p&gt;
-&lt;h2 id=&quot;diao-shi&quot;&gt;调试&lt;&#x2F;h2&gt;
+&lt;p&gt;&lt;img src=&quot;https:&#x2F;&#x2F;chenx6.github.io&#x2F;post&#x2F;fail_firm_fuzz&#x2F;.&#x2F;pictures&#x2F;fail_firm_fuzz_0.png&quot; alt=&quot;afl&quot; &#x2F;&gt;&lt;&#x2F;p&gt;
+&lt;h2 id=&quot;调试&quot;&gt;调试&lt;&#x2F;h2&gt;
 &lt;p&gt;对 qemu-user 进行模拟的程序，可以通过 &lt;code&gt;-g&lt;&#x2F;code&gt; 参数，开启 gdbserver,然后在本机使用 &lt;code&gt;gdb-multiarch&lt;&#x2F;code&gt; 进行调试。&lt;&#x2F;p&gt;
 &lt;p&gt;先使用 qemu-arm 加上 &lt;code&gt;-g&lt;&#x2F;code&gt; 选项启动程序。&lt;&#x2F;p&gt;
 &lt;pre data-lang=&quot;bash&quot; class=&quot;language-bash z-code&quot;&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;&lt;span class=&quot;z-source z-shell z-bash&quot;&gt;&lt;span class=&quot;z-meta z-function-call z-shell&quot;&gt;&lt;span class=&quot;z-variable z-function z-shell&quot;&gt;qemu-arm&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;span class=&quot;z-meta z-function-call z-arguments z-shell&quot;&gt;&lt;span class=&quot;z-variable z-parameter z-option z-shell&quot;&gt;&lt;span class=&quot;z-punctuation z-definition z-parameter z-shell&quot;&gt; -&lt;&#x2F;span&gt;g&lt;&#x2F;span&gt; &lt;span class=&quot;z-meta z-group z-expansion z-parameter z-shell&quot;&gt;&lt;span class=&quot;z-punctuation z-definition z-variable z-shell&quot;&gt;$&lt;&#x2F;span&gt;&lt;span class=&quot;z-variable z-other z-readwrite z-shell&quot;&gt;端口号&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
 &lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
 &lt;p&gt;然后使用 &lt;code&gt;gdb-multiarch $程序&lt;&#x2F;code&gt; 和 &lt;code&gt;target remote :$端口号&lt;&#x2F;code&gt; 命令连接上 server。最后就是正常的使用 gdb 进行调试了。&lt;&#x2F;p&gt;
-&lt;h2 id=&quot;deng-dai-wan-shan-de-di-fang&quot;&gt;等待完善的地方&lt;&#x2F;h2&gt;
+&lt;h2 id=&quot;等待完善的地方&quot;&gt;等待完善的地方&lt;&#x2F;h2&gt;
 &lt;p&gt;在进行 fuzz 后，我发现 AFL++ 在 QEMU 模式下，也使用 Persist 模式，如果能使用 Persist 模式的话，可以大幅提高 Fuzz 效率。演示代码在 AFL++ 项目的 &lt;code&gt;utils&lt;&#x2F;code&gt; 目录。&lt;&#x2F;p&gt;
 &lt;p&gt;使用 master&#x2F;slave 模式启动多个 fuzzer 进行 fuzz，提高 fuzz 效率。&lt;&#x2F;p&gt;
-&lt;h2 id=&quot;zong-jie&quot;&gt;总结&lt;&#x2F;h2&gt;
+&lt;h2 id=&quot;总结&quot;&gt;总结&lt;&#x2F;h2&gt;
 &lt;p&gt;这是一篇时隔几个月才写的复现文章，之前还是比较忙，所以没时间写文章。&lt;&#x2F;p&gt;
-&lt;p&gt;在这几个月里，我突然明白了为什么报上去的漏洞别人复现不了，因为 &lt;a href=&quot;https:&#x2F;&#x2F;chenx6.github.io&#x2F;post&#x2F;fail-firm-fuzz&#x2F;#refs&quot;&gt;firmadyne&#x2F;libnvram&lt;&#x2F;a&gt; 这个项目在 key 不存在时返回了 NULL，然后 httpd 中的部分地方又没有对值为 NULL 的情况做处理，测试时找的网络上的路由器可能存在着已经被新版本修复的漏洞，所以才会碰巧“测试成功”。然而真机在通常情况下存在这个 key，并且修复了大量的漏洞，所以复现失败。&lt;&#x2F;p&gt;
+&lt;p&gt;在这几个月里，我突然明白了为什么报上去的漏洞别人复现不了，因为 &lt;a href=&quot;https:&#x2F;&#x2F;chenx6.github.io&#x2F;post&#x2F;fail_firm_fuzz&#x2F;#refs&quot;&gt;firmadyne&#x2F;libnvram&lt;&#x2F;a&gt; 这个项目在 key 不存在时返回了 NULL，然后 httpd 中的部分地方又没有对值为 NULL 的情况做处理，测试时找的网络上的路由器可能存在着已经被新版本修复的漏洞，所以才会碰巧“测试成功”。然而真机在通常情况下存在这个 key，并且修复了大量的漏洞，所以复现失败。&lt;&#x2F;p&gt;
 &lt;p&gt;当然，如果有人看完这篇文章，并且借助这篇文章的经验挖到了洞，能不能给我留个评论，让我膜拜一下...&lt;&#x2F;p&gt;
 &lt;h2 id=&quot;refs&quot;&gt;refs&lt;&#x2F;h2&gt;
 &lt;p&gt;参考文章&lt;&#x2F;p&gt;

@@ -57,37 +57,37 @@
         <ul>
           
           <li>
-            <a href="https://chenx6.github.io/post/elf-backdoor/#jia-hou-men-de-liu-cheng">加后门的流程</a>
+            <a href="https://chenx6.github.io/post/elf_backdoor/#加后门的流程">加后门的流程</a>
             
           </li>
           
           <li>
-            <a href="https://chenx6.github.io/post/elf-backdoor/#elf-fen-xi-guo-cheng">ELF 分析过程</a>
+            <a href="https://chenx6.github.io/post/elf_backdoor/#ELF_分析过程">ELF 分析过程</a>
             
           </li>
           
           <li>
-            <a href="https://chenx6.github.io/post/elf-backdoor/#elf-bu-ding-guo-cheng">ELF 补丁过程</a>
+            <a href="https://chenx6.github.io/post/elf_backdoor/#ELF_补丁过程">ELF 补丁过程</a>
             
           </li>
           
           <li>
-            <a href="https://chenx6.github.io/post/elf-backdoor/#shi-zhan">实战</a>
+            <a href="https://chenx6.github.io/post/elf_backdoor/#实战">实战</a>
             
           </li>
           
           <li>
-            <a href="https://chenx6.github.io/post/elf-backdoor/#wan-zheng-dai-ma">完整代码</a>
+            <a href="https://chenx6.github.io/post/elf_backdoor/#完整代码">完整代码</a>
             
           </li>
           
           <li>
-            <a href="https://chenx6.github.io/post/elf-backdoor/#wei-wan-cheng-gong-zuo">未完成工作</a>
+            <a href="https://chenx6.github.io/post/elf_backdoor/#未完成工作">未完成工作</a>
             
           </li>
           
           <li>
-            <a href="https://chenx6.github.io/post/elf-backdoor/#refs">refs</a>
+            <a href="https://chenx6.github.io/post/elf_backdoor/#refs">refs</a>
             
           </li>
           
@@ -96,7 +96,7 @@
       
     </aside>
     <p>在渗透测试中，给常用的可执行文件加上后门是很常见的操作。但是之前的加后门 &quot;The backdoor factory&quot; 已经不维护了，而且还是 Python2 写的，代码质量也...所以我自己尝试着重新用 Python3 造了个轮子。在造轮子的过程中，由于 APUE 扔在学校里面了，导致在写和系统相关的汇编时出现了一些翻车情况...</p>
-<h2 id="jia-hou-men-de-liu-cheng">加后门的流程</h2>
+<h2 id="加后门的流程">加后门的流程</h2>
 <p>基本分为两部分，先分析 ELF，然后根据之前的分析来给 ELF 加个&quot;补丁&quot;。</p>
 <ol>
 <li>先分析 ELF 结构，拿到 ELF File Header 和 ELF Program Headers (Segments) 的相关信息</li>
@@ -105,7 +105,7 @@
 <li>将 ELF File Header 的 e_entry 指向后门代码，让后门代码可以运行</li>
 <li>在空白处加入后门代码和相应的辅助代码</li>
 </ol>
-<h2 id="elf-fen-xi-guo-cheng">ELF 分析过程</h2>
+<h2 id="ELF_分析过程">ELF 分析过程</h2>
 <p>介绍 ELF 结构的文章非常多，这里我推荐 <a href="https://uclibc.org/docs/elf-64-gen.pdf">UClib 的文档</a> ，里面讲了 ELF 的不同结构及其作用。有了这个文档后 ELF 文件的分析就非常简单了，可以使用 Python 的 <code>struct</code> 库来提取数据进行分析。首先通过 ELF File Header 获取到 <code>e_phoff</code> Program header 的文件偏移，然后 <code>seek</code> 到相应位置解析 Program header。</p>
 <pre data-lang="python" class="language-python z-code"><code class="language-python" data-lang="python"><span class="z-source z-python"><span class="z-meta z-class z-python"><span class="z-storage z-type z-class z-python"><span class="z-keyword z-declaration z-class z-python">class</span></span> <span class="z-entity z-name z-class z-python"><span class="z-meta z-generic-name z-python">elf_info</span></span><span class="z-punctuation z-section z-class z-begin z-python">:</span></span>
     <span class="z-comment z-block z-documentation z-python"><span class="z-punctuation z-definition z-comment z-begin z-python">&#39;&#39;&#39;</span>
@@ -172,7 +172,7 @@
             <span class="z-meta z-function-call z-python"><span class="z-meta z-qualified-name z-python"><span class="z-meta z-generic-name z-python">segments</span></span><span class="z-meta z-qualified-name z-python"><span class="z-punctuation z-accessor z-dot z-python">.</span></span><span class="z-meta z-qualified-name z-python"><span class="z-variable z-function z-python"><span class="z-meta z-generic-name z-python">append</span></span></span></span><span class="z-meta z-function-call z-arguments z-python"><span class="z-punctuation z-section z-arguments z-begin z-python">(</span><span class="z-meta z-qualified-name z-python"><span class="z-meta z-generic-name z-python">seg</span></span><span class="z-punctuation z-section z-arguments z-end z-python">)</span></span>
         <span class="z-keyword z-control z-flow z-return z-python">return</span> <span class="z-meta z-qualified-name z-python"><span class="z-meta z-generic-name z-python">segments</span></span>
 </span></code></pre>
-<h2 id="elf-bu-ding-guo-cheng">ELF 补丁过程</h2>
+<h2 id="ELF_补丁过程">ELF 补丁过程</h2>
 <p>下面是 Patch 程序的主要流程了，首先是找到合适大小的 Code Cave，然后修改 ELF File Header 和 ELF Program Header 为后门代码准备相应的内存，并让后门代码得以运行，最后往这个 Code Cave 里填上辅助代码和相应后门。</p>
 <pre data-lang="python" class="language-python z-code"><code class="language-python" data-lang="python"><span class="z-source z-python"><span class="z-meta z-class z-python"><span class="z-storage z-type z-class z-python"><span class="z-keyword z-declaration z-class z-python">class</span></span> <span class="z-entity z-name z-class z-python"><span class="z-meta z-generic-name z-python">injector</span></span><span class="z-punctuation z-section z-class z-begin z-python">:</span></span>
 <span class="z-meta z-function z-python">    <span class="z-storage z-type z-function z-python"><span class="z-keyword z-declaration z-function z-python">def</span></span> <span class="z-entity z-name z-function z-python"><span class="z-support z-function z-magic z-python">__init__</span></span></span><span class="z-meta z-function z-parameters z-python"><span class="z-punctuation z-section z-parameters z-begin z-python">(</span></span><span class="z-meta z-function z-parameters z-python"><span class="z-variable z-parameter z-python">self</span><span class="z-punctuation z-separator z-parameters z-python">,</span> <span class="z-variable z-parameter z-python">file</span><span class="z-punctuation z-separator z-parameters z-python">,</span> <span class="z-variable z-parameter z-python">inject_code</span></span><span class="z-meta z-function z-parameters z-annotation z-python"><span class="z-punctuation z-separator z-annotation z-parameter z-python">:</span> <span class="z-meta z-qualified-name z-python"><span class="z-support z-type z-python">bytes</span></span></span><span class="z-meta z-function z-parameters z-python"><span class="z-punctuation z-section z-parameters z-end z-python">)</span></span><span class="z-meta z-function z-python"><span class="z-punctuation z-section z-function z-begin z-python">:</span></span>
@@ -319,7 +319,7 @@
     <span class="z-meta z-function-call z-python"><span class="z-meta z-qualified-name z-python"><span class="z-variable z-language z-python">self</span><span class="z-punctuation z-accessor z-dot z-python">.</span><span class="z-meta z-generic-name z-python">file</span></span><span class="z-meta z-qualified-name z-python"><span class="z-punctuation z-accessor z-dot z-python">.</span></span><span class="z-meta z-qualified-name z-python"><span class="z-variable z-function z-python"><span class="z-meta z-generic-name z-python">seek</span></span></span></span><span class="z-meta z-function-call z-arguments z-python"><span class="z-punctuation z-section z-arguments z-begin z-python">(</span><span class="z-meta z-qualified-name z-python"><span class="z-meta z-generic-name z-python">pos</span></span><span class="z-punctuation z-section z-arguments z-end z-python">)</span></span>
     <span class="z-meta z-function-call z-python"><span class="z-meta z-qualified-name z-python"><span class="z-variable z-language z-python">self</span><span class="z-punctuation z-accessor z-dot z-python">.</span><span class="z-meta z-generic-name z-python">file</span></span><span class="z-meta z-qualified-name z-python"><span class="z-punctuation z-accessor z-dot z-python">.</span></span><span class="z-meta z-qualified-name z-python"><span class="z-variable z-function z-python"><span class="z-meta z-generic-name z-python">write</span></span></span></span><span class="z-meta z-function-call z-arguments z-python"><span class="z-punctuation z-section z-arguments z-begin z-python">(</span><span class="z-meta z-qualified-name z-python"><span class="z-meta z-generic-name z-python">code</span></span><span class="z-punctuation z-section z-arguments z-end z-python">)</span></span>
 </span></code></pre>
-<h2 id="shi-zhan">实战</h2>
+<h2 id="实战">实战</h2>
 <p>首先先准备个傀儡，使用 <code>gcc test.c -o test.elf</code> 进行编译，由于辅助汇编代码对 The backdoor factory 进行了修改，所以位置无关代码也是可以 Patch 的。</p>
 <pre data-lang="c" class="language-c z-code"><code class="language-c" data-lang="c"><span class="z-source z-c"><span class="z-meta z-preprocessor z-include z-c"><span class="z-keyword z-control z-import z-include z-c">#include</span> <span class="z-string z-quoted z-other z-lt-gt z-include z-c"><span class="z-punctuation z-definition z-string z-begin z-c">&lt;</span>stdio.h<span class="z-punctuation z-definition z-string z-end z-c">&gt;</span></span>
 </span>
@@ -330,10 +330,10 @@
 </span></span><span class="z-meta z-function z-c"><span class="z-meta z-block z-c"><span class="z-punctuation z-section z-block z-end z-c">}</span></span></span>
 </span></code></pre>
 <p>我使用了 <a href="https://www.exploit-db.com/shellcodes/41128">https://www.exploit-db.com/shellcodes/41128</a> 的正向 Shell 代码，可以发现原程序正常运行，而后门代码也运行了。</p>
-<p><img src="https://chenx6.github.io/post/elf-backdoor/./pictures/elf_backdoor.png" alt="0" /></p>
-<h2 id="wan-zheng-dai-ma">完整代码</h2>
+<p><img src="https://chenx6.github.io/post/elf_backdoor/./pictures/elf_backdoor.png" alt="0" /></p>
+<h2 id="完整代码">完整代码</h2>
 <p>由于代码太长了，所以我将代码放在了 gist 上了 <a href="https://gist.github.com/chenx6/0cedc163bea2aaefd433fff7d02cd4c1">https://gist.github.com/chenx6/0cedc163bea2aaefd433fff7d02cd4c1</a>，如果访问不了的话可以手动复制粘贴代码，应该可以拼接成可以运行的程序。</p>
-<h2 id="wei-wan-cheng-gong-zuo">未完成工作</h2>
+<h2 id="未完成工作">未完成工作</h2>
 <p>这个代码只是一个简单的 DEMO，想要扩展成可维护的软件的话，我个人有下面几个发展方向</p>
 <ol>
 <li>将 pack 和 unpack 进行封装，类似 pwntools。</li>

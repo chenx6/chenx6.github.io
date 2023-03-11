@@ -57,25 +57,25 @@
         <ul>
           
           <li>
-            <a href="https://chenx6.github.io/post/compile-cheatsheet/#bian-yi-guo-cheng-jian-shu">编译过程简述</a>
+            <a href="https://chenx6.github.io/post/compile_cheatsheet/#编译过程简述">编译过程简述</a>
             
           </li>
           
           <li>
-            <a href="https://chenx6.github.io/post/compile-cheatsheet/#bian-yi-xi-tong">编译系统</a>
+            <a href="https://chenx6.github.io/post/compile_cheatsheet/#编译系统">编译系统</a>
             
             <ul>
               
               <li>
-                <a href="https://chenx6.github.io/post/compile-cheatsheet/#meson">Meson</a>
+                <a href="https://chenx6.github.io/post/compile_cheatsheet/#Meson">Meson</a>
               </li>
               
               <li>
-                <a href="https://chenx6.github.io/post/compile-cheatsheet/#cmake">CMake</a>
+                <a href="https://chenx6.github.io/post/compile_cheatsheet/#CMake">CMake</a>
               </li>
               
               <li>
-                <a href="https://chenx6.github.io/post/compile-cheatsheet/#makefile">Makefile</a>
+                <a href="https://chenx6.github.io/post/compile_cheatsheet/#Makefile">Makefile</a>
               </li>
               
             </ul>
@@ -83,12 +83,12 @@
           </li>
           
           <li>
-            <a href="https://chenx6.github.io/post/compile-cheatsheet/#ku-guan-li-gong-ju">库管理工具</a>
+            <a href="https://chenx6.github.io/post/compile_cheatsheet/#库管理工具">库管理工具</a>
             
             <ul>
               
               <li>
-                <a href="https://chenx6.github.io/post/compile-cheatsheet/#pkg-config">pkg-config</a>
+                <a href="https://chenx6.github.io/post/compile_cheatsheet/#pkg-config">pkg-config</a>
               </li>
               
             </ul>
@@ -96,16 +96,16 @@
           </li>
           
           <li>
-            <a href="https://chenx6.github.io/post/compile-cheatsheet/#bian-yi-qi">编译器</a>
+            <a href="https://chenx6.github.io/post/compile_cheatsheet/#编译器">编译器</a>
             
             <ul>
               
               <li>
-                <a href="https://chenx6.github.io/post/compile-cheatsheet/#gccbian-yi-xuan-xiang">GCC编译选项</a>
+                <a href="https://chenx6.github.io/post/compile_cheatsheet/#GCC编译选项">GCC编译选项</a>
               </li>
               
               <li>
-                <a href="https://chenx6.github.io/post/compile-cheatsheet/#shi-yong-zig-cc-jin-xing-kua-ping-tai-bian-yi">使用 zig cc 进行跨平台编译</a>
+                <a href="https://chenx6.github.io/post/compile_cheatsheet/#使用_zig_cc_进行跨平台编译">使用 zig cc 进行跨平台编译</a>
               </li>
               
             </ul>
@@ -113,16 +113,16 @@
           </li>
           
           <li>
-            <a href="https://chenx6.github.io/post/compile-cheatsheet/#huan-jing-pei-zhi">环境配置</a>
+            <a href="https://chenx6.github.io/post/compile_cheatsheet/#环境配置">环境配置</a>
             
             <ul>
               
               <li>
-                <a href="https://chenx6.github.io/post/compile-cheatsheet/#docker-podman">Docker&#x2F;Podman</a>
+                <a href="https://chenx6.github.io/post/compile_cheatsheet/#Docker/Podman">Docker&#x2F;Podman</a>
               </li>
               
               <li>
-                <a href="https://chenx6.github.io/post/compile-cheatsheet/#glibc-symver">Glibc symver</a>
+                <a href="https://chenx6.github.io/post/compile_cheatsheet/#Glibc_symver">Glibc symver</a>
               </li>
               
             </ul>
@@ -130,7 +130,7 @@
           </li>
           
           <li>
-            <a href="https://chenx6.github.io/post/compile-cheatsheet/#refs">Refs</a>
+            <a href="https://chenx6.github.io/post/compile_cheatsheet/#Refs">Refs</a>
             
           </li>
           
@@ -139,7 +139,7 @@
       
     </aside>
     <p>C 和 C++ 的编译是真的痛苦，会出现一堆离谱的问题。所以我特地写一篇文章讲一下这些破事，并且提供一些样例代码方便复制黏贴。</p>
-<h2 id="bian-yi-guo-cheng-jian-shu">编译过程简述</h2>
+<h2 id="编译过程简述">编译过程简述</h2>
 <p>在网上能找到一堆的编译流程相关的博客，而且肯定比我讲的正确，所以这里我就简单概括下。</p>
 <p>现在很少有程序能只依赖与 C 标准库和系统 API 了，所以会有一堆的外部依赖库。要想编译成功，得让编译器和链接器都知道去哪找这些库，怎么链接上。于是就有了一堆的编译管理工具。像 CMake 和 Meson 是负责生成编译的脚本，make 和 ninja 则是负责执行编译任务，然后是 gcc 和 clang 将代码编译成目标文件，最后有 ld, gold, mold 将目标文件进行链接生成可执行文件。</p>
 <pre data-lang="txt" class="language-txt z-code"><code class="language-txt" data-lang="txt"><span class="z-text z-plain">CMake -&gt; make  -&gt; gcc   -&gt; ld   -&gt; 可执行文件
@@ -148,8 +148,8 @@ Bazel    ...      zig cc   lld
 ...               ...      mold
                            ...
 </span></code></pre>
-<h2 id="bian-yi-xi-tong">编译系统</h2>
-<h3 id="meson">Meson</h3>
+<h2 id="编译系统">编译系统</h2>
+<h3 id="Meson">Meson</h3>
 <p>样例代码</p>
 <pre data-lang="meson" class="language-meson z-code"><code class="language-meson" data-lang="meson"><span class="z-text z-plain"># 指定项目名称，使用语言，默认选项
 project(&#39;project name&#39;, &#39;cpp&#39;
@@ -185,8 +185,8 @@ executable(&#39;client&#39;, &#39;src/main_client.cpp&#39;, &#39;src/client.cpp&
 <span class="z-comment z-line z-number-sign z-shell"><span class="z-punctuation z-definition z-comment z-begin z-shell">#</span></span><span class="z-comment z-line z-number-sign z-shell"> 编译</span><span class="z-comment z-line z-number-sign z-shell">
 </span><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">meson</span></span><span class="z-meta z-function-call z-arguments z-shell"> compile<span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>C</span> builddir</span>
 </span></code></pre>
-<p>更多的内容参考 <a href="https://chenx6.github.io/post/compile-cheatsheet/#refs">#refs</a></p>
-<h3 id="cmake">CMake</h3>
+<p>更多的内容参考 <a href="https://chenx6.github.io/post/compile_cheatsheet/#refs">#refs</a></p>
+<h3 id="CMake">CMake</h3>
 <p>样例代码</p>
 <pre data-lang="cmake" class="language-cmake z-code"><code class="language-cmake" data-lang="cmake"><span class="z-source z-cmake"><span class="z-comment z-line z-cmake"><span class="z-punctuation z-definition z-comment z-cmake">#</span> 指定项目名字，CMake 版本要求，C++ 版本要求</span>
 <span class="z-meta z-function-call z-cmake"><span class="z-support z-function z-project z-cmake">project</span></span><span class="z-meta z-function-call z-arguments z-cmake"><span class="z-punctuation z-section z-parens z-begin z-cmake">(</span><span class="z-meta z-string z-unquoted z-cmake">project_name</span><span class="z-punctuation z-section z-parens z-end z-cmake">)</span></span>
@@ -217,10 +217,10 @@ executable(&#39;client&#39;, &#39;src/main_client.cpp&#39;, &#39;src/client.cpp&
 <span class="z-comment z-line z-number-sign z-shell"><span class="z-punctuation z-definition z-comment z-begin z-shell">#</span></span><span class="z-comment z-line z-number-sign z-shell"> Debug 编译</span><span class="z-comment z-line z-number-sign z-shell">
 </span><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">cmake</span></span><span class="z-meta z-function-call z-arguments z-shell"><span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>DCMAKE_BUILD_TYPE</span><span class="z-keyword z-operator z-assignment z-option z-shell">=</span>Debug ..</span>
 </span></code></pre>
-<h3 id="makefile">Makefile</h3>
+<h3 id="Makefile">Makefile</h3>
 <p>Makefile 的可读性真的是灾难级别的，下面这篇文章图文并茂，讲的很好，推荐阅读！！！</p>
 <p><a href="https://zhuanlan.zhihu.com/p/47390641">Makefile由浅入深--教程、干货</a></p>
-<h2 id="ku-guan-li-gong-ju">库管理工具</h2>
+<h2 id="库管理工具">库管理工具</h2>
 <h3 id="pkg-config">pkg-config</h3>
 <table><thead><tr><th>选项</th><th>作用</th><th>样例</th></tr></thead><tbody>
 <tr><td><code>--cflags</code></td><td>查询这个库的所需要的 CFLAGS</td><td><code>pkg-config --cflags glib-2.0</code></td></tr>
@@ -230,23 +230,23 @@ executable(&#39;client&#39;, &#39;src/main_client.cpp&#39;, &#39;src/client.cpp&
 <p>设置 pkg-config 搜索路径</p>
 <pre data-lang="bash" class="language-bash z-code"><code class="language-bash" data-lang="bash"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-storage z-modifier z-shell">export</span> <span class="z-variable z-other z-readwrite z-assignment z-shell">PKG_CONFIG_PATH</span><span class="z-keyword z-operator z-assignment z-shell">=</span><span class="z-string z-unquoted z-shell">/usr/lib/pkgconfig/:<span class="z-meta z-group z-expansion z-parameter z-shell"><span class="z-punctuation z-definition z-variable z-shell">$</span><span class="z-variable z-other z-readwrite z-shell">PKG_CONFIG_PATH</span></span></span></span>
 </span></code></pre>
-<p>官方文档参考 <a href="https://chenx6.github.io/post/compile-cheatsheet/#refs">#refs</a></p>
-<h2 id="bian-yi-qi">编译器</h2>
-<h3 id="gccbian-yi-xuan-xiang">GCC编译选项</h3>
-<h4 id="lian-jie">链接</h4>
+<p>官方文档参考 <a href="https://chenx6.github.io/post/compile_cheatsheet/#refs">#refs</a></p>
+<h2 id="编译器">编译器</h2>
+<h3 id="GCC编译选项">GCC编译选项</h3>
+<h4 id="链接">链接</h4>
 <table><thead><tr><th>选项</th><th>作用</th><th>样例</th></tr></thead><tbody>
 <tr><td><code>-l$library</code></td><td>链接上某个库</td><td><code>-lm</code></td></tr>
 <tr><td><code>-static</code></td><td>静态链接库</td><td></td></tr>
 <tr><td><code>-static-libstdc++</code></td><td>静态链接libstdc++</td><td></td></tr>
 <tr><td><code>-Wl,$option</code></td><td>将链接选项传递给 ld</td><td></td></tr>
 </tbody></table>
-<h4 id="mu-lu-sou-suo">目录搜索</h4>
+<h4 id="目录搜索">目录搜索</h4>
 <table><thead><tr><th>选项</th><th>作用</th><th>样例</th></tr></thead><tbody>
 <tr><td><code>-I $dir</code></td><td>（大写的i）头文件搜索路径</td><td><code>-I ./include</code></td></tr>
 <tr><td><code>-L$dir</code></td><td>库文件搜索路径</td><td><code>-L./lib</code></td></tr>
 <tr><td><code>--sysroot=$dir</code></td><td>头文件和库的搜索路径</td><td><code>--sysroot=/usr</code></td></tr>
 </tbody></table>
-<h3 id="shi-yong-zig-cc-jin-xing-kua-ping-tai-bian-yi">使用 zig cc 进行跨平台编译</h3>
+<h3 id="使用_zig_cc_进行跨平台编译">使用 zig cc 进行跨平台编译</h3>
 <p>zig cc 真是跨平台编译救星，下面演示下常见命令。</p>
 <pre data-lang="bash" class="language-bash z-code"><code class="language-bash" data-lang="bash"><span class="z-source z-shell z-bash"><span class="z-comment z-line z-number-sign z-shell"><span class="z-punctuation z-definition z-comment z-begin z-shell">#</span></span><span class="z-comment z-line z-number-sign z-shell"> 显示支持的 libc</span><span class="z-comment z-line z-number-sign z-shell">
 </span><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">zig</span></span><span class="z-meta z-function-call z-arguments z-shell"> targets</span> <span class="z-keyword z-operator z-logical z-pipe z-shell">|</span> <span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">jq</span></span><span class="z-meta z-function-call z-arguments z-shell"> .libc</span>
@@ -256,9 +256,9 @@ executable(&#39;client&#39;, &#39;src/main_client.cpp&#39;, &#39;src/client.cpp&
 <span class="z-comment z-line z-number-sign z-shell"><span class="z-punctuation z-definition z-comment z-begin z-shell">#</span></span><span class="z-comment z-line z-number-sign z-shell"> 让 make 等工具使用</span><span class="z-comment z-line z-number-sign z-shell">
 </span><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">make</span></span><span class="z-meta z-function-call z-arguments z-shell"> CC=<span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>zig cc<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span> CXX=<span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>zig c++<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span></span>
 </span></code></pre>
-<p>参考文章 <a href="https://chenx6.github.io/post/compile-cheatsheet/#refs">#refs</a></p>
-<h2 id="huan-jing-pei-zhi">环境配置</h2>
-<h3 id="docker-podman">Docker/Podman</h3>
+<p>参考文章 <a href="https://chenx6.github.io/post/compile_cheatsheet/#refs">#refs</a></p>
+<h2 id="环境配置">环境配置</h2>
+<h3 id="Docker/Podman">Docker/Podman</h3>
 <p>Ubuntu image，添加 32 位支持，安装编译工具链，库和 CMake</p>
 <pre data-lang="dockerfile" class="language-dockerfile z-code"><code class="language-dockerfile" data-lang="dockerfile"><span class="z-source z-dockerfile"><span class="z-keyword z-control z-dockerfile">FROM</span> ubuntu:<span class="z-entity z-name z-enum z-tag-digest">18.04</span>
 
@@ -279,11 +279,11 @@ executable(&#39;client&#39;, &#39;src/main_client.cpp&#39;, &#39;src/client.cpp&
 <p>使用容器进行编译。设置成运行完后删除，并将当前目录映射到 &quot;/src&quot; 目录下，启动名字为 <code>$容器名字</code> 的容器。</p>
 <pre data-lang="bash" class="language-bash z-code"><code class="language-bash" data-lang="bash"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">podman</span></span><span class="z-meta z-function-call z-arguments z-shell"> run<span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> --</span>rm</span><span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>v</span> <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span><span class="z-meta z-group z-expansion z-command z-parens z-shell"><span class="z-punctuation z-definition z-variable z-shell">$</span><span class="z-punctuation z-section z-parens z-begin z-shell">(</span><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">pwd</span></span><span class="z-punctuation z-section z-parens z-end z-shell">)</span></span>:/src<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span><span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>it</span> <span class="z-meta z-group z-expansion z-parameter z-shell"><span class="z-punctuation z-definition z-variable z-shell">$</span><span class="z-variable z-other z-readwrite z-shell">容器名字</span></span></span>
 </span></code></pre>
-<h3 id="glibc-symver">Glibc symver</h3>
-<p>有时候在新系统上编译的可执行文件，在旧系统上运行时，会产生 &quot;找不到函数&quot; 错误。这时候可以通过指定 symver 来进行兼容旧版本。具体细节可以参考 <a href="https://chenx6.github.io/post/compile-cheatsheet/#Refs">#Refs</a> 中的 &quot;All about symbol versioning&quot;，或者使用 &quot;wheybags/glibc_version_header&quot; 这个项目。</p>
+<h3 id="Glibc_symver">Glibc symver</h3>
+<p>有时候在新系统上编译的可执行文件，在旧系统上运行时，会产生 &quot;找不到函数&quot; 错误。这时候可以通过指定 symver 来进行兼容旧版本。具体细节可以参考 <a href="https://chenx6.github.io/post/compile_cheatsheet/#Refs">#Refs</a> 中的 &quot;All about symbol versioning&quot;，或者使用 &quot;wheybags/glibc_version_header&quot; 这个项目。</p>
 <pre data-lang="c" class="language-c z-code"><code class="language-c" data-lang="c"><span class="z-source z-c"><span class="z-meta z-function-call z-c"><span class="z-variable z-function z-c">__asm__</span><span class="z-meta z-group z-c"><span class="z-punctuation z-section z-group z-begin z-c">(</span></span></span><span class="z-meta z-function-call z-c"><span class="z-meta z-group z-c"><span class="z-string z-quoted z-double z-c"><span class="z-punctuation z-definition z-string z-begin z-c">&quot;</span>.symver fopen,fopen@GLIBC_2.2.5<span class="z-punctuation z-definition z-string z-end z-c">&quot;</span></span></span><span class="z-meta z-group z-c"><span class="z-punctuation z-section z-group z-end z-c">)</span></span></span><span class="z-punctuation z-terminator z-c">;</span>
 </span></code></pre>
-<h2 id="refs">Refs</h2>
+<h2 id="Refs">Refs</h2>
 <ul>
 <li><a href="https://gcc.gnu.org/onlinedocs/gcc-11.3.0/gcc/">https://gcc.gnu.org/onlinedocs/gcc-11.3.0/gcc/</a></li>
 <li><a href="https://www.freedesktop.org/wiki/Software/pkg-config">https://www.freedesktop.org/wiki/Software/pkg-config</a></li>

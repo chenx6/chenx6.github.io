@@ -55,30 +55,30 @@
         <ul>
           
           <li>
-            <a href="https://chenx6.github.io/post/qemu/#cpu-pei-zhi">CPU 配置</a>
+            <a href="https://chenx6.github.io/post/qemu/#CPU_配置">CPU 配置</a>
             
           </li>
           
           <li>
-            <a href="https://chenx6.github.io/post/qemu/#nei-cun">内存</a>
+            <a href="https://chenx6.github.io/post/qemu/#内存">内存</a>
             
           </li>
           
           <li>
-            <a href="https://chenx6.github.io/post/qemu/#wang-luo">网络</a>
+            <a href="https://chenx6.github.io/post/qemu/#网络">网络</a>
             
             <ul>
               
               <li>
-                <a href="https://chenx6.github.io/post/qemu/#ru-he-chuang-jian-tap-she-bei">如何创建 tap 设备</a>
+                <a href="https://chenx6.github.io/post/qemu/#如何创建_tap_设备">如何创建 tap 设备</a>
               </li>
               
               <li>
-                <a href="https://chenx6.github.io/post/qemu/#shi-yong-dnsmasq-pei-zhi-dhcp">使用 dnsmasq 配置 DHCP</a>
+                <a href="https://chenx6.github.io/post/qemu/#使用_dnsmasq_配置_DHCP">使用 dnsmasq 配置 DHCP</a>
               </li>
               
               <li>
-                <a href="https://chenx6.github.io/post/qemu/#bie-de-xuan-xiang">别的选项</a>
+                <a href="https://chenx6.github.io/post/qemu/#别的选项">别的选项</a>
               </li>
               
             </ul>
@@ -86,12 +86,12 @@
           </li>
           
           <li>
-            <a href="https://chenx6.github.io/post/qemu/#zui-hou-cheng-guo">最后成果</a>
+            <a href="https://chenx6.github.io/post/qemu/#最后成果">最后成果</a>
             
           </li>
           
           <li>
-            <a href="https://chenx6.github.io/post/qemu/#refs">Refs</a>
+            <a href="https://chenx6.github.io/post/qemu/#Refs">Refs</a>
             
           </li>
           
@@ -100,7 +100,7 @@
       
     </aside>
     <p>从大学开始，我看过了一堆的 QEMU 配置的文章，这些文章要不就是从别的地方复制黏贴出来的，要不就是使用了已经停止维护的工具。所以我决定从网上找一手资料（QEMU Wiki，文档, man qemu，...）来写一篇文章来讲讲怎么简单的配置 QEMU 模拟虚拟机。在文章的最后放了最终运行的命令，大家复制了保存成脚本就可以使用，或者根据自己的要求来配置。（这个脚本已经经过 2 个人使用了，很好用 233）</p>
-<h2 id="cpu-pei-zhi">CPU 配置</h2>
+<h2 id="CPU_配置">CPU 配置</h2>
 <p>下面的选项开启 KVM 全虚拟化支持，能提升虚拟机的速度。</p>
 <pre data-lang="bash" class="language-bash z-code"><code class="language-bash" data-lang="bash"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">--enable-kvm</span></span>
 </span></code></pre>
@@ -110,11 +110,11 @@
 <p>下面的选项是指定 SMP（可以简单理解为模拟 CPU 的核数）</p>
 <pre data-lang="bash" class="language-bash z-code"><code class="language-bash" data-lang="bash"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">-smp</span></span><span class="z-meta z-function-call z-arguments z-shell"> 4</span>
 </span></code></pre>
-<h2 id="nei-cun">内存</h2>
+<h2 id="内存">内存</h2>
 <p>下面的选项是指定内存大小。这里我分配了 4G 内存给虚拟机。</p>
 <pre data-lang="bash" class="language-bash z-code"><code class="language-bash" data-lang="bash"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">-m</span></span><span class="z-meta z-function-call z-arguments z-shell"> 4096M</span>
 </span></code></pre>
-<h2 id="wang-luo">网络</h2>
+<h2 id="网络">网络</h2>
 <p>QEMU 将网络支持分成了 2 个部分，一部分是给虚拟机（guest）提供的虚拟网络设备（virtual network device），一部分是与模拟 NIC 交互的网络后端（network backend）。QEMU 在默认配置下提供了 SLiRP 后端，在使用这个后端的情况下， ICMP 协议没法工作，也就是没法 ping,但是 TCP 和 UDP 是可以正常工作的。</p>
 <p>在网络后端这一层，我们选择 <a href="https://docs.kernel.org/networking/tuntap.html">tap</a>。因为 tap 是在 Linux 内核层面支持的，性能比较好，而且可以支持 ICMP/IP 层协议。需要注意的是 ifname 的参数 &quot;tap6&quot; 是我们创建 tap 设备名字。下面是相关参数。</p>
 <pre data-lang="bash" class="language-bash z-code"><code class="language-bash" data-lang="bash"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">-netdev</span></span><span class="z-meta z-function-call z-arguments z-shell"> tap,id=net0,ifname=tap6,script=no,downscript=no</span>
@@ -122,7 +122,7 @@
 <p>QEMU 可以模拟很多的虚拟网络设备，这里我们选择模拟 e1000 网卡。需要注意的是 netdev 的参数需要和前面配置的 netdev 中的 id 对上，这里我们的 netdev 参数为 &quot;net0&quot;。在 mac 参数中，将 MAC 配置成 &quot;52:55:00:d1:55:00&quot;。下面是相关参数。</p>
 <pre data-lang="bash" class="language-bash z-code"><code class="language-bash" data-lang="bash"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">-device</span></span><span class="z-meta z-function-call z-arguments z-shell"> e1000,netdev=net0,mac=52:55:00:d1:55:00</span>
 </span></code></pre>
-<h3 id="ru-he-chuang-jian-tap-she-bei">如何创建 tap 设备</h3>
+<h3 id="如何创建_tap_设备">如何创建 tap 设备</h3>
 <p>上面的参数需要手动创建 tap 设备才能使用。通过下面的命令既可以创建设备名叫 &quot;tap6&quot; 的设备，并且将 IP 设置在 &quot;192.168.122.1&quot;。下面命令的主要操作就是创建 tap 设备，设置 IP，并且启用设备。</p>
 <pre data-lang="bash" class="language-bash z-code"><code class="language-bash" data-lang="bash"><span class="z-source z-shell z-bash"><span class="z-variable z-other z-readwrite z-assignment z-shell">IP</span><span class="z-keyword z-operator z-assignment z-shell">=</span><span class="z-string z-unquoted z-shell">192.168.122.1/24</span>
 <span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">ip</span></span><span class="z-meta z-function-call z-arguments z-shell"> tuntap add tap6 mode tap</span>
@@ -135,16 +135,16 @@
 <span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">ip</span></span><span class="z-meta z-function-call z-arguments z-shell"> link set dev eth0 master br0</span>
 <span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">ip</span></span><span class="z-meta z-function-call z-arguments z-shell"> link set dev br0 up</span>
 </span></code></pre>
-<h3 id="shi-yong-dnsmasq-pei-zhi-dhcp">使用 dnsmasq 配置 DHCP</h3>
+<h3 id="使用_dnsmasq_配置_DHCP">使用 dnsmasq 配置 DHCP</h3>
 <p>如果需要让虚拟机走 DHCP 协议获取 IP 的话，最简单的方式就是在宿主机上使用 dnsmasq 来给虚拟机分配 IP。下面是 dnsmasq 的配置，配合上面的 IP 配置，可以让宿主机的 IP 设置为 192.168.122.1，虚拟机的 IP 在 192.168.122.2,192.168.122.200 这个范围内。</p>
 <pre data-lang="txt" class="language-txt z-code"><code class="language-txt" data-lang="txt"><span class="z-text z-plain">listen-address=192.168.122.1
 dhcp-range=192.168.122.2,192.168.122.200
 </span></code></pre>
-<h3 id="bie-de-xuan-xiang">别的选项</h3>
+<h3 id="别的选项">别的选项</h3>
 <p>下面的选项开启 GDB 远程调试。在 GDB 里使用 <code>target remote :5555</code> 即可连接。</p>
 <pre data-lang="bash" class="language-bash z-code"><code class="language-bash" data-lang="bash"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">-gdb</span></span><span class="z-meta z-function-call z-arguments z-shell"> tcp::5555</span>
 </span></code></pre>
-<h2 id="zui-hou-cheng-guo">最后成果</h2>
+<h2 id="最后成果">最后成果</h2>
 <p>network.sh 脚本，需要 root 权限运行，并且需要配置 dnsmasq 启用 DHCP 服务。</p>
 <pre data-lang="bash" class="language-bash z-code"><code class="language-bash" data-lang="bash"><span class="z-source z-shell z-bash"><span class="z-comment z-line z-number-sign z-shell"><span class="z-punctuation z-definition z-comment z-begin z-shell">#</span></span><span class="z-comment z-line z-number-sign z-shell">!/usr/bin/env bash</span><span class="z-comment z-line z-number-sign z-shell">
 </span><span class="z-meta z-function-call z-shell"><span class="z-support z-function z-set z-shell">set</span></span><span class="z-meta z-function-call z-arguments z-shell"> <span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell">-</span>x</span></span>
@@ -168,7 +168,7 @@ dhcp-range=192.168.122.2,192.168.122.200
 </span><span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell">  -</span>device</span> e1000,netdev=net0,mac=52:55:00:d1:55:00 <span class="z-punctuation z-separator z-continuation z-line z-shell">\
 </span>  <span class="z-meta z-group z-expansion z-parameter z-shell"><span class="z-punctuation z-definition z-variable z-shell">$</span><span class="z-variable z-other z-readwrite z-shell">1</span></span></span>
 </span></code></pre>
-<h2 id="refs">Refs</h2>
+<h2 id="Refs">Refs</h2>
 <ul>
 <li><code>man qemu</code></li>
 <li><a href="https://wiki.qemu.org/Documentation/Networking">https://wiki.qemu.org/Documentation/Networking</a></li>

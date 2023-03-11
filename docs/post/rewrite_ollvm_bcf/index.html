@@ -55,16 +55,16 @@
         <ul>
           
           <li>
-            <a href="https://chenx6.github.io/post/rewrite-ollvm-bcf/#shi-yao-shi-xu-jia-kong-zhi-liu-bogus-control-flow">什么是虚假控制流 (Bogus control flow)</a>
+            <a href="https://chenx6.github.io/post/rewrite_ollvm_bcf/#什么是虚假控制流_(Bogus_control_flow)">什么是虚假控制流 (Bogus control flow)</a>
             
             <ul>
               
               <li>
-                <a href="https://chenx6.github.io/post/rewrite-ollvm-bcf/#ming-ci-jie-shi">名词解释</a>
+                <a href="https://chenx6.github.io/post/rewrite_ollvm_bcf/#名词解释">名词解释</a>
               </li>
               
               <li>
-                <a href="https://chenx6.github.io/post/rewrite-ollvm-bcf/#xu-jia-kong-zhi-liu-de-liu-cheng-biao-shi">虚假控制流的流程表示</a>
+                <a href="https://chenx6.github.io/post/rewrite_ollvm_bcf/#虚假控制流的流程表示">虚假控制流的流程表示</a>
               </li>
               
             </ul>
@@ -72,16 +72,16 @@
           </li>
           
           <li>
-            <a href="https://chenx6.github.io/post/rewrite-ollvm-bcf/#zen-yao-shi-xian">怎么实现</a>
+            <a href="https://chenx6.github.io/post/rewrite_ollvm_bcf/#怎么实现">怎么实现</a>
             
             <ul>
               
               <li>
-                <a href="https://chenx6.github.io/post/rewrite-ollvm-bcf/#bie-de-xiang-mu-shi-zen-yao-shi-xian-de">别的项目是怎么实现的</a>
+                <a href="https://chenx6.github.io/post/rewrite_ollvm_bcf/#别的项目是怎么实现的">别的项目是怎么实现的</a>
               </li>
               
               <li>
-                <a href="https://chenx6.github.io/post/rewrite-ollvm-bcf/#ju-ti-shi-xian">具体实现</a>
+                <a href="https://chenx6.github.io/post/rewrite_ollvm_bcf/#具体实现">具体实现</a>
               </li>
               
             </ul>
@@ -89,12 +89,12 @@
           </li>
           
           <li>
-            <a href="https://chenx6.github.io/post/rewrite-ollvm-bcf/#xiao-guo-yan-shi">效果演示</a>
+            <a href="https://chenx6.github.io/post/rewrite_ollvm_bcf/#效果演示">效果演示</a>
             
           </li>
           
           <li>
-            <a href="https://chenx6.github.io/post/rewrite-ollvm-bcf/#refs">refs</a>
+            <a href="https://chenx6.github.io/post/rewrite_ollvm_bcf/#refs">refs</a>
             
           </li>
           
@@ -104,17 +104,17 @@
     </aside>
     <p>由于我个人觉得 OLLVM 的代码年久失修，所以就新建了个项目，开始学习并重写 OLLVM。项目地址：<a href="https://github.com/chenx6/baby_obfuscator">https://github.com/chenx6/baby_obfuscator</a>。如果将我的重写项目和 OLLVM 相比的话，我的项目的优点就是编译比较快（编译整个项目只需要不到 1 分钟），代码比较“新”吧...</p>
 <p>下面讲讲我个人重写虚假控制流的思路，以及对其他项目中相同功能的理解。</p>
-<h2 id="shi-yao-shi-xu-jia-kong-zhi-liu-bogus-control-flow">什么是虚假控制流 (Bogus control flow)</h2>
+<h2 id="什么是虚假控制流_(Bogus_control_flow)">什么是虚假控制流 (Bogus control flow)</h2>
 <p>在讲解虚假控制流时，我们先解释一些名词，然后看下流程表示就可以知道大概了。</p>
-<h3 id="ming-ci-jie-shi">名词解释</h3>
-<h4 id="bu-tou-ming-wei-ci-opaque-predicate">不透明谓词 (Opaque predicate)</h4>
+<h3 id="名词解释">名词解释</h3>
+<h4 id="不透明谓词_(Opaque_predicate)">不透明谓词 (Opaque predicate)</h4>
 <p>这里引用知乎上大佬的回答：<a href="https://www.zhihu.com/question/46259412/answer/199689652">利用不透明谓词混淆代码的原理是什么？ - 张建涛的回答 - 知乎</a></p>
 <blockquote>
 <p>不透明谓词是指一个表达式，他的值在执行到某处时，对程序员而言必然是已知的，但是由于某种原因，编译器或者说静态分析器无法推断出这个值，只能在运行时确定。</p>
 </blockquote>
-<h4 id="zhong-jian-biao-shi-ir">中间表示 (IR)</h4>
+<h4 id="中间表示_(IR)">中间表示 (IR)</h4>
 <p>在将代码转换成汇编和机器码之前的一种代码表示形式，可以理解为具有跨平台性和其他特性的汇编。</p>
-<h3 id="xu-jia-kong-zhi-liu-de-liu-cheng-biao-shi">虚假控制流的流程表示</h3>
+<h3 id="虚假控制流的流程表示">虚假控制流的流程表示</h3>
 <p>用 OLLVM 项目中的注释部分就可以清晰表示出什么是虚假控制流。可以看到，相对于原程序中的单个代码块，混淆后的程序中加入了一个由不透明谓词组成的条件语句，由于混淆器知道他的值，所以可以保证被混淆程序的正确性，而编译器和反编译器都无法对这个表达式进行求值，只能保留此谓词，达到干扰静态分析的目的。</p>
 <blockquote>
 <p>下面这个图大部分项目都没修正啊...</p>
@@ -146,12 +146,12 @@
                |   |_____________|
                |__________|
 </span></code></pre>
-<h2 id="zen-yao-shi-xian">怎么实现</h2>
-<h3 id="bie-de-xiang-mu-shi-zen-yao-shi-xian-de">别的项目是怎么实现的</h3>
+<h2 id="怎么实现">怎么实现</h2>
+<h3 id="别的项目是怎么实现的">别的项目是怎么实现的</h3>
 <p>在 OLLVM 中，使用了 <code>y &gt; 10 || x * (x + 1) % 2 == 0</code> 这个不透明谓词，学过数学的都知道，<code>x * (x + 1) % 2 == 0</code> 是个永真式。也就是说，混淆器已经知道了 <code>y &gt; 10 || x * (x + 1) % 2 == 0</code> 这个式子的值，所以可以将其放在条件语句中，控制代码的走向；而编译器和反编译器都认为这个表达式需要进行运行后才能求值，会保留这段代码，进而干扰到反编译器。</p>
 <p>在<a href="https://github.com/HikariObfuscator/Core">HikariObfuscator</a>这个项目中使用 IRBuilder 生成一箩筐的整数运算，由于 LLVM 的 IRBuilder 会折叠常量，混淆器就能知道了之前生成的一箩筐的整数运算的最终结果，而编译器和反编译器都不知道生成的表达式的值，所以就获得了一个崭新的不透明谓词。</p>
 <p>当然，上面的两个混淆都有较为简单的破解方法，就是将不透明谓词中的变量修改成常量，并且设置一个初始值，这时候 Hex-rays 等反编译器会对不透明谓词进行求值，如果不透明谓词的结果可知，那么这个表达式将会被优化。</p>
-<h3 id="ju-ti-shi-xian">具体实现</h3>
+<h3 id="具体实现">具体实现</h3>
 <p>这里用的是旧的 LLVM Pass 格式，所以 Pass 的主要逻辑都在 <code>runOnFunction</code> 这个函数中。程序先收集函数中所有的 BasicBlock 和 alloca 指令，然后再随机挑选 BasicBlock 加上虚假控制流。这个 Pass 通过被选中的 BasicBlock 生成虚假的 BasicBlock，然后再使用不透明谓词将这两个 BasicBlock 粘在一起。</p>
 <pre data-lang="cpp" class="language-cpp z-code"><code class="language-cpp" data-lang="cpp"><span class="z-source z-c++">  <span class="z-storage z-modifier z-c++">virtual</span> <span class="z-storage z-type z-c">bool</span> <span class="z-meta z-function z-c++"><span class="z-meta z-toc-list z-full-identifier z-c++"><span class="z-entity z-name z-function z-c++">runOnFunction</span></span></span><span class="z-meta z-function z-parameters z-c++"><span class="z-meta z-group z-c++"><span class="z-punctuation z-section z-group z-begin z-c++">(</span></span></span><span class="z-meta z-function z-parameters z-c++"><span class="z-meta z-group z-c++">Function <span class="z-keyword z-operator z-c">&amp;</span><span class="z-variable z-parameter z-c++">F</span><span class="z-punctuation z-section z-group z-end z-c++">)</span></span></span><span class="z-meta z-function z-c++"> </span><span class="z-meta z-function z-c++"><span class="z-meta z-block z-c++"><span class="z-punctuation z-section z-block z-begin z-c++">{</span></span></span><span class="z-meta z-function z-c++"><span class="z-meta z-block z-c++">
     <span class="z-comment z-line z-double-slash z-c"><span class="z-punctuation z-definition z-comment z-c">//</span> Put origin BB into vector.
@@ -277,7 +277,7 @@
   <span class="z-invalid z-illegal z-stray-bracket-end z-c++">}</span>
 </span></code></pre>
 <p>基本的代码就是上面所讲的了。相比与 OLLVM，重写的代码中省略了大部分虚假 BasicBlock 中的随机生成代码的部分，并改写了虚假谓词生成的逻辑，在 OLLVM 中，先是先生成了 (1.0 == 1.0) 来进行占位，然后再在后面替换前面的永真式，我个人觉得没必要，直接生成不透明谓词不就好了吗...所以代码看起来比较精简（在本文撰写时，带注释的代码行数为180行左右）。</p>
-<h2 id="xiao-guo-yan-shi">效果演示</h2>
+<h2 id="效果演示">效果演示</h2>
 <p>原程序反编译结果，和原代码基本一样：</p>
 <pre data-lang="cpp" class="language-cpp z-code"><code class="language-cpp" data-lang="cpp"><span class="z-source z-c++"><span class="z-storage z-type z-c">int</span> __cdecl <span class="z-meta z-function z-c++"><span class="z-meta z-toc-list z-full-identifier z-c++"><span class="z-entity z-name z-function z-c++">main</span></span></span><span class="z-meta z-function z-parameters z-c++"><span class="z-meta z-group z-c++"><span class="z-punctuation z-section z-group z-begin z-c++">(</span></span></span><span class="z-meta z-function z-parameters z-c++"><span class="z-meta z-group z-c++"><span class="z-storage z-type z-c">int</span> <span class="z-variable z-parameter z-c++">argc</span><span class="z-punctuation z-separator z-c++">,</span> <span class="z-storage z-modifier z-c++">const</span> <span class="z-storage z-type z-c">char</span> <span class="z-keyword z-operator z-c">*</span><span class="z-keyword z-operator z-c">*</span><span class="z-variable z-parameter z-c++">argv</span><span class="z-punctuation z-separator z-c++">,</span> <span class="z-storage z-modifier z-c++">const</span> <span class="z-storage z-type z-c">char</span> <span class="z-keyword z-operator z-c">*</span><span class="z-keyword z-operator z-c">*</span><span class="z-variable z-parameter z-c++">envp</span><span class="z-punctuation z-section z-group z-end z-c++">)</span></span></span><span class="z-meta z-function z-c++">
 </span><span class="z-meta z-function z-c++"><span class="z-meta z-block z-c++"><span class="z-punctuation z-section z-block z-begin z-c++">{</span></span></span><span class="z-meta z-function z-c++"><span class="z-meta z-block z-c++">

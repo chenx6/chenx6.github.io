@@ -11,10 +11,10 @@
 		<title>关于 C 语言编译的那些破事</title>
 		<published>2022-05-21T00:00:00+00:00</published>
 		<updated>2022-05-21T00:00:00+00:00</updated>
-		<link rel="alternate" href="https://chenx6.github.io/post/compile-cheatsheet/" type="text/html"/>
-		<id>https://chenx6.github.io/post/compile-cheatsheet/</id>
+		<link rel="alternate" href="https://chenx6.github.io/post/compile_cheatsheet/" type="text/html"/>
+		<id>https://chenx6.github.io/post/compile_cheatsheet/</id>
 		<content type="html">&lt;p&gt;C 和 C++ 的编译是真的痛苦，会出现一堆离谱的问题。所以我特地写一篇文章讲一下这些破事，并且提供一些样例代码方便复制黏贴。&lt;&#x2F;p&gt;
-&lt;h2 id=&quot;bian-yi-guo-cheng-jian-shu&quot;&gt;编译过程简述&lt;&#x2F;h2&gt;
+&lt;h2 id=&quot;编译过程简述&quot;&gt;编译过程简述&lt;&#x2F;h2&gt;
 &lt;p&gt;在网上能找到一堆的编译流程相关的博客，而且肯定比我讲的正确，所以这里我就简单概括下。&lt;&#x2F;p&gt;
 &lt;p&gt;现在很少有程序能只依赖与 C 标准库和系统 API 了，所以会有一堆的外部依赖库。要想编译成功，得让编译器和链接器都知道去哪找这些库，怎么链接上。于是就有了一堆的编译管理工具。像 CMake 和 Meson 是负责生成编译的脚本，make 和 ninja 则是负责执行编译任务，然后是 gcc 和 clang 将代码编译成目标文件，最后有 ld, gold, mold 将目标文件进行链接生成可执行文件。&lt;&#x2F;p&gt;
 &lt;pre data-lang=&quot;txt&quot; class=&quot;language-txt z-code&quot;&gt;&lt;code class=&quot;language-txt&quot; data-lang=&quot;txt&quot;&gt;&lt;span class=&quot;z-text z-plain&quot;&gt;CMake -&amp;gt; make  -&amp;gt; gcc   -&amp;gt; ld   -&amp;gt; 可执行文件
@@ -23,8 +23,8 @@ Bazel    ...      zig cc   lld
 ...               ...      mold
                            ...
 &lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
-&lt;h2 id=&quot;bian-yi-xi-tong&quot;&gt;编译系统&lt;&#x2F;h2&gt;
-&lt;h3 id=&quot;meson&quot;&gt;Meson&lt;&#x2F;h3&gt;
+&lt;h2 id=&quot;编译系统&quot;&gt;编译系统&lt;&#x2F;h2&gt;
+&lt;h3 id=&quot;Meson&quot;&gt;Meson&lt;&#x2F;h3&gt;
 &lt;p&gt;样例代码&lt;&#x2F;p&gt;
 &lt;pre data-lang=&quot;meson&quot; class=&quot;language-meson z-code&quot;&gt;&lt;code class=&quot;language-meson&quot; data-lang=&quot;meson&quot;&gt;&lt;span class=&quot;z-text z-plain&quot;&gt;# 指定项目名称，使用语言，默认选项
 project(&amp;#39;project name&amp;#39;, &amp;#39;cpp&amp;#39;
@@ -60,8 +60,8 @@ executable(&amp;#39;client&amp;#39;, &amp;#39;src&#x2F;main_client.cpp&amp;#39;,
 &lt;span class=&quot;z-comment z-line z-number-sign z-shell&quot;&gt;&lt;span class=&quot;z-punctuation z-definition z-comment z-begin z-shell&quot;&gt;#&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;span class=&quot;z-comment z-line z-number-sign z-shell&quot;&gt; 编译&lt;&#x2F;span&gt;&lt;span class=&quot;z-comment z-line z-number-sign z-shell&quot;&gt;
 &lt;&#x2F;span&gt;&lt;span class=&quot;z-meta z-function-call z-shell&quot;&gt;&lt;span class=&quot;z-variable z-function z-shell&quot;&gt;meson&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;span class=&quot;z-meta z-function-call z-arguments z-shell&quot;&gt; compile&lt;span class=&quot;z-variable z-parameter z-option z-shell&quot;&gt;&lt;span class=&quot;z-punctuation z-definition z-parameter z-shell&quot;&gt; -&lt;&#x2F;span&gt;C&lt;&#x2F;span&gt; builddir&lt;&#x2F;span&gt;
 &lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
-&lt;p&gt;更多的内容参考 &lt;a href=&quot;https:&#x2F;&#x2F;chenx6.github.io&#x2F;post&#x2F;compile-cheatsheet&#x2F;#refs&quot;&gt;#refs&lt;&#x2F;a&gt;&lt;&#x2F;p&gt;
-&lt;h3 id=&quot;cmake&quot;&gt;CMake&lt;&#x2F;h3&gt;
+&lt;p&gt;更多的内容参考 &lt;a href=&quot;https:&#x2F;&#x2F;chenx6.github.io&#x2F;post&#x2F;compile_cheatsheet&#x2F;#refs&quot;&gt;#refs&lt;&#x2F;a&gt;&lt;&#x2F;p&gt;
+&lt;h3 id=&quot;CMake&quot;&gt;CMake&lt;&#x2F;h3&gt;
 &lt;p&gt;样例代码&lt;&#x2F;p&gt;
 &lt;pre data-lang=&quot;cmake&quot; class=&quot;language-cmake z-code&quot;&gt;&lt;code class=&quot;language-cmake&quot; data-lang=&quot;cmake&quot;&gt;&lt;span class=&quot;z-source z-cmake&quot;&gt;&lt;span class=&quot;z-comment z-line z-cmake&quot;&gt;&lt;span class=&quot;z-punctuation z-definition z-comment z-cmake&quot;&gt;#&lt;&#x2F;span&gt; 指定项目名字，CMake 版本要求，C++ 版本要求&lt;&#x2F;span&gt;
 &lt;span class=&quot;z-meta z-function-call z-cmake&quot;&gt;&lt;span class=&quot;z-support z-function z-project z-cmake&quot;&gt;project&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;span class=&quot;z-meta z-function-call z-arguments z-cmake&quot;&gt;&lt;span class=&quot;z-punctuation z-section z-parens z-begin z-cmake&quot;&gt;(&lt;&#x2F;span&gt;&lt;span class=&quot;z-meta z-string z-unquoted z-cmake&quot;&gt;project_name&lt;&#x2F;span&gt;&lt;span class=&quot;z-punctuation z-section z-parens z-end z-cmake&quot;&gt;)&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
@@ -92,10 +92,10 @@ executable(&amp;#39;client&amp;#39;, &amp;#39;src&#x2F;main_client.cpp&amp;#39;,
 &lt;span class=&quot;z-comment z-line z-number-sign z-shell&quot;&gt;&lt;span class=&quot;z-punctuation z-definition z-comment z-begin z-shell&quot;&gt;#&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;span class=&quot;z-comment z-line z-number-sign z-shell&quot;&gt; Debug 编译&lt;&#x2F;span&gt;&lt;span class=&quot;z-comment z-line z-number-sign z-shell&quot;&gt;
 &lt;&#x2F;span&gt;&lt;span class=&quot;z-meta z-function-call z-shell&quot;&gt;&lt;span class=&quot;z-variable z-function z-shell&quot;&gt;cmake&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;span class=&quot;z-meta z-function-call z-arguments z-shell&quot;&gt;&lt;span class=&quot;z-variable z-parameter z-option z-shell&quot;&gt;&lt;span class=&quot;z-punctuation z-definition z-parameter z-shell&quot;&gt; -&lt;&#x2F;span&gt;DCMAKE_BUILD_TYPE&lt;&#x2F;span&gt;&lt;span class=&quot;z-keyword z-operator z-assignment z-option z-shell&quot;&gt;=&lt;&#x2F;span&gt;Debug ..&lt;&#x2F;span&gt;
 &lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
-&lt;h3 id=&quot;makefile&quot;&gt;Makefile&lt;&#x2F;h3&gt;
+&lt;h3 id=&quot;Makefile&quot;&gt;Makefile&lt;&#x2F;h3&gt;
 &lt;p&gt;Makefile 的可读性真的是灾难级别的，下面这篇文章图文并茂，讲的很好，推荐阅读！！！&lt;&#x2F;p&gt;
 &lt;p&gt;&lt;a href=&quot;https:&#x2F;&#x2F;zhuanlan.zhihu.com&#x2F;p&#x2F;47390641&quot;&gt;Makefile由浅入深--教程、干货&lt;&#x2F;a&gt;&lt;&#x2F;p&gt;
-&lt;h2 id=&quot;ku-guan-li-gong-ju&quot;&gt;库管理工具&lt;&#x2F;h2&gt;
+&lt;h2 id=&quot;库管理工具&quot;&gt;库管理工具&lt;&#x2F;h2&gt;
 &lt;h3 id=&quot;pkg-config&quot;&gt;pkg-config&lt;&#x2F;h3&gt;
 &lt;table&gt;&lt;thead&gt;&lt;tr&gt;&lt;th&gt;选项&lt;&#x2F;th&gt;&lt;th&gt;作用&lt;&#x2F;th&gt;&lt;th&gt;样例&lt;&#x2F;th&gt;&lt;&#x2F;tr&gt;&lt;&#x2F;thead&gt;&lt;tbody&gt;
 &lt;tr&gt;&lt;td&gt;&lt;code&gt;--cflags&lt;&#x2F;code&gt;&lt;&#x2F;td&gt;&lt;td&gt;查询这个库的所需要的 CFLAGS&lt;&#x2F;td&gt;&lt;td&gt;&lt;code&gt;pkg-config --cflags glib-2.0&lt;&#x2F;code&gt;&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
@@ -105,23 +105,23 @@ executable(&amp;#39;client&amp;#39;, &amp;#39;src&#x2F;main_client.cpp&amp;#39;,
 &lt;p&gt;设置 pkg-config 搜索路径&lt;&#x2F;p&gt;
 &lt;pre data-lang=&quot;bash&quot; class=&quot;language-bash z-code&quot;&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;&lt;span class=&quot;z-source z-shell z-bash&quot;&gt;&lt;span class=&quot;z-meta z-function-call z-shell&quot;&gt;&lt;span class=&quot;z-storage z-modifier z-shell&quot;&gt;export&lt;&#x2F;span&gt; &lt;span class=&quot;z-variable z-other z-readwrite z-assignment z-shell&quot;&gt;PKG_CONFIG_PATH&lt;&#x2F;span&gt;&lt;span class=&quot;z-keyword z-operator z-assignment z-shell&quot;&gt;=&lt;&#x2F;span&gt;&lt;span class=&quot;z-string z-unquoted z-shell&quot;&gt;&#x2F;usr&#x2F;lib&#x2F;pkgconfig&#x2F;:&lt;span class=&quot;z-meta z-group z-expansion z-parameter z-shell&quot;&gt;&lt;span class=&quot;z-punctuation z-definition z-variable z-shell&quot;&gt;$&lt;&#x2F;span&gt;&lt;span class=&quot;z-variable z-other z-readwrite z-shell&quot;&gt;PKG_CONFIG_PATH&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
 &lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
-&lt;p&gt;官方文档参考 &lt;a href=&quot;https:&#x2F;&#x2F;chenx6.github.io&#x2F;post&#x2F;compile-cheatsheet&#x2F;#refs&quot;&gt;#refs&lt;&#x2F;a&gt;&lt;&#x2F;p&gt;
-&lt;h2 id=&quot;bian-yi-qi&quot;&gt;编译器&lt;&#x2F;h2&gt;
-&lt;h3 id=&quot;gccbian-yi-xuan-xiang&quot;&gt;GCC编译选项&lt;&#x2F;h3&gt;
-&lt;h4 id=&quot;lian-jie&quot;&gt;链接&lt;&#x2F;h4&gt;
+&lt;p&gt;官方文档参考 &lt;a href=&quot;https:&#x2F;&#x2F;chenx6.github.io&#x2F;post&#x2F;compile_cheatsheet&#x2F;#refs&quot;&gt;#refs&lt;&#x2F;a&gt;&lt;&#x2F;p&gt;
+&lt;h2 id=&quot;编译器&quot;&gt;编译器&lt;&#x2F;h2&gt;
+&lt;h3 id=&quot;GCC编译选项&quot;&gt;GCC编译选项&lt;&#x2F;h3&gt;
+&lt;h4 id=&quot;链接&quot;&gt;链接&lt;&#x2F;h4&gt;
 &lt;table&gt;&lt;thead&gt;&lt;tr&gt;&lt;th&gt;选项&lt;&#x2F;th&gt;&lt;th&gt;作用&lt;&#x2F;th&gt;&lt;th&gt;样例&lt;&#x2F;th&gt;&lt;&#x2F;tr&gt;&lt;&#x2F;thead&gt;&lt;tbody&gt;
 &lt;tr&gt;&lt;td&gt;&lt;code&gt;-l$library&lt;&#x2F;code&gt;&lt;&#x2F;td&gt;&lt;td&gt;链接上某个库&lt;&#x2F;td&gt;&lt;td&gt;&lt;code&gt;-lm&lt;&#x2F;code&gt;&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
 &lt;tr&gt;&lt;td&gt;&lt;code&gt;-static&lt;&#x2F;code&gt;&lt;&#x2F;td&gt;&lt;td&gt;静态链接库&lt;&#x2F;td&gt;&lt;td&gt;&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
 &lt;tr&gt;&lt;td&gt;&lt;code&gt;-static-libstdc++&lt;&#x2F;code&gt;&lt;&#x2F;td&gt;&lt;td&gt;静态链接libstdc++&lt;&#x2F;td&gt;&lt;td&gt;&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
 &lt;tr&gt;&lt;td&gt;&lt;code&gt;-Wl,$option&lt;&#x2F;code&gt;&lt;&#x2F;td&gt;&lt;td&gt;将链接选项传递给 ld&lt;&#x2F;td&gt;&lt;td&gt;&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
 &lt;&#x2F;tbody&gt;&lt;&#x2F;table&gt;
-&lt;h4 id=&quot;mu-lu-sou-suo&quot;&gt;目录搜索&lt;&#x2F;h4&gt;
+&lt;h4 id=&quot;目录搜索&quot;&gt;目录搜索&lt;&#x2F;h4&gt;
 &lt;table&gt;&lt;thead&gt;&lt;tr&gt;&lt;th&gt;选项&lt;&#x2F;th&gt;&lt;th&gt;作用&lt;&#x2F;th&gt;&lt;th&gt;样例&lt;&#x2F;th&gt;&lt;&#x2F;tr&gt;&lt;&#x2F;thead&gt;&lt;tbody&gt;
 &lt;tr&gt;&lt;td&gt;&lt;code&gt;-I $dir&lt;&#x2F;code&gt;&lt;&#x2F;td&gt;&lt;td&gt;（大写的i）头文件搜索路径&lt;&#x2F;td&gt;&lt;td&gt;&lt;code&gt;-I .&#x2F;include&lt;&#x2F;code&gt;&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
 &lt;tr&gt;&lt;td&gt;&lt;code&gt;-L$dir&lt;&#x2F;code&gt;&lt;&#x2F;td&gt;&lt;td&gt;库文件搜索路径&lt;&#x2F;td&gt;&lt;td&gt;&lt;code&gt;-L.&#x2F;lib&lt;&#x2F;code&gt;&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
 &lt;tr&gt;&lt;td&gt;&lt;code&gt;--sysroot=$dir&lt;&#x2F;code&gt;&lt;&#x2F;td&gt;&lt;td&gt;头文件和库的搜索路径&lt;&#x2F;td&gt;&lt;td&gt;&lt;code&gt;--sysroot=&#x2F;usr&lt;&#x2F;code&gt;&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
 &lt;&#x2F;tbody&gt;&lt;&#x2F;table&gt;
-&lt;h3 id=&quot;shi-yong-zig-cc-jin-xing-kua-ping-tai-bian-yi&quot;&gt;使用 zig cc 进行跨平台编译&lt;&#x2F;h3&gt;
+&lt;h3 id=&quot;使用_zig_cc_进行跨平台编译&quot;&gt;使用 zig cc 进行跨平台编译&lt;&#x2F;h3&gt;
 &lt;p&gt;zig cc 真是跨平台编译救星，下面演示下常见命令。&lt;&#x2F;p&gt;
 &lt;pre data-lang=&quot;bash&quot; class=&quot;language-bash z-code&quot;&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;&lt;span class=&quot;z-source z-shell z-bash&quot;&gt;&lt;span class=&quot;z-comment z-line z-number-sign z-shell&quot;&gt;&lt;span class=&quot;z-punctuation z-definition z-comment z-begin z-shell&quot;&gt;#&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;span class=&quot;z-comment z-line z-number-sign z-shell&quot;&gt; 显示支持的 libc&lt;&#x2F;span&gt;&lt;span class=&quot;z-comment z-line z-number-sign z-shell&quot;&gt;
 &lt;&#x2F;span&gt;&lt;span class=&quot;z-meta z-function-call z-shell&quot;&gt;&lt;span class=&quot;z-variable z-function z-shell&quot;&gt;zig&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;span class=&quot;z-meta z-function-call z-arguments z-shell&quot;&gt; targets&lt;&#x2F;span&gt; &lt;span class=&quot;z-keyword z-operator z-logical z-pipe z-shell&quot;&gt;|&lt;&#x2F;span&gt; &lt;span class=&quot;z-meta z-function-call z-shell&quot;&gt;&lt;span class=&quot;z-variable z-function z-shell&quot;&gt;jq&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;span class=&quot;z-meta z-function-call z-arguments z-shell&quot;&gt; .libc&lt;&#x2F;span&gt;
@@ -131,9 +131,9 @@ executable(&amp;#39;client&amp;#39;, &amp;#39;src&#x2F;main_client.cpp&amp;#39;,
 &lt;span class=&quot;z-comment z-line z-number-sign z-shell&quot;&gt;&lt;span class=&quot;z-punctuation z-definition z-comment z-begin z-shell&quot;&gt;#&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;span class=&quot;z-comment z-line z-number-sign z-shell&quot;&gt; 让 make 等工具使用&lt;&#x2F;span&gt;&lt;span class=&quot;z-comment z-line z-number-sign z-shell&quot;&gt;
 &lt;&#x2F;span&gt;&lt;span class=&quot;z-meta z-function-call z-shell&quot;&gt;&lt;span class=&quot;z-variable z-function z-shell&quot;&gt;make&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;span class=&quot;z-meta z-function-call z-arguments z-shell&quot;&gt; CC=&lt;span class=&quot;z-string z-quoted z-double z-shell&quot;&gt;&lt;span class=&quot;z-punctuation z-definition z-string z-begin z-shell&quot;&gt;&amp;quot;&lt;&#x2F;span&gt;zig cc&lt;span class=&quot;z-punctuation z-definition z-string z-end z-shell&quot;&gt;&amp;quot;&lt;&#x2F;span&gt;&lt;&#x2F;span&gt; CXX=&lt;span class=&quot;z-string z-quoted z-double z-shell&quot;&gt;&lt;span class=&quot;z-punctuation z-definition z-string z-begin z-shell&quot;&gt;&amp;quot;&lt;&#x2F;span&gt;zig c++&lt;span class=&quot;z-punctuation z-definition z-string z-end z-shell&quot;&gt;&amp;quot;&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
 &lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
-&lt;p&gt;参考文章 &lt;a href=&quot;https:&#x2F;&#x2F;chenx6.github.io&#x2F;post&#x2F;compile-cheatsheet&#x2F;#refs&quot;&gt;#refs&lt;&#x2F;a&gt;&lt;&#x2F;p&gt;
-&lt;h2 id=&quot;huan-jing-pei-zhi&quot;&gt;环境配置&lt;&#x2F;h2&gt;
-&lt;h3 id=&quot;docker-podman&quot;&gt;Docker&#x2F;Podman&lt;&#x2F;h3&gt;
+&lt;p&gt;参考文章 &lt;a href=&quot;https:&#x2F;&#x2F;chenx6.github.io&#x2F;post&#x2F;compile_cheatsheet&#x2F;#refs&quot;&gt;#refs&lt;&#x2F;a&gt;&lt;&#x2F;p&gt;
+&lt;h2 id=&quot;环境配置&quot;&gt;环境配置&lt;&#x2F;h2&gt;
+&lt;h3 id=&quot;Docker&#x2F;Podman&quot;&gt;Docker&#x2F;Podman&lt;&#x2F;h3&gt;
 &lt;p&gt;Ubuntu image，添加 32 位支持，安装编译工具链，库和 CMake&lt;&#x2F;p&gt;
 &lt;pre data-lang=&quot;dockerfile&quot; class=&quot;language-dockerfile z-code&quot;&gt;&lt;code class=&quot;language-dockerfile&quot; data-lang=&quot;dockerfile&quot;&gt;&lt;span class=&quot;z-source z-dockerfile&quot;&gt;&lt;span class=&quot;z-keyword z-control z-dockerfile&quot;&gt;FROM&lt;&#x2F;span&gt; ubuntu:&lt;span class=&quot;z-entity z-name z-enum z-tag-digest&quot;&gt;18.04&lt;&#x2F;span&gt;
 
@@ -154,11 +154,11 @@ executable(&amp;#39;client&amp;#39;, &amp;#39;src&#x2F;main_client.cpp&amp;#39;,
 &lt;p&gt;使用容器进行编译。设置成运行完后删除，并将当前目录映射到 &amp;quot;&#x2F;src&amp;quot; 目录下，启动名字为 &lt;code&gt;$容器名字&lt;&#x2F;code&gt; 的容器。&lt;&#x2F;p&gt;
 &lt;pre data-lang=&quot;bash&quot; class=&quot;language-bash z-code&quot;&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;&lt;span class=&quot;z-source z-shell z-bash&quot;&gt;&lt;span class=&quot;z-meta z-function-call z-shell&quot;&gt;&lt;span class=&quot;z-variable z-function z-shell&quot;&gt;podman&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;span class=&quot;z-meta z-function-call z-arguments z-shell&quot;&gt; run&lt;span class=&quot;z-variable z-parameter z-option z-shell&quot;&gt;&lt;span class=&quot;z-punctuation z-definition z-parameter z-shell&quot;&gt; --&lt;&#x2F;span&gt;rm&lt;&#x2F;span&gt;&lt;span class=&quot;z-variable z-parameter z-option z-shell&quot;&gt;&lt;span class=&quot;z-punctuation z-definition z-parameter z-shell&quot;&gt; -&lt;&#x2F;span&gt;v&lt;&#x2F;span&gt; &lt;span class=&quot;z-string z-quoted z-double z-shell&quot;&gt;&lt;span class=&quot;z-punctuation z-definition z-string z-begin z-shell&quot;&gt;&amp;quot;&lt;&#x2F;span&gt;&lt;span class=&quot;z-meta z-group z-expansion z-command z-parens z-shell&quot;&gt;&lt;span class=&quot;z-punctuation z-definition z-variable z-shell&quot;&gt;$&lt;&#x2F;span&gt;&lt;span class=&quot;z-punctuation z-section z-parens z-begin z-shell&quot;&gt;(&lt;&#x2F;span&gt;&lt;span class=&quot;z-meta z-function-call z-shell&quot;&gt;&lt;span class=&quot;z-variable z-function z-shell&quot;&gt;pwd&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;span class=&quot;z-punctuation z-section z-parens z-end z-shell&quot;&gt;)&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;:&#x2F;src&lt;span class=&quot;z-punctuation z-definition z-string z-end z-shell&quot;&gt;&amp;quot;&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;span class=&quot;z-variable z-parameter z-option z-shell&quot;&gt;&lt;span class=&quot;z-punctuation z-definition z-parameter z-shell&quot;&gt; -&lt;&#x2F;span&gt;it&lt;&#x2F;span&gt; &lt;span class=&quot;z-meta z-group z-expansion z-parameter z-shell&quot;&gt;&lt;span class=&quot;z-punctuation z-definition z-variable z-shell&quot;&gt;$&lt;&#x2F;span&gt;&lt;span class=&quot;z-variable z-other z-readwrite z-shell&quot;&gt;容器名字&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
 &lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
-&lt;h3 id=&quot;glibc-symver&quot;&gt;Glibc symver&lt;&#x2F;h3&gt;
-&lt;p&gt;有时候在新系统上编译的可执行文件，在旧系统上运行时，会产生 &amp;quot;找不到函数&amp;quot; 错误。这时候可以通过指定 symver 来进行兼容旧版本。具体细节可以参考 &lt;a href=&quot;https:&#x2F;&#x2F;chenx6.github.io&#x2F;post&#x2F;compile-cheatsheet&#x2F;#Refs&quot;&gt;#Refs&lt;&#x2F;a&gt; 中的 &amp;quot;All about symbol versioning&amp;quot;，或者使用 &amp;quot;wheybags&#x2F;glibc_version_header&amp;quot; 这个项目。&lt;&#x2F;p&gt;
+&lt;h3 id=&quot;Glibc_symver&quot;&gt;Glibc symver&lt;&#x2F;h3&gt;
+&lt;p&gt;有时候在新系统上编译的可执行文件，在旧系统上运行时，会产生 &amp;quot;找不到函数&amp;quot; 错误。这时候可以通过指定 symver 来进行兼容旧版本。具体细节可以参考 &lt;a href=&quot;https:&#x2F;&#x2F;chenx6.github.io&#x2F;post&#x2F;compile_cheatsheet&#x2F;#Refs&quot;&gt;#Refs&lt;&#x2F;a&gt; 中的 &amp;quot;All about symbol versioning&amp;quot;，或者使用 &amp;quot;wheybags&#x2F;glibc_version_header&amp;quot; 这个项目。&lt;&#x2F;p&gt;
 &lt;pre data-lang=&quot;c&quot; class=&quot;language-c z-code&quot;&gt;&lt;code class=&quot;language-c&quot; data-lang=&quot;c&quot;&gt;&lt;span class=&quot;z-source z-c&quot;&gt;&lt;span class=&quot;z-meta z-function-call z-c&quot;&gt;&lt;span class=&quot;z-variable z-function z-c&quot;&gt;__asm__&lt;&#x2F;span&gt;&lt;span class=&quot;z-meta z-group z-c&quot;&gt;&lt;span class=&quot;z-punctuation z-section z-group z-begin z-c&quot;&gt;(&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;span class=&quot;z-meta z-function-call z-c&quot;&gt;&lt;span class=&quot;z-meta z-group z-c&quot;&gt;&lt;span class=&quot;z-string z-quoted z-double z-c&quot;&gt;&lt;span class=&quot;z-punctuation z-definition z-string z-begin z-c&quot;&gt;&amp;quot;&lt;&#x2F;span&gt;.symver fopen,fopen@GLIBC_2.2.5&lt;span class=&quot;z-punctuation z-definition z-string z-end z-c&quot;&gt;&amp;quot;&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;span class=&quot;z-meta z-group z-c&quot;&gt;&lt;span class=&quot;z-punctuation z-section z-group z-end z-c&quot;&gt;)&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;span class=&quot;z-punctuation z-terminator z-c&quot;&gt;;&lt;&#x2F;span&gt;
 &lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
-&lt;h2 id=&quot;refs&quot;&gt;Refs&lt;&#x2F;h2&gt;
+&lt;h2 id=&quot;Refs&quot;&gt;Refs&lt;&#x2F;h2&gt;
 &lt;ul&gt;
 &lt;li&gt;&lt;a href=&quot;https:&#x2F;&#x2F;gcc.gnu.org&#x2F;onlinedocs&#x2F;gcc-11.3.0&#x2F;gcc&#x2F;&quot;&gt;https:&#x2F;&#x2F;gcc.gnu.org&#x2F;onlinedocs&#x2F;gcc-11.3.0&#x2F;gcc&#x2F;&lt;&#x2F;a&gt;&lt;&#x2F;li&gt;
 &lt;li&gt;&lt;a href=&quot;https:&#x2F;&#x2F;www.freedesktop.org&#x2F;wiki&#x2F;Software&#x2F;pkg-config&quot;&gt;https:&#x2F;&#x2F;www.freedesktop.org&#x2F;wiki&#x2F;Software&#x2F;pkg-config&lt;&#x2F;a&gt;&lt;&#x2F;li&gt;

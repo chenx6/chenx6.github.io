@@ -55,29 +55,29 @@
         <ul>
           
           <li>
-            <a href="https://chenx6.github.io/post/fail-firm-fuzz/#dai-ma-fen-xi-ni-xiang-gong-cheng">代码分析&#x2F;逆向工程</a>
+            <a href="https://chenx6.github.io/post/fail_firm_fuzz/#代码分析/逆向工程">代码分析&#x2F;逆向工程</a>
             
           </li>
           
           <li>
-            <a href="https://chenx6.github.io/post/fail-firm-fuzz/#mo-ni-huan-jing-pei-zhi">模拟环境配置</a>
+            <a href="https://chenx6.github.io/post/fail_firm_fuzz/#模拟环境配置">模拟环境配置</a>
             
             <ul>
               
               <li>
-                <a href="https://chenx6.github.io/post/fail-firm-fuzz/#kua-ping-tai-bian-yi-lian-shi-yong">跨平台编译链使用</a>
+                <a href="https://chenx6.github.io/post/fail_firm_fuzz/#跨平台编译链使用">跨平台编译链使用</a>
               </li>
               
               <li>
-                <a href="https://chenx6.github.io/post/fail-firm-fuzz/#chu-xian-dev-nvram-permission-denied">出现 &#x2F;dev&#x2F;nvram: Permission denied</a>
+                <a href="https://chenx6.github.io/post/fail_firm_fuzz/#出现_/dev/nvram:_Permission_denied">出现 &#x2F;dev&#x2F;nvram: Permission denied</a>
               </li>
               
               <li>
-                <a href="https://chenx6.github.io/post/fail-firm-fuzz/#hook-uclibc-main-zhi-jie-diao-yong-handle-request">Hook __uClibc_main 直接调用 handle_request</a>
+                <a href="https://chenx6.github.io/post/fail_firm_fuzz/#Hook___uClibc_main_直接调用_handle_request">Hook __uClibc_main 直接调用 handle_request</a>
               </li>
               
               <li>
-                <a href="https://chenx6.github.io/post/fail-firm-fuzz/#shi-yong-qemu-arm-jin-xing-mo-ni">使用 qemu-arm 进行模拟</a>
+                <a href="https://chenx6.github.io/post/fail_firm_fuzz/#使用_qemu-arm_进行模拟">使用 qemu-arm 进行模拟</a>
               </li>
               
             </ul>
@@ -85,20 +85,20 @@
           </li>
           
           <li>
-            <a href="https://chenx6.github.io/post/fail-firm-fuzz/#fuzz-qian-zhun-bei">fuzz 前准备</a>
+            <a href="https://chenx6.github.io/post/fail_firm_fuzz/#fuzz_前准备">fuzz 前准备</a>
             
             <ul>
               
               <li>
-                <a href="https://chenx6.github.io/post/fail-firm-fuzz/#huo-qu-shu-ru-shu-ju">获取输入数据</a>
+                <a href="https://chenx6.github.io/post/fail_firm_fuzz/#获取输入数据">获取输入数据</a>
               </li>
               
               <li>
-                <a href="https://chenx6.github.io/post/fail-firm-fuzz/#huo-qu-zi-dian">获取字典</a>
+                <a href="https://chenx6.github.io/post/fail_firm_fuzz/#获取字典">获取字典</a>
               </li>
               
               <li>
-                <a href="https://chenx6.github.io/post/fail-firm-fuzz/#shi-yong-ramdisk">使用 ramdisk</a>
+                <a href="https://chenx6.github.io/post/fail_firm_fuzz/#使用_ramdisk">使用 ramdisk</a>
               </li>
               
             </ul>
@@ -106,27 +106,27 @@
           </li>
           
           <li>
-            <a href="https://chenx6.github.io/post/fail-firm-fuzz/#shi-yong-afl-jin-xing-yi-jia-gou-fuzz">使用 AFL++ 进行异架构 Fuzz</a>
+            <a href="https://chenx6.github.io/post/fail_firm_fuzz/#使用_AFL++_进行异架构_Fuzz">使用 AFL++ 进行异架构 Fuzz</a>
             
           </li>
           
           <li>
-            <a href="https://chenx6.github.io/post/fail-firm-fuzz/#diao-shi">调试</a>
+            <a href="https://chenx6.github.io/post/fail_firm_fuzz/#调试">调试</a>
             
           </li>
           
           <li>
-            <a href="https://chenx6.github.io/post/fail-firm-fuzz/#deng-dai-wan-shan-de-di-fang">等待完善的地方</a>
+            <a href="https://chenx6.github.io/post/fail_firm_fuzz/#等待完善的地方">等待完善的地方</a>
             
           </li>
           
           <li>
-            <a href="https://chenx6.github.io/post/fail-firm-fuzz/#zong-jie">总结</a>
+            <a href="https://chenx6.github.io/post/fail_firm_fuzz/#总结">总结</a>
             
           </li>
           
           <li>
-            <a href="https://chenx6.github.io/post/fail-firm-fuzz/#refs">refs</a>
+            <a href="https://chenx6.github.io/post/fail_firm_fuzz/#refs">refs</a>
             
           </li>
           
@@ -135,7 +135,7 @@
       
     </aside>
     <p>这是我第一次对华硕路由器的 httpd 进行 fuzz。结果 fuzz 出来的结果没有经过实机测试，就提交上去了，然后就是华硕的安全团队复现不出来...为什么复现不出来，在本文总结处进行分析。本文主要讲我在进行固件 fuzz 时的具体过程。</p>
-<h2 id="dai-ma-fen-xi-ni-xiang-gong-cheng">代码分析/逆向工程</h2>
+<h2 id="代码分析/逆向工程">代码分析/逆向工程</h2>
 <p>华硕路由器的大部分源代码是公开的，可以在官网上下载到，并且有个开源的 <a href="https://github.com/RMerl/asuswrt-merlin.ng">RMerl/asuswrt-merlin.ng</a>。阅读源代码发现， httpd 的源代码中间调用了些博通的库，没法直接用编译器进行插桩。所以就当作源码不存在，直接下载二进制文件进行无文件 fuzz 了...</p>
 <blockquote>
 <p>2021 年 1 月 15 日，官网上突然载不到源代码了，所以请照着 RMerl/asuswrt-merlin.ng 项目进行代码审计。</p>
@@ -167,8 +167,8 @@
     <span class="z-meta z-function-call z-c"><span class="z-variable z-function z-c">fflush</span><span class="z-meta z-group z-c"><span class="z-punctuation z-section z-group z-begin z-c">(</span></span></span><span class="z-meta z-function-call z-c"><span class="z-meta z-group z-c">conn_fp</span><span class="z-meta z-group z-c"><span class="z-punctuation z-section z-group z-end z-c">)</span></span></span><span class="z-punctuation z-terminator z-c">;</span>
 </span></code></pre>
 <p>之前爆出的漏洞很多都是在 <code>handle_request</code> 中的，并且这个函数的代码量比较大，简单的代码审计已经看不出问题来了...所以就对这个函数进行 fuzz。</p>
-<h2 id="mo-ni-huan-jing-pei-zhi">模拟环境配置</h2>
-<h3 id="kua-ping-tai-bian-yi-lian-shi-yong">跨平台编译链使用</h3>
+<h2 id="模拟环境配置">模拟环境配置</h2>
+<h3 id="跨平台编译链使用">跨平台编译链使用</h3>
 <p>这里我使用了 <a href="https://github.com/RMerl/am-toolchains">RMerl/am-toolchains</a>。通过使用 <code>LD_LIBRARY_PATH</code> 指定链接库的位置，这样才能链接上相应的库。</p>
 <pre data-lang="bash" class="language-bash z-code"><code class="language-bash" data-lang="bash"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">$</span></span><span class="z-meta z-function-call z-arguments z-shell"> export LD_LIBRARY_PATH=<span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>/part/to/am-toolchains/brcm-arm-sdk/hndtools-arm-linux-2.6.36-uclibc-4.5.3/lib<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span></span>
 <span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">$</span></span><span class="z-meta z-function-call z-arguments z-shell"> /part/to/am-toolchains/brcm-arm-sdk/hndtools-arm-linux-2.6.36-uclibc-4.5.3/bin/arm-uclibc-gcc</span>
@@ -177,10 +177,10 @@
 <p>出现隐式声明函数时，但是这个函数又是 GNU 标准实现的函数的话，可以试着加入下面这句宏定义到代码开头。例如我在编译 libnvram 时出现 <code>警告： 隐式声明函数‘strndup’</code>，加上下面这句宏定义就可以正常编译了。</p>
 <pre data-lang="c" class="language-c z-code"><code class="language-c" data-lang="c"><span class="z-source z-c"><span class="z-meta z-preprocessor z-macro z-c"><span class="z-keyword z-control z-import z-define z-c">#define</span></span><span class="z-meta z-preprocessor z-macro z-c"> <span class="z-entity z-name z-constant z-preprocessor z-c">_GNU_SOURCE</span></span>
 </span></code></pre>
-<h3 id="chu-xian-dev-nvram-permission-denied">出现 <code>/dev/nvram: Permission denied</code></h3>
+<h3 id="出现_/dev/nvram:_Permission_denied">出现 <code>/dev/nvram: Permission denied</code></h3>
 <p>宿主机上肯定没有 <code>/dev/nvram</code> 啊，所以使用 QEMU 进行模拟时使用了 <a href="https://github.com/firmadyne/libnvram">firmadyne/libnvram</a> 这个库 Hook 掉 nvram 的相关操作，然后将这个库添加到 <code>LD_PRELOAD</code> 中。在使用时如果发现这个库没有创建 tmpfs 进行存储的话，那就手动用 <code>sudo mount -t tmpfs -o size=10M tmpfs $挂载路径</code> 创建一个。可以修改 <code>config.h</code> 实现将挂载路径放在别的目录下。例如我将挂载路径改动到了 <code>/mnt/libnvram</code>。</p>
-<h3 id="hook-uclibc-main-zhi-jie-diao-yong-handle-request">Hook <code>__uClibc_main</code> 直接调用 <code>handle_request</code></h3>
-<p>根据 <a href="https://chenx6.github.io/post/fail-firm-fuzz/#refs">Modern Vulnerability Research Techniques on Embedded Systems</a> 这篇文章，我通过 Hook <code>__uClibc_main</code> 来实现直接 fuzz <code>handle_request</code> 函数。</p>
+<h3 id="Hook___uClibc_main_直接调用_handle_request">Hook <code>__uClibc_main</code> 直接调用 <code>handle_request</code></h3>
+<p>根据 <a href="https://chenx6.github.io/post/fail_firm_fuzz/#refs">Modern Vulnerability Research Techniques on Embedded Systems</a> 这篇文章，我通过 Hook <code>__uClibc_main</code> 来实现直接 fuzz <code>handle_request</code> 函数。</p>
 <p>由于在解析 http 请求时，程序使用了 fgets 等 c 语言相关函数，所以我决定使用普通的文件流代替 TCP 流。</p>
 <p>动态库的主要功能就是初始化被 fuzz 程序的相关变量，将 fuzz 的输入塞到程序中，然后运行函数，最后查看运行结果。</p>
 <pre data-lang="c" class="language-c z-code"><code class="language-c" data-lang="c"><span class="z-source z-c"><span class="z-comment z-line z-double-slash z-c"><span class="z-punctuation z-definition z-comment z-c">//</span> gcc main_hook.c -o main_hook.so -fPIC -shared -ldl
@@ -238,7 +238,7 @@
     <span class="z-keyword z-control z-flow z-return z-c">return</span> <span class="z-meta z-function-call z-c"><span class="z-variable z-function z-c">orig</span><span class="z-meta z-group z-c"><span class="z-punctuation z-section z-group z-begin z-c">(</span></span></span><span class="z-meta z-function-call z-c"><span class="z-meta z-group z-c">main_hook<span class="z-punctuation z-separator z-c">,</span> argc<span class="z-punctuation z-separator z-c">,</span> argv<span class="z-punctuation z-separator z-c">,</span> init<span class="z-punctuation z-separator z-c">,</span> fini<span class="z-punctuation z-separator z-c">,</span> rtld_fini<span class="z-punctuation z-separator z-c">,</span> stack_end</span></span><span class="z-meta z-function-call z-c"><span class="z-meta z-group z-c"><span class="z-punctuation z-section z-group z-end z-c">)</span></span></span><span class="z-punctuation z-terminator z-c">;</span>
 </span></span><span class="z-meta z-function z-c"><span class="z-meta z-block z-c"><span class="z-punctuation z-section z-block z-end z-c">}</span></span></span>
 </span></code></pre>
-<h3 id="shi-yong-qemu-arm-jin-xing-mo-ni">使用 qemu-arm 进行模拟</h3>
+<h3 id="使用_qemu-arm_进行模拟">使用 qemu-arm 进行模拟</h3>
 <p>这里使用了 qemu-arm 进行用户态模拟，在 <code>-L</code> 参数中加上解压出来的 <code>squashfs-root</code> 的路径，并在 <code>-E</code> 参数后的 <code>LD_PRELOAD</code> 变量加上 Hook 的库。</p>
 <p>如果出现下面的情况，那就手动写入到缺失的文件中。</p>
 <pre data-lang="bash" class="language-bash z-code"><code class="language-bash" data-lang="bash"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">nvram_get_buf:</span></span><span class="z-meta z-function-call z-arguments z-shell"> Unable to open key: /mnt/libnvram/某些字段</span>
@@ -255,8 +255,8 @@
 <span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">nvram_get_buf:</span></span><span class="z-meta z-function-call z-arguments z-shell"> = <span class="z-string z-quoted z-double z-shell"><span class="z-punctuation z-definition z-string z-begin z-shell">&quot;</span>0<span class="z-punctuation z-definition z-string z-end z-shell">&quot;</span></span></span>
 <span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">...</span></span>
 </span></code></pre>
-<h2 id="fuzz-qian-zhun-bei">fuzz 前准备</h2>
-<h3 id="huo-qu-shu-ru-shu-ju">获取输入数据</h3>
+<h2 id="fuzz_前准备">fuzz 前准备</h2>
+<h3 id="获取输入数据">获取输入数据</h3>
 <p>可以去别的项目中寻找他们的测试样例，然后用脚本提取出来。下面是提取 &quot;http-parser&quot; 这个项目的样例，并写入文件中。</p>
 <pre data-lang="python" class="language-python z-code"><code class="language-python" data-lang="python"><span class="z-source z-python"><span class="z-meta z-statement z-import z-python"><span class="z-keyword z-control z-import z-from z-python">from</span></span><span class="z-meta z-statement z-import z-python"><span class="z-meta z-import-source z-python"> <span class="z-meta z-import-path z-python"><span class="z-meta z-import-name z-python">re</span></span> <span class="z-meta z-statement z-import z-python"><span class="z-keyword z-control z-import z-python">import</span></span></span></span><span class="z-meta z-statement z-import z-python"></span><span class="z-meta z-statement z-import z-python"> <span class="z-support z-function z-builtin z-python">compile</span></span>
 
@@ -286,14 +286,14 @@
         <span class="z-meta z-qualified-name z-python"><span class="z-meta z-generic-name z-python">begin_record</span></span> <span class="z-keyword z-operator z-assignment z-python">=</span> <span class="z-constant z-language z-python">False</span>
 
 </span></code></pre>
-<h3 id="huo-qu-zi-dian">获取字典</h3>
-<p><a href="https://chenx6.github.io/post/fail-firm-fuzz/#refs">AFLplusplus/AFLplusplus</a> 项目中的 <code>dictionaries</code> 目录中就有一些字典，可以拿来使用。</p>
-<h3 id="shi-yong-ramdisk">使用 ramdisk</h3>
+<h3 id="获取字典">获取字典</h3>
+<p><a href="https://chenx6.github.io/post/fail_firm_fuzz/#refs">AFLplusplus/AFLplusplus</a> 项目中的 <code>dictionaries</code> 目录中就有一些字典，可以拿来使用。</p>
+<h3 id="使用_ramdisk">使用 ramdisk</h3>
 <p>由于 fuzz 比较消耗硬盘读写，所以通过下面的命令，使用内存盘减少硬盘消耗。</p>
 <pre data-lang="bash" class="language-bash z-code"><code class="language-bash" data-lang="bash"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">mkdir</span></span><span class="z-meta z-function-call z-arguments z-shell"> /mnt/ramdisk</span>
 <span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">mount</span></span><span class="z-meta z-function-call z-arguments z-shell"><span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>t</span> tmpfs<span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>o</span> size=2048M tmpfs /mnt/ramdisk</span>
 </span></code></pre>
-<h2 id="shi-yong-afl-jin-xing-yi-jia-gou-fuzz">使用 AFL++ 进行异架构 Fuzz</h2>
+<h2 id="使用_AFL++_进行异架构_Fuzz">使用 AFL++ 进行异架构 Fuzz</h2>
 <p>AFL++ 是个不错的项目，扩展了原版 AFL，并且有详细的文档和样例代码（有这两项就已经超越了90%++的开源项目了）。</p>
 <p>AFL++ 用了 git submodule 进行导入其他项目，编译时建议使用 proxychains 或者设置 <code>http_proxy</code> 环境变量来强制 git 走代理进行 clone，加快速度。其他的编译事项在 <code>README</code> 里写的非常详细了。我们需要 fuzz 的程序是 arm 架构的，所以在编译 QEMU 时加上 <code>CPU_TARGET=arm</code> 环境变量，指定 QEMU 编译架构。</p>
 <p>最后就是运行 AFL++ 了。参数中 <code>-Q</code> 指定 QEMU 模式，<code>-m none</code> 指定内存限制为没有，<code>-i</code> 和 <code>-o</code> 对应的则是输入和输出。程序使用文件方式读入数据，所以最后加上 <code>@@</code>。</p>
@@ -304,19 +304,19 @@
 <span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">/part/to/AFLplusplus/afl-fuzz</span></span><span class="z-meta z-function-call z-arguments z-shell"><span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>Q</span><span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>m</span> none<span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>i</span> corpus/<span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>o</span> output/ ./squashfs-root/usr/sbin/httpd @@</span>
 </span></code></pre>
 <p>然后就是喜闻乐见的显示信息窗口了。</p>
-<p><img src="https://chenx6.github.io/post/fail-firm-fuzz/./pictures/fail_firm_fuzz_0.png" alt="afl" /></p>
-<h2 id="diao-shi">调试</h2>
+<p><img src="https://chenx6.github.io/post/fail_firm_fuzz/./pictures/fail_firm_fuzz_0.png" alt="afl" /></p>
+<h2 id="调试">调试</h2>
 <p>对 qemu-user 进行模拟的程序，可以通过 <code>-g</code> 参数，开启 gdbserver,然后在本机使用 <code>gdb-multiarch</code> 进行调试。</p>
 <p>先使用 qemu-arm 加上 <code>-g</code> 选项启动程序。</p>
 <pre data-lang="bash" class="language-bash z-code"><code class="language-bash" data-lang="bash"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">qemu-arm</span></span><span class="z-meta z-function-call z-arguments z-shell"><span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>g</span> <span class="z-meta z-group z-expansion z-parameter z-shell"><span class="z-punctuation z-definition z-variable z-shell">$</span><span class="z-variable z-other z-readwrite z-shell">端口号</span></span></span>
 </span></code></pre>
 <p>然后使用 <code>gdb-multiarch $程序</code> 和 <code>target remote :$端口号</code> 命令连接上 server。最后就是正常的使用 gdb 进行调试了。</p>
-<h2 id="deng-dai-wan-shan-de-di-fang">等待完善的地方</h2>
+<h2 id="等待完善的地方">等待完善的地方</h2>
 <p>在进行 fuzz 后，我发现 AFL++ 在 QEMU 模式下，也使用 Persist 模式，如果能使用 Persist 模式的话，可以大幅提高 Fuzz 效率。演示代码在 AFL++ 项目的 <code>utils</code> 目录。</p>
 <p>使用 master/slave 模式启动多个 fuzzer 进行 fuzz，提高 fuzz 效率。</p>
-<h2 id="zong-jie">总结</h2>
+<h2 id="总结">总结</h2>
 <p>这是一篇时隔几个月才写的复现文章，之前还是比较忙，所以没时间写文章。</p>
-<p>在这几个月里，我突然明白了为什么报上去的漏洞别人复现不了，因为 <a href="https://chenx6.github.io/post/fail-firm-fuzz/#refs">firmadyne/libnvram</a> 这个项目在 key 不存在时返回了 NULL，然后 httpd 中的部分地方又没有对值为 NULL 的情况做处理，测试时找的网络上的路由器可能存在着已经被新版本修复的漏洞，所以才会碰巧“测试成功”。然而真机在通常情况下存在这个 key，并且修复了大量的漏洞，所以复现失败。</p>
+<p>在这几个月里，我突然明白了为什么报上去的漏洞别人复现不了，因为 <a href="https://chenx6.github.io/post/fail_firm_fuzz/#refs">firmadyne/libnvram</a> 这个项目在 key 不存在时返回了 NULL，然后 httpd 中的部分地方又没有对值为 NULL 的情况做处理，测试时找的网络上的路由器可能存在着已经被新版本修复的漏洞，所以才会碰巧“测试成功”。然而真机在通常情况下存在这个 key，并且修复了大量的漏洞，所以复现失败。</p>
 <p>当然，如果有人看完这篇文章，并且借助这篇文章的经验挖到了洞，能不能给我留个评论，让我膜拜一下...</p>
 <h2 id="refs">refs</h2>
 <p>参考文章</p>

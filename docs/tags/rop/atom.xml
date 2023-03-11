@@ -14,15 +14,15 @@
 		<link rel="alternate" href="https://chenx6.github.io/post/different-rop/" type="text/html"/>
 		<id>https://chenx6.github.io/post/different-rop/</id>
 		<content type="html">&lt;p&gt;看了许多讲 ROP 的文章，发现很多只是讲了怎么利用，但是没有讲为什么这么利用。所以写文记录。&lt;&#x2F;p&gt;
-&lt;h2 id=&quot;shi-yao-shi-rop&quot;&gt;什么是 ROP&lt;&#x2F;h2&gt;
+&lt;h2 id=&quot;什么是_ROP&quot;&gt;什么是 ROP&lt;&#x2F;h2&gt;
 &lt;p&gt;ROP (Return orient programming) 是一种漏洞利用方法，使得攻击者绕过保护(例如 NX 栈不可执行)执行恶意代码。攻击者通过栈溢出等手段实现覆盖返回地址劫持程序控制流，并且通过不同的代码片段(Gadgets)来拼接出攻击者希望执行的代码。&lt;&#x2F;p&gt;
-&lt;h2 id=&quot;zen-yao-jin-xing-rop&quot;&gt;怎么进行 ROP&lt;&#x2F;h2&gt;
-&lt;h3 id=&quot;hui-bian-fu-xi&quot;&gt;汇编复习&lt;&#x2F;h3&gt;
+&lt;h2 id=&quot;怎么进行_ROP&quot;&gt;怎么进行 ROP&lt;&#x2F;h2&gt;
+&lt;h3 id=&quot;汇编复习&quot;&gt;汇编复习&lt;&#x2F;h3&gt;
 &lt;p&gt;我们先复习一下 x86 架构下的一些指令。&lt;&#x2F;p&gt;
 &lt;p&gt;调用一个函数一般使用 &lt;code&gt;call&lt;&#x2F;code&gt; 指令，&lt;code&gt;call func&lt;&#x2F;code&gt; 这条指令相当于 &lt;code&gt;push ip, jmp func&lt;&#x2F;code&gt;，即将当前 IP(instruction pointer 指令寄存器) 的地址存入栈中，并将 IP 改为被调用函数的地址。&lt;&#x2F;p&gt;
 &lt;p&gt;&lt;code&gt;leave&lt;&#x2F;code&gt; 指令由于效率低于等价指令 &lt;code&gt;mov sp, bp; pop bp&lt;&#x2F;code&gt;，且可以被等价替换所以比较少见。&lt;&#x2F;p&gt;
 &lt;p&gt;ROP 中经常出现 &lt;code&gt;ret&lt;&#x2F;code&gt; 这一条汇编语句。&lt;code&gt;ret&lt;&#x2F;code&gt; 这一条指令是配合 &lt;code&gt;call&lt;&#x2F;code&gt; 指令使用的。&lt;code&gt;ret&lt;&#x2F;code&gt; 相当于 &lt;code&gt;pop ip&lt;&#x2F;code&gt;，配合 &lt;code&gt;call&lt;&#x2F;code&gt; 使用时，功能为返回原来的控制流。&lt;&#x2F;p&gt;
-&lt;h3 id=&quot;jie-chi-yi-ci-pu-tong-de-cheng-xu-diao-yong&quot;&gt;劫持一次“普通”的程序调用&lt;&#x2F;h3&gt;
+&lt;h3 id=&quot;劫持一次“普通”的程序调用&quot;&gt;劫持一次“普通”的程序调用&lt;&#x2F;h3&gt;
 &lt;p&gt;当 C 程序调用函数时，会通过将函数参数压入栈中，来传递函数参数。然后通过 &lt;code&gt;call&lt;&#x2F;code&gt; 指令将控制流转移到函数的代码中。并且函数会将之前控制流的 &lt;code&gt;bp&lt;&#x2F;code&gt; 保存，用于函数结束时恢复栈环境。&lt;&#x2F;p&gt;
 &lt;p&gt;例如下面的程序，将两个数字相加，并且将结果作为返回值。&lt;&#x2F;p&gt;
 &lt;pre data-lang=&quot;c&quot; class=&quot;language-c z-code&quot;&gt;&lt;code class=&quot;language-c&quot; data-lang=&quot;c&quot;&gt;&lt;span class=&quot;z-source z-c&quot;&gt;&lt;span class=&quot;z-meta z-preprocessor z-include z-c&quot;&gt;&lt;span class=&quot;z-keyword z-control z-import z-include z-c&quot;&gt;#include&lt;&#x2F;span&gt; &lt;span class=&quot;z-string z-quoted z-other z-lt-gt z-include z-c&quot;&gt;&lt;span class=&quot;z-punctuation z-definition z-string z-begin z-c&quot;&gt;&amp;lt;&lt;&#x2F;span&gt;stdio.h&lt;span class=&quot;z-punctuation z-definition z-string z-end z-c&quot;&gt;&amp;gt;&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
@@ -140,7 +140,7 @@ _add ENDP
 &lt;span class=&quot;z-keyword z-operator z-arithmetic z-c&quot;&gt;|&lt;&#x2F;span&gt;       &lt;span class=&quot;z-keyword z-operator z-arithmetic z-c&quot;&gt;|&lt;&#x2F;span&gt;ret addr&lt;span class=&quot;z-keyword z-operator z-arithmetic z-c&quot;&gt;|&lt;&#x2F;span&gt;
 &lt;span class=&quot;z-keyword z-operator z-arithmetic z-c&quot;&gt;+&lt;&#x2F;span&gt;&lt;span class=&quot;z-keyword z-operator z-arithmetic z-c&quot;&gt;--&lt;&#x2F;span&gt;&lt;span class=&quot;z-keyword z-operator z-arithmetic z-c&quot;&gt;--&lt;&#x2F;span&gt;&lt;span class=&quot;z-keyword z-operator z-arithmetic z-c&quot;&gt;--&lt;&#x2F;span&gt;&lt;span class=&quot;z-keyword z-operator z-arithmetic z-c&quot;&gt;--&lt;&#x2F;span&gt;&lt;span class=&quot;z-keyword z-operator z-arithmetic z-c&quot;&gt;--&lt;&#x2F;span&gt;&lt;span class=&quot;z-keyword z-operator z-arithmetic z-c&quot;&gt;--&lt;&#x2F;span&gt;&lt;span class=&quot;z-keyword z-operator z-arithmetic z-c&quot;&gt;--&lt;&#x2F;span&gt;&lt;span class=&quot;z-keyword z-operator z-arithmetic z-c&quot;&gt;--&lt;&#x2F;span&gt;&lt;span class=&quot;z-keyword z-operator z-arithmetic z-c&quot;&gt;+&lt;&#x2F;span&gt;
 &lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
-&lt;h3 id=&quot;gadgets-he-rop-lian&quot;&gt;gadgets 和 ROP 链&lt;&#x2F;h3&gt;
+&lt;h3 id=&quot;gadgets_和_ROP_链&quot;&gt;gadgets 和 ROP 链&lt;&#x2F;h3&gt;
 &lt;p&gt;之前的操作只能劫持一次控制流，如果想用这一次机会将控制流劫持到 shellcode 上的话，在 NX 开启的情况下就会失效，又或者不能一次劫持就完成我们想达到的目标，这时候就需要 ROP 和 gadgets 了。这里的 gadget 指的是程序本体中出现的指令片段，通常以 &lt;code&gt;ret&lt;&#x2F;code&gt; 指令结尾。&lt;&#x2F;p&gt;
 &lt;p&gt;将 gadget 的地址按执行顺序写入栈中，就可以实现 ROP 链。ROP 链将按照在栈中的顺序执行。&lt;&#x2F;p&gt;
 &lt;p&gt;例如下图中，CPU 先执行 &lt;code&gt;ret&lt;&#x2F;code&gt; 指令，将 IP 置为 0x1000，然后执行 0x1000 处的两条指令，最后执行 &lt;code&gt;ret&lt;&#x2F;code&gt; 指令，将 IP 置为 0x500。CPU 执行 0x500 处的指令，最后 &lt;code&gt;ret&lt;&#x2F;code&gt; 指令执行时，将 IP 置为 &lt;code&gt;main&lt;&#x2F;code&gt; 函数所在的地址，CPU 开始执行 &lt;code&gt;main&lt;&#x2F;code&gt; 函数里的指令。&lt;&#x2F;p&gt;
@@ -203,7 +203,7 @@ _add ENDP
 &lt;span class=&quot;z-keyword z-operator z-arithmetic z-c&quot;&gt;+&lt;&#x2F;span&gt;&lt;span class=&quot;z-keyword z-operator z-arithmetic z-c&quot;&gt;--&lt;&#x2F;span&gt;&lt;span class=&quot;z-keyword z-operator z-arithmetic z-c&quot;&gt;--&lt;&#x2F;span&gt;&lt;span class=&quot;z-keyword z-operator z-arithmetic z-c&quot;&gt;--&lt;&#x2F;span&gt;&lt;span class=&quot;z-keyword z-operator z-arithmetic z-c&quot;&gt;--&lt;&#x2F;span&gt;&lt;span class=&quot;z-keyword z-operator z-arithmetic z-c&quot;&gt;--&lt;&#x2F;span&gt;&lt;span class=&quot;z-keyword z-operator z-arithmetic z-c&quot;&gt;--&lt;&#x2F;span&gt;&lt;span class=&quot;z-keyword z-operator z-arithmetic z-c&quot;&gt;--&lt;&#x2F;span&gt;&lt;span class=&quot;z-keyword z-operator z-arithmetic z-c&quot;&gt;--&lt;&#x2F;span&gt;&lt;span class=&quot;z-keyword z-operator z-arithmetic z-c&quot;&gt;+&lt;&#x2F;span&gt;
 &lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
 &lt;p&gt;如果需要了解更多，则请查询相关系统和 CPU 架构的 ABI，例如&lt;a href=&quot;https:&#x2F;&#x2F;stackoverflow.com&#x2F;questions&#x2F;2535989&#x2F;what-are-the-calling-conventions-for-unix-linux-system-calls-on-i386-and-x86-6&quot;&gt;https:&#x2F;&#x2F;stackoverflow.com&#x2F;questions&#x2F;2535989&#x2F;what-are-the-calling-conventions-for-unix-linux-system-calls-on-i386-and-x86-6&lt;&#x2F;a&gt; 和 &lt;a href=&quot;https:&#x2F;&#x2F;docs.microsoft.com&#x2F;en-us&#x2F;cpp&#x2F;build&#x2F;x64-calling-convention?view=vs-2019&quot;&gt;https:&#x2F;&#x2F;docs.microsoft.com&#x2F;en-us&#x2F;cpp&#x2F;build&#x2F;x64-calling-convention?view=vs-2019&lt;&#x2F;a&gt;&lt;&#x2F;p&gt;
-&lt;h2 id=&quot;kuo-zhan-mian-dui-chang-jian-de-dai-ma-bao-hu-cuo-shi&quot;&gt;扩展：面对常见的代码保护措施&lt;&#x2F;h2&gt;
+&lt;h2 id=&quot;扩展：面对常见的代码保护措施&quot;&gt;扩展：面对常见的代码保护措施&lt;&#x2F;h2&gt;
 &lt;p&gt;如果出现 NX 时，就需要使用 ROP 技术绕过。&lt;&#x2F;p&gt;
 &lt;p&gt;如果出现 canary 时需要想怎么泄露 canary，通过 off by one 或者格式化字符串实现泄露，还有少见的报错泄露法和覆盖 canary 法。&lt;&#x2F;p&gt;
 &lt;p&gt;如果出现 pie 的话泄露地址也是必须的，off by one 或者格式化字符串实现泄露，或者 partical overwrite 实现构造 rop 链也是可以的。&lt;&#x2F;p&gt;
