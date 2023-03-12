@@ -5,6 +5,8 @@ date = 2022-07-24
 tags = ["ida", "python"]
 +++
 
+2023-03-12 更新：添加了使用 `ida_hexrays.decompile` 的方法
+
 在逆向二进制程序中，经常碰到将程序 strip 了，但是日志函数中保留着函数名字的情况。所以写文记录在这种情况下，使用 IDAPython 恢复函数名字的过程。
 
 ## 日志函数长什么样
@@ -237,8 +239,81 @@ for xref_addr in refs:
 [+] 4012a4 main
 ```
 
+## 更精准的方法
+
+上面的代码和恢复方式可能会出现找不准函数的参数的情况，或者会出现传参约定和上述代码不一样的情况，这就会导致恢复的函数名字错误。经过搜索我发现 IDA 允许通过 API 来调用反编译器来进行反编译，并且可以遍历反编译出来的 C 语言代码，这样就可以借助反编译器的结果来恢复函数名字了。
+
+下面是相应的 IDAPython 代码，通过 `idaapi.decompile` 对 xref 的函数进行反编译，然后再通过编写的 `LogVisitor` 对反编译出来的 C 语言代码进行遍历，在 `LogVisitor` 类的 `visit_expr` 函数中定义遍历 C 语言表达式的相应逻辑。这里我们主要是寻找调用日志函数的表达式，并从中提取参数，获得参数的值，来命名当前函数。
+
+```python
+import idaapi
+import ida_hexrays
+import ida_bytes
+import idautils
+import idc
+
+
+class LogVisitor(ida_hexrays.ctree_visitor_t):
+    """Recover log by visiting ctree"""
+
+    def __init__(
+        self, cfunc: ida_hexrays.cfunc_t, log_func: str, name_idx: int
+    ) -> None:
+        super().__init__(ida_hexrays.CV_FAST)
+        self.log_func = log_func
+        self.name_idx = name_idx
+        self.cfunc = cfunc
+
+    def visit_expr(self, expr: ida_hexrays.cexpr_t) -> int:
+        ea = self.cfunc.entry_ea
+        # named, skip
+        if ea in named:
+            return 0
+        # only need call expression
+        if expr.op != ida_hexrays.cot_call:
+            return 0
+        # call expression is iog_func
+        if idaapi.get_func_name(expr.x.obj_ea) != self.log_func:
+            return 0
+        # length of call argument < idx
+        if len(expr.a) < self.name_idx:
+            return 0
+        # get argument
+        carg = expr.a[self.name_idx]
+        if carg.op != ida_hexrays.cot_obj:
+            return 0
+        arg_str = ida_bytes.get_strlit_contents(carg.obj_ea, -1, 0)
+        if not arg_str:
+            return 0
+        print(hex(ea), arg_str)
+        # set name
+        idc.set_name(ea, arg_str.decode())
+        named.add(ea)
+        return 0
+
+
+func_addr = 0x00015CDC  # XXX: EDIT THIS VALUE
+name_idx = 4  # XXX: EDIT THIS VALUE
+func_name = idaapi.get_func_name(func_addr)
+named = set()
+for xref_addr in idautils.CodeRefsTo(func_addr, 0):
+    try:
+        cfunc = idaapi.decompile(xref_addr)
+    except Exception as e:
+        print(e)
+        continue
+    if not cfunc or not cfunc.body:
+        continue
+    v = LogVisitor(cfunc, func_name, name_idx)
+    v.apply_to(cfunc.body, None)
+
+```
+
 ## Refs
 
 - The Beginner’s Guide to IDAPython Version 6.0
 - [Getting function arguments in ida](https://reverseengineering.stackexchange.com/questions/25301/getting-function-arguments-in-ida)
 - [Porting from IDAPython 6.x-7.3, to 7.4](https://hex-rays.com/products/ida/support/ida74_idapython_no_bc695_porting_guide.shtml)
+- <https://www.hex-rays.com/products/decompiler/manual/sdk/hexrays_8hpp_source.shtml>
+- [Hex-Rays Decompiler primer](https://hex-rays.com/blog/hex-rays-decompiler-primer/)
+- [【IDAPython CTree】反编译代码操作练习](https://blog.gentlecp.com/article/12309.html)
