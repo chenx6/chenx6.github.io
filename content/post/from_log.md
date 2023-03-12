@@ -1,5 +1,5 @@
 +++
-title = "从日志函数中回复无符号的函数名字"
+title = "通过无符号程序的日志函数来恢复函数名字"
 date = 2022-07-24
 [taxonomies]
 tags = ["ida", "python"]

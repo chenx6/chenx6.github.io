@@ -8,7 +8,7 @@
 	<updated>2022-07-24T00:00:00+00:00</updated>
 	<id>https://chenx6.github.io/tags/ida/atom.xml</id>
 	<entry xml:lang="zh_CN">
-		<title>从日志函数中回复无符号的函数名字</title>
+		<title>通过无符号程序的日志函数来恢复函数名字</title>
 		<published>2022-07-24T00:00:00+00:00</published>
 		<updated>2022-07-24T00:00:00+00:00</updated>
 		<link rel="alternate" href="https://chenx6.github.io/post/from_log/" type="text/html"/>
