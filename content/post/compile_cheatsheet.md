@@ -56,6 +56,24 @@ executable('client', 'src/main_client.cpp', 'src/client.cpp', utils,
 #    link_args : '-m32'
 ```
 
+跨平台编译配置文件
+
+```ini
+[binaries]
+c = 'aarch64-linux-gnu-gcc'
+cpp = 'aarch64-linux-gnu-g++'
+ar = 'aarch64-linux-gnu-ar'
+
+[host_machine]
+system = 'linux'
+cpu_family = 'aarch64'
+cpu = 'aarch64'
+endian = 'little'
+
+[properties]
+sys_root = '/usr/aarch64-linux-gnu/'
+```
+
 常用编译命令
 
 ```bash
@@ -65,6 +83,8 @@ meson setup builddir --wipe
 meson setup --buildtype debug --reconfigure
 # 编译
 meson compile -C builddir
+# 跨平台编译
+meson setup --cross-file $跨平台编译配置文件.ini builddir
 ```
 
 更多的内容参考 [#refs](#refs)
@@ -182,17 +202,20 @@ RUN dpkg --add-architecture i386 && \
     apt install -y gcc-multilib g++-multilib build-essential cmake
 ```
 
-CentOS image，从本地复制一份 ninja，安装编译工具，相关的库和 Meson
+CentOS image，安装编译工具，相关的库和 meson, ninja
 
 ```dockerfile
 FROM amd64/centos:7
 
-COPY ./ninja /usr/local/bin
-
-RUN yum install python3 glibc-devel.i686 glibc-devel.x86_64 libgcc.i686 libgcc.x86_64 libstdc++-devel.i686 libstdc++-devel -y && \
+RUN yum install python3 \
+        glibc-devel.i686 glibc-devel.x86_64 \
+        libgcc.i686 libgcc.x86_64 \
+        libstdc++-devel.i686 libstdc++-devel \
+        glibc-static glibc-static.i686 \
+        libstdc++-static libstdc++-static.i686 -y && \
     yum group install "Development Tools" -y
 
-RUN python3 -m pip install meson -i https://opentuna.cn/pypi/web/simple
+RUN python3 -m pip install cmake meson ninja -i https://opentuna.cn/pypi/web/simple
 ```
 
 使用容器进行编译。设置成运行完后删除，并将当前目录映射到 "/src" 目录下，启动名字为 `$容器名字` 的容器。
