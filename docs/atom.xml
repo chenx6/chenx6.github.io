@@ -15,7 +15,7 @@
 		<id>https://chenx6.github.io/post/hikvision/</id>
 		<content type="html">&lt;p&gt;高中时候曾经当过一段时间的脚本小子，通过 CVE-2017-7921 拿下过一波摄像头，体验了一把游戏里看门狗的感觉。所以在今天，在掌握了一定的技术之后，我将尝试对海康威视的固件进行重新分析。&lt;&#x2F;p&gt;
 &lt;h2 id=&quot;固件格式&quot;&gt;固件格式&lt;&#x2F;h2&gt;
-&lt;p&gt;海康威视的固件可能有几种格式。在对文件开头进行 xor 运算之后，得到的文件开头如果是 0x484b5753(&amp;quot;HKWS&amp;quot;) 的话，那么固件本身是没有被加密的，可以通过文件头，得到固件中包含的文件名字和文件偏移。有一种格式是文件开头为 0x484b3230(HK02)，再通过 xor 运算解密后面的文件内容时，才会出现 0x484b5753 字段，如下图所示。&lt;&#x2F;p&gt;
+&lt;p&gt;海康威视的固件可能有几种格式。在对文件开头进行 xor 运算之后，得到的文件开头如果是 0x484b5753(&amp;quot;HKWS&amp;quot;) 的话，那么固件本身是没有被加密的，可以通过文件头，得到固件中包含的文件名字和文件偏移。有一种格式是文件开头为 0x484b3230(HK20)，再通过 xor 运算解密后面的文件内容时，才会出现 0x484b5753 字段，如下图所示。&lt;&#x2F;p&gt;
 &lt;pre data-lang=&quot;txt&quot; class=&quot;language-txt z-code&quot;&gt;&lt;code class=&quot;language-txt&quot; data-lang=&quot;txt&quot;&gt;&lt;span class=&quot;z-text z-plain&quot;&gt;Magic: 484b3230, Size: 152, Checksum: 29ca, Count: 0
  0  1  2  3  4  5  6  7  8  9  a  b  c  d  e  f  0123456789abcdef
 30 32 4b 48 ca 29 00 00 98 00 00 00 00 00 00 00  02KHÊ           
@@ -38,7 +38,7 @@ ed 4c 84 00 48 99 02 00 29 00 04 05 31 31 34 30  íL  H       1140
 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00                  
 f0 00 00 00 f4 01 00 00 31 e6 00 00 5f 63 66 67  ð   ô   1æ   cfg
 &lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
-&lt;p&gt;当然我还碰到了第三种情况，文件的开头是 0x484b3230，而文件后的新文件头为 0x484b3330(HK03) 这种情况下新文件头和固件中的文件是使用 AES-256-ECB 进行加密的。这种情况得需要拆机提取密钥，才能对文件进行解密。&lt;&#x2F;p&gt;
+&lt;p&gt;当然我还碰到了第三种情况，文件的开头是 0x484b3230，而文件后的新文件头为 0x484b3330(HK30) 这种情况下新文件头和固件中的文件是使用 AES-256-ECB 进行加密的。这种情况得需要拆机提取密钥，才能对文件进行解密。&lt;&#x2F;p&gt;
 &lt;pre data-lang=&quot;txt&quot; class=&quot;language-txt z-code&quot;&gt;&lt;code class=&quot;language-txt&quot; data-lang=&quot;txt&quot;&gt;&lt;span class=&quot;z-text z-plain&quot;&gt;Magic: 484b3230, Size: 108, Checksum: 2902, Count: 0
  0  1  2  3  4  5  6  7  8  9  a  b  c  d  e  f  0123456789abcdef
 30 32 4b 48 02 29 00 00 6c 00 00 00 00 00 00 00  02KH    l       
