@@ -72,7 +72,7 @@ c0 0e 00 00 64 02 00 00 78 5e 63 cc 74 fd e8 40  À   d   x cÌtýè
 68 49 6d 61 67 65 00 74 fd e8 40 86 67 2d 7c 07  hImage týè  g  
 ```
 
-解密后的文件格式可以参考 [Refs](#refs) 中的 "(转载文章)Hik or hack? (NOT) IoT Security Using Hikvision IP Cameras"，解密固件可以参考 [Refs](#refs) 中的 "HaToan/Decrypt-Firmware-Hikvision" 和 "MatrixEditor/hiktools" 项目。
+解密后的文件格式可以参考 [Refs](#refs) 中的 "(转载文章)Hik or hack? (NOT) IoT Security Using Hikvision IP Cameras"，解密固件可以参考 [Refs](#refs) 中的 "HaToan/Decrypt-Firmware-Hikvision" 和 "MatrixEditor/hiktools" 项目。当然，我也写了一个可以解密固件的脚本，比之前的脚本开源工具相比能解密更多的固件格式，也很容易对脚本进行扩展，地址[在这](https://github.com/chenx6/gadget/blob/master/hik_firmware/decrypt.py)
 
 > 在 Refs 我还放了 hikpack 的下载链接，hikpack 可以解密 r0,r1,r6,g0 设备的固件。我本来想看下 hikpack 是怎么进行文件解密的，但是 hikpack 居然用了 OLLVM 混淆，有必要吗...
 
