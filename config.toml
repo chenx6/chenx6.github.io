@@ -25,3 +25,4 @@ highlight_themes_css = [
 menu = [
     {url = "$BASE_URL/about", name = "About"}
 ]
+copyright = "All right reserved"

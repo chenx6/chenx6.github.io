@@ -34,6 +34,9 @@
     {% endif %}
   </header>
   {% block content %} {% endblock %}
+  {% if config.extra.copyright %}
+    <footer>{{ config.extra.copyright }}</footer>
+  {% endif %}
 </body>
 
 </html>
