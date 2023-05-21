@@ -31,4 +31,4 @@ menu = [
     {url = "$BASE_URL/about", name = "About"}
 ]
 utterances = true
-copyright = "2020-∞ chenx6 本作品采用知识共享署名 4.0 国际许可协议进行许可。"
+copyright = '2020-∞ chenx6 本作品采用<a rel="license" href="http://creativecommons.org/licenses/by/4.0/">知识共享署名 4.0 国际许可协议</a>进行许可。'
