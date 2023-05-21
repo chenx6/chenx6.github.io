@@ -30,3 +30,4 @@ anchors = "safe"
 menu = [
     {url = "$BASE_URL/about", name = "About"}
 ]
+copyright = "All right reserved"
