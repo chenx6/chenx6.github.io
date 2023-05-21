@@ -35,7 +35,7 @@
   </header>
   {% block content %} {% endblock %}
   {% if config.extra.copyright %}
-    <footer>{{ config.extra.copyright }}</footer>
+    <footer>{{ config.extra.copyright | safe }}</footer>
   {% endif %}
 </body>
 
