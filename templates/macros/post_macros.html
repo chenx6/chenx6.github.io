@@ -12,12 +12,16 @@
   {{ tag_macros::tag_list(page=page) }}
   {% if page.summary %}
   <div>
-    {{ page.summary | safe }}
+    <p>
+      {{ page.summary | safe }}
+    </p>
   </div>
   {% elif page.content %}
   <div>
-    {# Zola's summary need to modify post, so we manually cut first paragraph as summary #}
-    {{ page.content | split(pat="</p>") | first | striptags | truncate(length=100) }}
+    <p>
+      {# Zola's summary need to modify post, so we manually cut first paragraph as summary #}
+      {{ page.content | split(pat="</p>") | first | striptags | truncate(length=100) }}
+    </p>
   </div>
   {% endif %}
 </div>
