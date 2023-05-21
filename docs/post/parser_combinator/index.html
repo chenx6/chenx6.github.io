@@ -55,31 +55,59 @@
         <ul>
           
           <li>
-            <a href="https://chenx6.github.io/post/parser_combinator/#使用_Parser_combinator_解析_METAR_报文">使用 Parser combinator 解析 METAR 报文</a>
+            <a href="https://chenx6.github.io/post/parser_combinator/#概念介绍">概念介绍</a>
+            
+          </li>
+          
+          <li>
+            <a href="https://chenx6.github.io/post/parser_combinator/#辅助函数">辅助函数</a>
             
             <ul>
               
               <li>
-                <a href="https://chenx6.github.io/post/parser_combinator/#概念介绍">概念介绍</a>
+                <a href="https://chenx6.github.io/post/parser_combinator/#Parser">Parser</a>
               </li>
               
               <li>
-                <a href="https://chenx6.github.io/post/parser_combinator/#辅助函数">辅助函数</a>
-              </li>
-              
-              <li>
-                <a href="https://chenx6.github.io/post/parser_combinator/#解析报文">解析报文</a>
-              </li>
-              
-              <li>
-                <a href="https://chenx6.github.io/post/parser_combinator/#总结">总结</a>
-              </li>
-              
-              <li>
-                <a href="https://chenx6.github.io/post/parser_combinator/#Refs">Refs</a>
+                <a href="https://chenx6.github.io/post/parser_combinator/#Combinator">Combinator</a>
               </li>
               
             </ul>
+            
+          </li>
+          
+          <li>
+            <a href="https://chenx6.github.io/post/parser_combinator/#解析报文">解析报文</a>
+            
+            <ul>
+              
+              <li>
+                <a href="https://chenx6.github.io/post/parser_combinator/#开头">开头</a>
+              </li>
+              
+              <li>
+                <a href="https://chenx6.github.io/post/parser_combinator/#风">风</a>
+              </li>
+              
+              <li>
+                <a href="https://chenx6.github.io/post/parser_combinator/#结合在一起">结合在一起</a>
+              </li>
+              
+              <li>
+                <a href="https://chenx6.github.io/post/parser_combinator/#碰到的问题">碰到的问题</a>
+              </li>
+              
+            </ul>
+            
+          </li>
+          
+          <li>
+            <a href="https://chenx6.github.io/post/parser_combinator/#总结">总结</a>
+            
+          </li>
+          
+          <li>
+            <a href="https://chenx6.github.io/post/parser_combinator/#Refs">Refs</a>
             
           </li>
           
@@ -87,8 +115,7 @@
       </details>
       
     </aside>
-    <h1 id="使用_Parser_combinator_解析_METAR_报文">使用 Parser combinator 解析 METAR 报文</h1>
-<p>因为我是骑自行车上下班的，对风向和风速很敏感，然后我住的离机场比较近，于是我想通过机场的天气状况判断下我的通勤是否容易。在翻阅资料后，发现机场的天气是使用 METAR 报文进行发送的，所以我将尝试用 Parser combinator 对报文进行解析，来获得天气状况。</p>
+    <p>因为我是骑自行车上下班的，对风向和风速很敏感，然后我住的离机场比较近，于是我想通过机场的天气状况判断下我的通勤是否容易。在翻阅资料后，发现机场的天气是使用 METAR 报文进行发送的，所以我将尝试用 Parser combinator 对报文进行解析，来获得天气状况。</p>
 <p>本文采用的是 Python 进行编程，因为 Python 明显会比 Haskell 和 Rust 简单易读，Python 的缺点就是 lambda 函数很菜。</p>
 <blockquote>
 <p>在写文章的时候发现我写的 parser 解析的信息不够完全，所以这个 parser 只供学习使用，请勿用于生产环境！</p>

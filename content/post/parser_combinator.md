@@ -5,8 +5,6 @@ date = 2023-05-21
 tags = ["python", "plt"]
 +++
 
-# 使用 Parser combinator 解析 METAR 报文
-
 因为我是骑自行车上下班的，对风向和风速很敏感，然后我住的离机场比较近，于是我想通过机场的天气状况判断下我的通勤是否容易。在翻阅资料后，发现机场的天气是使用 METAR 报文进行发送的，所以我将尝试用 Parser combinator 对报文进行解析，来获得天气状况。
 
 本文采用的是 Python 进行编程，因为 Python 明显会比 Haskell 和 Rust 简单易读，Python 的缺点就是 lambda 函数很菜。
