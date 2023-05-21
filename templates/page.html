@@ -58,5 +58,15 @@
     </aside>
     {{ page.content | safe }}
   </div>
+  {% if page.extra.utterances %}
+    <script src="https://utteranc.es/client.js"
+          repo="chenx6/chenx6.github.io"
+          issue-term="pathname"
+          label="comment"
+          theme="github-light"
+          crossorigin="anonymous"
+          async>
+    </script>
+  {% endif %}
 </div>
 {% endblock content %}
