@@ -30,4 +30,5 @@ anchors = "safe"
 menu = [
     {url = "$BASE_URL/about", name = "About"}
 ]
-copyright = "All right reserved"
+utterances = true
+copyright = "2020-∞ chenx6 本作品采用知识共享署名 4.0 国际许可协议进行许可。"
