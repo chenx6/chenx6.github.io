@@ -304,7 +304,7 @@
 <span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">/part/to/AFLplusplus/afl-fuzz</span></span><span class="z-meta z-function-call z-arguments z-shell"><span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>Q</span><span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>m</span> none<span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>i</span> corpus/<span class="z-variable z-parameter z-option z-shell"><span class="z-punctuation z-definition z-parameter z-shell"> -</span>o</span> output/ ./squashfs-root/usr/sbin/httpd @@</span>
 </span></code></pre>
 <p>然后就是喜闻乐见的显示信息窗口了。</p>
-<p><img src="https://chenx6.github.io/post/fail_firm_fuzz/./pictures/fail_firm_fuzz_0.png" alt="afl" /></p>
+<p><img src="/images/fail_firm_fuzz_0.png" alt="afl" /></p>
 <h2 id="调试">调试</h2>
 <p>对 qemu-user 进行模拟的程序，可以通过 <code>-g</code> 参数，开启 gdbserver,然后在本机使用 <code>gdb-multiarch</code> 进行调试。</p>
 <p>先使用 qemu-arm 加上 <code>-g</code> 选项启动程序。</p>

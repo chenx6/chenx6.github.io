@@ -230,7 +230,7 @@ export "AFL_NO_FORKSRV=1"
 
 然后就是喜闻乐见的显示信息窗口了。
 
-![afl](./pictures/fail_firm_fuzz_0.png)
+![afl](/images/fail_firm_fuzz_0.png)
 
 ## 调试
 

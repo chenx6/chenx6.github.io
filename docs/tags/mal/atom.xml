@@ -248,7 +248,7 @@
 &lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;span class=&quot;z-meta z-function z-c&quot;&gt;&lt;span class=&quot;z-meta z-block z-c&quot;&gt;&lt;span class=&quot;z-punctuation z-section z-block z-end z-c&quot;&gt;}&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
 &lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
 &lt;p&gt;我使用了 &lt;a href=&quot;https:&#x2F;&#x2F;www.exploit-db.com&#x2F;shellcodes&#x2F;41128&quot;&gt;https:&#x2F;&#x2F;www.exploit-db.com&#x2F;shellcodes&#x2F;41128&lt;&#x2F;a&gt; 的正向 Shell 代码，可以发现原程序正常运行，而后门代码也运行了。&lt;&#x2F;p&gt;
-&lt;p&gt;&lt;img src=&quot;https:&#x2F;&#x2F;chenx6.github.io&#x2F;post&#x2F;elf_backdoor&#x2F;.&#x2F;pictures&#x2F;elf_backdoor.png&quot; alt=&quot;0&quot; &#x2F;&gt;&lt;&#x2F;p&gt;
+&lt;p&gt;&lt;img src=&quot;&#x2F;images&#x2F;elf_backdoor.png&quot; alt=&quot;0&quot; &#x2F;&gt;&lt;&#x2F;p&gt;
 &lt;h2 id=&quot;完整代码&quot;&gt;完整代码&lt;&#x2F;h2&gt;
 &lt;p&gt;由于代码太长了，所以我将代码放在了 &lt;a href=&quot;https:&#x2F;&#x2F;github.com&#x2F;chenx6&#x2F;gadget&#x2F;tree&#x2F;master&#x2F;elf_backdoor&quot;&gt;Github&lt;&#x2F;a&gt; 上了。&lt;&#x2F;p&gt;
 &lt;h2 id=&quot;未完成工作&quot;&gt;未完成工作&lt;&#x2F;h2&gt;

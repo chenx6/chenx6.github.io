@@ -265,7 +265,7 @@ int main()
 
 我使用了 <https://www.exploit-db.com/shellcodes/41128> 的正向 Shell 代码，可以发现原程序正常运行，而后门代码也运行了。
 
-![0](./pictures/elf_backdoor.png)
+![0](/images/elf_backdoor.png)
 
 ## 完整代码
 
