@@ -1,19 +1,23 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom" xml:lang="zh_CN">
-	<title>二进制咸鱼的自我救赎 - codeql</title>
-	<subtitle>幸福往往是摸的透彻，而敬业的心却常常隐藏。</subtitle>
-	<link href="https://chenx6.github.io/tags/codeql/atom.xml" rel="self" type="application/atom+xml"/>
-  <link href="https://chenx6.github.io/"/>
-	<generator uri="https://www.getzola.org/">Zola</generator>
-	<updated>2020-04-20T00:00:00+00:00</updated>
-	<id>https://chenx6.github.io/tags/codeql/atom.xml</id>
-	<entry xml:lang="zh_CN">
-		<title>CodeQL 体验</title>
-		<published>2020-04-20T00:00:00+00:00</published>
-		<updated>2020-04-20T00:00:00+00:00</updated>
-		<link rel="alternate" href="https://chenx6.github.io/post/codeql/" type="text/html"/>
-		<id>https://chenx6.github.io/post/codeql/</id>
-		<content type="html">&lt;h2 id=&quot;概要&quot;&gt;概要&lt;&#x2F;h2&gt;
+    <title>二进制咸鱼的自我救赎 - codeql</title>
+    <subtitle>幸福往往是摸的透彻，而敬业的心却常常隐藏。</subtitle>
+    <link href="https://chenx6.github.io/tags/codeql/atom.xml" rel="self" type="application/atom+xml"/>
+    <link href="https://chenx6.github.io/"/>
+    <generator uri="https://www.getzola.org/">Zola</generator>
+    <updated>2020-04-20T00:00:00+00:00</updated>
+    <id>https://chenx6.github.io/tags/codeql/atom.xml</id>
+    <entry xml:lang="zh_CN">
+        <title>CodeQL 体验</title>
+        <published>2020-04-20T00:00:00+00:00</published>
+        <updated>2020-04-20T00:00:00+00:00</updated>
+        <author>
+          <name>Unknown</name>
+        </author>
+        <link rel="alternate" href="https://chenx6.github.io/post/codeql/" type="text/html"/>
+        <id>https://chenx6.github.io/post/codeql/</id>
+        
+        <content type="html">&lt;h2 id=&quot;概要&quot;&gt;概要&lt;&#x2F;h2&gt;
 &lt;p&gt;之前在 Twitter 上看到有大佬说 Github Learning Club 上搞了个免费的 CodeQL 课程，课程最终目标是使用 CodeQL 这个语言找出 uboot 中的 9 个漏洞。我在克服拖延症后，终于在 4 月底完成了这个课程，于是写文记录。&lt;&#x2F;p&gt;
 &lt;p&gt;&lt;a href=&quot;https:&#x2F;&#x2F;lab.github.com&#x2F;githubtraining&#x2F;codeql-u-boot-challenge-(cc++)&quot;&gt;课程链接&lt;&#x2F;a&gt;&lt;&#x2F;p&gt;
 &lt;p&gt;&lt;a href=&quot;https:&#x2F;&#x2F;securitylab.github.com&#x2F;research&#x2F;uboot-rce-nfs-vulnerability&quot;&gt;通过 CodeQL 找出来的漏洞分析&lt;&#x2F;a&gt;&lt;&#x2F;p&gt;
@@ -162,5 +166,6 @@ select sink, source, sink, &amp;quot;Network byte swap flows to memcpy&amp;quot;
 &lt;h2 id=&quot;refs&quot;&gt;refs&lt;&#x2F;h2&gt;
 &lt;p&gt;CodeQL 教程 &lt;a href=&quot;https:&#x2F;&#x2F;help.semmle.com&#x2F;QL&#x2F;learn-ql&#x2F;&quot;&gt;https:&#x2F;&#x2F;help.semmle.com&#x2F;QL&#x2F;learn-ql&#x2F;&lt;&#x2F;a&gt;&lt;&#x2F;p&gt;
 </content>
-	</entry>
+        
+    </entry>
 </feed>

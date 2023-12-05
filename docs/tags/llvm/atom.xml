@@ -1,19 +1,23 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom" xml:lang="zh_CN">
-	<title>二进制咸鱼的自我救赎 - llvm</title>
-	<subtitle>幸福往往是摸的透彻，而敬业的心却常常隐藏。</subtitle>
-	<link href="https://chenx6.github.io/tags/llvm/atom.xml" rel="self" type="application/atom+xml"/>
-  <link href="https://chenx6.github.io/"/>
-	<generator uri="https://www.getzola.org/">Zola</generator>
-	<updated>2021-01-21T00:00:00+00:00</updated>
-	<id>https://chenx6.github.io/tags/llvm/atom.xml</id>
-	<entry xml:lang="zh_CN">
-		<title>重写 OLLVM 之控制流平坦化</title>
-		<published>2021-01-21T00:00:00+00:00</published>
-		<updated>2021-01-21T00:00:00+00:00</updated>
-		<link rel="alternate" href="https://chenx6.github.io/post/rewrite_ollvm_fla/" type="text/html"/>
-		<id>https://chenx6.github.io/post/rewrite_ollvm_fla/</id>
-		<content type="html">&lt;p&gt;OLLVM 的控制流平坦化是逆向老哥最讨厌的混淆了，因为一旦使用就代表着 IDA 的 decompiler 彻底报废了。所以了解并在&lt;a href=&quot;https:&#x2F;&#x2F;github.com&#x2F;chenx6&#x2F;baby_obfuscator&quot;&gt;自己的项目中&lt;&#x2F;a&gt;重写控制流平坦化挺重要的。&lt;&#x2F;p&gt;
+    <title>二进制咸鱼的自我救赎 - llvm</title>
+    <subtitle>幸福往往是摸的透彻，而敬业的心却常常隐藏。</subtitle>
+    <link href="https://chenx6.github.io/tags/llvm/atom.xml" rel="self" type="application/atom+xml"/>
+    <link href="https://chenx6.github.io/"/>
+    <generator uri="https://www.getzola.org/">Zola</generator>
+    <updated>2021-01-21T00:00:00+00:00</updated>
+    <id>https://chenx6.github.io/tags/llvm/atom.xml</id>
+    <entry xml:lang="zh_CN">
+        <title>重写 OLLVM 之控制流平坦化</title>
+        <published>2021-01-21T00:00:00+00:00</published>
+        <updated>2021-01-21T00:00:00+00:00</updated>
+        <author>
+          <name>Unknown</name>
+        </author>
+        <link rel="alternate" href="https://chenx6.github.io/post/rewrite_ollvm_fla/" type="text/html"/>
+        <id>https://chenx6.github.io/post/rewrite_ollvm_fla/</id>
+        
+        <content type="html">&lt;p&gt;OLLVM 的控制流平坦化是逆向老哥最讨厌的混淆了，因为一旦使用就代表着 IDA 的 decompiler 彻底报废了。所以了解并在&lt;a href=&quot;https:&#x2F;&#x2F;github.com&#x2F;chenx6&#x2F;baby_obfuscator&quot;&gt;自己的项目中&lt;&#x2F;a&gt;重写控制流平坦化挺重要的。&lt;&#x2F;p&gt;
 &lt;h2 id=&quot;什么是控制流平坦化&quot;&gt;什么是控制流平坦化&lt;&#x2F;h2&gt;
 &lt;h3 id=&quot;名词解释&quot;&gt;名词解释&lt;&#x2F;h3&gt;
 &lt;h4 id=&quot;BasicBlock&quot;&gt;BasicBlock&lt;&#x2F;h4&gt;
@@ -235,14 +239,19 @@ storeRng&lt;span class=&quot;z-punctuation z-accessor z-arrow z-c++&quot;&gt;-&a
 &lt;p&gt;&lt;a href=&quot;https:&#x2F;&#x2F;security.tencent.com&#x2F;index.php&#x2F;blog&#x2F;msg&#x2F;112&quot;&gt;利用符号执行去除控制流平坦化&lt;&#x2F;a&gt;&lt;&#x2F;p&gt;
 &lt;p&gt;&lt;a href=&quot;https:&#x2F;&#x2F;github.com&#x2F;cq674350529&#x2F;deflat&quot;&gt;cq674350529&#x2F;deflat&lt;&#x2F;a&gt;&lt;&#x2F;p&gt;
 </content>
-	</entry>
-	<entry xml:lang="zh_CN">
-		<title>在 LLVM 代码树外编译 LLVM Pass (使用 OLLVM 示范)</title>
-		<published>2020-01-01T00:00:00+00:00</published>
-		<updated>2020-01-01T00:00:00+00:00</updated>
-		<link rel="alternate" href="https://chenx6.github.io/post/build_pass_out_of_tree/" type="text/html"/>
-		<id>https://chenx6.github.io/post/build_pass_out_of_tree/</id>
-		<content type="html">&lt;p&gt;在网络上流传的编译 LLVM Pass 都需要一份 LLVM 源码，从整个源代码编译，编译非常花时间 (i7 6700HQ 使用 &lt;code&gt;make -j8&lt;&#x2F;code&gt; 编译整个项目花了近 50 分钟)，所以在翻阅文档时发现 LLVM 支持在代码树外编译，在 1 分钟内编译一个 Pass，还是非常香的。&lt;&#x2F;p&gt;
+        
+    </entry>
+    <entry xml:lang="zh_CN">
+        <title>在 LLVM 代码树外编译 LLVM Pass (使用 OLLVM 示范)</title>
+        <published>2020-01-01T00:00:00+00:00</published>
+        <updated>2020-01-01T00:00:00+00:00</updated>
+        <author>
+          <name>Unknown</name>
+        </author>
+        <link rel="alternate" href="https://chenx6.github.io/post/build_pass_out_of_tree/" type="text/html"/>
+        <id>https://chenx6.github.io/post/build_pass_out_of_tree/</id>
+        
+        <content type="html">&lt;p&gt;在网络上流传的编译 LLVM Pass 都需要一份 LLVM 源码，从整个源代码编译，编译非常花时间 (i7 6700HQ 使用 &lt;code&gt;make -j8&lt;&#x2F;code&gt; 编译整个项目花了近 50 分钟)，所以在翻阅文档时发现 LLVM 支持在代码树外编译，在 1 分钟内编译一个 Pass，还是非常香的。&lt;&#x2F;p&gt;
 &lt;h2 id=&quot;项目配置&quot;&gt;项目配置&lt;&#x2F;h2&gt;
 &lt;h3 id=&quot;项目目录结构&quot;&gt;项目目录结构&lt;&#x2F;h3&gt;
 &lt;p&gt;本次作为示范的 OLLVM 是一个使用 LLVM Pass 进行代码混淆的项目。他的主要文件在于 &lt;code&gt;${LLVM 项目目录}&#x2F;lib&#x2F;Transforms&#x2F;Obfuscation&#x2F;&lt;&#x2F;code&gt; 和 &lt;code&gt;${LLVM 项目目录}&#x2F;include&#x2F;llvm&#x2F;Transforms&#x2F;Obfuscation&#x2F;&lt;&#x2F;code&gt;。将这两个目录下的文件放入对应的目录就可以在代码树外编译 OLLVM 了。OLLVM 相关的文件可以在 &lt;a href=&quot;https:&#x2F;&#x2F;github.com&#x2F;obfuscator-llvm&#x2F;&#x2F;obfuscator&#x2F;tree&#x2F;llvm-4.0&quot;&gt;GitHub&lt;&#x2F;a&gt; 找到。&lt;&#x2F;p&gt;
@@ -543,14 +552,19 @@ _UNKNOWN unk_400F24&lt;span class=&quot;z-punctuation z-terminator z-c&quot;&gt;
 &lt;p&gt;LLVM 官方关于 CMake 构建项目的文档：&lt;a href=&quot;http:&#x2F;&#x2F;releases.llvm.org&#x2F;9.0.0&#x2F;docs&#x2F;CMake.html#developing-llvm-passes-out-of-source&quot;&gt;http:&#x2F;&#x2F;releases.llvm.org&#x2F;9.0.0&#x2F;docs&#x2F;CMake.html#developing-llvm-passes-out-of-source&lt;&#x2F;a&gt;&lt;&#x2F;p&gt;
 &lt;p&gt;一个 LLVM Pass 骨架：&lt;a href=&quot;https:&#x2F;&#x2F;github.com&#x2F;sampsyo&#x2F;llvm-pass-skeleton&quot;&gt;https:&#x2F;&#x2F;github.com&#x2F;sampsyo&#x2F;llvm-pass-skeleton&lt;&#x2F;a&gt;&lt;&#x2F;p&gt;
 </content>
-	</entry>
-	<entry xml:lang="zh_CN">
-		<title>使用 LLVM Pass 实现字符串加密</title>
-		<published>2020-01-01T00:00:00+00:00</published>
-		<updated>2020-01-01T00:00:00+00:00</updated>
-		<link rel="alternate" href="https://chenx6.github.io/post/obfuscate_string/" type="text/html"/>
-		<id>https://chenx6.github.io/post/obfuscate_string/</id>
-		<content type="html">&lt;p&gt;这个项目可以作为我看了这么久 LLVM 的 Docs 助眠的一个小总结吧。这个项目主要就是给函数使用的常量字符串进行加密，在程序被静态分析的时候干扰分析。当然找到思路后，这个混淆还是很容易解开的。&lt;&#x2F;p&gt;
+        
+    </entry>
+    <entry xml:lang="zh_CN">
+        <title>使用 LLVM Pass 实现字符串加密</title>
+        <published>2020-01-01T00:00:00+00:00</published>
+        <updated>2020-01-01T00:00:00+00:00</updated>
+        <author>
+          <name>Unknown</name>
+        </author>
+        <link rel="alternate" href="https://chenx6.github.io/post/obfuscate_string/" type="text/html"/>
+        <id>https://chenx6.github.io/post/obfuscate_string/</id>
+        
+        <content type="html">&lt;p&gt;这个项目可以作为我看了这么久 LLVM 的 Docs 助眠的一个小总结吧。这个项目主要就是给函数使用的常量字符串进行加密，在程序被静态分析的时候干扰分析。当然找到思路后，这个混淆还是很容易解开的。&lt;&#x2F;p&gt;
 &lt;blockquote&gt;
 &lt;p&gt;吐槽下，网上的文章质量参差不齐，写的让人不知所云的，真的恐怖。所以还是面向 Stackoverflow 和官方文档编程吧...&lt;&#x2F;p&gt;
 &lt;&#x2F;blockquote&gt;
@@ -968,14 +982,19 @@ define dso_local i32 @main() #0 {
 &lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;span class=&quot;z-meta z-function z-c&quot;&gt;&lt;span class=&quot;z-meta z-block z-c&quot;&gt;&lt;span class=&quot;z-punctuation z-section z-block z-end z-c&quot;&gt;}&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
 &lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
 </content>
-	</entry>
-	<entry xml:lang="zh_CN">
-		<title>重写 OLLVM 之虚假控制流</title>
-		<published>2020-01-01T00:00:00+00:00</published>
-		<updated>2020-01-01T00:00:00+00:00</updated>
-		<link rel="alternate" href="https://chenx6.github.io/post/rewrite_ollvm_bcf/" type="text/html"/>
-		<id>https://chenx6.github.io/post/rewrite_ollvm_bcf/</id>
-		<content type="html">&lt;p&gt;由于我个人觉得 OLLVM 的代码年久失修，所以就新建了个项目，开始学习并重写 OLLVM。项目地址：&lt;a href=&quot;https:&#x2F;&#x2F;github.com&#x2F;chenx6&#x2F;baby_obfuscator&quot;&gt;https:&#x2F;&#x2F;github.com&#x2F;chenx6&#x2F;baby_obfuscator&lt;&#x2F;a&gt;。如果将我的重写项目和 OLLVM 相比的话，我的项目的优点就是编译比较快（编译整个项目只需要不到 1 分钟），代码比较“新”吧...&lt;&#x2F;p&gt;
+        
+    </entry>
+    <entry xml:lang="zh_CN">
+        <title>重写 OLLVM 之虚假控制流</title>
+        <published>2020-01-01T00:00:00+00:00</published>
+        <updated>2020-01-01T00:00:00+00:00</updated>
+        <author>
+          <name>Unknown</name>
+        </author>
+        <link rel="alternate" href="https://chenx6.github.io/post/rewrite_ollvm_bcf/" type="text/html"/>
+        <id>https://chenx6.github.io/post/rewrite_ollvm_bcf/</id>
+        
+        <content type="html">&lt;p&gt;由于我个人觉得 OLLVM 的代码年久失修，所以就新建了个项目，开始学习并重写 OLLVM。项目地址：&lt;a href=&quot;https:&#x2F;&#x2F;github.com&#x2F;chenx6&#x2F;baby_obfuscator&quot;&gt;https:&#x2F;&#x2F;github.com&#x2F;chenx6&#x2F;baby_obfuscator&lt;&#x2F;a&gt;。如果将我的重写项目和 OLLVM 相比的话，我的项目的优点就是编译比较快（编译整个项目只需要不到 1 分钟），代码比较“新”吧...&lt;&#x2F;p&gt;
 &lt;p&gt;下面讲讲我个人重写虚假控制流的思路，以及对其他项目中相同功能的理解。&lt;&#x2F;p&gt;
 &lt;h2 id=&quot;什么是虚假控制流_(Bogus_control_flow)&quot;&gt;什么是虚假控制流 (Bogus control flow)&lt;&#x2F;h2&gt;
 &lt;p&gt;在讲解虚假控制流时，我们先解释一些名词，然后看下流程表示就可以知道大概了。&lt;&#x2F;p&gt;
@@ -1270,5 +1289,6 @@ define dso_local i32 @main() #0 {
 &lt;p&gt;&lt;a href=&quot;https:&#x2F;&#x2F;github.com&#x2F;HikariObfuscator&#x2F;Core&quot;&gt;HikariObfuscator&#x2F;Core&lt;&#x2F;a&gt;&lt;&#x2F;p&gt;
 &lt;p&gt;&lt;a href=&quot;https:&#x2F;&#x2F;github.com&#x2F;obfuscator-llvm&#x2F;obfuscator&quot;&gt;obfuscator-llvm&#x2F;obfuscator&lt;&#x2F;a&gt;&lt;&#x2F;p&gt;
 </content>
-	</entry>
+        
+    </entry>
 </feed>

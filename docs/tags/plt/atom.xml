@@ -1,19 +1,23 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom" xml:lang="zh_CN">
-	<title>二进制咸鱼的自我救赎 - plt</title>
-	<subtitle>幸福往往是摸的透彻，而敬业的心却常常隐藏。</subtitle>
-	<link href="https://chenx6.github.io/tags/plt/atom.xml" rel="self" type="application/atom+xml"/>
-  <link href="https://chenx6.github.io/"/>
-	<generator uri="https://www.getzola.org/">Zola</generator>
-	<updated>2023-05-21T00:00:00+00:00</updated>
-	<id>https://chenx6.github.io/tags/plt/atom.xml</id>
-	<entry xml:lang="zh_CN">
-		<title>使用 Parser combinator 解析 METAR 报文</title>
-		<published>2023-05-21T00:00:00+00:00</published>
-		<updated>2023-05-21T00:00:00+00:00</updated>
-		<link rel="alternate" href="https://chenx6.github.io/post/parser_combinator/" type="text/html"/>
-		<id>https://chenx6.github.io/post/parser_combinator/</id>
-		<content type="html">&lt;p&gt;因为我是骑自行车上下班的，对风向和风速很敏感，然后我住的离机场比较近，于是我想通过机场的天气状况判断下我的通勤是否容易。在翻阅资料后，发现机场的天气是使用 METAR 报文进行发送的，所以我将尝试用 Parser combinator 对报文进行解析，来获得天气状况。&lt;&#x2F;p&gt;
+    <title>二进制咸鱼的自我救赎 - plt</title>
+    <subtitle>幸福往往是摸的透彻，而敬业的心却常常隐藏。</subtitle>
+    <link href="https://chenx6.github.io/tags/plt/atom.xml" rel="self" type="application/atom+xml"/>
+    <link href="https://chenx6.github.io/"/>
+    <generator uri="https://www.getzola.org/">Zola</generator>
+    <updated>2023-05-21T00:00:00+00:00</updated>
+    <id>https://chenx6.github.io/tags/plt/atom.xml</id>
+    <entry xml:lang="zh_CN">
+        <title>使用 Parser combinator 解析 METAR 报文</title>
+        <published>2023-05-21T00:00:00+00:00</published>
+        <updated>2023-05-21T00:00:00+00:00</updated>
+        <author>
+          <name>Unknown</name>
+        </author>
+        <link rel="alternate" href="https://chenx6.github.io/post/parser_combinator/" type="text/html"/>
+        <id>https://chenx6.github.io/post/parser_combinator/</id>
+        
+        <content type="html">&lt;p&gt;因为我是骑自行车上下班的，对风向和风速很敏感，然后我住的离机场比较近，于是我想通过机场的天气状况判断下我的通勤是否容易。在翻阅资料后，发现机场的天气是使用 METAR 报文进行发送的，所以我将尝试用 Parser combinator 对报文进行解析，来获得天气状况。&lt;&#x2F;p&gt;
 &lt;p&gt;本文采用的是 Python 进行编程，因为 Python 明显会比 Haskell 和 Rust 简单易读，Python 的缺点就是 lambda 函数很菜。&lt;&#x2F;p&gt;
 &lt;blockquote&gt;
 &lt;p&gt;在写文章的时候发现我写的 parser 解析的信息不够完全，所以这个 parser 只供学习使用，请勿用于生产环境！&lt;&#x2F;p&gt;
@@ -237,14 +241,19 @@
 &lt;li&gt;&lt;a href=&quot;https:&#x2F;&#x2F;metar-taf.com&#x2F;explanation&quot;&gt;This is how you read a METAR&lt;&#x2F;a&gt;&lt;&#x2F;li&gt;
 &lt;&#x2F;ul&gt;
 </content>
-	</entry>
-	<entry xml:lang="zh_CN">
-		<title>使用编译原理的知识，用 Rust 写一个计算器</title>
-		<published>2022-06-02T00:00:00+00:00</published>
-		<updated>2022-06-02T00:00:00+00:00</updated>
-		<link rel="alternate" href="https://chenx6.github.io/post/calculator/" type="text/html"/>
-		<id>https://chenx6.github.io/post/calculator/</id>
-		<content type="html">&lt;p&gt;”想写个计算器“这件事情应该是我刚学会 C 语言时候的事情，当时还看不懂栈，逆波兰式等结构。但是现在不一样了，我不仅学过数据结构，还学过了编译原理。这次我就拿学过的编译原理相关知识写个计算器。&lt;&#x2F;p&gt;
+        
+    </entry>
+    <entry xml:lang="zh_CN">
+        <title>使用编译原理的知识，用 Rust 写一个计算器</title>
+        <published>2022-06-02T00:00:00+00:00</published>
+        <updated>2022-06-02T00:00:00+00:00</updated>
+        <author>
+          <name>Unknown</name>
+        </author>
+        <link rel="alternate" href="https://chenx6.github.io/post/calculator/" type="text/html"/>
+        <id>https://chenx6.github.io/post/calculator/</id>
+        
+        <content type="html">&lt;p&gt;”想写个计算器“这件事情应该是我刚学会 C 语言时候的事情，当时还看不懂栈，逆波兰式等结构。但是现在不一样了，我不仅学过数据结构，还学过了编译原理。这次我就拿学过的编译原理相关知识写个计算器。&lt;&#x2F;p&gt;
 &lt;h2 id=&quot;前置知识&quot;&gt;前置知识&lt;&#x2F;h2&gt;
 &lt;p&gt;上下文无关语法(CFG)：描述了语句是如何形成的。&lt;&#x2F;p&gt;
 &lt;p&gt;语句：从语法规则里推导出的一个符号串。&lt;&#x2F;p&gt;
@@ -566,14 +575,19 @@ Processed 9429 bytes, 0.009 megabytes (SI)
 &lt;p&gt;知乎上的大佬们推荐的这本《编译器设计》比龙书更加通俗易懂，贴近现实，强烈推荐！&lt;&#x2F;p&gt;
 &lt;&#x2F;blockquote&gt;
 </content>
-	</entry>
-	<entry xml:lang="zh_CN">
-		<title>plt hook 项目代码分析和最小实现</title>
-		<published>2022-04-05T00:00:00+00:00</published>
-		<updated>2022-04-05T00:00:00+00:00</updated>
-		<link rel="alternate" href="https://chenx6.github.io/post/plthook/" type="text/html"/>
-		<id>https://chenx6.github.io/post/plthook/</id>
-		<content type="html">&lt;p&gt;虽然知道可以通过魔改 plt 表实现 hook 函数，但是不知道具体实现...碰巧最近用到了 plthook 这个库，于是我就研究了下 plthook 这个库，并且仿照着这个库重新实现一份代码。&lt;&#x2F;p&gt;
+        
+    </entry>
+    <entry xml:lang="zh_CN">
+        <title>plt hook 项目代码分析和最小实现</title>
+        <published>2022-04-05T00:00:00+00:00</published>
+        <updated>2022-04-05T00:00:00+00:00</updated>
+        <author>
+          <name>Unknown</name>
+        </author>
+        <link rel="alternate" href="https://chenx6.github.io/post/plthook/" type="text/html"/>
+        <id>https://chenx6.github.io/post/plthook/</id>
+        
+        <content type="html">&lt;p&gt;虽然知道可以通过魔改 plt 表实现 hook 函数，但是不知道具体实现...碰巧最近用到了 plthook 这个库，于是我就研究了下 plthook 这个库，并且仿照着这个库重新实现一份代码。&lt;&#x2F;p&gt;
 &lt;h2 id=&quot;原理分析&quot;&gt;原理分析&lt;&#x2F;h2&gt;
 &lt;p&gt;根据命名规则，.rela.plt 表是负责 plt 表的重定位信息。.rela 表中有每项都有 2 个成员，r_offset 指向了该重定位入口所要修正的位置的第一个字节的虚拟地址， r_info 则是表示相关信息，可以通过 &lt;code&gt;ELF[32|64]_R_SYM&lt;&#x2F;code&gt; 获得其指向的 .dynsym 项的下标。&lt;&#x2F;p&gt;
 &lt;p&gt;.dynsym 表（动态链接表）中存放动态链接需要的信息，可以通过 .dynsym 表从 .strtab 表中获得要链接的函数名字。&lt;&#x2F;p&gt;
@@ -675,5 +689,6 @@ Processed 9429 bytes, 0.009 megabytes (SI)
 &lt;li&gt;&lt;a href=&quot;http:&#x2F;&#x2F;chuquan.me&#x2F;2018&#x2F;05&#x2F;21&#x2F;elf-introduce&#x2F;&quot;&gt;计算机那些事(4)——ELF文件结构&lt;&#x2F;a&gt;&lt;&#x2F;li&gt;
 &lt;&#x2F;ul&gt;
 </content>
-	</entry>
+        
+    </entry>
 </feed>

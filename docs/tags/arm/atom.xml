@@ -1,19 +1,23 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom" xml:lang="zh_CN">
-	<title>二进制咸鱼的自我救赎 - arm</title>
-	<subtitle>幸福往往是摸的透彻，而敬业的心却常常隐藏。</subtitle>
-	<link href="https://chenx6.github.io/tags/arm/atom.xml" rel="self" type="application/atom+xml"/>
-  <link href="https://chenx6.github.io/"/>
-	<generator uri="https://www.getzola.org/">Zola</generator>
-	<updated>2020-02-01T00:00:00+00:00</updated>
-	<id>https://chenx6.github.io/tags/arm/atom.xml</id>
-	<entry xml:lang="zh_CN">
-		<title>斐讯 N1 折腾&#x2F;避坑笔记</title>
-		<published>2020-02-01T00:00:00+00:00</published>
-		<updated>2020-02-01T00:00:00+00:00</updated>
-		<link rel="alternate" href="https://chenx6.github.io/post/n1_modify/" type="text/html"/>
-		<id>https://chenx6.github.io/post/n1_modify/</id>
-		<content type="html">&lt;p&gt;最近想搞一台小服务器来做 Git 服务器，下载 Bt 等事情，所以就在一堆便宜的 ARM 机顶盒&#x2F;NAS 中间挑选。最后看上了 100 RMB 左右的斐讯 N1，因为 N1 不用拆机就可以刷机。&lt;&#x2F;p&gt;
+    <title>二进制咸鱼的自我救赎 - arm</title>
+    <subtitle>幸福往往是摸的透彻，而敬业的心却常常隐藏。</subtitle>
+    <link href="https://chenx6.github.io/tags/arm/atom.xml" rel="self" type="application/atom+xml"/>
+    <link href="https://chenx6.github.io/"/>
+    <generator uri="https://www.getzola.org/">Zola</generator>
+    <updated>2020-02-01T00:00:00+00:00</updated>
+    <id>https://chenx6.github.io/tags/arm/atom.xml</id>
+    <entry xml:lang="zh_CN">
+        <title>斐讯 N1 折腾&#x2F;避坑笔记</title>
+        <published>2020-02-01T00:00:00+00:00</published>
+        <updated>2020-02-01T00:00:00+00:00</updated>
+        <author>
+          <name>Unknown</name>
+        </author>
+        <link rel="alternate" href="https://chenx6.github.io/post/n1_modify/" type="text/html"/>
+        <id>https://chenx6.github.io/post/n1_modify/</id>
+        
+        <content type="html">&lt;p&gt;最近想搞一台小服务器来做 Git 服务器，下载 Bt 等事情，所以就在一堆便宜的 ARM 机顶盒&#x2F;NAS 中间挑选。最后看上了 100 RMB 左右的斐讯 N1，因为 N1 不用拆机就可以刷机。&lt;&#x2F;p&gt;
 &lt;h2 id=&quot;准备工作&quot;&gt;准备工作&lt;&#x2F;h2&gt;
 &lt;ul&gt;
 &lt;li&gt;空 U 盘&lt;&#x2F;li&gt;
@@ -69,5 +73,6 @@
 &lt;p&gt;&lt;img src=&quot;&#x2F;images&#x2F;Annotation_2020-03-02_151817.png&quot; alt=&quot;6&quot; &#x2F;&gt;&lt;&#x2F;p&gt;
 &lt;p&gt;这个 service 会随着用户的退出而退出，所以要将当前用户设置为驻留用户：&lt;code&gt;loginctl enable-linger $USER&lt;&#x2F;code&gt;，这样就能实现开机启动，用户登出时不退出服务了。&lt;&#x2F;p&gt;
 </content>
-	</entry>
+        
+    </entry>
 </feed>

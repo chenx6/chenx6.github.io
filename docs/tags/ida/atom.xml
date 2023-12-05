@@ -1,19 +1,23 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom" xml:lang="zh_CN">
-	<title>二进制咸鱼的自我救赎 - ida</title>
-	<subtitle>幸福往往是摸的透彻，而敬业的心却常常隐藏。</subtitle>
-	<link href="https://chenx6.github.io/tags/ida/atom.xml" rel="self" type="application/atom+xml"/>
-  <link href="https://chenx6.github.io/"/>
-	<generator uri="https://www.getzola.org/">Zola</generator>
-	<updated>2022-07-24T00:00:00+00:00</updated>
-	<id>https://chenx6.github.io/tags/ida/atom.xml</id>
-	<entry xml:lang="zh_CN">
-		<title>通过无符号程序的日志函数来恢复函数名字</title>
-		<published>2022-07-24T00:00:00+00:00</published>
-		<updated>2022-07-24T00:00:00+00:00</updated>
-		<link rel="alternate" href="https://chenx6.github.io/post/from_log/" type="text/html"/>
-		<id>https://chenx6.github.io/post/from_log/</id>
-		<content type="html">&lt;p&gt;2023-03-12 更新：添加了使用 &lt;code&gt;ida_hexrays.decompile&lt;&#x2F;code&gt; 的方法&lt;&#x2F;p&gt;
+    <title>二进制咸鱼的自我救赎 - ida</title>
+    <subtitle>幸福往往是摸的透彻，而敬业的心却常常隐藏。</subtitle>
+    <link href="https://chenx6.github.io/tags/ida/atom.xml" rel="self" type="application/atom+xml"/>
+    <link href="https://chenx6.github.io/"/>
+    <generator uri="https://www.getzola.org/">Zola</generator>
+    <updated>2022-07-24T00:00:00+00:00</updated>
+    <id>https://chenx6.github.io/tags/ida/atom.xml</id>
+    <entry xml:lang="zh_CN">
+        <title>通过无符号程序的日志函数来恢复函数名字</title>
+        <published>2022-07-24T00:00:00+00:00</published>
+        <updated>2022-07-24T00:00:00+00:00</updated>
+        <author>
+          <name>Unknown</name>
+        </author>
+        <link rel="alternate" href="https://chenx6.github.io/post/from_log/" type="text/html"/>
+        <id>https://chenx6.github.io/post/from_log/</id>
+        
+        <content type="html">&lt;p&gt;2023-03-12 更新：添加了使用 &lt;code&gt;ida_hexrays.decompile&lt;&#x2F;code&gt; 的方法&lt;&#x2F;p&gt;
 &lt;p&gt;在逆向二进制程序中，经常碰到将程序 strip 了，但是日志函数中保留着函数名字的情况。所以写文记录在这种情况下，使用 IDAPython 恢复函数名字的过程。&lt;&#x2F;p&gt;
 &lt;h2 id=&quot;日志函数长什么样&quot;&gt;日志函数长什么样&lt;&#x2F;h2&gt;
 &lt;p&gt;下面是我手写的一个日志函数。主要有几个部分：&lt;&#x2F;p&gt;
@@ -296,5 +300,6 @@
 &lt;li&gt;&lt;a href=&quot;https:&#x2F;&#x2F;blog.gentlecp.com&#x2F;article&#x2F;12309.html&quot;&gt;【IDAPython CTree】反编译代码操作练习&lt;&#x2F;a&gt;&lt;&#x2F;li&gt;
 &lt;&#x2F;ul&gt;
 </content>
-	</entry>
+        
+    </entry>
 </feed>

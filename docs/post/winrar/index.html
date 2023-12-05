@@ -63,6 +63,11 @@
           </li>
           
           <li>
+            <a href="https://chenx6.github.io/post/winrar/#总结">总结</a>
+            
+          </li>
+          
+          <li>
             <a href="https://chenx6.github.io/post/winrar/#Refs">Refs</a>
             
           </li>
@@ -181,6 +186,8 @@ index ecf6dd3..0138d0f 100644
     <span class="z-punctuation z-section z-block z-end z-c">}</span></span>
 </span></code></pre>
 <p>配合上 <code>ShellExecuteExW</code> 对文件的处理，就造成了点击一个文件，让另一个文件被调用执行的情况...详细分析请看 <a href="https://chenx6.github.io/post/winrar/#refs">Refs</a></p>
+<h2 id="总结">总结</h2>
+<p>CVE-2023-40477 的漏洞应该是可以被避免的，存储数组索引的数据，应该使用 unsigned 类型，并且在通过不可信任的数据，访问数组时候需要检查边界。而 CVE-2023-38831 则是碰上了一个逻辑问题，在比较字符串时候没有比较长度。</p>
 <h2 id="Refs">Refs</h2>
 <ul>
 <li><a href="https://www.win-rar.com/singlenewsview.html?&amp;L=0&amp;tx_ttnews%5Btt_news%5D=232&amp;cHash=c5bf79590657e32554c6683296a8e8aa">WinRAR 6.23 final released</a></li>

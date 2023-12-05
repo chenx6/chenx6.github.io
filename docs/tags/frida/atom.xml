@@ -1,19 +1,23 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom" xml:lang="zh_CN">
-	<title>二进制咸鱼的自我救赎 - frida</title>
-	<subtitle>幸福往往是摸的透彻，而敬业的心却常常隐藏。</subtitle>
-	<link href="https://chenx6.github.io/tags/frida/atom.xml" rel="self" type="application/atom+xml"/>
-  <link href="https://chenx6.github.io/"/>
-	<generator uri="https://www.getzola.org/">Zola</generator>
-	<updated>2022-02-26T00:00:00+00:00</updated>
-	<id>https://chenx6.github.io/tags/frida/atom.xml</id>
-	<entry xml:lang="zh_CN">
-		<title>Frida 在一次离谱比赛中的应用</title>
-		<published>2022-02-26T00:00:00+00:00</published>
-		<updated>2022-02-26T00:00:00+00:00</updated>
-		<link rel="alternate" href="https://chenx6.github.io/post/frida_beginner/" type="text/html"/>
-		<id>https://chenx6.github.io/post/frida_beginner/</id>
-		<content type="html">&lt;p&gt;在某次离谱比赛中，我使用了 Frida 解出了题目，下面是一些简单的笔记。&lt;&#x2F;p&gt;
+    <title>二进制咸鱼的自我救赎 - frida</title>
+    <subtitle>幸福往往是摸的透彻，而敬业的心却常常隐藏。</subtitle>
+    <link href="https://chenx6.github.io/tags/frida/atom.xml" rel="self" type="application/atom+xml"/>
+    <link href="https://chenx6.github.io/"/>
+    <generator uri="https://www.getzola.org/">Zola</generator>
+    <updated>2022-02-26T00:00:00+00:00</updated>
+    <id>https://chenx6.github.io/tags/frida/atom.xml</id>
+    <entry xml:lang="zh_CN">
+        <title>Frida 在一次离谱比赛中的应用</title>
+        <published>2022-02-26T00:00:00+00:00</published>
+        <updated>2022-02-26T00:00:00+00:00</updated>
+        <author>
+          <name>Unknown</name>
+        </author>
+        <link rel="alternate" href="https://chenx6.github.io/post/frida_beginner/" type="text/html"/>
+        <id>https://chenx6.github.io/post/frida_beginner/</id>
+        
+        <content type="html">&lt;p&gt;在某次离谱比赛中，我使用了 Frida 解出了题目，下面是一些简单的笔记。&lt;&#x2F;p&gt;
 &lt;blockquote&gt;
 &lt;p&gt;在 2021 年 10 月 24 日，我浪费了2小时的时间解出了一个某弹幕网站办的比赛的离谱安卓题，解出之后的内心就是：rnm，退时间！更加嘲讽的是，他还在一个月后转给了我 0.56 元作为奖励！&lt;&#x2F;p&gt;
 &lt;p&gt;那天比较欣慰的是在某弹幕网站上看完了 A·ZU·NA 的 FMT（&lt;&#x2F;p&gt;
@@ -340,5 +344,6 @@
 &lt;li&gt;&lt;a href=&quot;https:&#x2F;&#x2F;www.cnblogs.com&#x2F;shlyd&#x2F;p&#x2F;14726850.html&quot;&gt;使用 Frida Hook 不同类型的函数（失效文章）&lt;&#x2F;a&gt;&lt;&#x2F;li&gt;
 &lt;&#x2F;ul&gt;
 </content>
-	</entry>
+        
+    </entry>
 </feed>

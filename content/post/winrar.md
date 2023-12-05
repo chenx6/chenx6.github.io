@@ -135,6 +135,10 @@ with open("test_delete.part01.rev.origin", "rb") as f:
 
 配合上 `ShellExecuteExW` 对文件的处理，就造成了点击一个文件，让另一个文件被调用执行的情况...详细分析请看 [Refs](#refs)
 
+## 总结
+
+CVE-2023-40477 的漏洞应该是可以被避免的，存储数组索引的数据，应该使用 unsigned 类型，并且在通过不可信任的数据，访问数组时候需要检查边界。而 CVE-2023-38831 则是碰上了一个逻辑问题，在比较字符串时候没有比较长度。
+
 ## Refs
 
 - [WinRAR 6.23 final released](https://www.win-rar.com/singlenewsview.html?&L=0&tx_ttnews%5Btt_news%5D=232&cHash=c5bf79590657e32554c6683296a8e8aa)

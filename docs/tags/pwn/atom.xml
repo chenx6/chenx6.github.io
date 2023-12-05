@@ -1,19 +1,23 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom" xml:lang="zh_CN">
-	<title>二进制咸鱼的自我救赎 - pwn</title>
-	<subtitle>幸福往往是摸的透彻，而敬业的心却常常隐藏。</subtitle>
-	<link href="https://chenx6.github.io/tags/pwn/atom.xml" rel="self" type="application/atom+xml"/>
-  <link href="https://chenx6.github.io/"/>
-	<generator uri="https://www.getzola.org/">Zola</generator>
-	<updated>2021-01-21T00:00:00+00:00</updated>
-	<id>https://chenx6.github.io/tags/pwn/atom.xml</id>
-	<entry xml:lang="zh_CN">
-		<title>记录一次失败的固件 fuzz</title>
-		<published>2021-01-21T00:00:00+00:00</published>
-		<updated>2021-01-21T00:00:00+00:00</updated>
-		<link rel="alternate" href="https://chenx6.github.io/post/fail_firm_fuzz/" type="text/html"/>
-		<id>https://chenx6.github.io/post/fail_firm_fuzz/</id>
-		<content type="html">&lt;p&gt;这是我第一次对华硕路由器的 httpd 进行 fuzz。结果 fuzz 出来的结果没有经过实机测试，就提交上去了，然后就是华硕的安全团队复现不出来...为什么复现不出来，在本文总结处进行分析。本文主要讲我在进行固件 fuzz 时的具体过程。&lt;&#x2F;p&gt;
+    <title>二进制咸鱼的自我救赎 - pwn</title>
+    <subtitle>幸福往往是摸的透彻，而敬业的心却常常隐藏。</subtitle>
+    <link href="https://chenx6.github.io/tags/pwn/atom.xml" rel="self" type="application/atom+xml"/>
+    <link href="https://chenx6.github.io/"/>
+    <generator uri="https://www.getzola.org/">Zola</generator>
+    <updated>2021-01-21T00:00:00+00:00</updated>
+    <id>https://chenx6.github.io/tags/pwn/atom.xml</id>
+    <entry xml:lang="zh_CN">
+        <title>记录一次失败的固件 fuzz</title>
+        <published>2021-01-21T00:00:00+00:00</published>
+        <updated>2021-01-21T00:00:00+00:00</updated>
+        <author>
+          <name>Unknown</name>
+        </author>
+        <link rel="alternate" href="https://chenx6.github.io/post/fail_firm_fuzz/" type="text/html"/>
+        <id>https://chenx6.github.io/post/fail_firm_fuzz/</id>
+        
+        <content type="html">&lt;p&gt;这是我第一次对华硕路由器的 httpd 进行 fuzz。结果 fuzz 出来的结果没有经过实机测试，就提交上去了，然后就是华硕的安全团队复现不出来...为什么复现不出来，在本文总结处进行分析。本文主要讲我在进行固件 fuzz 时的具体过程。&lt;&#x2F;p&gt;
 &lt;h2 id=&quot;代码分析&#x2F;逆向工程&quot;&gt;代码分析&#x2F;逆向工程&lt;&#x2F;h2&gt;
 &lt;p&gt;华硕路由器的大部分源代码是公开的，可以在官网上下载到，并且有个开源的 &lt;a href=&quot;https:&#x2F;&#x2F;github.com&#x2F;RMerl&#x2F;asuswrt-merlin.ng&quot;&gt;RMerl&#x2F;asuswrt-merlin.ng&lt;&#x2F;a&gt;。阅读源代码发现， httpd 的源代码中间调用了些博通的库，没法直接用编译器进行插桩。所以就当作源码不存在，直接下载二进制文件进行无文件 fuzz 了...&lt;&#x2F;p&gt;
 &lt;blockquote&gt;
@@ -207,14 +211,19 @@
 &lt;p&gt;&lt;a href=&quot;https:&#x2F;&#x2F;github.com&#x2F;AFLplusplus&#x2F;AFLplusplus&quot;&gt;AFLplusplus&#x2F;AFLplusplus&lt;&#x2F;a&gt;&lt;&#x2F;p&gt;
 &lt;p&gt;&lt;a href=&quot;https:&#x2F;&#x2F;github.com&#x2F;google&#x2F;fuzzing&quot;&gt;google&#x2F;fuzzing&lt;&#x2F;a&gt;&lt;&#x2F;p&gt;
 </content>
-	</entry>
-	<entry xml:lang="zh_CN">
-		<title>不同视角看 ROP</title>
-		<published>2020-06-01T00:00:00+00:00</published>
-		<updated>2020-06-01T00:00:00+00:00</updated>
-		<link rel="alternate" href="https://chenx6.github.io/post/different-rop/" type="text/html"/>
-		<id>https://chenx6.github.io/post/different-rop/</id>
-		<content type="html">&lt;p&gt;看了许多讲 ROP 的文章，发现很多只是讲了怎么利用，但是没有讲为什么这么利用。所以写文记录。&lt;&#x2F;p&gt;
+        
+    </entry>
+    <entry xml:lang="zh_CN">
+        <title>不同视角看 ROP</title>
+        <published>2020-06-01T00:00:00+00:00</published>
+        <updated>2020-06-01T00:00:00+00:00</updated>
+        <author>
+          <name>Unknown</name>
+        </author>
+        <link rel="alternate" href="https://chenx6.github.io/post/different-rop/" type="text/html"/>
+        <id>https://chenx6.github.io/post/different-rop/</id>
+        
+        <content type="html">&lt;p&gt;看了许多讲 ROP 的文章，发现很多只是讲了怎么利用，但是没有讲为什么这么利用。所以写文记录。&lt;&#x2F;p&gt;
 &lt;h2 id=&quot;什么是_ROP&quot;&gt;什么是 ROP&lt;&#x2F;h2&gt;
 &lt;p&gt;ROP (Return orient programming) 是一种漏洞利用方法，使得攻击者绕过保护(例如 NX 栈不可执行)执行恶意代码。攻击者通过栈溢出等手段实现覆盖返回地址劫持程序控制流，并且通过不同的代码片段(Gadgets)来拼接出攻击者希望执行的代码。&lt;&#x2F;p&gt;
 &lt;h2 id=&quot;怎么进行_ROP&quot;&gt;怎么进行 ROP&lt;&#x2F;h2&gt;
@@ -411,5 +420,6 @@ _add ENDP
 &lt;p&gt;如果需要栈迁移，则需要使用两次 &lt;code&gt;leave&lt;&#x2F;code&gt; 指令来修改 SP 和 BP，将栈迁移到可以控制的地方，从而实现执行 ROP 链。&lt;&#x2F;p&gt;
 &lt;p&gt;当然利用方式还是得根据具体题目进行改变，所以请君自行补充。&lt;&#x2F;p&gt;
 </content>
-	</entry>
+        
+    </entry>
 </feed>

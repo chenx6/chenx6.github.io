@@ -1,19 +1,23 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom" xml:lang="zh_CN">
-	<title>二进制咸鱼的自我救赎 - backdoor</title>
-	<subtitle>幸福往往是摸的透彻，而敬业的心却常常隐藏。</subtitle>
-	<link href="https://chenx6.github.io/tags/backdoor/atom.xml" rel="self" type="application/atom+xml"/>
-  <link href="https://chenx6.github.io/"/>
-	<generator uri="https://www.getzola.org/">Zola</generator>
-	<updated>2020-01-01T00:00:00+00:00</updated>
-	<id>https://chenx6.github.io/tags/backdoor/atom.xml</id>
-	<entry xml:lang="zh_CN">
-		<title>给 ELF 文件加上后门</title>
-		<published>2020-01-01T00:00:00+00:00</published>
-		<updated>2020-01-01T00:00:00+00:00</updated>
-		<link rel="alternate" href="https://chenx6.github.io/post/elf_backdoor/" type="text/html"/>
-		<id>https://chenx6.github.io/post/elf_backdoor/</id>
-		<content type="html">&lt;p&gt;在渗透测试中，给常用的可执行文件加上后门是很常见的操作。但是之前的加后门 &amp;quot;The backdoor factory&amp;quot; 已经不维护了，而且还是 Python2 写的，代码质量也...所以我自己尝试着重新用 Python3 造了个轮子。在造轮子的过程中，由于 APUE 扔在学校里面了，导致在写和系统相关的汇编时出现了一些翻车情况...&lt;&#x2F;p&gt;
+    <title>二进制咸鱼的自我救赎 - backdoor</title>
+    <subtitle>幸福往往是摸的透彻，而敬业的心却常常隐藏。</subtitle>
+    <link href="https://chenx6.github.io/tags/backdoor/atom.xml" rel="self" type="application/atom+xml"/>
+    <link href="https://chenx6.github.io/"/>
+    <generator uri="https://www.getzola.org/">Zola</generator>
+    <updated>2020-01-01T00:00:00+00:00</updated>
+    <id>https://chenx6.github.io/tags/backdoor/atom.xml</id>
+    <entry xml:lang="zh_CN">
+        <title>给 ELF 文件加上后门</title>
+        <published>2020-01-01T00:00:00+00:00</published>
+        <updated>2020-01-01T00:00:00+00:00</updated>
+        <author>
+          <name>Unknown</name>
+        </author>
+        <link rel="alternate" href="https://chenx6.github.io/post/elf_backdoor/" type="text/html"/>
+        <id>https://chenx6.github.io/post/elf_backdoor/</id>
+        
+        <content type="html">&lt;p&gt;在渗透测试中，给常用的可执行文件加上后门是很常见的操作。但是之前的加后门 &amp;quot;The backdoor factory&amp;quot; 已经不维护了，而且还是 Python2 写的，代码质量也...所以我自己尝试着重新用 Python3 造了个轮子。在造轮子的过程中，由于 APUE 扔在学校里面了，导致在写和系统相关的汇编时出现了一些翻车情况...&lt;&#x2F;p&gt;
 &lt;h2 id=&quot;加后门的流程&quot;&gt;加后门的流程&lt;&#x2F;h2&gt;
 &lt;p&gt;基本分为两部分，先分析 ELF，然后根据之前的分析来给 ELF 加个&amp;quot;补丁&amp;quot;。&lt;&#x2F;p&gt;
 &lt;ol&gt;
@@ -266,5 +270,6 @@
 &lt;p&gt;UCLib 关于 ELF 格式的文档&lt;a href=&quot;https:&#x2F;&#x2F;uclibc.org&#x2F;docs&#x2F;elf-64-gen.pdf&quot;&gt;https:&#x2F;&#x2F;uclibc.org&#x2F;docs&#x2F;elf-64-gen.pdf&lt;&#x2F;a&gt;&lt;&#x2F;p&gt;
 &lt;p&gt;看不进去英文可以配合 CSDN 这篇文章 &lt;a href=&quot;https:&#x2F;&#x2F;blog.csdn.net&#x2F;feglass&#x2F;article&#x2F;details&#x2F;51469511&quot;&gt;https:&#x2F;&#x2F;blog.csdn.net&#x2F;feglass&#x2F;article&#x2F;details&#x2F;51469511&lt;&#x2F;a&gt;&lt;&#x2F;p&gt;
 </content>
-	</entry>
+        
+    </entry>
 </feed>

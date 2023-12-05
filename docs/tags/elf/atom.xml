@@ -1,19 +1,23 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom" xml:lang="zh_CN">
-	<title>二进制咸鱼的自我救赎 - elf</title>
-	<subtitle>幸福往往是摸的透彻，而敬业的心却常常隐藏。</subtitle>
-	<link href="https://chenx6.github.io/tags/elf/atom.xml" rel="self" type="application/atom+xml"/>
-  <link href="https://chenx6.github.io/"/>
-	<generator uri="https://www.getzola.org/">Zola</generator>
-	<updated>2022-04-05T00:00:00+00:00</updated>
-	<id>https://chenx6.github.io/tags/elf/atom.xml</id>
-	<entry xml:lang="zh_CN">
-		<title>plt hook 项目代码分析和最小实现</title>
-		<published>2022-04-05T00:00:00+00:00</published>
-		<updated>2022-04-05T00:00:00+00:00</updated>
-		<link rel="alternate" href="https://chenx6.github.io/post/plthook/" type="text/html"/>
-		<id>https://chenx6.github.io/post/plthook/</id>
-		<content type="html">&lt;p&gt;虽然知道可以通过魔改 plt 表实现 hook 函数，但是不知道具体实现...碰巧最近用到了 plthook 这个库，于是我就研究了下 plthook 这个库，并且仿照着这个库重新实现一份代码。&lt;&#x2F;p&gt;
+    <title>二进制咸鱼的自我救赎 - elf</title>
+    <subtitle>幸福往往是摸的透彻，而敬业的心却常常隐藏。</subtitle>
+    <link href="https://chenx6.github.io/tags/elf/atom.xml" rel="self" type="application/atom+xml"/>
+    <link href="https://chenx6.github.io/"/>
+    <generator uri="https://www.getzola.org/">Zola</generator>
+    <updated>2022-04-05T00:00:00+00:00</updated>
+    <id>https://chenx6.github.io/tags/elf/atom.xml</id>
+    <entry xml:lang="zh_CN">
+        <title>plt hook 项目代码分析和最小实现</title>
+        <published>2022-04-05T00:00:00+00:00</published>
+        <updated>2022-04-05T00:00:00+00:00</updated>
+        <author>
+          <name>Unknown</name>
+        </author>
+        <link rel="alternate" href="https://chenx6.github.io/post/plthook/" type="text/html"/>
+        <id>https://chenx6.github.io/post/plthook/</id>
+        
+        <content type="html">&lt;p&gt;虽然知道可以通过魔改 plt 表实现 hook 函数，但是不知道具体实现...碰巧最近用到了 plthook 这个库，于是我就研究了下 plthook 这个库，并且仿照着这个库重新实现一份代码。&lt;&#x2F;p&gt;
 &lt;h2 id=&quot;原理分析&quot;&gt;原理分析&lt;&#x2F;h2&gt;
 &lt;p&gt;根据命名规则，.rela.plt 表是负责 plt 表的重定位信息。.rela 表中有每项都有 2 个成员，r_offset 指向了该重定位入口所要修正的位置的第一个字节的虚拟地址， r_info 则是表示相关信息，可以通过 &lt;code&gt;ELF[32|64]_R_SYM&lt;&#x2F;code&gt; 获得其指向的 .dynsym 项的下标。&lt;&#x2F;p&gt;
 &lt;p&gt;.dynsym 表（动态链接表）中存放动态链接需要的信息，可以通过 .dynsym 表从 .strtab 表中获得要链接的函数名字。&lt;&#x2F;p&gt;
@@ -115,5 +119,6 @@
 &lt;li&gt;&lt;a href=&quot;http:&#x2F;&#x2F;chuquan.me&#x2F;2018&#x2F;05&#x2F;21&#x2F;elf-introduce&#x2F;&quot;&gt;计算机那些事(4)——ELF文件结构&lt;&#x2F;a&gt;&lt;&#x2F;li&gt;
 &lt;&#x2F;ul&gt;
 </content>
-	</entry>
+        
+    </entry>
 </feed>

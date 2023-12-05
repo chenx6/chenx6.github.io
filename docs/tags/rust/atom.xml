@@ -1,19 +1,23 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom" xml:lang="zh_CN">
-	<title>二进制咸鱼的自我救赎 - rust</title>
-	<subtitle>幸福往往是摸的透彻，而敬业的心却常常隐藏。</subtitle>
-	<link href="https://chenx6.github.io/tags/rust/atom.xml" rel="self" type="application/atom+xml"/>
-  <link href="https://chenx6.github.io/"/>
-	<generator uri="https://www.getzola.org/">Zola</generator>
-	<updated>2022-06-02T00:00:00+00:00</updated>
-	<id>https://chenx6.github.io/tags/rust/atom.xml</id>
-	<entry xml:lang="zh_CN">
-		<title>使用编译原理的知识，用 Rust 写一个计算器</title>
-		<published>2022-06-02T00:00:00+00:00</published>
-		<updated>2022-06-02T00:00:00+00:00</updated>
-		<link rel="alternate" href="https://chenx6.github.io/post/calculator/" type="text/html"/>
-		<id>https://chenx6.github.io/post/calculator/</id>
-		<content type="html">&lt;p&gt;”想写个计算器“这件事情应该是我刚学会 C 语言时候的事情，当时还看不懂栈，逆波兰式等结构。但是现在不一样了，我不仅学过数据结构，还学过了编译原理。这次我就拿学过的编译原理相关知识写个计算器。&lt;&#x2F;p&gt;
+    <title>二进制咸鱼的自我救赎 - rust</title>
+    <subtitle>幸福往往是摸的透彻，而敬业的心却常常隐藏。</subtitle>
+    <link href="https://chenx6.github.io/tags/rust/atom.xml" rel="self" type="application/atom+xml"/>
+    <link href="https://chenx6.github.io/"/>
+    <generator uri="https://www.getzola.org/">Zola</generator>
+    <updated>2022-06-02T00:00:00+00:00</updated>
+    <id>https://chenx6.github.io/tags/rust/atom.xml</id>
+    <entry xml:lang="zh_CN">
+        <title>使用编译原理的知识，用 Rust 写一个计算器</title>
+        <published>2022-06-02T00:00:00+00:00</published>
+        <updated>2022-06-02T00:00:00+00:00</updated>
+        <author>
+          <name>Unknown</name>
+        </author>
+        <link rel="alternate" href="https://chenx6.github.io/post/calculator/" type="text/html"/>
+        <id>https://chenx6.github.io/post/calculator/</id>
+        
+        <content type="html">&lt;p&gt;”想写个计算器“这件事情应该是我刚学会 C 语言时候的事情，当时还看不懂栈，逆波兰式等结构。但是现在不一样了，我不仅学过数据结构，还学过了编译原理。这次我就拿学过的编译原理相关知识写个计算器。&lt;&#x2F;p&gt;
 &lt;h2 id=&quot;前置知识&quot;&gt;前置知识&lt;&#x2F;h2&gt;
 &lt;p&gt;上下文无关语法(CFG)：描述了语句是如何形成的。&lt;&#x2F;p&gt;
 &lt;p&gt;语句：从语法规则里推导出的一个符号串。&lt;&#x2F;p&gt;
@@ -335,5 +339,6 @@ Processed 9429 bytes, 0.009 megabytes (SI)
 &lt;p&gt;知乎上的大佬们推荐的这本《编译器设计》比龙书更加通俗易懂，贴近现实，强烈推荐！&lt;&#x2F;p&gt;
 &lt;&#x2F;blockquote&gt;
 </content>
-	</entry>
+        
+    </entry>
 </feed>
