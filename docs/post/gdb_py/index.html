@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" href="data:;base64,iVBORw0KGgo=">
+  <title>使用 Python 来自动化 gdb 调试 - 二进制咸鱼的自我救赎</title>
+  <link rel="stylesheet" href="https://chenx6.github.io/water.min.css">
+  <link rel="stylesheet" type="text/css" href="/syntax-theme-dark.css" media="(prefers-color-scheme: dark)" />
+  <link rel="stylesheet" type="text/css" href="/syntax-theme-light.css" media="(prefers-color-scheme: light)" />
+  
+  <link rel="alternate" type="application/atom+xml" title="RSS" href="https://chenx6.github.io/atom.xml">
+  
+
+  
+  
+
+</head>
+
+<body>
+  <header>
+    <a href="https:&#x2F;&#x2F;chenx6.github.io&#x2F;"><h1>二进制咸鱼的自我救赎</h1></a>
+    
+    <p class="lead">幸福往往是摸的透彻，而敬业的心却常常隐藏。</p>
+    
+    
+      <a href="https:&#x2F;&#x2F;chenx6.github.io&#x2F;&#x2F;about">
+        About
+      </a>
+    
+    
+    <a href="https://chenx6.github.io/atom.xml">RSS</a>
+    
+  </header>
+  
+<div class="container">
+  <div class="post">
+    <h2 class="post-title">使用 Python 来自动化 gdb 调试</h2>
+    <span class="post-date">2024-02-10</span>
+    
+  
+    
+      <a href="https://chenx6.github.io/tags/re/">#re</a>
+    
+      <a href="https://chenx6.github.io/tags/gdb/">#gdb</a>
+    
+      <a href="https://chenx6.github.io/tags/python/">#python</a>
+    
+  
+
+    <aside class="toc">
+      
+      <details>
+        <summary>Table of contents</summary>
+        <ul>
+          
+          <li>
+            <a href="https://chenx6.github.io/post/gdb_py/#相关_API_介绍">相关 API 介绍</a>
+            
+            <ul>
+              
+              <li>
+                <a href="https://chenx6.github.io/post/gdb_py/#基本操作">基本操作</a>
+              </li>
+              
+              <li>
+                <a href="https://chenx6.github.io/post/gdb_py/#Breakpoint">Breakpoint</a>
+              </li>
+              
+              <li>
+                <a href="https://chenx6.github.io/post/gdb_py/#Inferiors">Inferiors</a>
+              </li>
+              
+            </ul>
+            
+          </li>
+          
+          <li>
+            <a href="https://chenx6.github.io/post/gdb_py/#实战">实战</a>
+            
+            <ul>
+              
+              <li>
+                <a href="https://chenx6.github.io/post/gdb_py/#在函数处读取某个结构体的相关值">在函数处读取某个结构体的相关值</a>
+              </li>
+              
+              <li>
+                <a href="https://chenx6.github.io/post/gdb_py/#实现类似_gdb-peda_一样的信息输出">实现类似 gdb-peda 一样的信息输出</a>
+              </li>
+              
+            </ul>
+            
+          </li>
+          
+          <li>
+            <a href="https://chenx6.github.io/post/gdb_py/#总结">总结</a>
+            
+          </li>
+          
+          <li>
+            <a href="https://chenx6.github.io/post/gdb_py/#Refs">Refs</a>
+            
+          </li>
+          
+        </ul>
+      </details>
+      
+    </aside>
+    <p>在工作中碰到了很多地方只能用 gdb 进行调试，并且得进行很多冗余的操作。经过资料查询后发现，可以使用 Python 对 gdb 进行 api 调用，但是网上相关文档比较的少，所以本文将记录一些相关操作。</p>
+<h2 id="相关_API_介绍">相关 API 介绍</h2>
+<h3 id="基本操作">基本操作</h3>
+<p><code>gdb.execute (command [, from_tty [, to_string]])</code> 执行 gdb 命令。</p>
+<p><code>gdb.parse_and_eval (expression)</code> 解析一个表达式，并返回一个 <code>gdb.Value</code> 值。</p>
+<h3 id="Breakpoint">Breakpoint</h3>
+<p>通过类似下面的 Python 代码即可实现一个自定义的断点，并可以通过继承的方法进行相应的操作。例如下面的代码中可以在 <code>stop</code> 函数中加入断点到达时执行一些操作，最后通过初始化类实现在 <code>func_name</code> 下断点。</p>
+<pre data-lang="python" class="language-python z-code"><code class="language-python" data-lang="python"><span class="z-source z-python"><span class="z-meta z-class z-python"><span class="z-storage z-type z-class z-python"><span class="z-keyword z-declaration z-class z-python">class</span></span> <span class="z-entity z-name z-class z-python"><span class="z-meta z-generic-name z-python">MyBreakpoint</span></span><span class="z-meta z-class z-inheritance z-python"><span class="z-punctuation z-section z-inheritance z-begin z-python">(</span></span></span><span class="z-meta z-class z-inheritance z-python"><span class="z-entity z-other z-inherited-class z-python">gdb<span class="z-punctuation z-accessor z-dot z-python">.</span>Breakpoint</span><span class="z-punctuation z-section z-inheritance z-end z-python">)</span></span><span class="z-meta z-class z-python"><span class="z-punctuation z-section z-class z-begin z-python">:</span></span>
+</span><span class="z-source z-python"><span class="z-meta z-function z-python">    <span class="z-storage z-type z-function z-python"><span class="z-keyword z-declaration z-function z-python">def</span></span> <span class="z-entity z-name z-function z-python"><span class="z-meta z-generic-name z-python">stop</span></span></span><span class="z-meta z-function z-parameters z-python"><span class="z-punctuation z-section z-parameters z-begin z-python">(</span></span><span class="z-meta z-function z-parameters z-python"><span class="z-variable z-parameter z-python">self</span><span class="z-punctuation z-section z-parameters z-end z-python">)</span></span><span class="z-meta z-function z-python"><span class="z-punctuation z-section z-function z-begin z-python">:</span></span>
+</span><span class="z-source z-python">        <span class="z-keyword z-control z-flow z-pass z-python">pass</span>
+</span><span class="z-source z-python"><span class="z-meta z-function-call z-python"><span class="z-meta z-qualified-name z-python"><span class="z-variable z-function z-python"><span class="z-meta z-generic-name z-python">MyBreakpoint</span></span></span></span><span class="z-meta z-function-call z-arguments z-python"><span class="z-punctuation z-section z-arguments z-begin z-python">(</span><span class="z-meta z-string z-python"><span class="z-string z-quoted z-double z-python"><span class="z-punctuation z-definition z-string z-begin z-python">&quot;</span></span></span><span class="z-meta z-string z-python"><span class="z-string z-quoted z-double z-python">func_name<span class="z-punctuation z-definition z-string z-end z-python">&quot;</span></span></span><span class="z-punctuation z-section z-arguments z-end z-python">)</span></span>
+</span></code></pre>
+<h3 id="Inferiors">Inferiors</h3>
+<p>在 gdb 下运行的程序被称为 <code>inferiors</code>。</p>
+<p><code>gdb.selected_inferior ()</code> 返回当前 <code>inferior</code>。</p>
+<p><code>Inferior.read_memory (address, length)</code> 从 address 地址处读取 length 长度的字节，函数的返回类型为 memoryview。</p>
+<p><code>Inferior.write_memory (address, buffer [, length])</code> 往 address 地址写入 buffer 的内容。</p>
+<p><code>Inferior.search_memory (address, length, pattern)</code> 在 address 处搜索 pattern 的内容。</p>
+<h2 id="实战">实战</h2>
+<h3 id="在函数处读取某个结构体的相关值">在函数处读取某个结构体的相关值</h3>
+<p>我手里拿到了一份编译后的 yara 规则库，希望能知道这份 yara 规则库里包含了哪些规则，但是这个规则库没法被自己编译的 yara 加载，于是通过代码找到了在执行规则库时的遍历规则语句，并通过 IDA 在 ELF 可执行文件中找到了相似代码。</p>
+<pre data-lang="c" class="language-c z-code"><code class="language-c" data-lang="c"><span class="z-source z-c">YR_API <span class="z-storage z-type z-c">int</span> <span class="z-meta z-function z-c"><span class="z-entity z-name z-function z-c">yr_scanner_scan_mem_blocks</span></span><span class="z-meta z-function z-parameters z-c"><span class="z-meta z-group z-c"><span class="z-punctuation z-section z-group z-begin z-c">(</span></span></span><span class="z-meta z-function z-parameters z-c"><span class="z-meta z-group z-c">
+</span></span></span><span class="z-source z-c"><span class="z-meta z-function z-parameters z-c"><span class="z-meta z-group z-c">    YR_SCANNER<span class="z-keyword z-operator z-c">*</span> <span class="z-variable z-parameter z-c">scanner</span><span class="z-punctuation z-separator z-c">,</span>
+</span></span></span><span class="z-source z-c"><span class="z-meta z-function z-parameters z-c"><span class="z-meta z-group z-c">    YR_MEMORY_BLOCK_ITERATOR<span class="z-keyword z-operator z-c">*</span> <span class="z-variable z-parameter z-c">iterator</span><span class="z-punctuation z-section z-group z-end z-c">)</span></span></span><span class="z-meta z-function z-c">
+</span></span><span class="z-source z-c"><span class="z-meta z-function z-c"></span><span class="z-meta z-function z-c"><span class="z-meta z-block z-c"><span class="z-punctuation z-section z-block z-begin z-c">{</span></span></span><span class="z-meta z-function z-c"><span class="z-meta z-block z-c">
+</span></span></span><span class="z-source z-c"><span class="z-meta z-function z-c"><span class="z-meta z-block z-c">  <span class="z-comment z-line z-double-slash z-c"><span class="z-punctuation z-definition z-comment z-c">//</span> ...
+</span></span></span></span><span class="z-source z-c"><span class="z-meta z-function z-c"><span class="z-meta z-block z-c">  <span class="z-keyword z-control z-c">for</span> <span class="z-meta z-group z-c"><span class="z-punctuation z-section z-group z-begin z-c">(</span>i <span class="z-keyword z-operator z-assignment z-c">=</span> <span class="z-constant z-numeric z-integer z-decimal z-c">0</span><span class="z-punctuation z-separator z-c">,</span> rule <span class="z-keyword z-operator z-assignment z-c">=</span> rules<span class="z-punctuation z-accessor z-c">-&gt;</span>rules_table<span class="z-punctuation z-terminator z-c">;</span> <span class="z-keyword z-operator z-arithmetic z-c">!</span><span class="z-meta z-function-call z-c"><span class="z-variable z-function z-c">RULE_IS_NULL</span><span class="z-meta z-group z-c"><span class="z-punctuation z-section z-group z-begin z-c">(</span></span></span><span class="z-meta z-function-call z-c"><span class="z-meta z-group z-c">rule</span></span><span class="z-meta z-function-call z-c"><span class="z-meta z-group z-c"><span class="z-punctuation z-section z-group z-end z-c">)</span></span></span><span class="z-punctuation z-terminator z-c">;</span> i<span class="z-keyword z-operator z-arithmetic z-c">++</span><span class="z-punctuation z-separator z-c">,</span> rule<span class="z-keyword z-operator z-arithmetic z-c">++</span><span class="z-punctuation z-section z-group z-end z-c">)</span></span>
+</span></span></span><span class="z-source z-c"><span class="z-meta z-function z-c"><span class="z-meta z-block z-c">  <span class="z-meta z-block z-c"><span class="z-punctuation z-section z-block z-begin z-c">{</span>
+</span></span></span></span><span class="z-source z-c"><span class="z-meta z-function z-c"><span class="z-meta z-block z-c"><span class="z-meta z-block z-c">    <span class="z-comment z-line z-double-slash z-c"><span class="z-punctuation z-definition z-comment z-c">//</span> ...
+</span></span></span></span></span><span class="z-source z-c"><span class="z-meta z-function z-c"><span class="z-meta z-block z-c"><span class="z-meta z-block z-c">  <span class="z-punctuation z-section z-block z-end z-c">}</span></span>
+</span></span></span><span class="z-source z-c"><span class="z-meta z-function z-c"><span class="z-meta z-block z-c"></span></span><span class="z-meta z-function z-c"><span class="z-meta z-block z-c"><span class="z-punctuation z-section z-block z-end z-c">}</span></span></span>
+</span></code></pre>
+<p>IDA 下看到的相关规则载入语句。</p>
+<pre data-lang="txt" class="language-txt z-code"><code class="language-txt" data-lang="txt"><span class="z-text z-plain">.text:0000000000050B18                 mov     rax, [rsp+888h+var_860]
+</span><span class="z-text z-plain">.text:0000000000050B1D                 xor     ebx, ebx
+</span><span class="z-text z-plain">.text:0000000000050B1F                 mov     r14d, 1Ch
+</span><span class="z-text z-plain">.text:0000000000050B25                 mov     rbp, [rax+8]
+</span><span class="z-text z-plain">.text:0000000000050B29                 mov     eax, [rbp+0]
+</span><span class="z-text z-plain">.text:0000000000050B2C                 test    al, 4
+</span><span class="z-text z-plain">.text:0000000000050B2E                 jnz     loc_50E29
+</span><span class="z-text z-plain">.text:0000000000050B34                 nop     dword ptr [rax+00h]
+</span></code></pre>
+<p>结合反编译结果，可以确认 <code>YR_RULE</code> 结构体地址被载入了 $rbp 寄存器中，结合 yara 代码，编写出下面语句提取规则名字。下面的 Python 代码是在读取 rbp 寄存器的值，并且计算出每个 <code>YR_RULE</code> 的地址，并读取结构体中的指针，从而获取成员的值。</p>
+<p>需要注意的是，下断点位置的代码在断点到达时还未被执行，所以我们需要在 0x50B25 的后一条语句 0x50B29 处下断点，这样 rbp 寄存器中才会存入相应的值。</p>
+<pre data-lang="python" class="language-python z-code"><code class="language-python" data-lang="python"><span class="z-source z-python"><span class="z-meta z-statement z-import z-python"><span class="z-keyword z-control z-import z-python">import</span> <span class="z-meta z-qualified-name z-python"><span class="z-meta z-generic-name z-python">gdb</span></span></span>
+</span><span class="z-source z-python">
+</span><span class="z-source z-python"><span class="z-meta z-function z-python"><span class="z-storage z-type z-function z-python"><span class="z-keyword z-declaration z-function z-python">def</span></span> <span class="z-entity z-name z-function z-python"><span class="z-meta z-generic-name z-python">get_ptr_from_addr</span></span></span><span class="z-meta z-function z-parameters z-python"><span class="z-punctuation z-section z-parameters z-begin z-python">(</span></span><span class="z-meta z-function z-parameters z-python"><span class="z-variable z-parameter z-python">addr</span><span class="z-punctuation z-separator z-parameters z-python">,</span> <span class="z-variable z-parameter z-python">infer</span><span class="z-punctuation z-section z-parameters z-end z-python">)</span></span><span class="z-meta z-function z-python"><span class="z-punctuation z-section z-function z-begin z-python">:</span></span>
+</span><span class="z-source z-python">    <span class="z-meta z-qualified-name z-python"><span class="z-meta z-generic-name z-python">mem</span></span> <span class="z-keyword z-operator z-assignment z-python">=</span> <span class="z-meta z-function-call z-python"><span class="z-meta z-qualified-name z-python"><span class="z-meta z-generic-name z-python">infer</span></span><span class="z-meta z-qualified-name z-python"><span class="z-punctuation z-accessor z-dot z-python">.</span></span><span class="z-meta z-qualified-name z-python"><span class="z-variable z-function z-python"><span class="z-meta z-generic-name z-python">read_memory</span></span></span></span><span class="z-meta z-function-call z-arguments z-python"><span class="z-punctuation z-section z-arguments z-begin z-python">(</span><span class="z-meta z-qualified-name z-python"><span class="z-meta z-generic-name z-python">addr</span></span><span class="z-punctuation z-separator z-arguments z-python">,</span> <span class="z-constant z-numeric z-integer z-decimal z-python">8</span><span class="z-punctuation z-section z-arguments z-end z-python">)</span></span>
+</span><span class="z-source z-python">    <span class="z-keyword z-control z-flow z-return z-python">return</span> <span class="z-meta z-function-call z-python"><span class="z-meta z-qualified-name z-python"><span class="z-support z-type z-python">int</span></span><span class="z-meta z-qualified-name z-python"><span class="z-punctuation z-accessor z-dot z-python">.</span></span><span class="z-meta z-qualified-name z-python"><span class="z-variable z-function z-python"><span class="z-meta z-generic-name z-python">from_bytes</span></span></span></span><span class="z-meta z-function-call z-arguments z-python"><span class="z-punctuation z-section z-arguments z-begin z-python">(</span><span class="z-meta z-function-call z-python"><span class="z-meta z-qualified-name z-python"><span class="z-variable z-function z-python"><span class="z-support z-type z-python">bytes</span></span></span></span><span class="z-meta z-function-call z-arguments z-python"><span class="z-punctuation z-section z-arguments z-begin z-python">(</span><span class="z-meta z-qualified-name z-python"><span class="z-meta z-generic-name z-python">mem</span></span><span class="z-punctuation z-section z-arguments z-end z-python">)</span></span><span class="z-punctuation z-separator z-arguments z-python">,</span> <span class="z-meta z-string z-python"><span class="z-string z-quoted z-double z-python"><span class="z-punctuation z-definition z-string z-begin z-python">&quot;</span></span></span><span class="z-meta z-string z-python"><span class="z-string z-quoted z-double z-python">little<span class="z-punctuation z-definition z-string z-end z-python">&quot;</span></span></span><span class="z-punctuation z-section z-arguments z-end z-python">)</span></span>
+</span><span class="z-source z-python">
+</span><span class="z-source z-python"><span class="z-meta z-class z-python"><span class="z-storage z-type z-class z-python"><span class="z-keyword z-declaration z-class z-python">class</span></span> <span class="z-entity z-name z-class z-python"><span class="z-meta z-generic-name z-python">YRSCANBP</span></span><span class="z-meta z-class z-inheritance z-python"><span class="z-punctuation z-section z-inheritance z-begin z-python">(</span></span></span><span class="z-meta z-class z-inheritance z-python"><span class="z-entity z-other z-inherited-class z-python">gdb<span class="z-punctuation z-accessor z-dot z-python">.</span>Breakpoint</span><span class="z-punctuation z-section z-inheritance z-end z-python">)</span></span><span class="z-meta z-class z-python"><span class="z-punctuation z-section z-class z-begin z-python">:</span></span>
+</span><span class="z-source z-python">    <span class="z-comment z-line z-number-sign z-python"><span class="z-punctuation z-definition z-comment z-python">#</span> yr_scanner_scan_mem_blocks
+</span></span><span class="z-source z-python"><span class="z-meta z-function z-python">    <span class="z-storage z-type z-function z-python"><span class="z-keyword z-declaration z-function z-python">def</span></span> <span class="z-entity z-name z-function z-python"><span class="z-meta z-generic-name z-python">stop</span></span></span><span class="z-meta z-function z-parameters z-python"><span class="z-punctuation z-section z-parameters z-begin z-python">(</span></span><span class="z-meta z-function z-parameters z-python"><span class="z-variable z-parameter z-python">self</span><span class="z-punctuation z-section z-parameters z-end z-python">)</span></span><span class="z-meta z-function z-python"><span class="z-punctuation z-section z-function z-begin z-python">:</span></span>
+</span><span class="z-source z-python">        <span class="z-meta z-qualified-name z-python"><span class="z-meta z-generic-name z-python">rules</span></span> <span class="z-keyword z-operator z-assignment z-python">=</span> <span class="z-meta z-function-call z-python"><span class="z-meta z-qualified-name z-python"><span class="z-meta z-generic-name z-python">gdb</span></span><span class="z-meta z-qualified-name z-python"><span class="z-punctuation z-accessor z-dot z-python">.</span></span><span class="z-meta z-qualified-name z-python"><span class="z-variable z-function z-python"><span class="z-meta z-generic-name z-python">parse_and_eval</span></span></span></span><span class="z-meta z-function-call z-arguments z-python"><span class="z-punctuation z-section z-arguments z-begin z-python">(</span><span class="z-meta z-string z-python"><span class="z-string z-quoted z-double z-python"><span class="z-punctuation z-definition z-string z-begin z-python">&quot;</span></span></span><span class="z-meta z-string z-python"><span class="z-string z-quoted z-double z-python">$rbp<span class="z-punctuation z-definition z-string z-end z-python">&quot;</span></span></span><span class="z-punctuation z-section z-arguments z-end z-python">)</span></span>
+</span><span class="z-source z-python">        <span class="z-meta z-qualified-name z-python"><span class="z-meta z-generic-name z-python">inferior</span></span> <span class="z-keyword z-operator z-assignment z-python">=</span> <span class="z-meta z-function-call z-python"><span class="z-meta z-qualified-name z-python"><span class="z-meta z-generic-name z-python">gdb</span></span><span class="z-meta z-qualified-name z-python"><span class="z-punctuation z-accessor z-dot z-python">.</span></span><span class="z-meta z-qualified-name z-python"><span class="z-variable z-function z-python"><span class="z-meta z-generic-name z-python">selected_inferior</span></span></span></span><span class="z-meta z-function-call z-arguments z-python"><span class="z-punctuation z-section z-arguments z-begin z-python">(</span><span class="z-punctuation z-section z-arguments z-end z-python">)</span></span>
+</span><span class="z-source z-python">        <span class="z-meta z-statement z-loop z-for z-python"><span class="z-keyword z-control z-loop z-for z-python">for</span> <span class="z-meta z-generic-name z-python">i</span> <span class="z-keyword z-control z-loop z-for z-in z-python">in</span></span><span class="z-meta z-statement z-loop z-for z-python"> <span class="z-meta z-function-call z-python"><span class="z-meta z-qualified-name z-python"><span class="z-variable z-function z-python"><span class="z-support z-function z-builtin z-python">range</span></span></span></span><span class="z-meta z-function-call z-arguments z-python"><span class="z-punctuation z-section z-arguments z-begin z-python">(</span><span class="z-constant z-numeric z-integer z-decimal z-python">466</span><span class="z-punctuation z-section z-arguments z-end z-python">)</span></span></span><span class="z-meta z-statement z-loop z-for z-python"><span class="z-punctuation z-section z-block z-loop z-for z-python">:</span></span>
+</span><span class="z-source z-python">            <span class="z-meta z-qualified-name z-python"><span class="z-meta z-generic-name z-python">rule_addr</span></span> <span class="z-keyword z-operator z-assignment z-python">=</span> <span class="z-meta z-qualified-name z-python"><span class="z-meta z-generic-name z-python">rules</span></span> <span class="z-keyword z-operator z-arithmetic z-python">+</span> <span class="z-meta z-qualified-name z-python"><span class="z-meta z-generic-name z-python">i</span></span> <span class="z-keyword z-operator z-arithmetic z-python">*</span> <span class="z-constant z-numeric z-integer z-decimal z-python">6</span> <span class="z-keyword z-operator z-arithmetic z-python">*</span> <span class="z-constant z-numeric z-integer z-decimal z-python">8</span>
+</span><span class="z-source z-python">            <span class="z-meta z-qualified-name z-python"><span class="z-meta z-generic-name z-python">name</span></span> <span class="z-keyword z-operator z-assignment z-python">=</span> <span class="z-meta z-qualified-name z-python"><span class="z-meta z-generic-name z-python">rule_addr</span></span> <span class="z-keyword z-operator z-arithmetic z-python">+</span> <span class="z-constant z-numeric z-integer z-decimal z-python">8</span>
+</span><span class="z-source z-python">            <span class="z-meta z-qualified-name z-python"><span class="z-meta z-generic-name z-python">meta</span></span> <span class="z-keyword z-operator z-assignment z-python">=</span> <span class="z-meta z-qualified-name z-python"><span class="z-meta z-generic-name z-python">rule_addr</span></span> <span class="z-keyword z-operator z-arithmetic z-python">+</span> <span class="z-constant z-numeric z-integer z-decimal z-python">24</span>
+</span><span class="z-source z-python">            <span class="z-meta z-qualified-name z-python"><span class="z-meta z-generic-name z-python">nptr</span></span> <span class="z-keyword z-operator z-assignment z-python">=</span> <span class="z-meta z-function-call z-python"><span class="z-meta z-qualified-name z-python"><span class="z-variable z-function z-python"><span class="z-meta z-generic-name z-python">get_ptr_from_addr</span></span></span></span><span class="z-meta z-function-call z-arguments z-python"><span class="z-punctuation z-section z-arguments z-begin z-python">(</span><span class="z-meta z-qualified-name z-python"><span class="z-meta z-generic-name z-python">name</span></span><span class="z-punctuation z-separator z-arguments z-python">,</span> <span class="z-meta z-qualified-name z-python"><span class="z-meta z-generic-name z-python">inferior</span></span><span class="z-punctuation z-section z-arguments z-end z-python">)</span></span>
+</span><span class="z-source z-python">            <span class="z-meta z-qualified-name z-python"><span class="z-meta z-generic-name z-python">s</span></span> <span class="z-keyword z-operator z-assignment z-python">=</span> <span class="z-meta z-function-call z-python"><span class="z-meta z-qualified-name z-python"><span class="z-meta z-generic-name z-python">inferior</span></span><span class="z-meta z-qualified-name z-python"><span class="z-punctuation z-accessor z-dot z-python">.</span></span><span class="z-meta z-qualified-name z-python"><span class="z-variable z-function z-python"><span class="z-meta z-generic-name z-python">read_memory</span></span></span></span><span class="z-meta z-function-call z-arguments z-python"><span class="z-punctuation z-section z-arguments z-begin z-python">(</span><span class="z-meta z-qualified-name z-python"><span class="z-meta z-generic-name z-python">nptr</span></span><span class="z-punctuation z-separator z-arguments z-python">,</span> <span class="z-constant z-numeric z-integer z-decimal z-python">32</span><span class="z-punctuation z-section z-arguments z-end z-python">)</span></span>
+</span><span class="z-source z-python">            <span class="z-meta z-qualified-name z-python"><span class="z-meta z-generic-name z-python">mptr</span></span> <span class="z-keyword z-operator z-assignment z-python">=</span> <span class="z-meta z-function-call z-python"><span class="z-meta z-qualified-name z-python"><span class="z-variable z-function z-python"><span class="z-meta z-generic-name z-python">get_ptr_from_addr</span></span></span></span><span class="z-meta z-function-call z-arguments z-python"><span class="z-punctuation z-section z-arguments z-begin z-python">(</span><span class="z-meta z-qualified-name z-python"><span class="z-meta z-generic-name z-python">meta</span></span><span class="z-punctuation z-separator z-arguments z-python">,</span> <span class="z-meta z-qualified-name z-python"><span class="z-meta z-generic-name z-python">inferior</span></span><span class="z-punctuation z-section z-arguments z-end z-python">)</span></span>
+</span><span class="z-source z-python">            <span class="z-meta z-qualified-name z-python"><span class="z-meta z-generic-name z-python">k</span></span> <span class="z-keyword z-operator z-assignment z-python">=</span> <span class="z-meta z-function-call z-python"><span class="z-meta z-qualified-name z-python"><span class="z-meta z-generic-name z-python">inferior</span></span><span class="z-meta z-qualified-name z-python"><span class="z-punctuation z-accessor z-dot z-python">.</span></span><span class="z-meta z-qualified-name z-python"><span class="z-variable z-function z-python"><span class="z-meta z-generic-name z-python">read_memory</span></span></span></span><span class="z-meta z-function-call z-arguments z-python"><span class="z-punctuation z-section z-arguments z-begin z-python">(</span><span class="z-meta z-function-call z-python"><span class="z-meta z-qualified-name z-python"><span class="z-variable z-function z-python"><span class="z-meta z-generic-name z-python">get_ptr_from_addr</span></span></span></span><span class="z-meta z-function-call z-arguments z-python"><span class="z-punctuation z-section z-arguments z-begin z-python">(</span><span class="z-meta z-qualified-name z-python"><span class="z-meta z-generic-name z-python">mptr</span></span><span class="z-punctuation z-separator z-arguments z-python">,</span> <span class="z-meta z-qualified-name z-python"><span class="z-meta z-generic-name z-python">inferior</span></span><span class="z-punctuation z-section z-arguments z-end z-python">)</span></span><span class="z-punctuation z-separator z-arguments z-python">,</span> <span class="z-constant z-numeric z-integer z-decimal z-python">32</span><span class="z-punctuation z-section z-arguments z-end z-python">)</span></span>
+</span><span class="z-source z-python">            <span class="z-meta z-qualified-name z-python"><span class="z-meta z-generic-name z-python">v</span></span> <span class="z-keyword z-operator z-assignment z-python">=</span> <span class="z-meta z-function-call z-python"><span class="z-meta z-qualified-name z-python"><span class="z-meta z-generic-name z-python">inferior</span></span><span class="z-meta z-qualified-name z-python"><span class="z-punctuation z-accessor z-dot z-python">.</span></span><span class="z-meta z-qualified-name z-python"><span class="z-variable z-function z-python"><span class="z-meta z-generic-name z-python">read_memory</span></span></span></span><span class="z-meta z-function-call z-arguments z-python"><span class="z-punctuation z-section z-arguments z-begin z-python">(</span><span class="z-meta z-function-call z-python"><span class="z-meta z-qualified-name z-python"><span class="z-variable z-function z-python"><span class="z-meta z-generic-name z-python">get_ptr_from_addr</span></span></span></span><span class="z-meta z-function-call z-arguments z-python"><span class="z-punctuation z-section z-arguments z-begin z-python">(</span><span class="z-meta z-qualified-name z-python"><span class="z-meta z-generic-name z-python">mptr</span></span> <span class="z-keyword z-operator z-arithmetic z-python">+</span> <span class="z-constant z-numeric z-integer z-decimal z-python">8</span><span class="z-punctuation z-separator z-arguments z-python">,</span> <span class="z-meta z-qualified-name z-python"><span class="z-meta z-generic-name z-python">inferior</span></span><span class="z-punctuation z-section z-arguments z-end z-python">)</span></span><span class="z-punctuation z-separator z-arguments z-python">,</span> <span class="z-constant z-numeric z-integer z-decimal z-python">32</span><span class="z-punctuation z-section z-arguments z-end z-python">)</span></span>
+</span><span class="z-source z-python">            <span class="z-meta z-function-call z-python"><span class="z-meta z-qualified-name z-python"><span class="z-variable z-function z-python"><span class="z-support z-function z-builtin z-python">print</span></span></span></span><span class="z-meta z-function-call z-arguments z-python"><span class="z-punctuation z-section z-arguments z-begin z-python">(</span><span class="z-meta z-sequence z-list z-python"><span class="z-punctuation z-section z-sequence z-begin z-python">[</span><span class="z-meta z-function-call z-python"><span class="z-meta z-qualified-name z-python"><span class="z-variable z-function z-python"><span class="z-support z-type z-python">bytes</span></span></span></span><span class="z-meta z-function-call z-arguments z-python"><span class="z-punctuation z-section z-arguments z-begin z-python">(</span><span class="z-meta z-qualified-name z-python"><span class="z-meta z-generic-name z-python">i</span></span><span class="z-punctuation z-section z-arguments z-end z-python">)</span></span><span class="z-meta z-function-call z-python"><span class="z-meta z-qualified-name z-python"><span class="z-punctuation z-accessor z-dot z-python">.</span></span><span class="z-meta z-qualified-name z-python"><span class="z-variable z-function z-python"><span class="z-meta z-generic-name z-python">split</span></span></span></span><span class="z-meta z-function-call z-arguments z-python"><span class="z-punctuation z-section z-arguments z-begin z-python">(</span><span class="z-storage z-type z-string z-python">b</span><span class="z-meta z-string z-python"><span class="z-string z-quoted z-double z-python"><span class="z-punctuation z-definition z-string z-begin z-python">&quot;</span></span></span><span class="z-meta z-string z-python"><span class="z-string z-quoted z-double z-python"><span class="z-constant z-character z-escape z-hex z-python">\x00</span><span class="z-punctuation z-definition z-string z-end z-python">&quot;</span></span></span><span class="z-punctuation z-section z-arguments z-end z-python">)</span></span><span class="z-meta z-item-access z-python"><span class="z-punctuation z-section z-brackets z-begin z-python">[</span></span><span class="z-meta z-item-access z-arguments z-python"><span class="z-constant z-numeric z-integer z-decimal z-python">0</span></span><span class="z-meta z-item-access z-python"><span class="z-punctuation z-section z-brackets z-end z-python">]</span></span> <span class="z-meta z-expression z-generator z-python"><span class="z-keyword z-control z-loop z-for z-generator z-python">for</span> <span class="z-meta z-generic-name z-python">i</span> <span class="z-keyword z-control z-loop z-for z-in z-python">in</span></span> <span class="z-meta z-sequence z-list z-python"><span class="z-punctuation z-section z-sequence z-begin z-python">[</span><span class="z-meta z-qualified-name z-python"><span class="z-meta z-generic-name z-python">s</span></span><span class="z-punctuation z-separator z-sequence z-python">,</span> <span class="z-meta z-qualified-name z-python"><span class="z-meta z-generic-name z-python">k</span></span><span class="z-punctuation z-separator z-sequence z-python">,</span> <span class="z-meta z-qualified-name z-python"><span class="z-meta z-generic-name z-python">v</span></span><span class="z-punctuation z-section z-sequence z-end z-python">]</span></span><span class="z-punctuation z-section z-sequence z-end z-python">]</span></span><span class="z-punctuation z-section z-arguments z-end z-python">)</span></span>
+</span><span class="z-source z-python">
+</span><span class="z-source z-python"><span class="z-meta z-function-call z-python"><span class="z-meta z-qualified-name z-python"><span class="z-variable z-function z-python"><span class="z-meta z-generic-name z-python">YRSCANBP</span></span></span></span><span class="z-meta z-function-call z-arguments z-python"><span class="z-punctuation z-section z-arguments z-begin z-python">(</span><span class="z-meta z-string z-python"><span class="z-string z-quoted z-double z-python"><span class="z-punctuation z-definition z-string z-begin z-python">&quot;</span></span></span><span class="z-meta z-string z-python"><span class="z-string z-quoted z-double z-python">*(yr_scanner_scan_mem_blocks-0x50960+0x50B29)<span class="z-punctuation z-definition z-string z-end z-python">&quot;</span></span></span><span class="z-punctuation z-section z-arguments z-end z-python">)</span></span>
+</span></code></pre>
+<h3 id="实现类似_gdb-peda_一样的信息输出">实现类似 gdb-peda 一样的信息输出</h3>
+<p>可以通过下面的语句设置 hook，实现在每一次到达断点时候执行 Python 代码。然后在 Python 代码中可以实现输出寄存器的值，输出内存中内容，输出指针指向等内容。</p>
+<pre data-lang="txt" class="language-txt z-code"><code class="language-txt" data-lang="txt"><span class="z-text z-plain">define hook-stop
+</span><span class="z-text z-plain">    python run()
+</span><span class="z-text z-plain">end
+</span></code></pre>
+<p>本人实现的脚本比较长，而且代码质量不太行，不过我还是上传到了<a href="https://github.com/chenx6/gadget/blob/master/ggddbb/ggddbb.py">这里</a>，可以供读者参考。</p>
+<h2 id="总结">总结</h2>
+<p>gdb + python 这个组合能发挥出很大的威力，能做到自动化调试，减少逆向工程负担。更多的操作可以查看 gdb 的官方文档。</p>
+<h2 id="Refs">Refs</h2>
+<ul>
+<li><a href="https://www.ece.villanova.edu/VECR/doc/gdb/Python-API.html">Python API</a></li>
+<li><a href="https://sourceware.org/gdb/current/onlinedocs/gdb.html/Breakpoints-In-Python.html">Manipulating breakpoints using Python</a></li>
+</ul>
+
+  </div>
+  
+    <script src="https://utteranc.es/client.js"
+          repo="chenx6/chenx6.github.io"
+          issue-term="pathname"
+          label="comment"
+          theme="preferred-color-scheme"
+          crossorigin="anonymous"
+          async>
+    </script>
+  
+</div>
+
+  
+    <footer>2020-∞ chenx6 本作品采用<a rel="license" href="http://creativecommons.org/licenses/by/4.0/">知识共享署名 4.0 国际许可协议</a>进行许可。</footer>
+  
+</body>
+
+</html>
