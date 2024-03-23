@@ -8,7 +8,7 @@
     <updated>2024-03-23T00:00:00+00:00</updated>
     <id>https://chenx6.github.io/tags/nix/atom.xml</id>
     <entry xml:lang="zh_CN">
-        <title>低成本体验 NixOS 之 nix-on-droid</title>
+        <title>低成本体验 Nix 之 nix-on-droid</title>
         <published>2024-03-23T00:00:00+00:00</published>
         <updated>2024-03-23T00:00:00+00:00</updated>
         
@@ -23,7 +23,7 @@
         <link rel="alternate" type="text/html" href="https://chenx6.github.io/post/nix-on-droid/"/>
         <id>https://chenx6.github.io/post/nix-on-droid/</id>
         
-        <content type="html" xml:base="https://chenx6.github.io/post/nix-on-droid/">&lt;p&gt;对 Linux 感兴趣的用户应该会接触过很多奇怪的 Linux 发行版，例如使用声明式配置文件配置系统的 NixOS，通过一套配置文件就可以搭建起来一个系统。但是 NixOS 的安装和学习曲线都算比较陡峭的，在互联网冲浪的时候，发现有个 &lt;a href=&quot;https:&#x2F;&#x2F;github.com&#x2F;nix-community&#x2F;nix-on-droid&quot;&gt;nix-on-droid&lt;&#x2F;a&gt; 项目，可以在安卓系统上搭建起一个迷你的 NixOS，所以就下载体验了一波，并写文记录使用。&lt;&#x2F;p&gt;
+        <content type="html" xml:base="https://chenx6.github.io/post/nix-on-droid/">&lt;p&gt;对 Linux 感兴趣的用户应该会接触过很多奇怪的 Linux 发行版，例如使用声明式配置文件配置系统的 NixOS，通过一套配置文件就可以搭建起来一个系统。但是 NixOS 的安装和学习曲线都算比较陡峭的，在互联网冲浪的时候，发现有个 &lt;a href=&quot;https:&#x2F;&#x2F;github.com&#x2F;nix-community&#x2F;nix-on-droid&quot;&gt;nix-on-droid&lt;&#x2F;a&gt; 项目，可以在安卓系统上搭建起一个迷你版本的 Nix 环境，所以就下载体验了一波，并写文记录使用。&lt;&#x2F;p&gt;
 &lt;h2 id=&quot;安装&quot;&gt;安装&lt;&#x2F;h2&gt;
 &lt;p&gt;通过 F-Droid 就可以下载项目的 APK 安装包，安装 APK 之后会进行初始化，该项目会自动从网上下载一个初始化的镜像并进行初始化，在下载和安装完之后就会进入系统了。&lt;&#x2F;p&gt;
 &lt;h2 id=&quot;Nix_语言简易教程&quot;&gt;Nix 语言简易教程&lt;&#x2F;h2&gt;
@@ -81,7 +81,7 @@
 &lt;p&gt;上面是一些常见的概念，NixOS 还可以做到修改包的默认配置，添加自定义的包等功能，这些功能请查询 &lt;a href=&quot;https:&#x2F;&#x2F;chenx6.github.io&#x2F;post&#x2F;nix-on-droid&#x2F;#refs&quot;&gt;Refs&lt;&#x2F;a&gt; 中提到的官方文档。&lt;&#x2F;p&gt;
 &lt;h2 id=&quot;实战&quot;&gt;实战&lt;&#x2F;h2&gt;
 &lt;h3 id=&quot;使用_nix-shell_来创建开发环境&quot;&gt;使用 nix-shell 来创建开发环境&lt;&#x2F;h3&gt;
-&lt;p&gt;我平时常用 Python 来写一些脚本时，需要一个开发环境。这时候就可以通过 nix-shell 命令和相关配置来配置所需要的软件和包。&lt;&#x2F;p&gt;
+&lt;p&gt;我平时用 Python 来写一些脚本时，需要一个开发环境。这时候就可以通过 nix-shell 命令和相关配置来配置所需要的软件和包。&lt;&#x2F;p&gt;
 &lt;p&gt;在下面的例子中，我通过调用 &lt;code&gt;python3.withPackages&lt;&#x2F;code&gt; 可以将 Python 解释器和对应的包打包在一起。通过调用 &lt;code&gt;pkgs.mkShell&lt;&#x2F;code&gt; 函数，可以安装上前面打包的 Python 环境和系统软件(&amp;quot;black&amp;quot;, &amp;quot;mypy&amp;quot;)。&lt;&#x2F;p&gt;
 &lt;pre data-lang=&quot;nix&quot; class=&quot;language-nix z-code&quot;&gt;&lt;code class=&quot;language-nix&quot; data-lang=&quot;nix&quot;&gt;&lt;span class=&quot;z-source z-nix&quot;&gt;&lt;span class=&quot;z-punctuation z-definition z-entity z-function z-2 z-nix&quot;&gt;{&lt;&#x2F;span&gt; &lt;span class=&quot;z-variable z-parameter z-function z-1 z-nix&quot;&gt;pkgs&lt;&#x2F;span&gt; &lt;span class=&quot;z-keyword z-operator z-nix&quot;&gt;?&lt;&#x2F;span&gt; &lt;span class=&quot;z-support z-function z-nix&quot;&gt;import&lt;&#x2F;span&gt; &lt;span class=&quot;z-string z-unquoted z-spath z-nix&quot;&gt;&amp;lt;nixpkgs&amp;gt;&lt;&#x2F;span&gt; &lt;span class=&quot;z-punctuation z-definition z-attrset z-nix&quot;&gt;{&lt;&#x2F;span&gt;&lt;span class=&quot;z-punctuation z-definition z-attrset z-nix&quot;&gt;}&lt;&#x2F;span&gt; &lt;span class=&quot;z-punctuation z-definition z-entity z-function z-nix&quot;&gt;}&lt;&#x2F;span&gt;&lt;span class=&quot;z-punctuation z-definition z-function z-nix&quot;&gt;:&lt;&#x2F;span&gt;
 &lt;&#x2F;span&gt;&lt;span class=&quot;z-source z-nix&quot;&gt;&lt;span class=&quot;z-keyword z-other z-nix&quot;&gt;with&lt;&#x2F;span&gt; &lt;span class=&quot;z-variable z-parameter z-name z-nix&quot;&gt;pkgs&lt;&#x2F;span&gt;;
@@ -102,7 +102,7 @@
 &lt;&#x2F;span&gt;&lt;span class=&quot;z-source z-nix&quot;&gt;  &lt;span class=&quot;z-punctuation z-definition z-list z-nix&quot;&gt;]&lt;&#x2F;span&gt;&lt;span class=&quot;z-punctuation z-terminator z-bind z-nix&quot;&gt;;&lt;&#x2F;span&gt;
 &lt;&#x2F;span&gt;&lt;span class=&quot;z-source z-nix&quot;&gt;&lt;span class=&quot;z-punctuation z-definition z-attrset z-nix&quot;&gt;}&lt;&#x2F;span&gt;
 &lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
-&lt;p&gt;将上面的文件内容保存到 &amp;quot;shell.nix&amp;quot; 文件后，即可通过 &amp;quot;nix-shell&amp;quot; 命令即可搭建一个全新的开发环境。&lt;&#x2F;p&gt;
+&lt;p&gt;将上面的内容保存到 &amp;quot;shell.nix&amp;quot; 文件后，即可通过 &amp;quot;nix-shell&amp;quot; 命令即可搭建一个全新的开发环境。&lt;&#x2F;p&gt;
 &lt;h3 id=&quot;使用_Nix_构建和打包&quot;&gt;使用 Nix 构建和打包&lt;&#x2F;h3&gt;
 &lt;p&gt;下面的代码是打包 gnu hello 程序的代码，可以看到是通过调用 &lt;code&gt;stdenv.mkDerivation&lt;&#x2F;code&gt; 函数描述程序的构建流程，在传递给函数的集合中，调用 &lt;code&gt;fetchzip&lt;&#x2F;code&gt; 函数下载代码。&lt;&#x2F;p&gt;
 &lt;pre data-lang=&quot;nix&quot; class=&quot;language-nix z-code&quot;&gt;&lt;code class=&quot;language-nix&quot; data-lang=&quot;nix&quot;&gt;&lt;span class=&quot;z-source z-nix&quot;&gt;&lt;span class=&quot;z-punctuation z-definition z-attrset-or-function z-nix&quot;&gt;{&lt;&#x2F;span&gt;
@@ -121,7 +121,7 @@
 &lt;&#x2F;span&gt;&lt;span class=&quot;z-source z-nix&quot;&gt;  &lt;span class=&quot;z-punctuation z-definition z-attrset z-nix&quot;&gt;}&lt;&#x2F;span&gt;&lt;span class=&quot;z-punctuation z-terminator z-bind z-nix&quot;&gt;;&lt;&#x2F;span&gt;
 &lt;&#x2F;span&gt;&lt;span class=&quot;z-source z-nix&quot;&gt;&lt;span class=&quot;z-punctuation z-definition z-attrset z-nix&quot;&gt;}&lt;&#x2F;span&gt;
 &lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
-&lt;p&gt;如果想要打包更复杂的包，可以参考 &lt;a href=&quot;https:&#x2F;&#x2F;github.com&#x2F;NixOS&#x2F;nixpkgs&#x2F;&quot;&gt;NixOS&#x2F;nixpkgs&lt;&#x2F;a&gt; repo 里的文件，还有 &lt;a href=&quot;https:&#x2F;&#x2F;nix.dev&#x2F;tutorials&#x2F;packaging-existing-software&quot;&gt;nix.dev 里的构建教程&lt;&#x2F;a&gt;。&lt;&#x2F;p&gt;
+&lt;p&gt;如果想要打包更复杂的软件，可以参考 &lt;a href=&quot;https:&#x2F;&#x2F;github.com&#x2F;NixOS&#x2F;nixpkgs&#x2F;&quot;&gt;NixOS&#x2F;nixpkgs&lt;&#x2F;a&gt; repo 里的文件，还有 &lt;a href=&quot;https:&#x2F;&#x2F;nix.dev&#x2F;tutorials&#x2F;packaging-existing-software&quot;&gt;nix.dev 里的打包教程&lt;&#x2F;a&gt;。&lt;&#x2F;p&gt;
 &lt;p&gt;TODO: 补充几个现实中的例子。&lt;&#x2F;p&gt;
 &lt;h3 id=&quot;home-manager&quot;&gt;home-manager&lt;&#x2F;h3&gt;
 &lt;p&gt;home-manager 可以用来管理用户态的程序和配置。配置选项请参考 home-manager 的文档，可定义的内容很多，这里就不一一赘述了。&lt;&#x2F;p&gt;

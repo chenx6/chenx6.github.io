@@ -1,11 +1,11 @@
 +++
-title = "低成本体验 NixOS 之 nix-on-droid"
+title = "低成本体验 Nix 之 nix-on-droid"
 date = 2024-03-23
 [taxonomies]
 tags = ["linux", "nix"]
 +++
 
-对 Linux 感兴趣的用户应该会接触过很多奇怪的 Linux 发行版，例如使用声明式配置文件配置系统的 NixOS，通过一套配置文件就可以搭建起来一个系统。但是 NixOS 的安装和学习曲线都算比较陡峭的，在互联网冲浪的时候，发现有个 [nix-on-droid](https://github.com/nix-community/nix-on-droid) 项目，可以在安卓系统上搭建起一个迷你的 NixOS，所以就下载体验了一波，并写文记录使用。
+对 Linux 感兴趣的用户应该会接触过很多奇怪的 Linux 发行版，例如使用声明式配置文件配置系统的 NixOS，通过一套配置文件就可以搭建起来一个系统。但是 NixOS 的安装和学习曲线都算比较陡峭的，在互联网冲浪的时候，发现有个 [nix-on-droid](https://github.com/nix-community/nix-on-droid) 项目，可以在安卓系统上搭建起一个迷你版本的 Nix 环境，所以就下载体验了一波，并写文记录使用。
 
 ## 安装
 
@@ -93,7 +93,7 @@ let 语句则是可以声明局部变量，供后续使用。例如 `let x = "fo
 
 ### 使用 nix-shell 来创建开发环境
 
-我平时常用 Python 来写一些脚本时，需要一个开发环境。这时候就可以通过 nix-shell 命令和相关配置来配置所需要的软件和包。
+我平时用 Python 来写一些脚本时，需要一个开发环境。这时候就可以通过 nix-shell 命令和相关配置来配置所需要的软件和包。
 
 在下面的例子中，我通过调用 `python3.withPackages` 可以将 Python 解释器和对应的包打包在一起。通过调用 `pkgs.mkShell` 函数，可以安装上前面打包的 Python 环境和系统软件("black", "mypy")。
 
@@ -118,7 +118,7 @@ in mkShell {
 }
 ```
 
-将上面的文件内容保存到 "shell.nix" 文件后，即可通过 "nix-shell" 命令即可搭建一个全新的开发环境。
+将上面的内容保存到 "shell.nix" 文件后，即可通过 "nix-shell" 命令即可搭建一个全新的开发环境。
 
 ### 使用 Nix 构建和打包
 
@@ -142,7 +142,7 @@ stdenv.mkDerivation {
 }
 ```
 
-如果想要打包更复杂的包，可以参考 [NixOS/nixpkgs](https://github.com/NixOS/nixpkgs/) repo 里的文件，还有 [nix.dev 里的构建教程](https://nix.dev/tutorials/packaging-existing-software)。
+如果想要打包更复杂的软件，可以参考 [NixOS/nixpkgs](https://github.com/NixOS/nixpkgs/) repo 里的文件，还有 [nix.dev 里的打包教程](https://nix.dev/tutorials/packaging-existing-software)。
 
 TODO: 补充几个现实中的例子。
 
