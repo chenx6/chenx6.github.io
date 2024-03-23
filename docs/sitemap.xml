@@ -117,6 +117,13 @@
   </url>
   
   <url>
+    <loc>https://chenx6.github.io/post/nix-on-droid/</loc>
+    
+    <lastmod>2024-03-23</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>https://chenx6.github.io/post/obfuscate_string/</loc>
     
     <lastmod>2020-01-01</lastmod>
@@ -256,6 +263,11 @@
   
   <url>
     <loc>https://chenx6.github.io/tags/mal/</loc>
+    
+  </url>
+  
+  <url>
+    <loc>https://chenx6.github.io/tags/nix/</loc>
     
   </url>
   

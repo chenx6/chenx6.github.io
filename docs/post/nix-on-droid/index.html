@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" href="data:;base64,iVBORw0KGgo=">
+  <title>低成本体验 NixOS 之 nix-on-droid - 二进制咸鱼的自我救赎</title>
+  <link rel="stylesheet" href="https://chenx6.github.io/water.min.css">
+  <link rel="stylesheet" type="text/css" href="/syntax-theme-dark.css" media="(prefers-color-scheme: dark)" />
+  <link rel="stylesheet" type="text/css" href="/syntax-theme-light.css" media="(prefers-color-scheme: light)" />
+  
+  <link rel="alternate" type="application/atom+xml" title="RSS" href="https://chenx6.github.io/atom.xml">
+  
+
+  
+  
+
+</head>
+
+<body>
+  <header>
+    <a href="https:&#x2F;&#x2F;chenx6.github.io&#x2F;"><h1>二进制咸鱼的自我救赎</h1></a>
+    
+    <p class="lead">幸福往往是摸的透彻，而敬业的心却常常隐藏。</p>
+    
+    
+      <a href="https:&#x2F;&#x2F;chenx6.github.io&#x2F;&#x2F;about">
+        About
+      </a>
+    
+    
+    <a href="https://chenx6.github.io/atom.xml">RSS</a>
+    
+  </header>
+  
+<div class="container">
+  <div class="post">
+    <h2 class="post-title">低成本体验 NixOS 之 nix-on-droid</h2>
+    <span class="post-date">2024-03-23</span>
+    
+  
+    
+      <a href="https://chenx6.github.io/tags/linux/">#linux</a>
+    
+      <a href="https://chenx6.github.io/tags/nix/">#nix</a>
+    
+  
+
+    <aside class="toc">
+      
+      <details>
+        <summary>Table of contents</summary>
+        <ul>
+          
+          <li>
+            <a href="https://chenx6.github.io/post/nix-on-droid/#安装">安装</a>
+            
+          </li>
+          
+          <li>
+            <a href="https://chenx6.github.io/post/nix-on-droid/#Nix_语言简易教程">Nix 语言简易教程</a>
+            
+            <ul>
+              
+              <li>
+                <a href="https://chenx6.github.io/post/nix-on-droid/#类型">类型</a>
+              </li>
+              
+              <li>
+                <a href="https://chenx6.github.io/post/nix-on-droid/#函数">函数</a>
+              </li>
+              
+              <li>
+                <a href="https://chenx6.github.io/post/nix-on-droid/#if_else">if else</a>
+              </li>
+              
+              <li>
+                <a href="https://chenx6.github.io/post/nix-on-droid/#let">let</a>
+              </li>
+              
+              <li>
+                <a href="https://chenx6.github.io/post/nix-on-droid/#with">with</a>
+              </li>
+              
+              <li>
+                <a href="https://chenx6.github.io/post/nix-on-droid/#import">import</a>
+              </li>
+              
+              <li>
+                <a href="https://chenx6.github.io/post/nix-on-droid/#其他">其他</a>
+              </li>
+              
+            </ul>
+            
+          </li>
+          
+          <li>
+            <a href="https://chenx6.github.io/post/nix-on-droid/#实战">实战</a>
+            
+            <ul>
+              
+              <li>
+                <a href="https://chenx6.github.io/post/nix-on-droid/#使用_nix-shell_来创建开发环境">使用 nix-shell 来创建开发环境</a>
+              </li>
+              
+              <li>
+                <a href="https://chenx6.github.io/post/nix-on-droid/#使用_Nix_构建和打包">使用 Nix 构建和打包</a>
+              </li>
+              
+              <li>
+                <a href="https://chenx6.github.io/post/nix-on-droid/#home-manager">home-manager</a>
+              </li>
+              
+            </ul>
+            
+          </li>
+          
+          <li>
+            <a href="https://chenx6.github.io/post/nix-on-droid/#其他-1">其他</a>
+            
+          </li>
+          
+          <li>
+            <a href="https://chenx6.github.io/post/nix-on-droid/#Refs">Refs</a>
+            
+          </li>
+          
+        </ul>
+      </details>
+      
+    </aside>
+    <p>对 Linux 感兴趣的用户应该会接触过很多奇怪的 Linux 发行版，例如使用声明式配置文件配置系统的 NixOS，通过一套配置文件就可以搭建起来一个系统。但是 NixOS 的安装和学习曲线都算比较陡峭的，在互联网冲浪的时候，发现有个 <a href="https://github.com/nix-community/nix-on-droid">nix-on-droid</a> 项目，可以在安卓系统上搭建起一个迷你的 NixOS，所以就下载体验了一波，并写文记录使用。</p>
+<h2 id="安装">安装</h2>
+<p>通过 F-Droid 就可以下载项目的 APK 安装包，安装 APK 之后会进行初始化，该项目会自动从网上下载一个初始化的镜像并进行初始化，在下载和安装完之后就会进入系统了。</p>
+<h2 id="Nix_语言简易教程">Nix 语言简易教程</h2>
+<p>NixOS 有一个用于声明式配置的模块系统，这个系统会将多个模块组合起来，用来生成完整的系统配置。用于定义配置的语言则是 Nix 语言。可以通过 <code>nix repl</code> 命令进入交互式 shell 进行 Nix 语言的学习。</p>
+<h3 id="类型">类型</h3>
+<p>Nix 语言使用的是动态类型系统。在 Nix 语言中，有几种基本类型，包括字符串，布尔类型，空指针，整数，浮点数，集合，列表，和其他函数式语言差不多。</p>
+<pre data-lang="nix" class="language-nix z-code"><code class="language-nix" data-lang="nix"><span class="z-source z-nix"><span class="z-string z-quoted z-double z-nix"><span class="z-punctuation z-definition z-string z-double z-start z-nix">&quot;</span>string<span class="z-punctuation z-definition z-string z-double z-end z-nix">&quot;</span></span>
+</span><span class="z-source z-nix"><span class="z-string z-quoted z-other z-nix"><span class="z-punctuation z-definition z-string z-other z-start z-nix">&#39;&#39;</span>
+</span></span><span class="z-source z-nix"><span class="z-string z-quoted z-other z-nix">multiple line
+</span></span><span class="z-source z-nix"><span class="z-string z-quoted z-other z-nix">string
+</span></span><span class="z-source z-nix"><span class="z-string z-quoted z-other z-nix"><span class="z-punctuation z-definition z-string z-other z-end z-nix">&#39;&#39;</span></span>
+</span><span class="z-source z-nix"><span class="z-constant z-language z-nix">true</span>
+</span><span class="z-source z-nix"><span class="z-constant z-language z-nix">false</span>
+</span><span class="z-source z-nix"><span class="z-constant z-language z-nix">null</span>
+</span><span class="z-source z-nix"><span class="z-constant z-numeric z-nix">12345</span>
+</span><span class="z-source z-nix"><span class="z-constant z-numeric z-nix">1</span><span class="z-keyword z-operator z-nix">.</span><span class="z-constant z-numeric z-nix">2345</span>
+</span><span class="z-source z-nix"><span class="z-punctuation z-definition z-list z-nix">[</span> <span class="z-constant z-numeric z-nix">1</span> <span class="z-constant z-numeric z-nix">2</span> <span class="z-constant z-numeric z-nix">3</span> <span class="z-punctuation z-definition z-list z-nix">]</span>
+</span></code></pre>
+<p>这里个人认为比较重要的是集合，集合是由一堆的 <code>name = value</code> 定义组成的。</p>
+<pre data-lang="nix" class="language-nix z-code"><code class="language-nix" data-lang="nix"><span class="z-source z-nix"><span class="z-punctuation z-definition z-attrset-or-function z-nix">{</span>
+</span><span class="z-source z-nix">  <span class="z-entity z-other z-attribute-name z-multipart z-nix">name</span> <span class="z-keyword z-operator z-bind z-nix">=</span> <span class="z-variable z-parameter z-name z-nix">value</span><span class="z-punctuation z-terminator z-bind z-nix">;</span>
+</span><span class="z-source z-nix"><span class="z-punctuation z-definition z-attrset z-nix">}</span>
+</span></code></pre>
+<h3 id="函数">函数</h3>
+<p>函数的形式为 <code>pattern: body</code>。<code>pattern</code> 决定了函数接收的参数，并且有 3 种形式。</p>
+<ul>
+<li>如果 <code>pattern</code> 只有 1 个标志符，这个函数就可以接收任意参数。例如 <code>arg1: !arg1</code>，函数接收了 1 个名叫 <code>arg1</code> 的参数，并在函数体对其做了取反的操作。</li>
+<li>如果 <code>pattern</code> 是一个类似于 <code>{ name1, name2, ... }</code> 这样的集合形式，这个函数会接收一个集合，集合中包含着 <code>pattern</code> 中定义的属性，并将值绑定到变量上供函数体使用。例如 <code>{ arg1, arg2 }: arg2 + arg1</code> 代表着这个函数接收含有 <code>arg1</code> 和 <code>arg2</code> 定义的集合作为参数。函数语句申明中可以出现类似 <code>?</code>，代表着默认参数。例如 <code>{ x ? &quot;foo&quot; }: x</code>。函数还可以使用 <code>{arg1, arg2, ...}</code> 接收有多于定义的集合。</li>
+<li><code>pattern</code> 中还可以使用 <code>@</code> 符将集合里的值进行关联。例如 <code>{ pkgs, ... } @ attrs</code>，后面的 <code>@attrs</code> 意味着将集合中的定义打包关联起来，在函数体中可以通过类似 <code>attrs.pkgs</code> 语句来使用 <code>pkgs</code> 参数。</li>
+</ul>
+<p>下面是 nix-on-droid 项目演示用的配置。<code>{ pkgs, ... }:</code> 是 nix 函数的参数申明，代表着函数需要一个带有 <code>pkgs</code> 定义的集合。<code>pkgs</code> 这个定义一般指向的是 nixpkgs。这个函数返回了一组定义，在下面的代码中，则是定义了 <code>environment.packages</code> 和 <code>system.stateVersion</code>。</p>
+<pre data-lang="nix" class="language-nix z-code"><code class="language-nix" data-lang="nix"><span class="z-source z-nix"><span class="z-punctuation z-definition z-entity z-function z-2 z-nix">{</span> <span class="z-variable z-parameter z-function z-1 z-nix">pkgs</span><span class="z-keyword z-operator z-nix">,</span> <span class="z-keyword z-operator z-nix">... </span><span class="z-punctuation z-definition z-entity z-function z-nix">}</span><span class="z-punctuation z-definition z-function z-nix">:</span>
+</span><span class="z-source z-nix">
+</span><span class="z-source z-nix"><span class="z-punctuation z-definition z-attrset-or-function z-nix">{</span>
+</span><span class="z-source z-nix">  <span class="z-entity z-other z-attribute-name z-multipart z-nix">environment</span>.<span class="z-entity z-other z-attribute-name z-multipart z-nix">packages</span> <span class="z-keyword z-operator z-bind z-nix">=</span> <span class="z-punctuation z-definition z-list z-nix">[</span> <span class="z-variable z-parameter z-name z-nix">pkgs</span><span class="z-keyword z-operator z-nix">.</span><span class="z-variable z-parameter z-name z-nix">vim</span> <span class="z-punctuation z-definition z-list z-nix">]</span><span class="z-punctuation z-terminator z-bind z-nix">;</span>
+</span><span class="z-source z-nix">  <span class="z-entity z-other z-attribute-name z-multipart z-nix">system</span>.<span class="z-entity z-other z-attribute-name z-multipart z-nix">stateVersion</span> <span class="z-keyword z-operator z-bind z-nix">=</span> <span class="z-string z-quoted z-double z-nix"><span class="z-punctuation z-definition z-string z-double z-start z-nix">&quot;</span>23.11<span class="z-punctuation z-definition z-string z-double z-end z-nix">&quot;</span></span><span class="z-punctuation z-terminator z-bind z-nix">;</span>
+</span><span class="z-source z-nix"><span class="z-punctuation z-definition z-attrset z-nix">}</span>
+</span></code></pre>
+<h3 id="if_else">if else</h3>
+<p>条件判断语句和其他的函数式语言类似。例如 <code>if e1 then e2 else e3</code> 代表着如果 <code>e1</code> 条件满足了就返回 <code>e2</code>，否则返回 <code>e3</code>。</p>
+<h3 id="let">let</h3>
+<p>let 语句则是可以声明局部变量，供后续使用。例如 <code>let x = &quot;foo&quot;; y = &quot;bar&quot;; in x + y</code> 声明了 <code>x</code>, <code>y</code> 变量，在 <code>in</code> 语句中就可以使用这两个变量。</p>
+<h3 id="with">with</h3>
+<p><code>with</code> 语句可以将集合里的函数和定义放到当前的语句中，类似于简写了内容。例如 <code>with builtins; head [ 1 2 3 ]</code>。<code>with builtins;</code> 语句将 <code>builtins</code> 集合里的内容引进到了后面的 <code>head [ 1 2 3 ]</code> 语句中。等同于 <code>builtins.head [ 1 2 3 ]</code>。</p>
+<h3 id="import">import</h3>
+<p>有时候单个配置文件里存放了太多的定义，不好进行管理，这时候可以配置存放在不同的文件里，通过 <code>imports = [ ... ];</code> 语句进行导入。在 NixOS 的文档里演示了使用多个文件生成配置，将 KDE 的配置单独放到一个文件里。</p>
+<pre data-lang="nix" class="language-nix z-code"><code class="language-nix" data-lang="nix"><span class="z-source z-nix"><span class="z-punctuation z-definition z-entity z-function z-2 z-nix">{</span> <span class="z-variable z-parameter z-function z-1 z-nix">config</span><span class="z-keyword z-operator z-nix">,</span> <span class="z-variable z-parameter z-function z-1 z-nix">pkgs</span><span class="z-keyword z-operator z-nix">,</span> <span class="z-keyword z-operator z-nix">... </span><span class="z-punctuation z-definition z-entity z-function z-nix">}</span><span class="z-punctuation z-definition z-function z-nix">:</span>
+</span><span class="z-source z-nix">
+</span><span class="z-source z-nix"><span class="z-punctuation z-definition z-attrset-or-function z-nix">{</span>
+</span><span class="z-source z-nix">  <span class="z-entity z-other z-attribute-name z-multipart z-nix">imports</span> <span class="z-keyword z-operator z-bind z-nix">=</span> <span class="z-punctuation z-definition z-list z-nix">[</span> <span class="z-string z-unquoted z-path z-nix">./kde.nix</span> <span class="z-punctuation z-definition z-list z-nix">]</span><span class="z-punctuation z-terminator z-bind z-nix">;</span>
+</span><span class="z-source z-nix">  ...
+</span><span class="z-source z-nix"><span class="z-punctuation z-definition z-attrset z-nix">}</span>
+</span></code></pre>
+<h3 id="其他">其他</h3>
+<p>上面是一些常见的概念，NixOS 还可以做到修改包的默认配置，添加自定义的包等功能，这些功能请查询 <a href="https://chenx6.github.io/post/nix-on-droid/#refs">Refs</a> 中提到的官方文档。</p>
+<h2 id="实战">实战</h2>
+<h3 id="使用_nix-shell_来创建开发环境">使用 nix-shell 来创建开发环境</h3>
+<p>我平时常用 Python 来写一些脚本时，需要一个开发环境。这时候就可以通过 nix-shell 命令和相关配置来配置所需要的软件和包。</p>
+<p>在下面的例子中，我通过调用 <code>python3.withPackages</code> 可以将 Python 解释器和对应的包打包在一起。通过调用 <code>pkgs.mkShell</code> 函数，可以安装上前面打包的 Python 环境和系统软件(&quot;black&quot;, &quot;mypy&quot;)。</p>
+<pre data-lang="nix" class="language-nix z-code"><code class="language-nix" data-lang="nix"><span class="z-source z-nix"><span class="z-punctuation z-definition z-entity z-function z-2 z-nix">{</span> <span class="z-variable z-parameter z-function z-1 z-nix">pkgs</span> <span class="z-keyword z-operator z-nix">?</span> <span class="z-support z-function z-nix">import</span> <span class="z-string z-unquoted z-spath z-nix">&lt;nixpkgs&gt;</span> <span class="z-punctuation z-definition z-attrset z-nix">{</span><span class="z-punctuation z-definition z-attrset z-nix">}</span> <span class="z-punctuation z-definition z-entity z-function z-nix">}</span><span class="z-punctuation z-definition z-function z-nix">:</span>
+</span><span class="z-source z-nix"><span class="z-keyword z-other z-nix">with</span> <span class="z-variable z-parameter z-name z-nix">pkgs</span>;
+</span><span class="z-source z-nix"><span class="z-keyword z-other z-nix">let</span>
+</span><span class="z-source z-nix">  <span class="z-entity z-other z-attribute-name z-multipart z-nix">pythonEnv</span> <span class="z-keyword z-operator z-bind z-nix">=</span> <span class="z-variable z-parameter z-name z-nix">python3</span><span class="z-keyword z-operator z-nix">.</span><span class="z-variable z-parameter z-name z-nix">withPackages</span> <span class="z-punctuation z-definition z-expression z-nix">(</span><span class="z-variable z-parameter z-function z-4 z-nix">ps</span><span class="z-punctuation z-definition z-function z-nix">:</span> <span class="z-punctuation z-definition z-list z-nix">[</span>
+</span><span class="z-source z-nix">    <span class="z-variable z-parameter z-name z-nix">ps</span><span class="z-keyword z-operator z-nix">.</span><span class="z-variable z-parameter z-name z-nix">ipython</span>
+</span><span class="z-source z-nix">    <span class="z-variable z-parameter z-name z-nix">ps</span><span class="z-keyword z-operator z-nix">.</span><span class="z-variable z-parameter z-name z-nix">numpy</span>
+</span><span class="z-source z-nix">    <span class="z-variable z-parameter z-name z-nix">ps</span><span class="z-keyword z-operator z-nix">.</span><span class="z-variable z-parameter z-name z-nix">requests</span>
+</span><span class="z-source z-nix">    <span class="z-variable z-parameter z-name z-nix">ps</span><span class="z-keyword z-operator z-nix">.</span><span class="z-variable z-parameter z-name z-nix">beautifulsoup4</span>
+</span><span class="z-source z-nix">    <span class="z-variable z-parameter z-name z-nix">ps</span><span class="z-keyword z-operator z-nix">.</span><span class="z-variable z-parameter z-name z-nix">python-lsp-server</span>
+</span><span class="z-source z-nix">    <span class="z-variable z-parameter z-name z-nix">ps</span><span class="z-keyword z-operator z-nix">.</span><span class="z-variable z-parameter z-name z-nix">z3</span>
+</span><span class="z-source z-nix">  <span class="z-punctuation z-definition z-list z-nix">]</span><span class="z-punctuation z-definition z-expression z-nix">)</span><span class="z-punctuation z-terminator z-bind z-nix">;</span>
+</span><span class="z-source z-nix"><span class="z-keyword z-other z-nix">in</span> <span class="z-variable z-parameter z-name z-nix">mkShell</span> <span class="z-punctuation z-definition z-attrset-or-function z-nix">{</span>
+</span><span class="z-source z-nix">  <span class="z-entity z-other z-attribute-name z-multipart z-nix">packages</span> <span class="z-keyword z-operator z-bind z-nix">=</span> <span class="z-punctuation z-definition z-list z-nix">[</span>
+</span><span class="z-source z-nix">    <span class="z-variable z-parameter z-name z-nix">pythonEnv</span>
+</span><span class="z-source z-nix">    <span class="z-variable z-parameter z-name z-nix">black</span>
+</span><span class="z-source z-nix">    <span class="z-variable z-parameter z-name z-nix">mypy</span>
+</span><span class="z-source z-nix">  <span class="z-punctuation z-definition z-list z-nix">]</span><span class="z-punctuation z-terminator z-bind z-nix">;</span>
+</span><span class="z-source z-nix"><span class="z-punctuation z-definition z-attrset z-nix">}</span>
+</span></code></pre>
+<p>将上面的文件内容保存到 &quot;shell.nix&quot; 文件后，即可通过 &quot;nix-shell&quot; 命令即可搭建一个全新的开发环境。</p>
+<h3 id="使用_Nix_构建和打包">使用 Nix 构建和打包</h3>
+<p>下面的代码是打包 gnu hello 程序的代码，可以看到是通过调用 <code>stdenv.mkDerivation</code> 函数描述程序的构建流程，在传递给函数的集合中，调用 <code>fetchzip</code> 函数下载代码。</p>
+<pre data-lang="nix" class="language-nix z-code"><code class="language-nix" data-lang="nix"><span class="z-source z-nix"><span class="z-punctuation z-definition z-attrset-or-function z-nix">{</span>
+</span><span class="z-source z-nix">  <span class="z-variable z-parameter z-function z-1 z-nix">lib</span><span class="z-keyword z-operator z-nix">,</span>
+</span><span class="z-source z-nix">  <span class="z-variable z-parameter z-function z-1 z-nix">stdenv</span><span class="z-keyword z-operator z-nix">,</span>
+</span><span class="z-source z-nix">  <span class="z-variable z-parameter z-function z-1 z-nix">fetchzip</span><span class="z-keyword z-operator z-nix">,</span>
+</span><span class="z-source z-nix"><span class="z-punctuation z-definition z-entity z-function z-nix">}</span><span class="z-punctuation z-definition z-function z-nix">:</span>
+</span><span class="z-source z-nix">
+</span><span class="z-source z-nix"><span class="z-variable z-parameter z-name z-nix">stdenv</span><span class="z-keyword z-operator z-nix">.</span><span class="z-variable z-parameter z-name z-nix">mkDerivation</span> <span class="z-punctuation z-definition z-attrset-or-function z-nix">{</span>
+</span><span class="z-source z-nix">  <span class="z-entity z-other z-attribute-name z-multipart z-nix">pname</span> <span class="z-keyword z-operator z-bind z-nix">=</span> <span class="z-string z-quoted z-double z-nix"><span class="z-punctuation z-definition z-string z-double z-start z-nix">&quot;</span>hello<span class="z-punctuation z-definition z-string z-double z-end z-nix">&quot;</span></span><span class="z-punctuation z-terminator z-bind z-nix">;</span>
+</span><span class="z-source z-nix">  <span class="z-entity z-other z-attribute-name z-multipart z-nix">version</span> <span class="z-keyword z-operator z-bind z-nix">=</span> <span class="z-string z-quoted z-double z-nix"><span class="z-punctuation z-definition z-string z-double z-start z-nix">&quot;</span>2.12.1<span class="z-punctuation z-definition z-string z-double z-end z-nix">&quot;</span></span><span class="z-punctuation z-terminator z-bind z-nix">;</span>
+</span><span class="z-source z-nix">
+</span><span class="z-source z-nix">  <span class="z-entity z-other z-attribute-name z-multipart z-nix">src</span> <span class="z-keyword z-operator z-bind z-nix">=</span> <span class="z-variable z-parameter z-name z-nix">fetchzip</span> <span class="z-punctuation z-definition z-attrset-or-function z-nix">{</span>
+</span><span class="z-source z-nix">    <span class="z-entity z-other z-attribute-name z-multipart z-nix">url</span> <span class="z-keyword z-operator z-bind z-nix">=</span> <span class="z-string z-quoted z-double z-nix"><span class="z-punctuation z-definition z-string z-double z-start z-nix">&quot;</span>https://ftp.gnu.org/gnu/hello/hello-2.12.1.tar.gz<span class="z-punctuation z-definition z-string z-double z-end z-nix">&quot;</span></span><span class="z-punctuation z-terminator z-bind z-nix">;</span>
+</span><span class="z-source z-nix">    <span class="z-entity z-other z-attribute-name z-multipart z-nix">sha256</span> <span class="z-keyword z-operator z-bind z-nix">=</span> <span class="z-string z-quoted z-double z-nix"><span class="z-punctuation z-definition z-string z-double z-start z-nix">&quot;</span>0xw6cr5jgi1ir13q6apvrivwmmpr5j8vbymp0x6ll0kcv6366hnn<span class="z-punctuation z-definition z-string z-double z-end z-nix">&quot;</span></span><span class="z-punctuation z-terminator z-bind z-nix">;</span>
+</span><span class="z-source z-nix">  <span class="z-punctuation z-definition z-attrset z-nix">}</span><span class="z-punctuation z-terminator z-bind z-nix">;</span>
+</span><span class="z-source z-nix"><span class="z-punctuation z-definition z-attrset z-nix">}</span>
+</span></code></pre>
+<p>如果想要打包更复杂的包，可以参考 <a href="https://github.com/NixOS/nixpkgs/">NixOS/nixpkgs</a> repo 里的文件，还有 <a href="https://nix.dev/tutorials/packaging-existing-software">nix.dev 里的构建教程</a>。</p>
+<p>TODO: 补充几个现实中的例子。</p>
+<h3 id="home-manager">home-manager</h3>
+<p>home-manager 可以用来管理用户态的程序和配置。配置选项请参考 home-manager 的文档，可定义的内容很多，这里就不一一赘述了。</p>
+<h2 id="其他-1">其他</h2>
+<p>关于 NixOS 的相关包和配置可以到 <a href="https://search.nixos.org/">https://search.nixos.org/</a> 进行搜索。进阶的教程可以看 <a href="https://nixos.org/guides/nix-pills/">Nix Pills</a> 和 <a href="https://nix.dev/">Welcome to nix.dev</a> 还有 <a href="https://nixos.wiki/">NixOS Wiki</a>。</p>
+<h2 id="Refs">Refs</h2>
+<ul>
+<li><a href="https://nixos.org/manual/nix/stable/language/index.html">Nix Language</a></li>
+<li><a href="https://nixos.org/manual/nixos/stable/">NixOS Manual</a></li>
+<li><a href="https://nixos.wiki/wiki/Development_environment_with_nix-shell">Development environment with nix-shell</a></li>
+</ul>
+
+  </div>
+  
+    <script src="https://utteranc.es/client.js"
+          repo="chenx6/chenx6.github.io"
+          issue-term="pathname"
+          label="comment"
+          theme="preferred-color-scheme"
+          crossorigin="anonymous"
+          async>
+    </script>
+  
+</div>
+
+  
+    <footer>2020-∞ chenx6 本作品采用<a rel="license" href="http://creativecommons.org/licenses/by/4.0/">知识共享署名 4.0 国际许可协议</a>进行许可。</footer>
+  
+</body>
+
+</html>
