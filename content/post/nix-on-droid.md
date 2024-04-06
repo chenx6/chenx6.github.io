@@ -122,7 +122,7 @@ in mkShell {
 
 ### 使用 Nix 构建和打包
 
-下面的代码是打包 gnu hello 程序的代码，可以看到是通过调用 `stdenv.mkDerivation` 函数描述程序的构建流程，在传递给函数的集合中，调用 `fetchzip` 函数下载代码。
+下面的代码是打包 gnu hello 程序的代码，可以看到是通过调用 `stdenv.mkDerivation` 函数描述程序的构建流程，在传递给函数的集合中，调用了 `fetchzip` 函数下载代码。
 
 ```nix
 {
@@ -148,7 +148,60 @@ TODO: 补充几个现实中的例子。
 
 ### home-manager
 
-home-manager 可以用来管理用户态的程序和配置。配置选项请参考 home-manager 的文档，可定义的内容很多，这里就不一一赘述了。
+home-manager 可以用来管理用户态的程序和配置。配置选项请参考 home-manager 的文档，可定义的内容很多。下面放一个我自己的 home-manager 配置，主要是安装了常用的软件，配置了 zsh, helix editor, ssh, git。
+
+```nix
+{ pkgs, ... }:
+{
+  home.packages = with pkgs; [
+    xplr
+    ripgrep
+    fd
+    nmap
+    htop
+    just
+  ];
+  programs.zsh = {
+    enable = true;
+    syntaxHighlighting.enable = true;
+    sessionVariables = {
+      PS1 = "%(?..%F{red}%? %f)%~ %F{cyan}>%f ";
+    };
+    shellAliases = {
+      ll = "ls -la";
+      ".j" = "just";
+    };
+    enableAutosuggestions = true;
+    # autosuggestion.enable = true;
+  };
+  programs.helix = {
+    enable = true;
+    settings = {
+      theme = "base16_terminal";
+      keys.normal = {
+        "^" = "goto_line_start";
+        "$" = "goto_line_end";
+      };
+    };
+  };
+  programs.ssh = {
+    enable = true;
+    package = pkgs.openssh;
+    matchBlocks = {
+      lpi4 = {
+        hostname = "1.1.1.1";
+        user = "user";
+      };
+    };
+  };
+  programs.git = {
+    enable = true;
+    userName = "user";
+    userEmail = "user@example.com";
+  };
+  home.stateVersion = "23.11";
+}
+```
 
 ## 其他
 
