@@ -4,8 +4,8 @@ build_search_index = false
 
 title = "Title"
 description = "description"
-generate_feed = true
-feed_filename = "atom.xml"
+generate_feeds = true
+feed_filenames = ["atom.xml"]
 default_language = "zh_CN"
 
 taxonomies = [
