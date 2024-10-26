@@ -4,8 +4,8 @@ build_search_index = false
 
 title = "二进制咸鱼的自我救赎"
 description = "幸福往往是摸的透彻，而敬业的心却常常隐藏。"
-generate_feed = true
-feed_filename = "atom.xml"
+generate_feeds = true
+feed_filenames = ["atom.xml"]
 default_language = "zh_CN"
 
 taxonomies = [
