@@ -116,14 +116,14 @@
 </span></code></pre>
 <h2 id="网络">网络</h2>
 <p>QEMU 将网络支持分成了 2 个部分，一部分是给虚拟机（guest）提供的虚拟网络设备（virtual network device），一部分是与模拟 NIC 交互的网络后端（network backend）。QEMU 在默认配置下提供了 SLiRP 后端，在使用这个后端的情况下， ICMP 协议没法工作，也就是没法 ping,但是 TCP 和 UDP 是可以正常工作的。</p>
-<p>在网络后端这一层，我们选择 <a href="https://docs.kernel.org/networking/tuntap.html">tap</a>。因为 tap 是在 Linux 内核层面支持的，性能比较好，而且可以支持 ICMP/IP 层协议。需要注意的是 ifname 的参数 &quot;tap6&quot; 是我们创建 tap 设备名字。下面是相关参数。</p>
+<p>在网络后端这一层，我们选择 <a href="https://docs.kernel.org/networking/tuntap.html">tap</a>。因为 tap 是在 Linux 内核层面支持的，性能比较好，而且可以支持 ICMP/IP 层协议。需要注意的是 ifname 的参数 "tap6" 是我们创建 tap 设备名字。下面是相关参数。</p>
 <pre data-lang="bash" class="language-bash z-code"><code class="language-bash" data-lang="bash"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">-netdev</span></span><span class="z-meta z-function-call z-arguments z-shell"> tap,id=net0,ifname=tap6,script=no,downscript=no</span>
 </span></code></pre>
-<p>QEMU 可以模拟很多的虚拟网络设备，这里我们选择模拟 e1000 网卡。需要注意的是 netdev 的参数需要和前面配置的 netdev 中的 id 对上，这里我们的 netdev 参数为 &quot;net0&quot;。在 mac 参数中，将 MAC 配置成 &quot;52:55:00:d1:55:00&quot;。下面是相关参数。</p>
+<p>QEMU 可以模拟很多的虚拟网络设备，这里我们选择模拟 e1000 网卡。需要注意的是 netdev 的参数需要和前面配置的 netdev 中的 id 对上，这里我们的 netdev 参数为 "net0"。在 mac 参数中，将 MAC 配置成 "52:55:00:d1:55:00"。下面是相关参数。</p>
 <pre data-lang="bash" class="language-bash z-code"><code class="language-bash" data-lang="bash"><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">-device</span></span><span class="z-meta z-function-call z-arguments z-shell"> e1000,netdev=net0,mac=52:55:00:d1:55:00</span>
 </span></code></pre>
 <h3 id="如何创建_tap_设备">如何创建 tap 设备</h3>
-<p>上面的参数需要手动创建 tap 设备才能使用。通过下面的命令既可以创建设备名叫 &quot;tap6&quot; 的设备，并且将 IP 设置在 &quot;192.168.122.1&quot;。下面命令的主要操作就是创建 tap 设备，设置 IP，并且启用设备。</p>
+<p>上面的参数需要手动创建 tap 设备才能使用。通过下面的命令既可以创建设备名叫 "tap6" 的设备，并且将 IP 设置在 "192.168.122.1"。下面命令的主要操作就是创建 tap 设备，设置 IP，并且启用设备。</p>
 <pre data-lang="bash" class="language-bash z-code"><code class="language-bash" data-lang="bash"><span class="z-source z-shell z-bash"><span class="z-variable z-other z-readwrite z-assignment z-shell">IP</span><span class="z-keyword z-operator z-assignment z-shell">=</span><span class="z-string z-unquoted z-shell">192.168.122.1/24</span>
 </span><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">ip</span></span><span class="z-meta z-function-call z-arguments z-shell"> tuntap add tap6 mode tap</span>
 </span><span class="z-source z-shell z-bash"><span class="z-meta z-function-call z-shell"><span class="z-variable z-function z-shell">ip</span></span><span class="z-meta z-function-call z-arguments z-shell"> addr add <span class="z-meta z-group z-expansion z-parameter z-shell"><span class="z-punctuation z-definition z-variable z-shell">$</span><span class="z-variable z-other z-readwrite z-shell">IP</span></span> dev tap6</span>

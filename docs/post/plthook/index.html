@@ -98,7 +98,7 @@
 </li>
 <li>通过 <code>link_map</code> 获取相关 section 的信息。
 <ul>
-<li>获取 &quot;DT_SYMTAB DT_STRTAB DT_STRSZ DT_JMPREL DT_PLTRELSZ&quot; 的相关信息</li>
+<li>获取 "DT_SYMTAB DT_STRTAB DT_STRSZ DT_JMPREL DT_PLTRELSZ" 的相关信息</li>
 </ul>
 </li>
 <li>在 rela 表中获得其在 dynsym 中的位置，然后通过 dynsym 获得名字</li>
@@ -117,7 +117,7 @@
 </span></span></span><span class="z-source z-c"><span class="z-meta z-function z-c"><span class="z-meta z-block z-c">  <span class="z-storage z-type z-c">struct</span> link_map <span class="z-keyword z-operator z-c">*</span>map <span class="z-keyword z-operator z-assignment z-c">=</span> <span class="z-constant z-language z-c">NULL</span><span class="z-punctuation z-terminator z-c">;</span>
 </span></span></span><span class="z-source z-c"><span class="z-meta z-function z-c"><span class="z-meta z-block z-c">  <span class="z-storage z-type z-c">int</span> result <span class="z-keyword z-operator z-assignment z-c">=</span> <span class="z-meta z-function-call z-c"><span class="z-variable z-function z-c">dlinfo</span><span class="z-meta z-group z-c"><span class="z-punctuation z-section z-group z-begin z-c">(</span></span></span><span class="z-meta z-function-call z-c"><span class="z-meta z-group z-c">handle<span class="z-punctuation z-separator z-c">,</span> RTLD_DI_LINKMAP<span class="z-punctuation z-separator z-c">,</span> <span class="z-keyword z-operator z-c">&amp;</span>map</span></span><span class="z-meta z-function-call z-c"><span class="z-meta z-group z-c"><span class="z-punctuation z-section z-group z-end z-c">)</span></span></span><span class="z-punctuation z-terminator z-c">;</span>
 </span></span></span></code></pre>
-<p>然后是从 <code>link_map</code> 中获得各个 section（&quot;DT_SYMTAB DT_STRTAB DT_STRSZ DT_JMPREL DT_PLTRELSZ&quot;）的信息，供后续使用。</p>
+<p>然后是从 <code>link_map</code> 中获得各个 section（"DT_SYMTAB DT_STRTAB DT_STRSZ DT_JMPREL DT_PLTRELSZ"）的信息，供后续使用。</p>
 <pre data-lang="c" class="language-c z-code"><code class="language-c" data-lang="c"><span class="z-source z-c">  <span class="z-comment z-line z-double-slash z-c"><span class="z-punctuation z-definition z-comment z-c">//</span> Get information from link_map&#39;s address and dyn table
 </span></span><span class="z-source z-c">  info<span class="z-punctuation z-accessor z-c">-&gt;</span>base_addr <span class="z-keyword z-operator z-assignment z-c">=</span> <span class="z-meta z-group z-c"><span class="z-punctuation z-section z-group z-begin z-c">(</span><span class="z-support z-type z-stdint z-c">uint8_t</span> <span class="z-keyword z-operator z-c">*</span><span class="z-punctuation z-section z-group z-end z-c">)</span></span>map<span class="z-punctuation z-accessor z-c">-&gt;</span>l_addr<span class="z-punctuation z-terminator z-c">;</span>
 </span><span class="z-source z-c">  <span class="z-support z-type z-sys-types z-c">size_t</span> rela_size <span class="z-keyword z-operator z-assignment z-c">=</span> <span class="z-constant z-numeric z-integer z-decimal z-c">0</span><span class="z-punctuation z-terminator z-c">;</span>
@@ -173,7 +173,7 @@
 </span></span></span><span class="z-source z-c"><span class="z-meta z-function z-c"><span class="z-meta z-block z-c"></span></span><span class="z-meta z-function z-c"><span class="z-meta z-block z-c"><span class="z-punctuation z-section z-block z-end z-c">}</span></span></span>
 </span></code></pre>
 <p>完整代码：<a href="https://github.com/chenx6/gadget/tree/master/plt_hook">https://github.com/chenx6/gadget/tree/master/plt_hook</a></p>
-<p>将代码和 <code>test_main.c</code> 一起编译(别忘了加上 -ldl)后，应该可以看到 <code>atoi</code> 的返回值从正确的 &quot;123456&quot; 变成了 &quot;114514&quot;，说明这个 POC 实现成功了。也可以通过用 ((constructor)) 修饰函数，通过 so 注入进行修改。</p>
+<p>将代码和 <code>test_main.c</code> 一起编译(别忘了加上 -ldl)后，应该可以看到 <code>atoi</code> 的返回值从正确的 "123456" 变成了 "114514"，说明这个 POC 实现成功了。也可以通过用 ((constructor)) 修饰函数，通过 so 注入进行修改。</p>
 <h2 id="Refs">Refs</h2>
 <ul>
 <li><a href="https://github.com/kubo/plthook">kubo/plthook</a></li>

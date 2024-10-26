@@ -80,7 +80,7 @@
 <h2 id="CVE-2023-40477">CVE-2023-40477</h2>
 <p>从下面的官方公告中可以知道代码修复的地方是在 RAR4 恢复卷的处理代码中。</p>
 <blockquote>
-<p>Critical Bug: CVE-2023-40477. The vulnerability allows remote attackers to execute arbitrary code on affected installations. User interaction is required to exploit this vulnerability. This is fixed in the RAR4 recovery volume processing code. </p>
+<p>Critical Bug: CVE-2023-40477. The vulnerability allows remote attackers to execute arbitrary code on affected installations. User interaction is required to exploit this vulnerability. This is fixed in the RAR4 recovery volume processing code.</p>
 </blockquote>
 <p>ZDI 的公告也是一样的说法。</p>
 <blockquote>
@@ -163,7 +163,7 @@
 </span></span><span class="z-source z-c"><span class="z-meta z-block z-c">    <span class="z-punctuation z-section z-block z-end z-c">}</span></span>
 </span></code></pre>
 <h2 id="CVE-2023-38831">CVE-2023-38831</h2>
-<p>这个漏洞应该利用价值比较高，并且网上分析也很多，所以我就简单分析下。下面的代码是判断两文件名字是否相等函数的部分代码，可以看到在用 <code>wcsncmp</code> 比较文件文件名时候，只用到了第一个文件名字的长度(变量 <code>a1_len</code>)，而没有用到第二个文件名字的长度，而后面半部分代码则是检查文件名字的结尾是否为 '' '/' 或者 0 字节。这就会导致如果压缩文件中存在相同名字的文件夹和文件时，例如 &quot;test.txt/&quot; 文件夹 &quot;test.txt&quot; 文件，两者的内容都会被释放到临时目录。</p>
+<p>这个漏洞应该利用价值比较高，并且网上分析也很多，所以我就简单分析下。下面的代码是判断两文件名字是否相等函数的部分代码，可以看到在用 <code>wcsncmp</code> 比较文件文件名时候，只用到了第一个文件名字的长度(变量 <code>a1_len</code>)，而没有用到第二个文件名字的长度，而后面半部分代码则是检查文件名字的结尾是否为 '' '/' 或者 0 字节。这就会导致如果压缩文件中存在相同名字的文件夹和文件时，例如 "test.txt/" 文件夹 "test.txt" 文件，两者的内容都会被释放到临时目录。</p>
 <pre data-lang="c" class="language-c z-code"><code class="language-c" data-lang="c"><span class="z-source z-c">    v7 <span class="z-keyword z-operator z-assignment z-c">=</span> <span class="z-keyword z-operator z-arithmetic z-c">-</span><span class="z-constant z-numeric z-integer z-decimal z-c">1<span class="z-invalid z-illegal z-numeric z-suffix z-c">i64</span></span><span class="z-punctuation z-terminator z-c">;</span>
 </span><span class="z-source z-c">    a1_len <span class="z-keyword z-operator z-assignment z-c">=</span> <span class="z-keyword z-operator z-arithmetic z-c">-</span><span class="z-constant z-numeric z-integer z-decimal z-c">1<span class="z-invalid z-illegal z-numeric z-suffix z-c">i64</span></span><span class="z-punctuation z-terminator z-c">;</span>
 </span><span class="z-source z-c">    <span class="z-keyword z-control z-c">do</span>

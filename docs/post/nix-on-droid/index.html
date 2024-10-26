@@ -159,7 +159,7 @@
 <p>函数的形式为 <code>pattern: body</code>。<code>pattern</code> 决定了函数接收的参数，并且有 3 种形式。</p>
 <ul>
 <li>如果 <code>pattern</code> 只有 1 个标志符，这个函数就可以接收任意参数。例如 <code>arg1: !arg1</code>，函数接收了 1 个名叫 <code>arg1</code> 的参数，并在函数体对其做了取反的操作。</li>
-<li>如果 <code>pattern</code> 是一个类似于 <code>{ name1, name2, ... }</code> 这样的集合形式，这个函数会接收一个集合，集合中包含着 <code>pattern</code> 中定义的属性，并将值绑定到变量上供函数体使用。例如 <code>{ arg1, arg2 }: arg2 + arg1</code> 代表着这个函数接收含有 <code>arg1</code> 和 <code>arg2</code> 定义的集合作为参数。函数语句申明中可以出现类似 <code>?</code>，代表着默认参数。例如 <code>{ x ? &quot;foo&quot; }: x</code>。函数还可以使用 <code>{arg1, arg2, ...}</code> 接收有多于定义的集合。</li>
+<li>如果 <code>pattern</code> 是一个类似于 <code>{ name1, name2, ... }</code> 这样的集合形式，这个函数会接收一个集合，集合中包含着 <code>pattern</code> 中定义的属性，并将值绑定到变量上供函数体使用。例如 <code>{ arg1, arg2 }: arg2 + arg1</code> 代表着这个函数接收含有 <code>arg1</code> 和 <code>arg2</code> 定义的集合作为参数。函数语句申明中可以出现类似 <code>?</code>，代表着默认参数。例如 <code>{ x ? "foo" }: x</code>。函数还可以使用 <code>{arg1, arg2, ...}</code> 接收有多于定义的集合。</li>
 <li><code>pattern</code> 中还可以使用 <code>@</code> 符将集合里的值进行关联。例如 <code>{ pkgs, ... } @ attrs</code>，后面的 <code>@attrs</code> 意味着将集合中的定义打包关联起来，在函数体中可以通过类似 <code>attrs.pkgs</code> 语句来使用 <code>pkgs</code> 参数。</li>
 </ul>
 <p>下面是 nix-on-droid 项目演示用的配置。<code>{ pkgs, ... }:</code> 是 nix 函数的参数申明，代表着函数需要一个带有 <code>pkgs</code> 定义的集合。<code>pkgs</code> 这个定义一般指向的是 nixpkgs。这个函数返回了一组定义，在下面的代码中，则是定义了 <code>environment.packages</code> 和 <code>system.stateVersion</code>。</p>
@@ -173,7 +173,7 @@
 <h3 id="if_else">if else</h3>
 <p>条件判断语句和其他的函数式语言类似。例如 <code>if e1 then e2 else e3</code> 代表着如果 <code>e1</code> 条件满足了就返回 <code>e2</code>，否则返回 <code>e3</code>。</p>
 <h3 id="let">let</h3>
-<p>let 语句则是可以声明局部变量，供后续使用。例如 <code>let x = &quot;foo&quot;; y = &quot;bar&quot;; in x + y</code> 声明了 <code>x</code>, <code>y</code> 变量，在 <code>in</code> 语句中就可以使用这两个变量。</p>
+<p>let 语句则是可以声明局部变量，供后续使用。例如 <code>let x = "foo"; y = "bar"; in x + y</code> 声明了 <code>x</code>, <code>y</code> 变量，在 <code>in</code> 语句中就可以使用这两个变量。</p>
 <h3 id="with">with</h3>
 <p><code>with</code> 语句可以将集合里的函数和定义放到当前的语句中，类似于简写了内容。例如 <code>with builtins; head [ 1 2 3 ]</code>。<code>with builtins;</code> 语句将 <code>builtins</code> 集合里的内容引进到了后面的 <code>head [ 1 2 3 ]</code> 语句中。等同于 <code>builtins.head [ 1 2 3 ]</code>。</p>
 <h3 id="import">import</h3>
@@ -190,7 +190,7 @@
 <h2 id="实战">实战</h2>
 <h3 id="使用_nix-shell_来创建开发环境">使用 nix-shell 来创建开发环境</h3>
 <p>我平时用 Python 来写一些脚本时，需要一个开发环境。这时候就可以通过 nix-shell 命令和相关配置来配置所需要的软件和包。</p>
-<p>在下面的例子中，我通过调用 <code>python3.withPackages</code> 可以将 Python 解释器和对应的包打包在一起。通过调用 <code>pkgs.mkShell</code> 函数，可以安装上前面打包的 Python 环境和系统软件(&quot;black&quot;, &quot;mypy&quot;)。</p>
+<p>在下面的例子中，我通过调用 <code>python3.withPackages</code> 可以将 Python 解释器和对应的包打包在一起。通过调用 <code>pkgs.mkShell</code> 函数，可以安装上前面打包的 Python 环境和系统软件("black", "mypy")。</p>
 <pre data-lang="nix" class="language-nix z-code"><code class="language-nix" data-lang="nix"><span class="z-source z-nix"><span class="z-punctuation z-definition z-entity z-function z-2 z-nix">{</span> <span class="z-variable z-parameter z-function z-1 z-nix">pkgs</span> <span class="z-keyword z-operator z-nix">?</span> <span class="z-support z-function z-nix">import</span> <span class="z-string z-unquoted z-spath z-nix">&lt;nixpkgs&gt;</span> <span class="z-punctuation z-definition z-attrset z-nix">{</span><span class="z-punctuation z-definition z-attrset z-nix">}</span> <span class="z-punctuation z-definition z-entity z-function z-nix">}</span><span class="z-punctuation z-definition z-function z-nix">:</span>
 </span><span class="z-source z-nix"><span class="z-keyword z-other z-nix">with</span> <span class="z-variable z-parameter z-name z-nix">pkgs</span>;
 </span><span class="z-source z-nix"><span class="z-keyword z-other z-nix">let</span>
@@ -210,7 +210,7 @@
 </span><span class="z-source z-nix">  <span class="z-punctuation z-definition z-list z-nix">]</span><span class="z-punctuation z-terminator z-bind z-nix">;</span>
 </span><span class="z-source z-nix"><span class="z-punctuation z-definition z-attrset z-nix">}</span>
 </span></code></pre>
-<p>将上面的内容保存到 &quot;shell.nix&quot; 文件后，即可通过 &quot;nix-shell&quot; 命令即可搭建一个全新的开发环境。</p>
+<p>将上面的内容保存到 "shell.nix" 文件后，即可通过 "nix-shell" 命令即可搭建一个全新的开发环境。</p>
 <h3 id="使用_Nix_构建和打包">使用 Nix 构建和打包</h3>
 <p>下面的代码是打包 gnu hello 程序的代码，可以看到是通过调用 <code>stdenv.mkDerivation</code> 函数描述程序的构建流程，在传递给函数的集合中，调用了 <code>fetchzip</code> 函数下载代码。</p>
 <pre data-lang="nix" class="language-nix z-code"><code class="language-nix" data-lang="nix"><span class="z-source z-nix"><span class="z-punctuation z-definition z-attrset-or-function z-nix">{</span>

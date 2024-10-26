@@ -95,9 +95,9 @@
       </details>
       
     </aside>
-    <p>在渗透测试中，给常用的可执行文件加上后门是很常见的操作。但是之前的加后门 &quot;The backdoor factory&quot; 已经不维护了，而且还是 Python2 写的，代码质量也...所以我自己尝试着重新用 Python3 造了个轮子。在造轮子的过程中，由于 APUE 扔在学校里面了，导致在写和系统相关的汇编时出现了一些翻车情况...</p>
+    <p>在渗透测试中，给常用的可执行文件加上后门是很常见的操作。但是之前的加后门 "The backdoor factory" 已经不维护了，而且还是 Python2 写的，代码质量也...所以我自己尝试着重新用 Python3 造了个轮子。在造轮子的过程中，由于 APUE 扔在学校里面了，导致在写和系统相关的汇编时出现了一些翻车情况...</p>
 <h2 id="加后门的流程">加后门的流程</h2>
-<p>基本分为两部分，先分析 ELF，然后根据之前的分析来给 ELF 加个&quot;补丁&quot;。</p>
+<p>基本分为两部分，先分析 ELF，然后根据之前的分析来给 ELF 加个"补丁"。</p>
 <ol>
 <li>先分析 ELF 结构，拿到 ELF File Header 和 ELF Program Headers (Segments) 的相关信息</li>
 <li>通过 ELF Program Header 找到带有执行权限的 LOAD 段，看看这个 LOAD 段后有没有 Code Cave。即寻找不属于其他的 Section，ELF 文件为了对其 Segments 而填充的大量 0 字节。如果 Segment 末尾出现了一堆 0 字节填充，并且大小合适的话，则选择在这段空白处作为后门的插入点</li>
