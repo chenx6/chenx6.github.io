@@ -151,7 +151,7 @@ def parse_block_stack(insts: DecompLines):
 
 ## 总结
 
-这篇文章主要讲了反编译 Python 字节码的 4 个步骤以及细节。但是因为工程量大，很多细节没有完善，等待后续完善了。
+这篇文章主要讲了反编译 Python 字节码的 4 个步骤以及细节。但是因为工程量大，很多细节没有完善，等待后续完善了。代码：<https://github.com/chenx6/gadget/tree/master/pydec>。
 
 ## Refs
 
