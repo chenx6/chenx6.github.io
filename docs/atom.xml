@@ -137,7 +137,7 @@
 &lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
 &lt;p&gt;在上面的步骤中，我们还原出了控制流，即我们构建出了一个类似 AST 一样的树状结构，可以通过 BFS 或者 DFS 来不断遍历这棵树，来还原相应的语句，碰到叶子节点的时候，则使用上面讲的模拟栈方法，来还原相应的语句。&lt;&#x2F;p&gt;
 &lt;h2 id=&quot;总结&quot;&gt;总结&lt;&#x2F;h2&gt;
-&lt;p&gt;这篇文章主要讲了反编译 Python 字节码的 4 个步骤以及细节。但是因为工程量大，很多细节没有完善，等待后续完善了。&lt;&#x2F;p&gt;
+&lt;p&gt;这篇文章主要讲了反编译 Python 字节码的 4 个步骤以及细节。但是因为工程量大，很多细节没有完善，等待后续完善了。代码：&lt;a href=&quot;https:&#x2F;&#x2F;github.com&#x2F;chenx6&#x2F;gadget&#x2F;tree&#x2F;master&#x2F;pydec&quot;&gt;https:&#x2F;&#x2F;github.com&#x2F;chenx6&#x2F;gadget&#x2F;tree&#x2F;master&#x2F;pydec&lt;&#x2F;a&gt;。&lt;&#x2F;p&gt;
 &lt;h2 id=&quot;Refs&quot;&gt;Refs&lt;&#x2F;h2&gt;
 &lt;ul&gt;
 &lt;li&gt;&lt;a href=&quot;https:&#x2F;&#x2F;decompilation.wiki&quot;&gt;Decompilation Wiki&lt;&#x2F;a&gt;&lt;&#x2F;li&gt;
