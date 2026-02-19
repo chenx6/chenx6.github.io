@@ -7,7 +7,7 @@
     <a href="{{ page.permalink }}">
       {{ page.title }}
     </a>
-  </h1>
+  </h2>
   <span class="post-date">{{ page.date | date(format="%Y-%m-%d") }}</span>
   {{ tag_macros::tag_list(page=page) }}
   {% if page.summary %}
