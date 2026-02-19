@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="zh-hans">
 
 <head>
   <meta charset="UTF-8">
@@ -8,8 +8,8 @@
   <link rel="icon" href="data:;base64,iVBORw0KGgo=">
   <title>{% block title %}{% endblock title %}{{ config.title }}</title>
   <link rel="stylesheet" href="{{ get_url(path="water.min.css", trailing_slash=false) }}">
-  <link rel="stylesheet" type="text/css" href="/syntax-theme-dark.css" media="(prefers-color-scheme: dark)" />
-  <link rel="stylesheet" type="text/css" href="/syntax-theme-light.css" media="(prefers-color-scheme: light)" />
+  <link rel="stylesheet" type="text/css" href="/syntax-theme-dark.css" media="(prefers-color-scheme: dark)">
+  <link rel="stylesheet" type="text/css" href="/syntax-theme-light.css" media="(prefers-color-scheme: light)">
   {% if config.generate_feeds %}
   <link rel="alternate" type="application/atom+xml" title="RSS" href="{{ get_url(path="atom.xml", trailing_slash=false) }}">
   {% endif %}
