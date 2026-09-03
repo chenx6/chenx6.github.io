@@ -12,14 +12,9 @@ taxonomies = [
     {name = "tags", feed = true}
 ]
 
-[markdown]
-highlight_code = true
-
-highlight_theme = "css"
-highlight_themes_css = [
-  { theme = "ayu-dark", filename = "syntax-theme-dark.css" },
-  { theme = "ayu-light", filename = "syntax-theme-light.css" },
-]
+[markdown.highlighting]
+light_theme = "material-theme-lighter"
+dark_theme = "material-theme-palenight"
 
 [slugify]
 paths = "safe"
