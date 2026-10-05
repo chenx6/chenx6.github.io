@@ -48,11 +48,11 @@ chmod +x extract-vmlinux
 
 > Arch Linux 的 linux 包里集成了很多内核模块，将这个包解压到 rootfs 里，然后执行 "depmod -a && modprobe virtio_net" 加载 virtio_net 内核模块，可以解决没有网络的问题。
 
-## Firecracker 配置
+### Firecracker 配置
 
 Python 的 httpx 即可和 Firecracker 的 API 进行交互，当然用 curl 也可以。需要设置机器配置，内核参数，rootfs, 网络才能让虚拟机启动。这部分请直接参考代码，代码地址在文末会放出来。
 
-## 网络配置
+### 网络配置
 
 网络配置永远是最麻烦的。最标准的做法就是按照官方文档进行配置 tap + nftable 来实现虚拟机上网。但是作为懒狗，我不太想去折腾宿主机的网络，经过一番搜索，我发现可以通过 tun2sock 来让虚拟机走宿主机的代理这种邪门的方式上网，这种方式的优点就是宿主机只要启动一个 socks5 代理就可以了。虚拟机里执行的命令如下:
 
