@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="zh-hans">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" href="data:;base64,iVBORw0KGgo=">
+  <title>使用 Firecracker 搭建 Agent 沙箱 - 二进制咸鱼的自我救赎</title>
+  <link rel="stylesheet" href="https://chenx6.uk/water.min.css">
+  <link rel="stylesheet" type="text/css" href="/syntax-theme-dark.css" media="(prefers-color-scheme: dark)">
+  <link rel="stylesheet" type="text/css" href="/syntax-theme-light.css" media="(prefers-color-scheme: light)">
+  <link rel="stylesheet" href="https://chenx6.uk/custom.css">
+  
+  <link rel="alternate" type="application/atom+xml" title="RSS" href="https://chenx6.uk/atom.xml">
+  
+
+  
+  
+
+</head>
+
+<body>
+  <header>
+    <a href="https:&#x2F;&#x2F;chenx6.uk"><h1>二进制咸鱼的自我救赎</h1></a>
+    
+    <p class="lead">幸福往往是摸的透彻，而敬业的心却常常隐藏。</p>
+    
+    
+      <a href="https:&#x2F;&#x2F;chenx6.uk&#x2F;about">
+        About
+      </a>
+    
+    
+    <a href="https://chenx6.uk/atom.xml">RSS</a>
+    
+  </header>
+  
+<div class="container">
+  <div class="post">
+    <h2 class="post-title">使用 Firecracker 搭建 Agent 沙箱</h2>
+    <span class="post-date">2026-10-03</span>
+    
+  
+    
+      <a href="https://chenx6.uk/tags/linux/">#linux</a>
+    
+  
+
+    <aside class="toc">
+      
+      <details>
+        <summary>Table of contents</summary>
+        <ul>
+          
+          <li>
+            <a href="https://chenx6.uk/post/firecracker/#技术选型">技术选型</a>
+            
+          </li>
+          
+          <li>
+            <a href="https://chenx6.uk/post/firecracker/#环境搭建">环境搭建</a>
+            
+            <ul>
+              
+              <li>
+                <a href="https://chenx6.uk/post/firecracker/#系统配置">系统配置</a>
+              </li>
+              
+            </ul>
+            
+          </li>
+          
+          <li>
+            <a href="https://chenx6.uk/post/firecracker/#Firecracker_配置">Firecracker 配置</a>
+            
+          </li>
+          
+          <li>
+            <a href="https://chenx6.uk/post/firecracker/#网络配置">网络配置</a>
+            
+          </li>
+          
+          <li>
+            <a href="https://chenx6.uk/post/firecracker/#其他">其他</a>
+            
+          </li>
+          
+          <li>
+            <a href="https://chenx6.uk/post/firecracker/#启动">启动</a>
+            
+          </li>
+          
+          <li>
+            <a href="https://chenx6.uk/post/firecracker/#结算画面">结算画面</a>
+            
+          </li>
+          
+          <li>
+            <a href="https://chenx6.uk/post/firecracker/#总结">总结</a>
+            
+          </li>
+          
+        </ul>
+      </details>
+      
+    </aside>
+    <p>最近在使用 LLM 进行编程，但是对 LLM 的安全性存在一定的担忧，所以就使用 Firecracker 搭建了一个沙箱，并写文记录。</p>
+<h2 id="技术选型">技术选型</h2>
+<p>选择 Firecracker 的原因还是因为他比 QEMU 和 libvirt 轻量，并且性能和稳定性都不错，安全问题也没那么多。</p>
+<h2 id="环境搭建">环境搭建</h2>
+<h3 id="系统配置">系统配置</h3>
+<p>本次使用的虚拟机系统为 Arch Linux，从网上下载 rootfs，然后创建文件系统，解压 rootfs 到文件系统，systemd-nspawn 进文件系统对 rootfs 进行一些配置，即可完成文件系统的配置。</p>
+<pre class="giallo" style="color-scheme: light dark; color: light-dark(#90A4AE, #BABED8); background-color: light-dark(#FAFAFA, #292D3E);"><code data-lang="shellscript"><span class="giallo-l"><span>ROOTFS</span><span style="color: light-dark(#39ADB5, #89DDFF);">=</span><span style="color: light-dark(#91B859, #C3E88D);">a</span><span style="color: light-dark(#91B859, #C3E88D);">r</span><span style="color: light-dark(#91B859, #C3E88D);">c</span><span style="color: light-dark(#91B859, #C3E88D);">h</span><span style="color: light-dark(#91B859, #C3E88D);">-</span><span style="color: light-dark(#91B859, #C3E88D);">r</span><span style="color: light-dark(#91B859, #C3E88D);">o</span><span style="color: light-dark(#91B859, #C3E88D);">o</span><span style="color: light-dark(#91B859, #C3E88D);">t</span><span style="color: light-dark(#91B859, #C3E88D);">f</span><span style="color: light-dark(#91B859, #C3E88D);">s</span><span style="color: light-dark(#91B859, #C3E88D);">.</span><span style="color: light-dark(#91B859, #C3E88D);">i</span><span style="color: light-dark(#91B859, #C3E88D);">m</span><span style="color: light-dark(#91B859, #C3E88D);">g</span></span>
+<span class="giallo-l"><span>MOUNTPOINT</span><span style="color: light-dark(#39ADB5, #89DDFF);">=</span><span style="color: light-dark(#91B859, #C3E88D);">/</span><span style="color: light-dark(#91B859, #C3E88D);">t</span><span style="color: light-dark(#91B859, #C3E88D);">m</span><span style="color: light-dark(#91B859, #C3E88D);">p</span><span style="color: light-dark(#91B859, #C3E88D);">/</span><span style="color: light-dark(#91B859, #C3E88D);">a</span><span style="color: light-dark(#91B859, #C3E88D);">r</span><span style="color: light-dark(#91B859, #C3E88D);">c</span><span style="color: light-dark(#91B859, #C3E88D);">h</span><span style="color: light-dark(#91B859, #C3E88D);">-</span><span style="color: light-dark(#91B859, #C3E88D);">c</span><span style="color: light-dark(#91B859, #C3E88D);">o</span><span style="color: light-dark(#91B859, #C3E88D);">n</span><span style="color: light-dark(#91B859, #C3E88D);">t</span><span style="color: light-dark(#91B859, #C3E88D);">a</span><span style="color: light-dark(#91B859, #C3E88D);">i</span><span style="color: light-dark(#91B859, #C3E88D);">n</span><span style="color: light-dark(#91B859, #C3E88D);">e</span><span style="color: light-dark(#91B859, #C3E88D);">r</span></span>
+<span class="giallo-l"><span style="color: light-dark(#90A4AE, #676E95);font-style: italic;">#</span><span style="color: light-dark(#90A4AE, #676E95);font-style: italic;"> 下载 rootfs</span></span>
+<span class="giallo-l"><span style="color: light-dark(#E2931D, #FFCB6B);">curl</span><span style="color: light-dark(#91B859, #C3E88D);"> -</span><span style="color: light-dark(#91B859, #C3E88D);">O</span><span style="color: light-dark(#91B859, #C3E88D);"> https://mirrors.ustc.edu.cn/archlinux/iso/latest/archlinux-bootstrap-x86_64.tar.zst</span></span>
+<span class="giallo-l"><span style="color: light-dark(#90A4AE, #676E95);font-style: italic;">#</span><span style="color: light-dark(#90A4AE, #676E95);font-style: italic;"> 创建文件系统</span></span>
+<span class="giallo-l"><span style="color: light-dark(#E2931D, #FFCB6B);">truncate</span><span style="color: light-dark(#91B859, #C3E88D);"> -</span><span style="color: light-dark(#91B859, #C3E88D);">s</span><span style="color: light-dark(#91B859, #C3E88D);"> 4G</span><span> $</span><span>ROOTFS</span></span>
+<span class="giallo-l"><span style="color: light-dark(#E2931D, #FFCB6B);">mkfs.ext4</span><span> $</span><span>ROOTFS</span></span>
+<span class="giallo-l"><span style="color: light-dark(#90A4AE, #676E95);font-style: italic;">#</span><span style="color: light-dark(#90A4AE, #676E95);font-style: italic;"> 解压 rootfs 到文件系统</span></span>
+<span class="giallo-l"><span style="color: light-dark(#E2931D, #FFCB6B);">mkdir</span><span style="color: light-dark(#91B859, #C3E88D);"> -</span><span style="color: light-dark(#91B859, #C3E88D);">p</span><span> $</span><span>MOUNTPOINT</span></span>
+<span class="giallo-l"><span style="color: light-dark(#E2931D, #FFCB6B);">sudo</span><span style="color: light-dark(#91B859, #C3E88D);"> mount</span><span style="color: light-dark(#91B859, #C3E88D);"> -</span><span style="color: light-dark(#91B859, #C3E88D);">o</span><span style="color: light-dark(#91B859, #C3E88D);"> loop</span><span> $</span><span>ROOTFS</span><span> $</span><span>MOUNTPOINT</span></span>
+<span class="giallo-l"><span style="color: light-dark(#E2931D, #FFCB6B);">sudo</span><span style="color: light-dark(#91B859, #C3E88D);"> tar</span><span style="color: light-dark(#91B859, #C3E88D);"> -</span><span style="color: light-dark(#91B859, #C3E88D);">xf</span><span style="color: light-dark(#91B859, #C3E88D);"> archlinux-bootstrap-x86_64.tar.zst</span><span style="color: light-dark(#91B859, #C3E88D);"> -</span><span style="color: light-dark(#91B859, #C3E88D);">-strip-components=1</span><span style="color: light-dark(#91B859, #C3E88D);"> -</span><span style="color: light-dark(#91B859, #C3E88D);">-numeric-owner</span><span style="color: light-dark(#91B859, #C3E88D);"> -</span><span style="color: light-dark(#91B859, #C3E88D);">C</span><span> $</span><span>MOUNTPOINT</span></span>
+<span class="giallo-l"><span style="color: light-dark(#90A4AE, #676E95);font-style: italic;">#</span><span style="color: light-dark(#90A4AE, #676E95);font-style: italic;"> 进行一些配置</span></span>
+<span class="giallo-l"><span style="color: light-dark(#E2931D, #FFCB6B);">sudo</span><span style="color: light-dark(#91B859, #C3E88D);"> systemd-nspawn</span><span style="color: light-dark(#91B859, #C3E88D);"> -</span><span style="color: light-dark(#91B859, #C3E88D);">D</span><span> $</span><span>MOUNTPOINT</span></span>
+<span class="giallo-l"><span style="color: light-dark(#E2931D, #FFCB6B);">pacman-key</span><span style="color: light-dark(#91B859, #C3E88D);"> -</span><span style="color: light-dark(#91B859, #C3E88D);">-init</span></span>
+<span class="giallo-l"><span style="color: light-dark(#E2931D, #FFCB6B);">pacman-key</span><span style="color: light-dark(#91B859, #C3E88D);"> -</span><span style="color: light-dark(#91B859, #C3E88D);">-populate</span><span style="color: light-dark(#91B859, #C3E88D);"> archlinux</span></span>
+<span class="giallo-l"><span style="color: light-dark(#E2931D, #FFCB6B);">passwd</span></span></code></pre>
+<p>接下来进行的是内核的配置，将内核的 bzImage 文件转换为 ELF 文件即可。需要注意的是内核需要内置一些模块，才能让 Firecracker 启动，否则的话得准备 initramfs。Arch Linux 的内核已经内置了需要的模块，所以我们直接用就可以了。需要的模块请参考 <a rel="external" href="https://github.com/firecracker-microvm/firecracker/blob/main/docs/kernel-policy.md">Firecracker kernel-policy 文档</a>。</p>
+<pre class="giallo" style="color-scheme: light dark; color: light-dark(#90A4AE, #BABED8); background-color: light-dark(#FAFAFA, #292D3E);"><code data-lang="shellscript"><span class="giallo-l"><span style="color: light-dark(#E2931D, #FFCB6B);">curl</span><span style="color: light-dark(#91B859, #C3E88D);"> -</span><span style="color: light-dark(#91B859, #C3E88D);">L</span><span style="color: light-dark(#91B859, #C3E88D);"> -</span><span style="color: light-dark(#91B859, #C3E88D);">o</span><span style="color: light-dark(#91B859, #C3E88D);"> linux.pkg.tar.zst</span><span style="color: light-dark(#91B859, #C3E88D);"> https://archlinux.org/packages/core/x86_64/linux/download/</span></span>
+<span class="giallo-l"><span style="color: light-dark(#E2931D, #FFCB6B);">tar</span><span style="color: light-dark(#91B859, #C3E88D);"> -</span><span style="color: light-dark(#91B859, #C3E88D);">xf</span><span style="color: light-dark(#91B859, #C3E88D);"> linux</span><span>*</span><span style="color: light-dark(#91B859, #C3E88D);">.pkg.tar.zst</span><span style="color: light-dark(#91B859, #C3E88D);"> -</span><span style="color: light-dark(#91B859, #C3E88D);">-wildcards</span><span style="color: light-dark(#39ADB5, #89DDFF);"> &#39;</span><span style="color: light-dark(#91B859, #C3E88D);">usr/lib/modules/*/vmlinuz</span><span style="color: light-dark(#39ADB5, #89DDFF);">&#39;</span></span>
+<span class="giallo-l"><span style="color: light-dark(#E2931D, #FFCB6B);">curl</span><span style="color: light-dark(#91B859, #C3E88D);"> -</span><span style="color: light-dark(#91B859, #C3E88D);">O</span><span style="color: light-dark(#91B859, #C3E88D);"> https://raw.githubusercontent.com/torvalds/linux/refs/heads/master/scripts/extract-vmlinux</span></span>
+<span class="giallo-l"><span style="color: light-dark(#E2931D, #FFCB6B);">chmod</span><span style="color: light-dark(#91B859, #C3E88D);"> +x</span><span style="color: light-dark(#91B859, #C3E88D);"> extract-vmlinux</span></span>
+<span class="giallo-l"><span style="color: light-dark(#E2931D, #FFCB6B);">./extract-vmlinux</span><span style="color: light-dark(#91B859, #C3E88D);"> usr/lib/modules/</span><span>*</span><span style="color: light-dark(#91B859, #C3E88D);">/vmlinuz</span><span style="color: light-dark(#39ADB5, #89DDFF);"> &gt;</span><span style="color: light-dark(#91B859, #C3E88D);"> vmlinux</span></span></code></pre>
+<blockquote>
+<p>Arch Linux 的 linux 包里集成了很多内核模块，将这个包解压到 rootfs 里，然后执行 "depmod -a &amp;&amp; modprobe virtio_net" 加载 virtio_net 内核模块，可以解决没有网络的问题。</p>
+</blockquote>
+<h2 id="Firecracker_配置">Firecracker 配置</h2>
+<p>Python 的 httpx 即可和 Firecracker 的 API 进行交互，当然用 curl 也可以。需要设置机器配置，内核参数，rootfs, 网络才能让虚拟机启动。这部分请直接参考代码，代码地址在文末会放出来。</p>
+<h2 id="网络配置">网络配置</h2>
+<p>网络配置永远是最麻烦的。最标准的做法就是按照官方文档进行配置 tap + nftable 来实现虚拟机上网。但是作为懒狗，我不太想去折腾宿主机的网络，经过一番搜索，我发现可以通过 tun2sock 来让虚拟机走宿主机的代理这种邪门的方式上网，这种方式的优点就是宿主机只要启动一个 socks5 代理就可以了。虚拟机里执行的命令如下:</p>
+<pre class="giallo" style="color-scheme: light dark; color: light-dark(#90A4AE, #BABED8); background-color: light-dark(#FAFAFA, #292D3E);"><code data-lang="shellscript"><span class="giallo-l"><span>TUN_IP</span><span style="color: light-dark(#39ADB5, #89DDFF);">=</span><span style="color: light-dark(#91B859, #C3E88D);">1</span><span style="color: light-dark(#91B859, #C3E88D);">9</span><span style="color: light-dark(#91B859, #C3E88D);">8</span><span style="color: light-dark(#91B859, #C3E88D);">.</span><span style="color: light-dark(#91B859, #C3E88D);">1</span><span style="color: light-dark(#91B859, #C3E88D);">8</span><span style="color: light-dark(#91B859, #C3E88D);">.</span><span style="color: light-dark(#91B859, #C3E88D);">0</span><span style="color: light-dark(#91B859, #C3E88D);">.</span><span style="color: light-dark(#91B859, #C3E88D);">1</span></span>
+<span class="giallo-l"><span>HOST_IP</span><span style="color: light-dark(#39ADB5, #89DDFF);">=</span><span style="color: light-dark(#91B859, #C3E88D);">1</span><span style="color: light-dark(#91B859, #C3E88D);">7</span><span style="color: light-dark(#91B859, #C3E88D);">2</span><span style="color: light-dark(#91B859, #C3E88D);">.</span><span style="color: light-dark(#91B859, #C3E88D);">1</span><span style="color: light-dark(#91B859, #C3E88D);">6</span><span style="color: light-dark(#91B859, #C3E88D);">.</span><span style="color: light-dark(#91B859, #C3E88D);">0</span><span style="color: light-dark(#91B859, #C3E88D);">.</span><span style="color: light-dark(#91B859, #C3E88D);">1</span></span>
+<span class="giallo-l"><span>DEV_IP</span><span style="color: light-dark(#39ADB5, #89DDFF);">=</span><span style="color: light-dark(#91B859, #C3E88D);">1</span><span style="color: light-dark(#91B859, #C3E88D);">7</span><span style="color: light-dark(#91B859, #C3E88D);">2</span><span style="color: light-dark(#91B859, #C3E88D);">.</span><span style="color: light-dark(#91B859, #C3E88D);">1</span><span style="color: light-dark(#91B859, #C3E88D);">6</span><span style="color: light-dark(#91B859, #C3E88D);">.</span><span style="color: light-dark(#91B859, #C3E88D);">0</span><span style="color: light-dark(#91B859, #C3E88D);">.</span><span style="color: light-dark(#91B859, #C3E88D);">2</span></span>
+<span class="giallo-l"><span>PROXY</span><span style="color: light-dark(#39ADB5, #89DDFF);">=</span><span style="color: light-dark(#91B859, #C3E88D);">s</span><span style="color: light-dark(#91B859, #C3E88D);">o</span><span style="color: light-dark(#91B859, #C3E88D);">c</span><span style="color: light-dark(#91B859, #C3E88D);">k</span><span style="color: light-dark(#91B859, #C3E88D);">s</span><span style="color: light-dark(#91B859, #C3E88D);">5</span><span style="color: light-dark(#91B859, #C3E88D);">:</span><span style="color: light-dark(#91B859, #C3E88D);">/</span><span style="color: light-dark(#91B859, #C3E88D);">/</span><span style="color: light-dark(#91B859, #C3E88D);">1</span><span style="color: light-dark(#91B859, #C3E88D);">7</span><span style="color: light-dark(#91B859, #C3E88D);">2</span><span style="color: light-dark(#91B859, #C3E88D);">.</span><span style="color: light-dark(#91B859, #C3E88D);">1</span><span style="color: light-dark(#91B859, #C3E88D);">6</span><span style="color: light-dark(#91B859, #C3E88D);">.</span><span style="color: light-dark(#91B859, #C3E88D);">0</span><span style="color: light-dark(#91B859, #C3E88D);">.</span><span style="color: light-dark(#91B859, #C3E88D);">1</span><span style="color: light-dark(#91B859, #C3E88D);">:</span><span style="color: light-dark(#91B859, #C3E88D);">8</span><span style="color: light-dark(#91B859, #C3E88D);">0</span><span style="color: light-dark(#91B859, #C3E88D);">0</span><span style="color: light-dark(#91B859, #C3E88D);">0</span></span>
+<span class="giallo-l"><span style="color: light-dark(#90A4AE, #676E95);font-style: italic;">#</span><span style="color: light-dark(#90A4AE, #676E95);font-style: italic;"> 如果没有配置虚拟机网卡的 IP, 就配置一下</span></span>
+<span class="giallo-l"><span style="color: light-dark(#E2931D, #FFCB6B);">ip</span><span style="color: light-dark(#91B859, #C3E88D);"> addr</span><span style="color: light-dark(#91B859, #C3E88D);"> add</span><span> $</span><span>DEV_IP</span><span style="color: light-dark(#91B859, #C3E88D);">/30</span><span style="color: light-dark(#91B859, #C3E88D);"> dev</span><span style="color: light-dark(#91B859, #C3E88D);"> enp0s2</span></span>
+<span class="giallo-l"><span style="color: light-dark(#E2931D, #FFCB6B);">ip</span><span style="color: light-dark(#91B859, #C3E88D);"> link</span><span style="color: light-dark(#91B859, #C3E88D);"> set</span><span style="color: light-dark(#91B859, #C3E88D);"> enp0s2</span><span style="color: light-dark(#91B859, #C3E88D);"> up</span></span>
+<span class="giallo-l"><span style="color: light-dark(#90A4AE, #676E95);font-style: italic;">#</span><span style="color: light-dark(#90A4AE, #676E95);font-style: italic;"> 添加 tun 设备</span></span>
+<span class="giallo-l"><span style="color: light-dark(#E2931D, #FFCB6B);">modprobe</span><span style="color: light-dark(#91B859, #C3E88D);"> tun</span></span>
+<span class="giallo-l"><span style="color: light-dark(#E2931D, #FFCB6B);">ip</span><span style="color: light-dark(#91B859, #C3E88D);"> tuntap</span><span style="color: light-dark(#91B859, #C3E88D);"> add</span><span style="color: light-dark(#91B859, #C3E88D);"> mode</span><span style="color: light-dark(#91B859, #C3E88D);"> tun</span><span style="color: light-dark(#91B859, #C3E88D);"> dev</span><span style="color: light-dark(#91B859, #C3E88D);"> tun0</span></span>
+<span class="giallo-l"><span style="color: light-dark(#E2931D, #FFCB6B);">ip</span><span style="color: light-dark(#91B859, #C3E88D);"> addr</span><span style="color: light-dark(#91B859, #C3E88D);"> add</span><span> $</span><span>TUN_IP</span><span style="color: light-dark(#91B859, #C3E88D);">/15</span><span style="color: light-dark(#91B859, #C3E88D);"> dev</span><span style="color: light-dark(#91B859, #C3E88D);"> tun0</span></span>
+<span class="giallo-l"><span style="color: light-dark(#E2931D, #FFCB6B);">ip</span><span style="color: light-dark(#91B859, #C3E88D);"> link</span><span style="color: light-dark(#91B859, #C3E88D);"> set</span><span style="color: light-dark(#91B859, #C3E88D);"> dev</span><span style="color: light-dark(#91B859, #C3E88D);"> tun0</span><span style="color: light-dark(#91B859, #C3E88D);"> up</span></span>
+<span class="giallo-l"><span style="color: light-dark(#90A4AE, #676E95);font-style: italic;">#</span><span style="color: light-dark(#90A4AE, #676E95);font-style: italic;"> 配置网络</span></span>
+<span class="giallo-l"><span style="color: light-dark(#E2931D, #FFCB6B);">ip</span><span style="color: light-dark(#91B859, #C3E88D);"> route</span><span style="color: light-dark(#91B859, #C3E88D);"> del</span><span style="color: light-dark(#91B859, #C3E88D);"> default</span></span>
+<span class="giallo-l"><span style="color: light-dark(#E2931D, #FFCB6B);">ip</span><span style="color: light-dark(#91B859, #C3E88D);"> route</span><span style="color: light-dark(#91B859, #C3E88D);"> add</span><span style="color: light-dark(#91B859, #C3E88D);"> default</span><span style="color: light-dark(#91B859, #C3E88D);"> via</span><span> $</span><span>TUN_IP</span><span style="color: light-dark(#91B859, #C3E88D);"> dev</span><span style="color: light-dark(#91B859, #C3E88D);"> tun0</span><span style="color: light-dark(#91B859, #C3E88D);"> metric</span><span style="color: light-dark(#F76D47, #F78C6C);"> 1</span></span>
+<span class="giallo-l"><span style="color: light-dark(#E2931D, #FFCB6B);">ip</span><span style="color: light-dark(#91B859, #C3E88D);"> route</span><span style="color: light-dark(#91B859, #C3E88D);"> add</span><span style="color: light-dark(#91B859, #C3E88D);"> default</span><span style="color: light-dark(#91B859, #C3E88D);"> via</span><span> $</span><span>HOST_IP</span><span style="color: light-dark(#91B859, #C3E88D);"> dev</span><span style="color: light-dark(#91B859, #C3E88D);"> enp0s2</span><span style="color: light-dark(#91B859, #C3E88D);"> metric</span><span style="color: light-dark(#F76D47, #F78C6C);"> 10</span></span>
+<span class="giallo-l"><span style="color: light-dark(#90A4AE, #676E95);font-style: italic;">#</span><span style="color: light-dark(#90A4AE, #676E95);font-style: italic;"> 启动 tun2socks</span></span>
+<span class="giallo-l"><span style="color: light-dark(#E2931D, #FFCB6B);">./tun2socks-linux-amd64-v3</span><span style="color: light-dark(#91B859, #C3E88D);"> -</span><span style="color: light-dark(#91B859, #C3E88D);">-device</span><span style="color: light-dark(#91B859, #C3E88D);"> tun0</span><span style="color: light-dark(#91B859, #C3E88D);"> -</span><span style="color: light-dark(#91B859, #C3E88D);">-proxy</span><span> $</span><span>PROXY</span><span style="color: light-dark(#91B859, #C3E88D);"> -</span><span style="color: light-dark(#91B859, #C3E88D);">-interface</span><span style="color: light-dark(#91B859, #C3E88D);"> enp0s2</span><span style="color: light-dark(#39ADB5, #89DDFF);"> &amp;</span></span></code></pre><h2 id="其他">其他</h2>
+<p>由于 Firecracker 的设计，得在虚拟机里执行 "reboot" 才能关闭虚拟机。</p>
+<h2 id="启动">启动</h2>
+<p>下载在文末提到的代码，配合上上面创建的 rootfs 和内核，执行下面的命令即可启动虚拟机。</p>
+<pre class="giallo" style="color-scheme: light dark; color: light-dark(#90A4AE, #BABED8); background-color: light-dark(#FAFAFA, #292D3E);"><code data-lang="shellscript"><span class="giallo-l"><span style="color: light-dark(#E2931D, #FFCB6B);">$</span><span style="color: light-dark(#91B859, #C3E88D);"> firecracker</span><span style="color: light-dark(#91B859, #C3E88D);"> -</span><span style="color: light-dark(#91B859, #C3E88D);">-api-sock</span><span style="color: light-dark(#91B859, #C3E88D);"> /tmp/firecracker.socket</span><span style="color: light-dark(#91B859, #C3E88D);"> -</span><span style="color: light-dark(#91B859, #C3E88D);">-enable-pci</span></span>
+<span class="giallo-l"><span style="color: light-dark(#90A4AE, #676E95);font-style: italic;">#</span><span style="color: light-dark(#90A4AE, #676E95);font-style: italic;"> 修改 config.toml 配置</span></span>
+<span class="giallo-l"><span style="color: light-dark(#90A4AE, #676E95);font-style: italic;">#</span><span style="color: light-dark(#90A4AE, #676E95);font-style: italic;"> 执行 ./tap.sh 创建 tap 设备</span></span>
+<span class="giallo-l"><span style="color: light-dark(#E2931D, #FFCB6B);">$</span><span style="color: light-dark(#91B859, #C3E88D);"> uv</span><span style="color: light-dark(#91B859, #C3E88D);"> run</span><span style="color: light-dark(#91B859, #C3E88D);"> fc.py</span></span></code></pre><h2 id="结算画面">结算画面</h2>
+<pre class="giallo" style="color-scheme: light dark; color: light-dark(#90A4AE, #BABED8); background-color: light-dark(#FAFAFA, #292D3E);"><code data-lang="shellscript"><span class="giallo-l"><span style="color: light-dark(#39ADB5, #89DDFF);">[</span><span>root@archlinux </span><span style="color: light-dark(#39ADB5, #89DDFF);">~</span><span style="color: light-dark(#39ADB5, #89DDFF);">]</span><span># fastfetch</span></span>
+<span class="giallo-l"><span style="color: light-dark(#E2931D, #FFCB6B);">                  -</span><span style="color: light-dark(#39ADB5, #89DDFF);">`</span><span style="color: light-dark(#E2931D, #FFCB6B);">                     root@archlinux</span></span>
+<span class="giallo-l"><span style="color: light-dark(#E2931D, #FFCB6B);">                 .o+</span><span style="color: light-dark(#39ADB5, #89DDFF);">`</span><span style="color: light-dark(#E2931D, #FFCB6B);">                    --------------</span></span>
+<span class="giallo-l"><span style="color: light-dark(#39ADB5, #89DDFF);">                `</span><span style="color: light-dark(#E2931D, #FFCB6B);">ooo/</span><span style="color: light-dark(#91B859, #C3E88D);">                    OS:</span><span style="color: light-dark(#91B859, #C3E88D);"> Arch</span><span style="color: light-dark(#91B859, #C3E88D);"> Linux</span><span style="color: light-dark(#91B859, #C3E88D);"> x86_64</span></span>
+<span class="giallo-l"><span style="color: light-dark(#39ADB5, #89DDFF);">               `</span><span style="color: light-dark(#E2931D, #FFCB6B);">+oooo:</span><span style="color: light-dark(#91B859, #C3E88D);">                   Kernel:</span><span style="color: light-dark(#91B859, #C3E88D);"> Linux</span><span style="color: light-dark(#91B859, #C3E88D);"> 7.2.8-arch1-2</span></span>
+<span class="giallo-l"><span style="color: light-dark(#39ADB5, #89DDFF);">              `</span><span style="color: light-dark(#E2931D, #FFCB6B);">+oooooo:</span><span style="color: light-dark(#91B859, #C3E88D);">                  Uptime:</span><span style="color: light-dark(#F76D47, #F78C6C);"> 1</span><span style="color: light-dark(#91B859, #C3E88D);"> hour,</span><span style="color: light-dark(#F76D47, #F78C6C);"> 18</span><span style="color: light-dark(#91B859, #C3E88D);"> mins</span></span>
+<span class="giallo-l"><span style="color: light-dark(#E2931D, #FFCB6B);">              -+oooooo+:</span><span style="color: light-dark(#91B859, #C3E88D);">                 Packages:</span><span style="color: light-dark(#F76D47, #F78C6C);"> 142</span><span style="color: light-dark(#91B859, #C3E88D);"> (pacman</span><span style="color: light-dark(#91B859, #C3E88D);">)</span></span>
+<span class="giallo-l"><span style="color: light-dark(#39ADB5, #89DDFF);">            `</span><span style="color: light-dark(#E2931D, #FFCB6B);">/:-:++oooo+:</span><span style="color: light-dark(#91B859, #C3E88D);">                Shell:</span><span style="color: light-dark(#91B859, #C3E88D);"> bash</span><span style="color: light-dark(#F76D47, #F78C6C);"> 5.3.20</span></span>
+<span class="giallo-l"><span style="color: light-dark(#39ADB5, #89DDFF);">           `</span><span style="color: light-dark(#E2931D, #FFCB6B);">/++++/+++++++:</span><span style="color: light-dark(#91B859, #C3E88D);">               Terminal:</span><span style="color: light-dark(#91B859, #C3E88D);"> /dev/pts/0</span><span style="color: light-dark(#91B859, #C3E88D);"> 10.5p1</span></span>
+<span class="giallo-l"><span style="color: light-dark(#39ADB5, #89DDFF);">          `</span><span style="color: light-dark(#E2931D, #FFCB6B);">/++++++++++++++:</span><span style="color: light-dark(#91B859, #C3E88D);">              CPU:</span><span style="color: light-dark(#91B859, #C3E88D);"> AMD</span><span style="color: light-dark(#91B859, #C3E88D);"> EPYC</span><span> (2</span><span>) @ 3.90 GHz</span></span>
+<span class="giallo-l"><span style="color: light-dark(#39ADB5, #89DDFF);">         `</span><span style="color: light-dark(#E2931D, #FFCB6B);">/+++ooooooooooooo/</span><span style="color: light-dark(#39ADB5, #89DDFF);">`</span><span style="color: light-dark(#E2931D, #FFCB6B);">            Memory:</span><span style="color: light-dark(#F76D47, #F78C6C);"> 283.43</span><span style="color: light-dark(#91B859, #C3E88D);"> MiB</span><span style="color: light-dark(#91B859, #C3E88D);"> /</span><span style="color: light-dark(#F76D47, #F78C6C);"> 952.44</span><span style="color: light-dark(#91B859, #C3E88D);"> MiB</span><span> (30%</span><span>)</span></span>
+<span class="giallo-l"><span style="color: light-dark(#E2931D, #FFCB6B);">        ./ooosssso++osssssso+</span><span style="color: light-dark(#39ADB5, #89DDFF);">`</span><span style="color: light-dark(#E2931D, #FFCB6B);">           Swap:</span><span style="color: light-dark(#91B859, #C3E88D);"> Disabled</span></span>
+<span class="giallo-l"><span style="color: light-dark(#E2931D, #FFCB6B);">       .oossssso-</span><span style="color: light-dark(#39ADB5, #89DDFF);">`</span><span style="color: light-dark(#39ADB5, #89DDFF);">`</span><span style="color: light-dark(#39ADB5, #89DDFF);">`</span><span style="color: light-dark(#39ADB5, #89DDFF);">`</span><span style="color: light-dark(#E2931D, #FFCB6B);">/ossssss+</span><span style="color: light-dark(#39ADB5, #89DDFF);">`</span><span style="color: light-dark(#E2931D, #FFCB6B);">          Disk</span><span> (/</span><span>): 820.54 MiB / 3.86 GiB (</span><span style="color: light-dark(#E2931D, #FFCB6B);">21%</span><span>) - ext4</span></span>
+<span class="giallo-l"><span style="color: light-dark(#E2931D, #FFCB6B);">      -osssssso.</span><span style="color: light-dark(#91B859, #C3E88D);">      :ssssssso.</span><span style="color: light-dark(#91B859, #C3E88D);">         Local</span><span style="color: light-dark(#91B859, #C3E88D);"> IP</span><span> (tun0</span><span>): 198.18.0.1/15</span></span>
+<span class="giallo-l"><span style="color: light-dark(#E2931D, #FFCB6B);">     :osssssss/</span><span style="color: light-dark(#91B859, #C3E88D);">        osssso+++.</span><span style="color: light-dark(#91B859, #C3E88D);">        Locale:</span><span style="color: light-dark(#91B859, #C3E88D);"> C.UTF-8</span></span>
+<span class="giallo-l"><span style="color: light-dark(#E2931D, #FFCB6B);">    /ossssssss/</span><span style="color: light-dark(#91B859, #C3E88D);">        +ssssooo/-</span><span>        </span></span>
+<span class="giallo-l"><span style="color: light-dark(#39ADB5, #89DDFF);">  `</span><span style="color: light-dark(#E2931D, #FFCB6B);">/ossssso+/:-</span><span style="color: light-dark(#91B859, #C3E88D);">        -</span><span style="color: light-dark(#91B859, #C3E88D);">:/+osssso+-</span><span style="color: light-dark(#91B859, #C3E88D);">                              </span></span>
+<span class="giallo-l"><span style="color: light-dark(#39ADB5, #89DDFF);"> `</span><span style="color: light-dark(#E2931D, #FFCB6B);">+sso+:-</span><span style="color: light-dark(#39ADB5, #89DDFF);">`</span><span style="color: light-dark(#39ADB5, #89DDFF);">                 `</span><span style="color: light-dark(#E2931D, #FFCB6B);">.-/+oso:</span><span>                             </span></span>
+<span class="giallo-l"><span style="color: light-dark(#39ADB5, #89DDFF);">`</span><span style="color: light-dark(#E2931D, #FFCB6B);">++:.</span><span style="color: light-dark(#39ADB5, #89DDFF);">                           `</span><span style="color: light-dark(#E2931D, #FFCB6B);">-/+/</span></span>
+<span class="giallo-l"><span style="color: light-dark(#6182B8, #82AAFF);">.</span><span style="color: light-dark(#39ADB5, #89DDFF);">`</span><span style="color: light-dark(#39ADB5, #89DDFF);">                                 `</span><span style="color: light-dark(#E2931D, #FFCB6B);">/</span></span>
+<span class="giallo-l"><span style="color: light-dark(#39ADB5, #89DDFF);">[</span><span>root@archlinux </span><span style="color: light-dark(#39ADB5, #89DDFF);">~</span><span style="color: light-dark(#39ADB5, #89DDFF);">]</span><span># </span></span></code></pre><h2 id="总结">总结</h2>
+<p>我将 Firecracker 启动封装成了 Python 代码，这样通过修改配置就可以启动不同的系统。代码在这：<a rel="external" href="https://github.com/chenx6/gadget/tree/master/firecracker">https://github.com/chenx6/gadget/tree/master/firecracker</a></p>
+
+  </div>
+  
+    <script src="https://utteranc.es/client.js"
+          repo="chenx6/chenx6.github.io"
+          issue-term="pathname"
+          label="comment"
+          theme="preferred-color-scheme"
+          crossorigin="anonymous"
+          async>
+    </script>
+  
+</div>
+
+  
+    <footer>2020-∞ chenx6 本作品采用<a rel="license" href="http://creativecommons.org/licenses/by/4.0/">知识共享署名 4.0 国际许可协议</a>进行许可。</footer>
+  
+</body>
+
+</html>
