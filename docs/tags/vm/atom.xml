@@ -2,11 +2,11 @@
 <feed xmlns="http://www.w3.org/2005/Atom" xml:lang="zh_CN">
     <title>二进制咸鱼的自我救赎 - vm</title>
     <subtitle>幸福往往是摸的透彻，而敬业的心却常常隐藏。</subtitle>
-    <link rel="self" type="application/atom+xml" href="https://chenx6.github.io/tags/vm/atom.xml"/>
-    <link rel="alternate" type="text/html" href="https://chenx6.github.io/"/>
+    <link rel="self" type="application/atom+xml" href="https://chenx6.uk/tags/vm/atom.xml"/>
+    <link rel="alternate" type="text/html" href="https://chenx6.uk"/>
     <generator uri="https://www.getzola.org/">Zola</generator>
     <updated>2020-01-15T00:00:00+00:00</updated>
-    <id>https://chenx6.github.io/tags/vm/atom.xml</id>
+    <id>https://chenx6.uk/tags/vm/atom.xml</id>
     <entry xml:lang="zh_CN">
         <title>LC3-VM 学习和实现</title>
         <published>2020-01-15T00:00:00+00:00</published>
@@ -20,10 +20,10 @@
           </name>
         </author>
         
-        <link rel="alternate" type="text/html" href="https://chenx6.github.io/post/lc3-vm/"/>
-        <id>https://chenx6.github.io/post/lc3-vm/</id>
+        <link rel="alternate" type="text/html" href="https://chenx6.uk/post/lc3-vm/"/>
+        <id>https://chenx6.uk/post/lc3-vm/</id>
         
-        <content type="html" xml:base="https://chenx6.github.io/post/lc3-vm/">&lt;p&gt;本文是根据 &lt;a rel=&quot;external&quot; href=&quot;https:&#x2F;&#x2F;justinmeiners.github.io&#x2F;lc3-vm&quot;&gt;https:&#x2F;&#x2F;justinmeiners.github.io&#x2F;lc3-vm&lt;&#x2F;a&gt; 和 &lt;a rel=&quot;external&quot; href=&quot;https:&#x2F;&#x2F;justinmeiners.github.io&#x2F;lc3-vm&#x2F;supplies&#x2F;lc3-isa.pdf&quot;&gt;https:&#x2F;&#x2F;justinmeiners.github.io&#x2F;lc3-vm&#x2F;supplies&#x2F;lc3-isa.pdf&lt;&#x2F;a&gt; ISA 写出 LC3 VM 的实现过程。&lt;&#x2F;p&gt;
+        <content type="html" xml:base="https://chenx6.uk/post/lc3-vm/">&lt;p&gt;本文是根据 &lt;a rel=&quot;external&quot; href=&quot;https:&#x2F;&#x2F;justinmeiners.github.io&#x2F;lc3-vm&quot;&gt;https:&#x2F;&#x2F;justinmeiners.github.io&#x2F;lc3-vm&lt;&#x2F;a&gt; 和 &lt;a rel=&quot;external&quot; href=&quot;https:&#x2F;&#x2F;justinmeiners.github.io&#x2F;lc3-vm&#x2F;supplies&#x2F;lc3-isa.pdf&quot;&gt;https:&#x2F;&#x2F;justinmeiners.github.io&#x2F;lc3-vm&#x2F;supplies&#x2F;lc3-isa.pdf&lt;&#x2F;a&gt; ISA 写出 LC3 VM 的实现过程。&lt;&#x2F;p&gt;
 &lt;p&gt;代码已上传到了 Github 上：&lt;a rel=&quot;external&quot; href=&quot;https:&#x2F;&#x2F;github.com&#x2F;chenx6&#x2F;lc3-vm&quot;&gt;https:&#x2F;&#x2F;github.com&#x2F;chenx6&#x2F;lc3-vm&lt;&#x2F;a&gt;&lt;&#x2F;p&gt;
 &lt;h2 id=&quot;LC3_架构&quot;&gt;LC3 架构&lt;&#x2F;h2&gt;
 &lt;h3 id=&quot;内存&quot;&gt;内存&lt;&#x2F;h3&gt;

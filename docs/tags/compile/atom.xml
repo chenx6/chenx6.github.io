@@ -2,11 +2,11 @@
 <feed xmlns="http://www.w3.org/2005/Atom" xml:lang="zh_CN">
     <title>二进制咸鱼的自我救赎 - compile</title>
     <subtitle>幸福往往是摸的透彻，而敬业的心却常常隐藏。</subtitle>
-    <link rel="self" type="application/atom+xml" href="https://chenx6.github.io/tags/compile/atom.xml"/>
-    <link rel="alternate" type="text/html" href="https://chenx6.github.io/"/>
+    <link rel="self" type="application/atom+xml" href="https://chenx6.uk/tags/compile/atom.xml"/>
+    <link rel="alternate" type="text/html" href="https://chenx6.uk"/>
     <generator uri="https://www.getzola.org/">Zola</generator>
     <updated>2022-05-21T00:00:00+00:00</updated>
-    <id>https://chenx6.github.io/tags/compile/atom.xml</id>
+    <id>https://chenx6.uk/tags/compile/atom.xml</id>
     <entry xml:lang="zh_CN">
         <title>关于 C 语言编译的那些破事</title>
         <published>2022-05-21T00:00:00+00:00</published>
@@ -20,10 +20,10 @@
           </name>
         </author>
         
-        <link rel="alternate" type="text/html" href="https://chenx6.github.io/post/compile_cheatsheet/"/>
-        <id>https://chenx6.github.io/post/compile_cheatsheet/</id>
+        <link rel="alternate" type="text/html" href="https://chenx6.uk/post/compile_cheatsheet/"/>
+        <id>https://chenx6.uk/post/compile_cheatsheet/</id>
         
-        <content type="html" xml:base="https://chenx6.github.io/post/compile_cheatsheet/">&lt;p&gt;C 和 C++ 的编译是真的痛苦，会出现一堆离谱的问题。所以我特地写一篇文章讲一下这些破事，并且提供一些样例代码方便复制黏贴。&lt;&#x2F;p&gt;
+        <content type="html" xml:base="https://chenx6.uk/post/compile_cheatsheet/">&lt;p&gt;C 和 C++ 的编译是真的痛苦，会出现一堆离谱的问题。所以我特地写一篇文章讲一下这些破事，并且提供一些样例代码方便复制黏贴。&lt;&#x2F;p&gt;
 &lt;h2 id=&quot;编译过程简述&quot;&gt;编译过程简述&lt;&#x2F;h2&gt;
 &lt;p&gt;在网上能找到一堆的编译流程相关的博客，而且肯定比我讲的正确，所以这里我就简单概括下。&lt;&#x2F;p&gt;
 &lt;p&gt;现在很少有程序能只依赖与 C 标准库和系统 API 了，所以会有一堆的外部依赖库。要想编译成功，得让编译器和链接器都知道去哪找这些库，怎么链接上。于是就有了一堆的编译管理工具。像 CMake 和 Meson 是负责生成编译的脚本，make 和 ninja 则是负责执行编译任务，然后是 gcc 和 clang 将代码编译成目标文件，最后有 ld, gold, mold 将目标文件进行链接生成可执行文件。&lt;&#x2F;p&gt;
@@ -82,7 +82,7 @@
 &lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: light-dark(#E2931D, #FFCB6B);&quot;&gt;meson&lt;&#x2F;span&gt;&lt;span style=&quot;color: light-dark(#91B859, #C3E88D);&quot;&gt; compile&lt;&#x2F;span&gt;&lt;span style=&quot;color: light-dark(#91B859, #C3E88D);&quot;&gt; -&lt;&#x2F;span&gt;&lt;span style=&quot;color: light-dark(#91B859, #C3E88D);&quot;&gt;C&lt;&#x2F;span&gt;&lt;span style=&quot;color: light-dark(#91B859, #C3E88D);&quot;&gt; builddir&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
 &lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: light-dark(#90A4AE, #676E95);font-style: italic;&quot;&gt;#&lt;&#x2F;span&gt;&lt;span style=&quot;color: light-dark(#90A4AE, #676E95);font-style: italic;&quot;&gt; 跨平台编译&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
 &lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: light-dark(#E2931D, #FFCB6B);&quot;&gt;meson&lt;&#x2F;span&gt;&lt;span style=&quot;color: light-dark(#91B859, #C3E88D);&quot;&gt; setup&lt;&#x2F;span&gt;&lt;span style=&quot;color: light-dark(#91B859, #C3E88D);&quot;&gt; -&lt;&#x2F;span&gt;&lt;span style=&quot;color: light-dark(#91B859, #C3E88D);&quot;&gt;-cross-file&lt;&#x2F;span&gt;&lt;span&gt; $&lt;&#x2F;span&gt;&lt;span&gt;跨平台编译配置文件&lt;&#x2F;span&gt;&lt;span style=&quot;color: light-dark(#91B859, #C3E88D);&quot;&gt;.ini&lt;&#x2F;span&gt;&lt;span style=&quot;color: light-dark(#91B859, #C3E88D);&quot;&gt; builddir&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
-&lt;p&gt;更多的内容参考 &lt;a href=&quot;https:&#x2F;&#x2F;chenx6.github.io&#x2F;post&#x2F;compile_cheatsheet&#x2F;#refs&quot;&gt;#refs&lt;&#x2F;a&gt;&lt;&#x2F;p&gt;
+&lt;p&gt;更多的内容参考 &lt;a href=&quot;https:&#x2F;&#x2F;chenx6.uk&#x2F;post&#x2F;compile_cheatsheet&#x2F;#refs&quot;&gt;#refs&lt;&#x2F;a&gt;&lt;&#x2F;p&gt;
 &lt;h3 id=&quot;CMake&quot;&gt;CMake&lt;&#x2F;h3&gt;
 &lt;p&gt;样例代码&lt;&#x2F;p&gt;
 &lt;pre class=&quot;giallo&quot; style=&quot;color-scheme: light dark; color: light-dark(#90A4AE, #BABED8); background-color: light-dark(#FAFAFA, #292D3E);&quot;&gt;&lt;code data-lang=&quot;cmake&quot;&gt;&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: light-dark(#90A4AE, #676E95);font-style: italic;&quot;&gt;# 指定项目名字，CMake 版本要求，C++ 版本要求&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
@@ -123,7 +123,7 @@
 &lt;&#x2F;tbody&gt;&lt;&#x2F;table&gt;
 &lt;p&gt;设置 pkg-config 搜索路径&lt;&#x2F;p&gt;
 &lt;pre class=&quot;giallo&quot; style=&quot;color-scheme: light dark; color: light-dark(#90A4AE, #BABED8); background-color: light-dark(#FAFAFA, #292D3E);&quot;&gt;&lt;code data-lang=&quot;shellscript&quot;&gt;&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: light-dark(#9C3EDA, #C792EA);&quot;&gt;export&lt;&#x2F;span&gt;&lt;span&gt; PKG_CONFIG_PATH&lt;&#x2F;span&gt;&lt;span style=&quot;color: light-dark(#39ADB5, #89DDFF);&quot;&gt;=&lt;&#x2F;span&gt;&lt;span&gt;&#x2F;&lt;&#x2F;span&gt;&lt;span&gt;usr&lt;&#x2F;span&gt;&lt;span&gt;&#x2F;&lt;&#x2F;span&gt;&lt;span&gt;lib&lt;&#x2F;span&gt;&lt;span&gt;&#x2F;&lt;&#x2F;span&gt;&lt;span&gt;pkgconfig&lt;&#x2F;span&gt;&lt;span&gt;&#x2F;:&lt;&#x2F;span&gt;&lt;span&gt;$&lt;&#x2F;span&gt;&lt;span&gt;PKG_CONFIG_PATH&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
-&lt;p&gt;官方文档参考 &lt;a href=&quot;https:&#x2F;&#x2F;chenx6.github.io&#x2F;post&#x2F;compile_cheatsheet&#x2F;#refs&quot;&gt;#refs&lt;&#x2F;a&gt;&lt;&#x2F;p&gt;
+&lt;p&gt;官方文档参考 &lt;a href=&quot;https:&#x2F;&#x2F;chenx6.uk&#x2F;post&#x2F;compile_cheatsheet&#x2F;#refs&quot;&gt;#refs&lt;&#x2F;a&gt;&lt;&#x2F;p&gt;
 &lt;h2 id=&quot;编译器&quot;&gt;编译器&lt;&#x2F;h2&gt;
 &lt;h3 id=&quot;GCC编译选项&quot;&gt;GCC编译选项&lt;&#x2F;h3&gt;
 &lt;h4 id=&quot;链接&quot;&gt;链接&lt;&#x2F;h4&gt;
@@ -148,7 +148,7 @@
 &lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: light-dark(#E2931D, #FFCB6B);&quot;&gt;zig&lt;&#x2F;span&gt;&lt;span style=&quot;color: light-dark(#91B859, #C3E88D);&quot;&gt; cc&lt;&#x2F;span&gt;&lt;span style=&quot;color: light-dark(#91B859, #C3E88D);&quot;&gt; hello.c&lt;&#x2F;span&gt;&lt;span style=&quot;color: light-dark(#91B859, #C3E88D);&quot;&gt; -&lt;&#x2F;span&gt;&lt;span style=&quot;color: light-dark(#91B859, #C3E88D);&quot;&gt;target&lt;&#x2F;span&gt;&lt;span style=&quot;color: light-dark(#91B859, #C3E88D);&quot;&gt; i386-linux-musl&lt;&#x2F;span&gt;&lt;span style=&quot;color: light-dark(#91B859, #C3E88D);&quot;&gt; -&lt;&#x2F;span&gt;&lt;span style=&quot;color: light-dark(#91B859, #C3E88D);&quot;&gt;static&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
 &lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: light-dark(#90A4AE, #676E95);font-style: italic;&quot;&gt;#&lt;&#x2F;span&gt;&lt;span style=&quot;color: light-dark(#90A4AE, #676E95);font-style: italic;&quot;&gt; 让 make 等工具使用&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
 &lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: light-dark(#E2931D, #FFCB6B);&quot;&gt;make&lt;&#x2F;span&gt;&lt;span style=&quot;color: light-dark(#91B859, #C3E88D);&quot;&gt; CC=&lt;&#x2F;span&gt;&lt;span style=&quot;color: light-dark(#39ADB5, #89DDFF);&quot;&gt;&amp;quot;&lt;&#x2F;span&gt;&lt;span style=&quot;color: light-dark(#91B859, #C3E88D);&quot;&gt;zig cc&lt;&#x2F;span&gt;&lt;span style=&quot;color: light-dark(#39ADB5, #89DDFF);&quot;&gt;&amp;quot;&lt;&#x2F;span&gt;&lt;span style=&quot;color: light-dark(#91B859, #C3E88D);&quot;&gt; CXX=&lt;&#x2F;span&gt;&lt;span style=&quot;color: light-dark(#39ADB5, #89DDFF);&quot;&gt;&amp;quot;&lt;&#x2F;span&gt;&lt;span style=&quot;color: light-dark(#91B859, #C3E88D);&quot;&gt;zig c++&lt;&#x2F;span&gt;&lt;span style=&quot;color: light-dark(#39ADB5, #89DDFF);&quot;&gt;&amp;quot;&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
-&lt;p&gt;参考文章 &lt;a href=&quot;https:&#x2F;&#x2F;chenx6.github.io&#x2F;post&#x2F;compile_cheatsheet&#x2F;#refs&quot;&gt;#refs&lt;&#x2F;a&gt;&lt;&#x2F;p&gt;
+&lt;p&gt;参考文章 &lt;a href=&quot;https:&#x2F;&#x2F;chenx6.uk&#x2F;post&#x2F;compile_cheatsheet&#x2F;#refs&quot;&gt;#refs&lt;&#x2F;a&gt;&lt;&#x2F;p&gt;
 &lt;h2 id=&quot;环境配置&quot;&gt;环境配置&lt;&#x2F;h2&gt;
 &lt;h3 id=&quot;Docker&#x2F;Podman&quot;&gt;Docker&#x2F;Podman&lt;&#x2F;h3&gt;
 &lt;p&gt;Ubuntu image，添加 32 位支持，安装编译工具链，库和 CMake&lt;&#x2F;p&gt;
@@ -171,7 +171,7 @@
 &lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: light-dark(#F76D47, #F78C6C);&quot;&gt;RUN&lt;&#x2F;span&gt;&lt;span&gt; python3 -m pip install cmake meson ninja -i https:&#x2F;&#x2F;opentuna.cn&#x2F;pypi&#x2F;web&#x2F;simple&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
 &lt;p&gt;使用容器进行编译。设置成运行完后删除，并将当前目录映射到 &quot;&#x2F;src&quot; 目录下，启动名字为 &lt;code&gt;$容器名字&lt;&#x2F;code&gt; 的容器。&lt;&#x2F;p&gt;
 &lt;pre class=&quot;giallo&quot; style=&quot;color-scheme: light dark; color: light-dark(#90A4AE, #BABED8); background-color: light-dark(#FAFAFA, #292D3E);&quot;&gt;&lt;code data-lang=&quot;shellscript&quot;&gt;&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: light-dark(#E2931D, #FFCB6B);&quot;&gt;podman&lt;&#x2F;span&gt;&lt;span style=&quot;color: light-dark(#91B859, #C3E88D);&quot;&gt; run&lt;&#x2F;span&gt;&lt;span style=&quot;color: light-dark(#91B859, #C3E88D);&quot;&gt; -&lt;&#x2F;span&gt;&lt;span style=&quot;color: light-dark(#91B859, #C3E88D);&quot;&gt;-rm&lt;&#x2F;span&gt;&lt;span style=&quot;color: light-dark(#91B859, #C3E88D);&quot;&gt; -&lt;&#x2F;span&gt;&lt;span style=&quot;color: light-dark(#91B859, #C3E88D);&quot;&gt;v&lt;&#x2F;span&gt;&lt;span style=&quot;color: light-dark(#39ADB5, #89DDFF);&quot;&gt; &amp;quot;&lt;&#x2F;span&gt;&lt;span style=&quot;color: light-dark(#39ADB5, #89DDFF);&quot;&gt;$(&lt;&#x2F;span&gt;&lt;span style=&quot;color: light-dark(#6182B8, #82AAFF);&quot;&gt;pwd&lt;&#x2F;span&gt;&lt;span style=&quot;color: light-dark(#39ADB5, #89DDFF);&quot;&gt;)&lt;&#x2F;span&gt;&lt;span style=&quot;color: light-dark(#91B859, #C3E88D);&quot;&gt;:&#x2F;src&lt;&#x2F;span&gt;&lt;span style=&quot;color: light-dark(#39ADB5, #89DDFF);&quot;&gt;&amp;quot;&lt;&#x2F;span&gt;&lt;span style=&quot;color: light-dark(#91B859, #C3E88D);&quot;&gt; -&lt;&#x2F;span&gt;&lt;span style=&quot;color: light-dark(#91B859, #C3E88D);&quot;&gt;it&lt;&#x2F;span&gt;&lt;span&gt; $&lt;&#x2F;span&gt;&lt;span&gt;容器名字&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;&lt;h3 id=&quot;Glibc_symver&quot;&gt;Glibc symver&lt;&#x2F;h3&gt;
-&lt;p&gt;有时候在新系统上编译的可执行文件，在旧系统上运行时，会产生 &quot;找不到函数&quot; 错误。这时候可以通过指定 symver 来进行兼容旧版本。具体细节可以参考 &lt;a href=&quot;https:&#x2F;&#x2F;chenx6.github.io&#x2F;post&#x2F;compile_cheatsheet&#x2F;#Refs&quot;&gt;#Refs&lt;&#x2F;a&gt; 中的 &quot;All about symbol versioning&quot;，或者使用 &quot;wheybags&#x2F;glibc_version_header&quot; 这个项目。&lt;&#x2F;p&gt;
+&lt;p&gt;有时候在新系统上编译的可执行文件，在旧系统上运行时，会产生 &quot;找不到函数&quot; 错误。这时候可以通过指定 symver 来进行兼容旧版本。具体细节可以参考 &lt;a href=&quot;https:&#x2F;&#x2F;chenx6.uk&#x2F;post&#x2F;compile_cheatsheet&#x2F;#Refs&quot;&gt;#Refs&lt;&#x2F;a&gt; 中的 &quot;All about symbol versioning&quot;，或者使用 &quot;wheybags&#x2F;glibc_version_header&quot; 这个项目。&lt;&#x2F;p&gt;
 &lt;pre class=&quot;giallo&quot; style=&quot;color-scheme: light dark; color: light-dark(#90A4AE, #BABED8); background-color: light-dark(#FAFAFA, #292D3E);&quot;&gt;&lt;code data-lang=&quot;c&quot;&gt;&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: light-dark(#9C3EDA, #C792EA);&quot;&gt;__asm__&lt;&#x2F;span&gt;&lt;span style=&quot;color: light-dark(#39ADB5, #89DDFF);&quot;&gt;(&lt;&#x2F;span&gt;&lt;span style=&quot;color: light-dark(#39ADB5, #89DDFF);&quot;&gt;&amp;quot;&lt;&#x2F;span&gt;&lt;span&gt;.symver fopen,fopen@GLIBC_2.2.5&lt;&#x2F;span&gt;&lt;span style=&quot;color: light-dark(#39ADB5, #89DDFF);&quot;&gt;&amp;quot;&lt;&#x2F;span&gt;&lt;span style=&quot;color: light-dark(#39ADB5, #89DDFF);&quot;&gt;)&lt;&#x2F;span&gt;&lt;span style=&quot;color: light-dark(#39ADB5, #89DDFF);&quot;&gt;;&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;&lt;h2 id=&quot;Refs&quot;&gt;Refs&lt;&#x2F;h2&gt;
 &lt;ul&gt;
 &lt;li&gt;&lt;a rel=&quot;external&quot; href=&quot;https:&#x2F;&#x2F;gcc.gnu.org&#x2F;onlinedocs&#x2F;gcc-11.3.0&#x2F;gcc&#x2F;&quot;&gt;https:&#x2F;&#x2F;gcc.gnu.org&#x2F;onlinedocs&#x2F;gcc-11.3.0&#x2F;gcc&#x2F;&lt;&#x2F;a&gt;&lt;&#x2F;li&gt;

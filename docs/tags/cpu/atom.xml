@@ -2,11 +2,11 @@
 <feed xmlns="http://www.w3.org/2005/Atom" xml:lang="zh_CN">
     <title>二进制咸鱼的自我救赎 - cpu</title>
     <subtitle>幸福往往是摸的透彻，而敬业的心却常常隐藏。</subtitle>
-    <link rel="self" type="application/atom+xml" href="https://chenx6.github.io/tags/cpu/atom.xml"/>
-    <link rel="alternate" type="text/html" href="https://chenx6.github.io/"/>
+    <link rel="self" type="application/atom+xml" href="https://chenx6.uk/tags/cpu/atom.xml"/>
+    <link rel="alternate" type="text/html" href="https://chenx6.uk"/>
     <generator uri="https://www.getzola.org/">Zola</generator>
     <updated>2025-04-05T00:00:00+00:00</updated>
-    <id>https://chenx6.github.io/tags/cpu/atom.xml</id>
+    <id>https://chenx6.uk/tags/cpu/atom.xml</id>
     <entry xml:lang="zh_CN">
         <title>CPU 微指令集测试初步探索</title>
         <published>2025-04-05T00:00:00+00:00</published>
@@ -20,10 +20,10 @@
           </name>
         </author>
         
-        <link rel="alternate" type="text/html" href="https://chenx6.github.io/post/cpu_mircoarch_bench/"/>
-        <id>https://chenx6.github.io/post/cpu_mircoarch_bench/</id>
+        <link rel="alternate" type="text/html" href="https://chenx6.uk/post/cpu_mircoarch_bench/"/>
+        <id>https://chenx6.uk/post/cpu_mircoarch_bench/</id>
         
-        <content type="html" xml:base="https://chenx6.github.io/post/cpu_mircoarch_bench/">&lt;p&gt;之前看了 Chips and cheese 这个博客，发现他们对 CPU 的测试方法很独特，不是像国内的 KOL 一样跑几个跑分软件然后拿分数进行对比，而是会测试像 CPU 的分支预测，乱序执行，内存读取延迟等指标。所以我也想学习一下这些测试的原理。&lt;&#x2F;p&gt;
+        <content type="html" xml:base="https://chenx6.uk/post/cpu_mircoarch_bench/">&lt;p&gt;之前看了 Chips and cheese 这个博客，发现他们对 CPU 的测试方法很独特，不是像国内的 KOL 一样跑几个跑分软件然后拿分数进行对比，而是会测试像 CPU 的分支预测，乱序执行，内存读取延迟等指标。所以我也想学习一下这些测试的原理。&lt;&#x2F;p&gt;
 &lt;h2 id=&quot;指令重排序缓存(Reorder_Buffer)&quot;&gt;指令重排序缓存(Reorder Buffer)&lt;&#x2F;h2&gt;
 &lt;p&gt;现代 CPU 会使用乱序执行来加快指令的执行速度。但是在程序员视角里，指令是顺序执行的。这时候就需要通过指令重排序缓存(Reorder Buffer)来记录下这些乱序执行的指令的顺序，执行完成的指令不会立即提交，而是先在缓存中等着，在所有指令都提交后才提交到寄存器中。&lt;&#x2F;p&gt;
 &lt;p&gt;因为在缓存中的指令执行是并行的，所以可以通过填充一条需要长时间执行的指令来阻塞提交，并且观察在阻塞提交时候，还能执行多少条指令，来推算出指令重排序缓存大小。&lt;&#x2F;p&gt;

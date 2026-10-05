@@ -2,11 +2,11 @@
 <feed xmlns="http://www.w3.org/2005/Atom" xml:lang="zh_CN">
     <title>二进制咸鱼的自我救赎 - llvm</title>
     <subtitle>幸福往往是摸的透彻，而敬业的心却常常隐藏。</subtitle>
-    <link rel="self" type="application/atom+xml" href="https://chenx6.github.io/tags/llvm/atom.xml"/>
-    <link rel="alternate" type="text/html" href="https://chenx6.github.io/"/>
+    <link rel="self" type="application/atom+xml" href="https://chenx6.uk/tags/llvm/atom.xml"/>
+    <link rel="alternate" type="text/html" href="https://chenx6.uk"/>
     <generator uri="https://www.getzola.org/">Zola</generator>
     <updated>2021-01-21T00:00:00+00:00</updated>
-    <id>https://chenx6.github.io/tags/llvm/atom.xml</id>
+    <id>https://chenx6.uk/tags/llvm/atom.xml</id>
     <entry xml:lang="zh_CN">
         <title>重写 OLLVM 之控制流平坦化</title>
         <published>2021-01-21T00:00:00+00:00</published>
@@ -20,10 +20,10 @@
           </name>
         </author>
         
-        <link rel="alternate" type="text/html" href="https://chenx6.github.io/post/rewrite_ollvm_fla/"/>
-        <id>https://chenx6.github.io/post/rewrite_ollvm_fla/</id>
+        <link rel="alternate" type="text/html" href="https://chenx6.uk/post/rewrite_ollvm_fla/"/>
+        <id>https://chenx6.uk/post/rewrite_ollvm_fla/</id>
         
-        <content type="html" xml:base="https://chenx6.github.io/post/rewrite_ollvm_fla/">&lt;p&gt;OLLVM 的控制流平坦化是逆向老哥最讨厌的混淆了，因为一旦使用就代表着 IDA 的 decompiler 彻底报废了。所以了解并在&lt;a rel=&quot;external&quot; href=&quot;https:&#x2F;&#x2F;github.com&#x2F;chenx6&#x2F;baby_obfuscator&quot;&gt;自己的项目中&lt;&#x2F;a&gt;重写控制流平坦化挺重要的。&lt;&#x2F;p&gt;
+        <content type="html" xml:base="https://chenx6.uk/post/rewrite_ollvm_fla/">&lt;p&gt;OLLVM 的控制流平坦化是逆向老哥最讨厌的混淆了，因为一旦使用就代表着 IDA 的 decompiler 彻底报废了。所以了解并在&lt;a rel=&quot;external&quot; href=&quot;https:&#x2F;&#x2F;github.com&#x2F;chenx6&#x2F;baby_obfuscator&quot;&gt;自己的项目中&lt;&#x2F;a&gt;重写控制流平坦化挺重要的。&lt;&#x2F;p&gt;
 &lt;h2 id=&quot;什么是控制流平坦化&quot;&gt;什么是控制流平坦化&lt;&#x2F;h2&gt;
 &lt;h3 id=&quot;名词解释&quot;&gt;名词解释&lt;&#x2F;h3&gt;
 &lt;h4 id=&quot;BasicBlock&quot;&gt;BasicBlock&lt;&#x2F;h4&gt;
@@ -31,7 +31,7 @@
 &lt;h3 id=&quot;语言描述控制流平坦化的实现&quot;&gt;语言描述控制流平坦化的实现&lt;&#x2F;h3&gt;
 &lt;p&gt;在 OLLVM 中，Pass 先实现一个永真循环，然后再在这个循环中放入 switch 语句，将代码中除了开始块的所有 BasicBlock 放入这个 switch 语句的不同 case 中，通过修改 switch 的条件，来实现 BasicBlock 之间的跳转。&lt;&#x2F;p&gt;
 &lt;h3 id=&quot;可行的修复方法&quot;&gt;可行的修复方法&lt;&#x2F;h3&gt;
-&lt;p&gt;在 &lt;a href=&quot;https:&#x2F;&#x2F;chenx6.github.io&#x2F;post&#x2F;rewrite_ollvm_fla&#x2F;#refs&quot;&gt;利用符号执行去除控制流平坦化&lt;&#x2F;a&gt; 讲解了恢复控制流平坦化的方法，并且在 &lt;a href=&quot;https:&#x2F;&#x2F;chenx6.github.io&#x2F;post&#x2F;rewrite_ollvm_fla&#x2F;#refs&quot;&gt;cq674350529&#x2F;deflat&lt;&#x2F;a&gt; 使用了 angr 进行实现。&lt;&#x2F;p&gt;
+&lt;p&gt;在 &lt;a href=&quot;https:&#x2F;&#x2F;chenx6.uk&#x2F;post&#x2F;rewrite_ollvm_fla&#x2F;#refs&quot;&gt;利用符号执行去除控制流平坦化&lt;&#x2F;a&gt; 讲解了恢复控制流平坦化的方法，并且在 &lt;a href=&quot;https:&#x2F;&#x2F;chenx6.uk&#x2F;post&#x2F;rewrite_ollvm_fla&#x2F;#refs&quot;&gt;cq674350529&#x2F;deflat&lt;&#x2F;a&gt; 使用了 angr 进行实现。&lt;&#x2F;p&gt;
 &lt;p&gt;这里引用腾讯 SRC 的思路概括&lt;&#x2F;p&gt;
 &lt;blockquote&gt;
 &lt;ol&gt;
@@ -227,7 +227,7 @@
 &lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;ConstantInt &lt;&#x2F;span&gt;&lt;span style=&quot;color: light-dark(#39ADB5, #89DDFF);&quot;&gt;*&lt;&#x2F;span&gt;&lt;span&gt;caseCond &lt;&#x2F;span&gt;&lt;span style=&quot;color: light-dark(#39ADB5, #89DDFF);&quot;&gt;=&lt;&#x2F;span&gt;&lt;span&gt; swInst&lt;&#x2F;span&gt;&lt;span style=&quot;color: light-dark(#39ADB5, #89DDFF);&quot;&gt;-&amp;gt;&lt;&#x2F;span&gt;&lt;span style=&quot;color: light-dark(#6182B8, #82AAFF);&quot;&gt;findCaseDest&lt;&#x2F;span&gt;&lt;span style=&quot;color: light-dark(#39ADB5, #89DDFF);&quot;&gt;(&lt;&#x2F;span&gt;&lt;span style=&quot;color: light-dark(#39ADB5, #89DDFF);&quot;&gt;*&lt;&#x2F;span&gt;&lt;span&gt;originBB&lt;&#x2F;span&gt;&lt;span style=&quot;color: light-dark(#39ADB5, #89DDFF);&quot;&gt;.&lt;&#x2F;span&gt;&lt;span style=&quot;color: light-dark(#6182B8, #82AAFF);&quot;&gt;begin&lt;&#x2F;span&gt;&lt;span style=&quot;color: light-dark(#39ADB5, #89DDFF);&quot;&gt;(&lt;&#x2F;span&gt;&lt;span style=&quot;color: light-dark(#39ADB5, #89DDFF);&quot;&gt;)&lt;&#x2F;span&gt;&lt;span style=&quot;color: light-dark(#39ADB5, #89DDFF);&quot;&gt;)&lt;&#x2F;span&gt;&lt;span style=&quot;color: light-dark(#39ADB5, #89DDFF);&quot;&gt;;&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
 &lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;storeRng&lt;&#x2F;span&gt;&lt;span style=&quot;color: light-dark(#39ADB5, #89DDFF);&quot;&gt;-&amp;gt;&lt;&#x2F;span&gt;&lt;span style=&quot;color: light-dark(#6182B8, #82AAFF);&quot;&gt;setOperand&lt;&#x2F;span&gt;&lt;span style=&quot;color: light-dark(#39ADB5, #89DDFF);&quot;&gt;(&lt;&#x2F;span&gt;&lt;span style=&quot;color: light-dark(#F76D47, #F78C6C);&quot;&gt;0&lt;&#x2F;span&gt;&lt;span style=&quot;color: light-dark(#39ADB5, #89DDFF);&quot;&gt;,&lt;&#x2F;span&gt;&lt;span&gt; caseCond&lt;&#x2F;span&gt;&lt;span style=&quot;color: light-dark(#39ADB5, #89DDFF);&quot;&gt;)&lt;&#x2F;span&gt;&lt;span style=&quot;color: light-dark(#39ADB5, #89DDFF);&quot;&gt;;&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
 &lt;blockquote&gt;
-&lt;p&gt;图请参考 &lt;a href=&quot;https:&#x2F;&#x2F;chenx6.github.io&#x2F;post&#x2F;rewrite_ollvm_fla&#x2F;#refs&quot;&gt;Obfuscator-llvm源码分析&lt;&#x2F;a&gt;，用 ASCII 画图有点麻烦...&lt;&#x2F;p&gt;
+&lt;p&gt;图请参考 &lt;a href=&quot;https:&#x2F;&#x2F;chenx6.uk&#x2F;post&#x2F;rewrite_ollvm_fla&#x2F;#refs&quot;&gt;Obfuscator-llvm源码分析&lt;&#x2F;a&gt;，用 ASCII 画图有点麻烦...&lt;&#x2F;p&gt;
 &lt;&#x2F;blockquote&gt;
 &lt;h2 id=&quot;总结&quot;&gt;总结&lt;&#x2F;h2&gt;
 &lt;p&gt;这个控制流平坦化的代码数量也不多，而且程序的逻辑在理清后很容易理解，所以文章的篇幅很短。&lt;&#x2F;p&gt;
@@ -253,10 +253,10 @@
           </name>
         </author>
         
-        <link rel="alternate" type="text/html" href="https://chenx6.github.io/post/build_pass_out_of_tree/"/>
-        <id>https://chenx6.github.io/post/build_pass_out_of_tree/</id>
+        <link rel="alternate" type="text/html" href="https://chenx6.uk/post/build_pass_out_of_tree/"/>
+        <id>https://chenx6.uk/post/build_pass_out_of_tree/</id>
         
-        <content type="html" xml:base="https://chenx6.github.io/post/build_pass_out_of_tree/">&lt;p&gt;在网络上流传的编译 LLVM Pass 都需要一份 LLVM 源码，从整个源代码编译，编译非常花时间 (i7 6700HQ 使用 &lt;code&gt;make -j8&lt;&#x2F;code&gt; 编译整个项目花了近 50 分钟)，所以在翻阅文档时发现 LLVM 支持在代码树外编译，在 1 分钟内编译一个 Pass，还是非常香的。&lt;&#x2F;p&gt;
+        <content type="html" xml:base="https://chenx6.uk/post/build_pass_out_of_tree/">&lt;p&gt;在网络上流传的编译 LLVM Pass 都需要一份 LLVM 源码，从整个源代码编译，编译非常花时间 (i7 6700HQ 使用 &lt;code&gt;make -j8&lt;&#x2F;code&gt; 编译整个项目花了近 50 分钟)，所以在翻阅文档时发现 LLVM 支持在代码树外编译，在 1 分钟内编译一个 Pass，还是非常香的。&lt;&#x2F;p&gt;
 &lt;h2 id=&quot;项目配置&quot;&gt;项目配置&lt;&#x2F;h2&gt;
 &lt;h3 id=&quot;项目目录结构&quot;&gt;项目目录结构&lt;&#x2F;h3&gt;
 &lt;p&gt;本次作为示范的 OLLVM 是一个使用 LLVM Pass 进行代码混淆的项目。他的主要文件在于 &lt;code&gt;${LLVM 项目目录}&#x2F;lib&#x2F;Transforms&#x2F;Obfuscation&#x2F;&lt;&#x2F;code&gt; 和 &lt;code&gt;${LLVM 项目目录}&#x2F;include&#x2F;llvm&#x2F;Transforms&#x2F;Obfuscation&#x2F;&lt;&#x2F;code&gt;。将这两个目录下的文件放入对应的目录就可以在代码树外编译 OLLVM 了。OLLVM 相关的文件可以在 &lt;a rel=&quot;external&quot; href=&quot;https:&#x2F;&#x2F;github.com&#x2F;obfuscator-llvm&#x2F;&#x2F;obfuscator&#x2F;tree&#x2F;llvm-4.0&quot;&gt;GitHub&lt;&#x2F;a&gt; 找到。&lt;&#x2F;p&gt;
@@ -558,10 +558,10 @@
           </name>
         </author>
         
-        <link rel="alternate" type="text/html" href="https://chenx6.github.io/post/obfuscate_string/"/>
-        <id>https://chenx6.github.io/post/obfuscate_string/</id>
+        <link rel="alternate" type="text/html" href="https://chenx6.uk/post/obfuscate_string/"/>
+        <id>https://chenx6.uk/post/obfuscate_string/</id>
         
-        <content type="html" xml:base="https://chenx6.github.io/post/obfuscate_string/">&lt;p&gt;这个项目可以作为我看了这么久 LLVM 的 Docs 助眠的一个小总结吧。这个项目主要就是给函数使用的常量字符串进行加密，在程序被静态分析的时候干扰分析。当然找到思路后，这个混淆还是很容易解开的。&lt;&#x2F;p&gt;
+        <content type="html" xml:base="https://chenx6.uk/post/obfuscate_string/">&lt;p&gt;这个项目可以作为我看了这么久 LLVM 的 Docs 助眠的一个小总结吧。这个项目主要就是给函数使用的常量字符串进行加密，在程序被静态分析的时候干扰分析。当然找到思路后，这个混淆还是很容易解开的。&lt;&#x2F;p&gt;
 &lt;blockquote&gt;
 &lt;p&gt;吐槽下，网上的文章质量参差不齐，写的让人不知所云的，真的恐怖。所以还是面向 Stackoverflow 和官方文档编程吧...&lt;&#x2F;p&gt;
 &lt;&#x2F;blockquote&gt;
@@ -975,10 +975,10 @@
           </name>
         </author>
         
-        <link rel="alternate" type="text/html" href="https://chenx6.github.io/post/rewrite_ollvm_bcf/"/>
-        <id>https://chenx6.github.io/post/rewrite_ollvm_bcf/</id>
+        <link rel="alternate" type="text/html" href="https://chenx6.uk/post/rewrite_ollvm_bcf/"/>
+        <id>https://chenx6.uk/post/rewrite_ollvm_bcf/</id>
         
-        <content type="html" xml:base="https://chenx6.github.io/post/rewrite_ollvm_bcf/">&lt;p&gt;由于我个人觉得 OLLVM 的代码年久失修，所以就新建了个项目，开始学习并重写 OLLVM。项目地址：&lt;a rel=&quot;external&quot; href=&quot;https:&#x2F;&#x2F;github.com&#x2F;chenx6&#x2F;baby_obfuscator&quot;&gt;https:&#x2F;&#x2F;github.com&#x2F;chenx6&#x2F;baby_obfuscator&lt;&#x2F;a&gt;。如果将我的重写项目和 OLLVM 相比的话，我的项目的优点就是编译比较快（编译整个项目只需要不到 1 分钟），代码比较“新”吧...&lt;&#x2F;p&gt;
+        <content type="html" xml:base="https://chenx6.uk/post/rewrite_ollvm_bcf/">&lt;p&gt;由于我个人觉得 OLLVM 的代码年久失修，所以就新建了个项目，开始学习并重写 OLLVM。项目地址：&lt;a rel=&quot;external&quot; href=&quot;https:&#x2F;&#x2F;github.com&#x2F;chenx6&#x2F;baby_obfuscator&quot;&gt;https:&#x2F;&#x2F;github.com&#x2F;chenx6&#x2F;baby_obfuscator&lt;&#x2F;a&gt;。如果将我的重写项目和 OLLVM 相比的话，我的项目的优点就是编译比较快（编译整个项目只需要不到 1 分钟），代码比较“新”吧...&lt;&#x2F;p&gt;
 &lt;p&gt;下面讲讲我个人重写虚假控制流的思路，以及对其他项目中相同功能的理解。&lt;&#x2F;p&gt;
 &lt;h2 id=&quot;什么是虚假控制流_(Bogus_control_flow)&quot;&gt;什么是虚假控制流 (Bogus control flow)&lt;&#x2F;h2&gt;
 &lt;p&gt;在讲解虚假控制流时，我们先解释一些名词，然后看下流程表示就可以知道大概了。&lt;&#x2F;p&gt;

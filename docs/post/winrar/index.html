@@ -7,12 +7,12 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="icon" href="data:;base64,iVBORw0KGgo=">
   <title>WinRAR 最近的 2 个漏洞分析&#x2F;复现 - 二进制咸鱼的自我救赎</title>
-  <link rel="stylesheet" href="https://chenx6.github.io/water.min.css">
+  <link rel="stylesheet" href="https://chenx6.uk/water.min.css">
   <link rel="stylesheet" type="text/css" href="/syntax-theme-dark.css" media="(prefers-color-scheme: dark)">
   <link rel="stylesheet" type="text/css" href="/syntax-theme-light.css" media="(prefers-color-scheme: light)">
-  <link rel="stylesheet" href="https://chenx6.github.io/custom.css">
+  <link rel="stylesheet" href="https://chenx6.uk/custom.css">
   
-  <link rel="alternate" type="application/atom+xml" title="RSS" href="https://chenx6.github.io/atom.xml">
+  <link rel="alternate" type="application/atom+xml" title="RSS" href="https://chenx6.uk/atom.xml">
   
 
   
@@ -22,17 +22,17 @@
 
 <body>
   <header>
-    <a href="https:&#x2F;&#x2F;chenx6.github.io&#x2F;"><h1>二进制咸鱼的自我救赎</h1></a>
+    <a href="https:&#x2F;&#x2F;chenx6.uk"><h1>二进制咸鱼的自我救赎</h1></a>
     
     <p class="lead">幸福往往是摸的透彻，而敬业的心却常常隐藏。</p>
     
     
-      <a href="https:&#x2F;&#x2F;chenx6.github.io&#x2F;&#x2F;about">
+      <a href="https:&#x2F;&#x2F;chenx6.uk&#x2F;about">
         About
       </a>
     
     
-    <a href="https://chenx6.github.io/atom.xml">RSS</a>
+    <a href="https://chenx6.uk/atom.xml">RSS</a>
     
   </header>
   
@@ -43,7 +43,7 @@
     
   
     
-      <a href="https://chenx6.github.io/tags/re/">#re</a>
+      <a href="https://chenx6.uk/tags/re/">#re</a>
     
   
 
@@ -54,22 +54,22 @@
         <ul>
           
           <li>
-            <a href="https://chenx6.github.io/post/winrar/#CVE-2023-40477">CVE-2023-40477</a>
+            <a href="https://chenx6.uk/post/winrar/#CVE-2023-40477">CVE-2023-40477</a>
             
           </li>
           
           <li>
-            <a href="https://chenx6.github.io/post/winrar/#CVE-2023-38831">CVE-2023-38831</a>
+            <a href="https://chenx6.uk/post/winrar/#CVE-2023-38831">CVE-2023-38831</a>
             
           </li>
           
           <li>
-            <a href="https://chenx6.github.io/post/winrar/#总结">总结</a>
+            <a href="https://chenx6.uk/post/winrar/#总结">总结</a>
             
           </li>
           
           <li>
-            <a href="https://chenx6.github.io/post/winrar/#Refs">Refs</a>
+            <a href="https://chenx6.uk/post/winrar/#Refs">Refs</a>
             
           </li>
           
@@ -181,7 +181,7 @@
 <span class="giallo-l"><span style="color: light-dark(#39ADB5, #89DDFF);font-style: italic;">      if</span><span style="color: light-dark(#39ADB5, #89DDFF);"> (</span><span style="color: light-dark(#E53935, #F07178);"> v3 </span><span style="color: light-dark(#39ADB5, #89DDFF);">==</span><span style="color: light-dark(#F76D47, #F78C6C);"> 1</span><span style="color: light-dark(#39ADB5, #89DDFF);"> )</span></span>
 <span class="giallo-l"><span style="color: light-dark(#39ADB5, #89DDFF);font-style: italic;">        return</span><span style="color: light-dark(#F76D47, #F78C6C);"> 0</span><span style="color: light-dark(#39ADB5, #89DDFF);">;</span></span>
 <span class="giallo-l"><span style="color: light-dark(#39ADB5, #89DDFF);">    }</span></span></code></pre>
-<p>配合上 <code>ShellExecuteExW</code> 对文件的处理，就造成了点击一个文件，让另一个文件被调用执行的情况...详细分析请看 <a href="https://chenx6.github.io/post/winrar/#refs">Refs</a></p>
+<p>配合上 <code>ShellExecuteExW</code> 对文件的处理，就造成了点击一个文件，让另一个文件被调用执行的情况...详细分析请看 <a href="https://chenx6.uk/post/winrar/#refs">Refs</a></p>
 <h2 id="总结">总结</h2>
 <p>CVE-2023-40477 的漏洞应该是可以被避免的，存储数组索引的数据，应该使用 unsigned 类型，并且在通过不可信任的数据，访问数组时候需要检查边界。而 CVE-2023-38831 则是碰上了一个逻辑问题，在比较字符串时候没有比较长度。</p>
 <h2 id="Refs">Refs</h2>

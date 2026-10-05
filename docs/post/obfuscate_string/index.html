@@ -7,12 +7,12 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="icon" href="data:;base64,iVBORw0KGgo=">
   <title>使用 LLVM Pass 实现字符串加密 - 二进制咸鱼的自我救赎</title>
-  <link rel="stylesheet" href="https://chenx6.github.io/water.min.css">
+  <link rel="stylesheet" href="https://chenx6.uk/water.min.css">
   <link rel="stylesheet" type="text/css" href="/syntax-theme-dark.css" media="(prefers-color-scheme: dark)">
   <link rel="stylesheet" type="text/css" href="/syntax-theme-light.css" media="(prefers-color-scheme: light)">
-  <link rel="stylesheet" href="https://chenx6.github.io/custom.css">
+  <link rel="stylesheet" href="https://chenx6.uk/custom.css">
   
-  <link rel="alternate" type="application/atom+xml" title="RSS" href="https://chenx6.github.io/atom.xml">
+  <link rel="alternate" type="application/atom+xml" title="RSS" href="https://chenx6.uk/atom.xml">
   
 
   
@@ -22,17 +22,17 @@
 
 <body>
   <header>
-    <a href="https:&#x2F;&#x2F;chenx6.github.io&#x2F;"><h1>二进制咸鱼的自我救赎</h1></a>
+    <a href="https:&#x2F;&#x2F;chenx6.uk"><h1>二进制咸鱼的自我救赎</h1></a>
     
     <p class="lead">幸福往往是摸的透彻，而敬业的心却常常隐藏。</p>
     
     
-      <a href="https:&#x2F;&#x2F;chenx6.github.io&#x2F;&#x2F;about">
+      <a href="https:&#x2F;&#x2F;chenx6.uk&#x2F;about">
         About
       </a>
     
     
-    <a href="https://chenx6.github.io/atom.xml">RSS</a>
+    <a href="https://chenx6.uk/atom.xml">RSS</a>
     
   </header>
   
@@ -43,9 +43,9 @@
     
   
     
-      <a href="https://chenx6.github.io/tags/re/">#re</a>
+      <a href="https://chenx6.uk/tags/re/">#re</a>
     
-      <a href="https://chenx6.github.io/tags/llvm/">#llvm</a>
+      <a href="https://chenx6.uk/tags/llvm/">#llvm</a>
     
   
 
@@ -56,34 +56,34 @@
         <ul>
           
           <li>
-            <a href="https://chenx6.github.io/post/obfuscate_string/#Pass_思路概述">Pass 思路概述</a>
+            <a href="https://chenx6.uk/post/obfuscate_string/#Pass_思路概述">Pass 思路概述</a>
             
           </li>
           
           <li>
-            <a href="https://chenx6.github.io/post/obfuscate_string/#开发环境准备">开发环境准备</a>
+            <a href="https://chenx6.uk/post/obfuscate_string/#开发环境准备">开发环境准备</a>
             
           </li>
           
           <li>
-            <a href="https://chenx6.github.io/post/obfuscate_string/#代码讲解">代码讲解</a>
+            <a href="https://chenx6.uk/post/obfuscate_string/#代码讲解">代码讲解</a>
             
             <ul>
               
               <li>
-                <a href="https://chenx6.github.io/post/obfuscate_string/#基本框架">基本框架</a>
+                <a href="https://chenx6.uk/post/obfuscate_string/#基本框架">基本框架</a>
               </li>
               
               <li>
-                <a href="https://chenx6.github.io/post/obfuscate_string/#runOnModule_函数">runOnModule 函数</a>
+                <a href="https://chenx6.uk/post/obfuscate_string/#runOnModule_函数">runOnModule 函数</a>
               </li>
               
               <li>
-                <a href="https://chenx6.github.io/post/obfuscate_string/#obfuscateString_函数">obfuscateString 函数</a>
+                <a href="https://chenx6.uk/post/obfuscate_string/#obfuscateString_函数">obfuscateString 函数</a>
               </li>
               
               <li>
-                <a href="https://chenx6.github.io/post/obfuscate_string/#__encrypt_和___decrypt_函数">__encrypt 和 __decrypt 函数</a>
+                <a href="https://chenx6.uk/post/obfuscate_string/#__encrypt_和___decrypt_函数">__encrypt 和 __decrypt 函数</a>
               </li>
               
             </ul>
@@ -91,17 +91,17 @@
           </li>
           
           <li>
-            <a href="https://chenx6.github.io/post/obfuscate_string/#Pass_的简单使用">Pass 的简单使用</a>
+            <a href="https://chenx6.uk/post/obfuscate_string/#Pass_的简单使用">Pass 的简单使用</a>
             
           </li>
           
           <li>
-            <a href="https://chenx6.github.io/post/obfuscate_string/#混淆效果">混淆效果</a>
+            <a href="https://chenx6.uk/post/obfuscate_string/#混淆效果">混淆效果</a>
             
           </li>
           
           <li>
-            <a href="https://chenx6.github.io/post/obfuscate_string/#完整代码">完整代码</a>
+            <a href="https://chenx6.uk/post/obfuscate_string/#完整代码">完整代码</a>
             
           </li>
           

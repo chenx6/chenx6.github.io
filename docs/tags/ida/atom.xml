@@ -2,11 +2,11 @@
 <feed xmlns="http://www.w3.org/2005/Atom" xml:lang="zh_CN">
     <title>二进制咸鱼的自我救赎 - ida</title>
     <subtitle>幸福往往是摸的透彻，而敬业的心却常常隐藏。</subtitle>
-    <link rel="self" type="application/atom+xml" href="https://chenx6.github.io/tags/ida/atom.xml"/>
-    <link rel="alternate" type="text/html" href="https://chenx6.github.io/"/>
+    <link rel="self" type="application/atom+xml" href="https://chenx6.uk/tags/ida/atom.xml"/>
+    <link rel="alternate" type="text/html" href="https://chenx6.uk"/>
     <generator uri="https://www.getzola.org/">Zola</generator>
     <updated>2022-07-24T00:00:00+00:00</updated>
-    <id>https://chenx6.github.io/tags/ida/atom.xml</id>
+    <id>https://chenx6.uk/tags/ida/atom.xml</id>
     <entry xml:lang="zh_CN">
         <title>通过无符号程序的日志函数来恢复函数名字</title>
         <published>2022-07-24T00:00:00+00:00</published>
@@ -20,10 +20,10 @@
           </name>
         </author>
         
-        <link rel="alternate" type="text/html" href="https://chenx6.github.io/post/from_log/"/>
-        <id>https://chenx6.github.io/post/from_log/</id>
+        <link rel="alternate" type="text/html" href="https://chenx6.uk/post/from_log/"/>
+        <id>https://chenx6.uk/post/from_log/</id>
         
-        <content type="html" xml:base="https://chenx6.github.io/post/from_log/">&lt;p&gt;2023-03-12 更新：添加了使用 &lt;code&gt;ida_hexrays.decompile&lt;&#x2F;code&gt; 的方法&lt;&#x2F;p&gt;
+        <content type="html" xml:base="https://chenx6.uk/post/from_log/">&lt;p&gt;2023-03-12 更新：添加了使用 &lt;code&gt;ida_hexrays.decompile&lt;&#x2F;code&gt; 的方法&lt;&#x2F;p&gt;
 &lt;p&gt;在逆向二进制程序中，经常碰到将程序 strip 了，但是日志函数中保留着函数名字的情况。所以写文记录在这种情况下，使用 IDAPython 恢复函数名字的过程。&lt;&#x2F;p&gt;
 &lt;h2 id=&quot;日志函数长什么样&quot;&gt;日志函数长什么样&lt;&#x2F;h2&gt;
 &lt;p&gt;下面是我手写的一个日志函数。主要有几个部分：&lt;&#x2F;p&gt;

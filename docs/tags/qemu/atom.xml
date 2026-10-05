@@ -2,11 +2,11 @@
 <feed xmlns="http://www.w3.org/2005/Atom" xml:lang="zh_CN">
     <title>二进制咸鱼的自我救赎 - qemu</title>
     <subtitle>幸福往往是摸的透彻，而敬业的心却常常隐藏。</subtitle>
-    <link rel="self" type="application/atom+xml" href="https://chenx6.github.io/tags/qemu/atom.xml"/>
-    <link rel="alternate" type="text/html" href="https://chenx6.github.io/"/>
+    <link rel="self" type="application/atom+xml" href="https://chenx6.uk/tags/qemu/atom.xml"/>
+    <link rel="alternate" type="text/html" href="https://chenx6.uk"/>
     <generator uri="https://www.getzola.org/">Zola</generator>
     <updated>2023-02-19T00:00:00+00:00</updated>
-    <id>https://chenx6.github.io/tags/qemu/atom.xml</id>
+    <id>https://chenx6.uk/tags/qemu/atom.xml</id>
     <entry xml:lang="zh_CN">
         <title>QEMU 简易配置（CPU&#x2F;内存&#x2F;网络&#x2F;...）</title>
         <published>2023-02-19T00:00:00+00:00</published>
@@ -20,10 +20,10 @@
           </name>
         </author>
         
-        <link rel="alternate" type="text/html" href="https://chenx6.github.io/post/qemu/"/>
-        <id>https://chenx6.github.io/post/qemu/</id>
+        <link rel="alternate" type="text/html" href="https://chenx6.uk/post/qemu/"/>
+        <id>https://chenx6.uk/post/qemu/</id>
         
-        <content type="html" xml:base="https://chenx6.github.io/post/qemu/">&lt;p&gt;从大学开始，我看过了一堆的 QEMU 配置的文章，这些文章要不就是从别的地方复制黏贴出来的，要不就是使用了已经停止维护的工具。所以我决定从网上找一手资料（QEMU Wiki，文档, man qemu，...）来写一篇文章来讲讲怎么简单的配置 QEMU 模拟虚拟机。在文章的最后放了最终运行的命令，大家复制了保存成脚本就可以使用，或者根据自己的要求来配置。（这个脚本已经经过 2 个人使用了，很好用 233）&lt;&#x2F;p&gt;
+        <content type="html" xml:base="https://chenx6.uk/post/qemu/">&lt;p&gt;从大学开始，我看过了一堆的 QEMU 配置的文章，这些文章要不就是从别的地方复制黏贴出来的，要不就是使用了已经停止维护的工具。所以我决定从网上找一手资料（QEMU Wiki，文档, man qemu，...）来写一篇文章来讲讲怎么简单的配置 QEMU 模拟虚拟机。在文章的最后放了最终运行的命令，大家复制了保存成脚本就可以使用，或者根据自己的要求来配置。（这个脚本已经经过 2 个人使用了，很好用 233）&lt;&#x2F;p&gt;
 &lt;h2 id=&quot;CPU_配置&quot;&gt;CPU 配置&lt;&#x2F;h2&gt;
 &lt;p&gt;下面的选项开启 KVM 全虚拟化支持，能提升虚拟机的速度。&lt;&#x2F;p&gt;
 &lt;pre class=&quot;giallo&quot; style=&quot;color-scheme: light dark; color: light-dark(#90A4AE, #BABED8); background-color: light-dark(#FAFAFA, #292D3E);&quot;&gt;&lt;code data-lang=&quot;shellscript&quot;&gt;&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: light-dark(#E2931D, #FFCB6B);&quot;&gt;--enable-kvm&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;

@@ -7,12 +7,12 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="icon" href="data:;base64,iVBORw0KGgo=">
   <title>重写 OLLVM 之控制流平坦化 - 二进制咸鱼的自我救赎</title>
-  <link rel="stylesheet" href="https://chenx6.github.io/water.min.css">
+  <link rel="stylesheet" href="https://chenx6.uk/water.min.css">
   <link rel="stylesheet" type="text/css" href="/syntax-theme-dark.css" media="(prefers-color-scheme: dark)">
   <link rel="stylesheet" type="text/css" href="/syntax-theme-light.css" media="(prefers-color-scheme: light)">
-  <link rel="stylesheet" href="https://chenx6.github.io/custom.css">
+  <link rel="stylesheet" href="https://chenx6.uk/custom.css">
   
-  <link rel="alternate" type="application/atom+xml" title="RSS" href="https://chenx6.github.io/atom.xml">
+  <link rel="alternate" type="application/atom+xml" title="RSS" href="https://chenx6.uk/atom.xml">
   
 
   
@@ -22,17 +22,17 @@
 
 <body>
   <header>
-    <a href="https:&#x2F;&#x2F;chenx6.github.io&#x2F;"><h1>二进制咸鱼的自我救赎</h1></a>
+    <a href="https:&#x2F;&#x2F;chenx6.uk"><h1>二进制咸鱼的自我救赎</h1></a>
     
     <p class="lead">幸福往往是摸的透彻，而敬业的心却常常隐藏。</p>
     
     
-      <a href="https:&#x2F;&#x2F;chenx6.github.io&#x2F;&#x2F;about">
+      <a href="https:&#x2F;&#x2F;chenx6.uk&#x2F;about">
         About
       </a>
     
     
-    <a href="https://chenx6.github.io/atom.xml">RSS</a>
+    <a href="https://chenx6.uk/atom.xml">RSS</a>
     
   </header>
   
@@ -43,9 +43,9 @@
     
   
     
-      <a href="https://chenx6.github.io/tags/re/">#re</a>
+      <a href="https://chenx6.uk/tags/re/">#re</a>
     
-      <a href="https://chenx6.github.io/tags/llvm/">#llvm</a>
+      <a href="https://chenx6.uk/tags/llvm/">#llvm</a>
     
   
 
@@ -56,20 +56,20 @@
         <ul>
           
           <li>
-            <a href="https://chenx6.github.io/post/rewrite_ollvm_fla/#什么是控制流平坦化">什么是控制流平坦化</a>
+            <a href="https://chenx6.uk/post/rewrite_ollvm_fla/#什么是控制流平坦化">什么是控制流平坦化</a>
             
             <ul>
               
               <li>
-                <a href="https://chenx6.github.io/post/rewrite_ollvm_fla/#名词解释">名词解释</a>
+                <a href="https://chenx6.uk/post/rewrite_ollvm_fla/#名词解释">名词解释</a>
               </li>
               
               <li>
-                <a href="https://chenx6.github.io/post/rewrite_ollvm_fla/#语言描述控制流平坦化的实现">语言描述控制流平坦化的实现</a>
+                <a href="https://chenx6.uk/post/rewrite_ollvm_fla/#语言描述控制流平坦化的实现">语言描述控制流平坦化的实现</a>
               </li>
               
               <li>
-                <a href="https://chenx6.github.io/post/rewrite_ollvm_fla/#可行的修复方法">可行的修复方法</a>
+                <a href="https://chenx6.uk/post/rewrite_ollvm_fla/#可行的修复方法">可行的修复方法</a>
               </li>
               
             </ul>
@@ -77,17 +77,17 @@
           </li>
           
           <li>
-            <a href="https://chenx6.github.io/post/rewrite_ollvm_fla/#怎么实现">怎么实现</a>
+            <a href="https://chenx6.uk/post/rewrite_ollvm_fla/#怎么实现">怎么实现</a>
             
           </li>
           
           <li>
-            <a href="https://chenx6.github.io/post/rewrite_ollvm_fla/#总结">总结</a>
+            <a href="https://chenx6.uk/post/rewrite_ollvm_fla/#总结">总结</a>
             
           </li>
           
           <li>
-            <a href="https://chenx6.github.io/post/rewrite_ollvm_fla/#refs">refs</a>
+            <a href="https://chenx6.uk/post/rewrite_ollvm_fla/#refs">refs</a>
             
           </li>
           
@@ -103,7 +103,7 @@
 <h3 id="语言描述控制流平坦化的实现">语言描述控制流平坦化的实现</h3>
 <p>在 OLLVM 中，Pass 先实现一个永真循环，然后再在这个循环中放入 switch 语句，将代码中除了开始块的所有 BasicBlock 放入这个 switch 语句的不同 case 中，通过修改 switch 的条件，来实现 BasicBlock 之间的跳转。</p>
 <h3 id="可行的修复方法">可行的修复方法</h3>
-<p>在 <a href="https://chenx6.github.io/post/rewrite_ollvm_fla/#refs">利用符号执行去除控制流平坦化</a> 讲解了恢复控制流平坦化的方法，并且在 <a href="https://chenx6.github.io/post/rewrite_ollvm_fla/#refs">cq674350529/deflat</a> 使用了 angr 进行实现。</p>
+<p>在 <a href="https://chenx6.uk/post/rewrite_ollvm_fla/#refs">利用符号执行去除控制流平坦化</a> 讲解了恢复控制流平坦化的方法，并且在 <a href="https://chenx6.uk/post/rewrite_ollvm_fla/#refs">cq674350529/deflat</a> 使用了 angr 进行实现。</p>
 <p>这里引用腾讯 SRC 的思路概括</p>
 <blockquote>
 <ol>
@@ -299,7 +299,7 @@
 <span class="giallo-l"><span>ConstantInt </span><span style="color: light-dark(#39ADB5, #89DDFF);">*</span><span>caseCond </span><span style="color: light-dark(#39ADB5, #89DDFF);">=</span><span> swInst</span><span style="color: light-dark(#39ADB5, #89DDFF);">-&gt;</span><span style="color: light-dark(#6182B8, #82AAFF);">findCaseDest</span><span style="color: light-dark(#39ADB5, #89DDFF);">(</span><span style="color: light-dark(#39ADB5, #89DDFF);">*</span><span>originBB</span><span style="color: light-dark(#39ADB5, #89DDFF);">.</span><span style="color: light-dark(#6182B8, #82AAFF);">begin</span><span style="color: light-dark(#39ADB5, #89DDFF);">(</span><span style="color: light-dark(#39ADB5, #89DDFF);">)</span><span style="color: light-dark(#39ADB5, #89DDFF);">)</span><span style="color: light-dark(#39ADB5, #89DDFF);">;</span></span>
 <span class="giallo-l"><span>storeRng</span><span style="color: light-dark(#39ADB5, #89DDFF);">-&gt;</span><span style="color: light-dark(#6182B8, #82AAFF);">setOperand</span><span style="color: light-dark(#39ADB5, #89DDFF);">(</span><span style="color: light-dark(#F76D47, #F78C6C);">0</span><span style="color: light-dark(#39ADB5, #89DDFF);">,</span><span> caseCond</span><span style="color: light-dark(#39ADB5, #89DDFF);">)</span><span style="color: light-dark(#39ADB5, #89DDFF);">;</span></span></code></pre>
 <blockquote>
-<p>图请参考 <a href="https://chenx6.github.io/post/rewrite_ollvm_fla/#refs">Obfuscator-llvm源码分析</a>，用 ASCII 画图有点麻烦...</p>
+<p>图请参考 <a href="https://chenx6.uk/post/rewrite_ollvm_fla/#refs">Obfuscator-llvm源码分析</a>，用 ASCII 画图有点麻烦...</p>
 </blockquote>
 <h2 id="总结">总结</h2>
 <p>这个控制流平坦化的代码数量也不多，而且程序的逻辑在理清后很容易理解，所以文章的篇幅很短。</p>

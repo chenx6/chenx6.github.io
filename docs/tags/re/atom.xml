@@ -2,11 +2,11 @@
 <feed xmlns="http://www.w3.org/2005/Atom" xml:lang="zh_CN">
     <title>二进制咸鱼的自我救赎 - re</title>
     <subtitle>幸福往往是摸的透彻，而敬业的心却常常隐藏。</subtitle>
-    <link rel="self" type="application/atom+xml" href="https://chenx6.github.io/tags/re/atom.xml"/>
-    <link rel="alternate" type="text/html" href="https://chenx6.github.io/"/>
+    <link rel="self" type="application/atom+xml" href="https://chenx6.uk/tags/re/atom.xml"/>
+    <link rel="alternate" type="text/html" href="https://chenx6.uk"/>
     <generator uri="https://www.getzola.org/">Zola</generator>
     <updated>2026-09-03T00:00:00+00:00</updated>
-    <id>https://chenx6.github.io/tags/re/atom.xml</id>
+    <id>https://chenx6.uk/tags/re/atom.xml</id>
     <entry xml:lang="zh_CN">
         <title>继续完善不太能用的 Python 反编译器</title>
         <published>2026-09-03T00:00:00+00:00</published>
@@ -20,10 +20,10 @@
           </name>
         </author>
         
-        <link rel="alternate" type="text/html" href="https://chenx6.github.io/post/decompiler_python_v2/"/>
-        <id>https://chenx6.github.io/post/decompiler_python_v2/</id>
+        <link rel="alternate" type="text/html" href="https://chenx6.uk/post/decompiler_python_v2/"/>
+        <id>https://chenx6.uk/post/decompiler_python_v2/</id>
         
-        <content type="html" xml:base="https://chenx6.github.io/post/decompiler_python_v2/">&lt;p&gt;在之前的文章里，我实现了一个不太能用的 Python 反编译器，后来在不断咨询 LLM 修复建议，并手动分析和实现之后，现在能对简单的程序进行反编译了。在这篇文章里，我讲一下主要的修复项。&lt;&#x2F;p&gt;
+        <content type="html" xml:base="https://chenx6.uk/post/decompiler_python_v2/">&lt;p&gt;在之前的文章里，我实现了一个不太能用的 Python 反编译器，后来在不断咨询 LLM 修复建议，并手动分析和实现之后，现在能对简单的程序进行反编译了。在这篇文章里，我讲一下主要的修复项。&lt;&#x2F;p&gt;
 &lt;h2 id=&quot;控制流图恢复&quot;&gt;控制流图恢复&lt;&#x2F;h2&gt;
 &lt;p&gt;这里我使用了更成熟的方案。首先遍历所有汇编指令，根据不同类型的跳转语句，FOR_ITER 语句，来收集每一个 BB 的开头偏移，然后根据这些开头偏移，将一堆的指令切分到不同的 BB 中，最后再根据 BB 中的条件跳转，非条件跳转语句，来构建整个控制流图。如果两个 BB 相邻，而且前一个 BB 最后的指令不是跳转语句，那也将其连接。&lt;&#x2F;p&gt;
 &lt;p&gt;相对于之前的方案，新的方案对 BB 切分更清晰，并且可以在 CFG 中添加边的类型，例如是条件为真的跳转，还是别的跳转。&lt;&#x2F;p&gt;
@@ -70,10 +70,10 @@
           </name>
         </author>
         
-        <link rel="alternate" type="text/html" href="https://chenx6.github.io/post/7z_path_traversal/"/>
-        <id>https://chenx6.github.io/post/7z_path_traversal/</id>
+        <link rel="alternate" type="text/html" href="https://chenx6.uk/post/7z_path_traversal/"/>
+        <id>https://chenx6.uk/post/7z_path_traversal/</id>
         
-        <content type="html" xml:base="https://chenx6.github.io/post/7z_path_traversal/">&lt;p&gt;去年在上网冲浪的时候发现 7z 连续在软链接处理上爆出来了 3 个漏洞，而且是可稳定利用的路径穿梭漏洞，所以就想自己看看为什么会出现这种情况，两者之间是否有共通点。&lt;&#x2F;p&gt;
+        <content type="html" xml:base="https://chenx6.uk/post/7z_path_traversal/">&lt;p&gt;去年在上网冲浪的时候发现 7z 连续在软链接处理上爆出来了 3 个漏洞，而且是可稳定利用的路径穿梭漏洞，所以就想自己看看为什么会出现这种情况，两者之间是否有共通点。&lt;&#x2F;p&gt;
 &lt;h2 id=&quot;构建&quot;&gt;构建&lt;&#x2F;h2&gt;
 &lt;p&gt;在 Linux 下执行下面命令即可构建。&lt;&#x2F;p&gt;
 &lt;pre class=&quot;giallo&quot; style=&quot;color-scheme: light dark; color: light-dark(#90A4AE, #BABED8); background-color: light-dark(#FAFAFA, #292D3E);&quot;&gt;&lt;code data-lang=&quot;shellscript&quot;&gt;&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: light-dark(#6182B8, #82AAFF);&quot;&gt;cd&lt;&#x2F;span&gt;&lt;span style=&quot;color: light-dark(#91B859, #C3E88D);&quot;&gt; CPP&#x2F;7zip&#x2F;Bundles&#x2F;Alone&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
@@ -170,10 +170,10 @@
           </name>
         </author>
         
-        <link rel="alternate" type="text/html" href="https://chenx6.github.io/post/decompiler_python/"/>
-        <id>https://chenx6.github.io/post/decompiler_python/</id>
+        <link rel="alternate" type="text/html" href="https://chenx6.uk/post/decompiler_python/"/>
+        <id>https://chenx6.uk/post/decompiler_python/</id>
         
-        <content type="html" xml:base="https://chenx6.github.io/post/decompiler_python/">&lt;p&gt;写一个反编译器是我在大学的时候就有的一个想法，因为现有的反编译器支持的架构和语言很有限，能自己写反编译器就能支持更多语言了。结果发现这是一个大坑，公开的资料很少，而且需要手动处理很多很多的边界条件，在研究了好几个月之后，我才开始写这一篇文章，记录一个还没完成的反编译器实现。&lt;em&gt;代码质量不好，并且可能无法工作，敬请见谅。&lt;&#x2F;em&gt;&lt;&#x2F;p&gt;
+        <content type="html" xml:base="https://chenx6.uk/post/decompiler_python/">&lt;p&gt;写一个反编译器是我在大学的时候就有的一个想法，因为现有的反编译器支持的架构和语言很有限，能自己写反编译器就能支持更多语言了。结果发现这是一个大坑，公开的资料很少，而且需要手动处理很多很多的边界条件，在研究了好几个月之后，我才开始写这一篇文章，记录一个还没完成的反编译器实现。&lt;em&gt;代码质量不好，并且可能无法工作，敬请见谅。&lt;&#x2F;em&gt;&lt;&#x2F;p&gt;
 &lt;p&gt;由于 Python 在不同版本之间，可能会调整字节码的生成逻辑，所以较难找到一个通用的规则去进行匹配，这篇文章里的内容只针对 Python 3.11 的字节码。&lt;&#x2F;p&gt;
 &lt;h2 id=&quot;总体架构&quot;&gt;总体架构&lt;&#x2F;h2&gt;
 &lt;p&gt;Python 在执行程序的时候，会将 Python 代码转换成 Python 字节码，然后供 Python 解释器执行。Python 解释器是一个栈虚拟机，并且由于 Python 是一个动态类型语言，所以反编译器的大致架构如下。&lt;&#x2F;p&gt;
@@ -305,10 +305,10 @@
           </name>
         </author>
         
-        <link rel="alternate" type="text/html" href="https://chenx6.github.io/post/gdb_py/"/>
-        <id>https://chenx6.github.io/post/gdb_py/</id>
+        <link rel="alternate" type="text/html" href="https://chenx6.uk/post/gdb_py/"/>
+        <id>https://chenx6.uk/post/gdb_py/</id>
         
-        <content type="html" xml:base="https://chenx6.github.io/post/gdb_py/">&lt;p&gt;在工作中碰到了很多地方只能用 gdb 进行调试，并且得进行很多冗余的操作。经过资料查询后发现，可以使用 Python 对 gdb 进行 api 调用，但是网上相关文档比较的少，所以本文将记录一些相关操作。&lt;&#x2F;p&gt;
+        <content type="html" xml:base="https://chenx6.uk/post/gdb_py/">&lt;p&gt;在工作中碰到了很多地方只能用 gdb 进行调试，并且得进行很多冗余的操作。经过资料查询后发现，可以使用 Python 对 gdb 进行 api 调用，但是网上相关文档比较的少，所以本文将记录一些相关操作。&lt;&#x2F;p&gt;
 &lt;h2 id=&quot;相关_API_介绍&quot;&gt;相关 API 介绍&lt;&#x2F;h2&gt;
 &lt;h3 id=&quot;基本操作&quot;&gt;基本操作&lt;&#x2F;h3&gt;
 &lt;p&gt;&lt;code&gt;gdb.execute (command [, from_tty [, to_string]])&lt;&#x2F;code&gt; 执行 gdb 命令。&lt;&#x2F;p&gt;
@@ -399,10 +399,10 @@
           </name>
         </author>
         
-        <link rel="alternate" type="text/html" href="https://chenx6.github.io/post/winrar/"/>
-        <id>https://chenx6.github.io/post/winrar/</id>
+        <link rel="alternate" type="text/html" href="https://chenx6.uk/post/winrar/"/>
+        <id>https://chenx6.uk/post/winrar/</id>
         
-        <content type="html" xml:base="https://chenx6.github.io/post/winrar/">&lt;p&gt;其实这个漏洞的公告一出来我就开始进行分析了，只是因为空闲时间的利用非常的差，所以分析的很慢，最多就确认了漏洞修复地点。后来大佬们详细的分析就发出来了，所以这篇文章只能算是复现文章了...&lt;&#x2F;p&gt;
+        <content type="html" xml:base="https://chenx6.uk/post/winrar/">&lt;p&gt;其实这个漏洞的公告一出来我就开始进行分析了，只是因为空闲时间的利用非常的差，所以分析的很慢，最多就确认了漏洞修复地点。后来大佬们详细的分析就发出来了，所以这篇文章只能算是复现文章了...&lt;&#x2F;p&gt;
 &lt;h2 id=&quot;CVE-2023-40477&quot;&gt;CVE-2023-40477&lt;&#x2F;h2&gt;
 &lt;p&gt;从下面的官方公告中可以知道代码修复的地方是在 RAR4 恢复卷的处理代码中。&lt;&#x2F;p&gt;
 &lt;blockquote&gt;
@@ -506,7 +506,7 @@
 &lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: light-dark(#39ADB5, #89DDFF);font-style: italic;&quot;&gt;      if&lt;&#x2F;span&gt;&lt;span style=&quot;color: light-dark(#39ADB5, #89DDFF);&quot;&gt; (&lt;&#x2F;span&gt;&lt;span style=&quot;color: light-dark(#E53935, #F07178);&quot;&gt; v3 &lt;&#x2F;span&gt;&lt;span style=&quot;color: light-dark(#39ADB5, #89DDFF);&quot;&gt;==&lt;&#x2F;span&gt;&lt;span style=&quot;color: light-dark(#F76D47, #F78C6C);&quot;&gt; 1&lt;&#x2F;span&gt;&lt;span style=&quot;color: light-dark(#39ADB5, #89DDFF);&quot;&gt; )&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
 &lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: light-dark(#39ADB5, #89DDFF);font-style: italic;&quot;&gt;        return&lt;&#x2F;span&gt;&lt;span style=&quot;color: light-dark(#F76D47, #F78C6C);&quot;&gt; 0&lt;&#x2F;span&gt;&lt;span style=&quot;color: light-dark(#39ADB5, #89DDFF);&quot;&gt;;&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
 &lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: light-dark(#39ADB5, #89DDFF);&quot;&gt;    }&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
-&lt;p&gt;配合上 &lt;code&gt;ShellExecuteExW&lt;&#x2F;code&gt; 对文件的处理，就造成了点击一个文件，让另一个文件被调用执行的情况...详细分析请看 &lt;a href=&quot;https:&#x2F;&#x2F;chenx6.github.io&#x2F;post&#x2F;winrar&#x2F;#refs&quot;&gt;Refs&lt;&#x2F;a&gt;&lt;&#x2F;p&gt;
+&lt;p&gt;配合上 &lt;code&gt;ShellExecuteExW&lt;&#x2F;code&gt; 对文件的处理，就造成了点击一个文件，让另一个文件被调用执行的情况...详细分析请看 &lt;a href=&quot;https:&#x2F;&#x2F;chenx6.uk&#x2F;post&#x2F;winrar&#x2F;#refs&quot;&gt;Refs&lt;&#x2F;a&gt;&lt;&#x2F;p&gt;
 &lt;h2 id=&quot;总结&quot;&gt;总结&lt;&#x2F;h2&gt;
 &lt;p&gt;CVE-2023-40477 的漏洞应该是可以被避免的，存储数组索引的数据，应该使用 unsigned 类型，并且在通过不可信任的数据，访问数组时候需要检查边界。而 CVE-2023-38831 则是碰上了一个逻辑问题，在比较字符串时候没有比较长度。&lt;&#x2F;p&gt;
 &lt;h2 id=&quot;Refs&quot;&gt;Refs&lt;&#x2F;h2&gt;
@@ -535,10 +535,10 @@
           </name>
         </author>
         
-        <link rel="alternate" type="text/html" href="https://chenx6.github.io/post/hikvision/"/>
-        <id>https://chenx6.github.io/post/hikvision/</id>
+        <link rel="alternate" type="text/html" href="https://chenx6.uk/post/hikvision/"/>
+        <id>https://chenx6.uk/post/hikvision/</id>
         
-        <content type="html" xml:base="https://chenx6.github.io/post/hikvision/">&lt;p&gt;高中时候曾经当过一段时间的脚本小子，通过 CVE-2017-7921 拿下过一波摄像头，体验了一把游戏看门狗里的感觉。所以在今天，在掌握了一定的技术之后，我将尝试对海康威视的固件进行重新分析。&lt;&#x2F;p&gt;
+        <content type="html" xml:base="https://chenx6.uk/post/hikvision/">&lt;p&gt;高中时候曾经当过一段时间的脚本小子，通过 CVE-2017-7921 拿下过一波摄像头，体验了一把游戏看门狗里的感觉。所以在今天，在掌握了一定的技术之后，我将尝试对海康威视的固件进行重新分析。&lt;&#x2F;p&gt;
 &lt;h2 id=&quot;固件下载&quot;&gt;固件下载&lt;&#x2F;h2&gt;
 &lt;p&gt;&lt;a rel=&quot;external&quot; href=&quot;https:&#x2F;&#x2F;www.hikvisioneurope.com&#x2F;eu&#x2F;portal&#x2F;&quot;&gt;https:&#x2F;&#x2F;www.hikvisioneurope.com&#x2F;eu&#x2F;portal&#x2F;&lt;&#x2F;a&gt;，我使用的是 R0 和 R6 的固件。&lt;&#x2F;p&gt;
 &lt;h2 id=&quot;固件格式&quot;&gt;固件格式&lt;&#x2F;h2&gt;
@@ -597,7 +597,7 @@
 &lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;c0 0e 00 00 64 02 00 00 78 5e 63 cc 74 fd e8 40  À   d   x cÌtýè &lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
 &lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;86 67 2d 7c 07 37 57 57 3d c9 d3 37 70 bc 02 5e   g   7WW ÉÓ7p¼  &lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
 &lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;68 49 6d 61 67 65 00 74 fd e8 40 86 67 2d 7c 07  hImage týè  g  &lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
-&lt;p&gt;解密后的文件格式可以参考 &lt;a href=&quot;https:&#x2F;&#x2F;chenx6.github.io&#x2F;post&#x2F;hikvision&#x2F;#refs&quot;&gt;Refs&lt;&#x2F;a&gt; 中的 &quot;(转载文章)Hik or hack? (NOT) IoT Security Using Hikvision IP Cameras&quot;，解密固件可以参考 &lt;a href=&quot;https:&#x2F;&#x2F;chenx6.github.io&#x2F;post&#x2F;hikvision&#x2F;#refs&quot;&gt;Refs&lt;&#x2F;a&gt; 中的 &quot;HaToan&#x2F;Decrypt-Firmware-Hikvision&quot; 和 &quot;MatrixEditor&#x2F;hiktools&quot; 项目。当然，我也写了一个可以解密固件的脚本，比之前的脚本开源工具相比能解密更多的固件格式，也很容易对脚本进行扩展，地址&lt;a rel=&quot;external&quot; href=&quot;https:&#x2F;&#x2F;github.com&#x2F;chenx6&#x2F;gadget&#x2F;blob&#x2F;master&#x2F;hik_firmware&#x2F;decrypt.py&quot;&gt;在这&lt;&#x2F;a&gt;&lt;&#x2F;p&gt;
+&lt;p&gt;解密后的文件格式可以参考 &lt;a href=&quot;https:&#x2F;&#x2F;chenx6.uk&#x2F;post&#x2F;hikvision&#x2F;#refs&quot;&gt;Refs&lt;&#x2F;a&gt; 中的 &quot;(转载文章)Hik or hack? (NOT) IoT Security Using Hikvision IP Cameras&quot;，解密固件可以参考 &lt;a href=&quot;https:&#x2F;&#x2F;chenx6.uk&#x2F;post&#x2F;hikvision&#x2F;#refs&quot;&gt;Refs&lt;&#x2F;a&gt; 中的 &quot;HaToan&#x2F;Decrypt-Firmware-Hikvision&quot; 和 &quot;MatrixEditor&#x2F;hiktools&quot; 项目。当然，我也写了一个可以解密固件的脚本，比之前的脚本开源工具相比能解密更多的固件格式，也很容易对脚本进行扩展，地址&lt;a rel=&quot;external&quot; href=&quot;https:&#x2F;&#x2F;github.com&#x2F;chenx6&#x2F;gadget&#x2F;blob&#x2F;master&#x2F;hik_firmware&#x2F;decrypt.py&quot;&gt;在这&lt;&#x2F;a&gt;&lt;&#x2F;p&gt;
 &lt;blockquote&gt;
 &lt;p&gt;在 Refs 我还放了 hikpack 的下载链接，hikpack 可以解密 r0,r1,r6,g0 设备的固件。我本来想看下 hikpack 是怎么进行文件解密的，但是 hikpack 居然用了 OLLVM 混淆，有必要吗...&lt;&#x2F;p&gt;
 &lt;&#x2F;blockquote&gt;
@@ -677,7 +677,7 @@
 &lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: light-dark(#39ADB5, #89DDFF);&quot;&gt;}&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
 &lt;p&gt;可以发现 s1 在 [bp-378h] 的位置，而 URL 的长度为 0x400，如果输入长度为 0x400 的 URL 就会导致栈溢出。理论上通过 ROP 即可达成利用。&lt;&#x2F;p&gt;
 &lt;h2 id=&quot;CVE-2021-36260&quot;&gt;CVE-2021-36260&lt;&#x2F;h2&gt;
-&lt;p&gt;在 5.4.5 版本的固件中，出现漏洞的代码如下。可以看到程序使用了格式化字符串拼接命令，并且未对用户输入进行过滤，造成命令注入。具体的利用方法请参考 &lt;a href=&quot;https:&#x2F;&#x2F;chenx6.github.io&#x2F;post&#x2F;hikvision&#x2F;#refs&quot;&gt;Refs&lt;&#x2F;a&gt; 中的 &quot;hikvision CVE-2021-36260 分析以及教训&quot;&lt;&#x2F;p&gt;
+&lt;p&gt;在 5.4.5 版本的固件中，出现漏洞的代码如下。可以看到程序使用了格式化字符串拼接命令，并且未对用户输入进行过滤，造成命令注入。具体的利用方法请参考 &lt;a href=&quot;https:&#x2F;&#x2F;chenx6.uk&#x2F;post&#x2F;hikvision&#x2F;#refs&quot;&gt;Refs&lt;&#x2F;a&gt; 中的 &quot;hikvision CVE-2021-36260 分析以及教训&quot;&lt;&#x2F;p&gt;
 &lt;blockquote&gt;
 &lt;p&gt;在 5.5 版本的固件中，海康加入了 &lt;code&gt;filter_quotation_and_punctuation_mark&lt;&#x2F;code&gt; 函数来过滤用户输入，但是还是可以通过 &quot;$()&quot; 进行绕过，直到漏洞爆出后加入了 &lt;code&gt;hwif_is_all_language_character_legal&lt;&#x2F;code&gt; 函数才完全修复。&lt;&#x2F;p&gt;
 &lt;&#x2F;blockquote&gt;
@@ -743,10 +743,10 @@
           </name>
         </author>
         
-        <link rel="alternate" type="text/html" href="https://chenx6.github.io/post/plthook/"/>
-        <id>https://chenx6.github.io/post/plthook/</id>
+        <link rel="alternate" type="text/html" href="https://chenx6.uk/post/plthook/"/>
+        <id>https://chenx6.uk/post/plthook/</id>
         
-        <content type="html" xml:base="https://chenx6.github.io/post/plthook/">&lt;p&gt;虽然知道可以通过魔改 plt 表实现 hook 函数，但是不知道具体实现...碰巧最近用到了 plthook 这个库，于是我就研究了下 plthook 这个库，并且仿照着这个库重新实现一份代码。&lt;&#x2F;p&gt;
+        <content type="html" xml:base="https://chenx6.uk/post/plthook/">&lt;p&gt;虽然知道可以通过魔改 plt 表实现 hook 函数，但是不知道具体实现...碰巧最近用到了 plthook 这个库，于是我就研究了下 plthook 这个库，并且仿照着这个库重新实现一份代码。&lt;&#x2F;p&gt;
 &lt;h2 id=&quot;原理分析&quot;&gt;原理分析&lt;&#x2F;h2&gt;
 &lt;p&gt;根据命名规则，.rela.plt 表是负责 plt 表的重定位信息。.rela 表中有每项都有 2 个成员，r_offset 指向了该重定位入口所要修正的位置的第一个字节的虚拟地址， r_info 则是表示相关信息，可以通过 &lt;code&gt;ELF[32|64]_R_SYM&lt;&#x2F;code&gt; 获得其指向的 .dynsym 项的下标。&lt;&#x2F;p&gt;
 &lt;p&gt;.dynsym 表（动态链接表）中存放动态链接需要的信息，可以通过 .dynsym 表从 .strtab 表中获得要链接的函数名字。&lt;&#x2F;p&gt;
@@ -860,10 +860,10 @@
           </name>
         </author>
         
-        <link rel="alternate" type="text/html" href="https://chenx6.github.io/post/rewrite_ollvm_fla/"/>
-        <id>https://chenx6.github.io/post/rewrite_ollvm_fla/</id>
+        <link rel="alternate" type="text/html" href="https://chenx6.uk/post/rewrite_ollvm_fla/"/>
+        <id>https://chenx6.uk/post/rewrite_ollvm_fla/</id>
         
-        <content type="html" xml:base="https://chenx6.github.io/post/rewrite_ollvm_fla/">&lt;p&gt;OLLVM 的控制流平坦化是逆向老哥最讨厌的混淆了，因为一旦使用就代表着 IDA 的 decompiler 彻底报废了。所以了解并在&lt;a rel=&quot;external&quot; href=&quot;https:&#x2F;&#x2F;github.com&#x2F;chenx6&#x2F;baby_obfuscator&quot;&gt;自己的项目中&lt;&#x2F;a&gt;重写控制流平坦化挺重要的。&lt;&#x2F;p&gt;
+        <content type="html" xml:base="https://chenx6.uk/post/rewrite_ollvm_fla/">&lt;p&gt;OLLVM 的控制流平坦化是逆向老哥最讨厌的混淆了，因为一旦使用就代表着 IDA 的 decompiler 彻底报废了。所以了解并在&lt;a rel=&quot;external&quot; href=&quot;https:&#x2F;&#x2F;github.com&#x2F;chenx6&#x2F;baby_obfuscator&quot;&gt;自己的项目中&lt;&#x2F;a&gt;重写控制流平坦化挺重要的。&lt;&#x2F;p&gt;
 &lt;h2 id=&quot;什么是控制流平坦化&quot;&gt;什么是控制流平坦化&lt;&#x2F;h2&gt;
 &lt;h3 id=&quot;名词解释&quot;&gt;名词解释&lt;&#x2F;h3&gt;
 &lt;h4 id=&quot;BasicBlock&quot;&gt;BasicBlock&lt;&#x2F;h4&gt;
@@ -871,7 +871,7 @@
 &lt;h3 id=&quot;语言描述控制流平坦化的实现&quot;&gt;语言描述控制流平坦化的实现&lt;&#x2F;h3&gt;
 &lt;p&gt;在 OLLVM 中，Pass 先实现一个永真循环，然后再在这个循环中放入 switch 语句，将代码中除了开始块的所有 BasicBlock 放入这个 switch 语句的不同 case 中，通过修改 switch 的条件，来实现 BasicBlock 之间的跳转。&lt;&#x2F;p&gt;
 &lt;h3 id=&quot;可行的修复方法&quot;&gt;可行的修复方法&lt;&#x2F;h3&gt;
-&lt;p&gt;在 &lt;a href=&quot;https:&#x2F;&#x2F;chenx6.github.io&#x2F;post&#x2F;rewrite_ollvm_fla&#x2F;#refs&quot;&gt;利用符号执行去除控制流平坦化&lt;&#x2F;a&gt; 讲解了恢复控制流平坦化的方法，并且在 &lt;a href=&quot;https:&#x2F;&#x2F;chenx6.github.io&#x2F;post&#x2F;rewrite_ollvm_fla&#x2F;#refs&quot;&gt;cq674350529&#x2F;deflat&lt;&#x2F;a&gt; 使用了 angr 进行实现。&lt;&#x2F;p&gt;
+&lt;p&gt;在 &lt;a href=&quot;https:&#x2F;&#x2F;chenx6.uk&#x2F;post&#x2F;rewrite_ollvm_fla&#x2F;#refs&quot;&gt;利用符号执行去除控制流平坦化&lt;&#x2F;a&gt; 讲解了恢复控制流平坦化的方法，并且在 &lt;a href=&quot;https:&#x2F;&#x2F;chenx6.uk&#x2F;post&#x2F;rewrite_ollvm_fla&#x2F;#refs&quot;&gt;cq674350529&#x2F;deflat&lt;&#x2F;a&gt; 使用了 angr 进行实现。&lt;&#x2F;p&gt;
 &lt;p&gt;这里引用腾讯 SRC 的思路概括&lt;&#x2F;p&gt;
 &lt;blockquote&gt;
 &lt;ol&gt;
@@ -1067,7 +1067,7 @@
 &lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;ConstantInt &lt;&#x2F;span&gt;&lt;span style=&quot;color: light-dark(#39ADB5, #89DDFF);&quot;&gt;*&lt;&#x2F;span&gt;&lt;span&gt;caseCond &lt;&#x2F;span&gt;&lt;span style=&quot;color: light-dark(#39ADB5, #89DDFF);&quot;&gt;=&lt;&#x2F;span&gt;&lt;span&gt; swInst&lt;&#x2F;span&gt;&lt;span style=&quot;color: light-dark(#39ADB5, #89DDFF);&quot;&gt;-&amp;gt;&lt;&#x2F;span&gt;&lt;span style=&quot;color: light-dark(#6182B8, #82AAFF);&quot;&gt;findCaseDest&lt;&#x2F;span&gt;&lt;span style=&quot;color: light-dark(#39ADB5, #89DDFF);&quot;&gt;(&lt;&#x2F;span&gt;&lt;span style=&quot;color: light-dark(#39ADB5, #89DDFF);&quot;&gt;*&lt;&#x2F;span&gt;&lt;span&gt;originBB&lt;&#x2F;span&gt;&lt;span style=&quot;color: light-dark(#39ADB5, #89DDFF);&quot;&gt;.&lt;&#x2F;span&gt;&lt;span style=&quot;color: light-dark(#6182B8, #82AAFF);&quot;&gt;begin&lt;&#x2F;span&gt;&lt;span style=&quot;color: light-dark(#39ADB5, #89DDFF);&quot;&gt;(&lt;&#x2F;span&gt;&lt;span style=&quot;color: light-dark(#39ADB5, #89DDFF);&quot;&gt;)&lt;&#x2F;span&gt;&lt;span style=&quot;color: light-dark(#39ADB5, #89DDFF);&quot;&gt;)&lt;&#x2F;span&gt;&lt;span style=&quot;color: light-dark(#39ADB5, #89DDFF);&quot;&gt;;&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
 &lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;storeRng&lt;&#x2F;span&gt;&lt;span style=&quot;color: light-dark(#39ADB5, #89DDFF);&quot;&gt;-&amp;gt;&lt;&#x2F;span&gt;&lt;span style=&quot;color: light-dark(#6182B8, #82AAFF);&quot;&gt;setOperand&lt;&#x2F;span&gt;&lt;span style=&quot;color: light-dark(#39ADB5, #89DDFF);&quot;&gt;(&lt;&#x2F;span&gt;&lt;span style=&quot;color: light-dark(#F76D47, #F78C6C);&quot;&gt;0&lt;&#x2F;span&gt;&lt;span style=&quot;color: light-dark(#39ADB5, #89DDFF);&quot;&gt;,&lt;&#x2F;span&gt;&lt;span&gt; caseCond&lt;&#x2F;span&gt;&lt;span style=&quot;color: light-dark(#39ADB5, #89DDFF);&quot;&gt;)&lt;&#x2F;span&gt;&lt;span style=&quot;color: light-dark(#39ADB5, #89DDFF);&quot;&gt;;&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
 &lt;blockquote&gt;
-&lt;p&gt;图请参考 &lt;a href=&quot;https:&#x2F;&#x2F;chenx6.github.io&#x2F;post&#x2F;rewrite_ollvm_fla&#x2F;#refs&quot;&gt;Obfuscator-llvm源码分析&lt;&#x2F;a&gt;，用 ASCII 画图有点麻烦...&lt;&#x2F;p&gt;
+&lt;p&gt;图请参考 &lt;a href=&quot;https:&#x2F;&#x2F;chenx6.uk&#x2F;post&#x2F;rewrite_ollvm_fla&#x2F;#refs&quot;&gt;Obfuscator-llvm源码分析&lt;&#x2F;a&gt;，用 ASCII 画图有点麻烦...&lt;&#x2F;p&gt;
 &lt;&#x2F;blockquote&gt;
 &lt;h2 id=&quot;总结&quot;&gt;总结&lt;&#x2F;h2&gt;
 &lt;p&gt;这个控制流平坦化的代码数量也不多，而且程序的逻辑在理清后很容易理解，所以文章的篇幅很短。&lt;&#x2F;p&gt;
@@ -1093,10 +1093,10 @@
           </name>
         </author>
         
-        <link rel="alternate" type="text/html" href="https://chenx6.github.io/post/codeql/"/>
-        <id>https://chenx6.github.io/post/codeql/</id>
+        <link rel="alternate" type="text/html" href="https://chenx6.uk/post/codeql/"/>
+        <id>https://chenx6.uk/post/codeql/</id>
         
-        <content type="html" xml:base="https://chenx6.github.io/post/codeql/">&lt;h2 id=&quot;概要&quot;&gt;概要&lt;&#x2F;h2&gt;
+        <content type="html" xml:base="https://chenx6.uk/post/codeql/">&lt;h2 id=&quot;概要&quot;&gt;概要&lt;&#x2F;h2&gt;
 &lt;p&gt;之前在 Twitter 上看到有大佬说 Github Learning Club 上搞了个免费的 CodeQL 课程，课程最终目标是使用 CodeQL 这个语言找出 uboot 中的 9 个漏洞。我在克服拖延症后，终于在 4 月底完成了这个课程，于是写文记录。&lt;&#x2F;p&gt;
 &lt;p&gt;&lt;a rel=&quot;external&quot; href=&quot;https:&#x2F;&#x2F;lab.github.com&#x2F;githubtraining&#x2F;codeql-u-boot-challenge-(cc++)&quot;&gt;课程链接&lt;&#x2F;a&gt;&lt;&#x2F;p&gt;
 &lt;p&gt;&lt;a rel=&quot;external&quot; href=&quot;https:&#x2F;&#x2F;securitylab.github.com&#x2F;research&#x2F;uboot-rce-nfs-vulnerability&quot;&gt;通过 CodeQL 找出来的漏洞分析&lt;&#x2F;a&gt;&lt;&#x2F;p&gt;
@@ -1248,10 +1248,10 @@
           </name>
         </author>
         
-        <link rel="alternate" type="text/html" href="https://chenx6.github.io/post/build_pass_out_of_tree/"/>
-        <id>https://chenx6.github.io/post/build_pass_out_of_tree/</id>
+        <link rel="alternate" type="text/html" href="https://chenx6.uk/post/build_pass_out_of_tree/"/>
+        <id>https://chenx6.uk/post/build_pass_out_of_tree/</id>
         
-        <content type="html" xml:base="https://chenx6.github.io/post/build_pass_out_of_tree/">&lt;p&gt;在网络上流传的编译 LLVM Pass 都需要一份 LLVM 源码，从整个源代码编译，编译非常花时间 (i7 6700HQ 使用 &lt;code&gt;make -j8&lt;&#x2F;code&gt; 编译整个项目花了近 50 分钟)，所以在翻阅文档时发现 LLVM 支持在代码树外编译，在 1 分钟内编译一个 Pass，还是非常香的。&lt;&#x2F;p&gt;
+        <content type="html" xml:base="https://chenx6.uk/post/build_pass_out_of_tree/">&lt;p&gt;在网络上流传的编译 LLVM Pass 都需要一份 LLVM 源码，从整个源代码编译，编译非常花时间 (i7 6700HQ 使用 &lt;code&gt;make -j8&lt;&#x2F;code&gt; 编译整个项目花了近 50 分钟)，所以在翻阅文档时发现 LLVM 支持在代码树外编译，在 1 分钟内编译一个 Pass，还是非常香的。&lt;&#x2F;p&gt;
 &lt;h2 id=&quot;项目配置&quot;&gt;项目配置&lt;&#x2F;h2&gt;
 &lt;h3 id=&quot;项目目录结构&quot;&gt;项目目录结构&lt;&#x2F;h3&gt;
 &lt;p&gt;本次作为示范的 OLLVM 是一个使用 LLVM Pass 进行代码混淆的项目。他的主要文件在于 &lt;code&gt;${LLVM 项目目录}&#x2F;lib&#x2F;Transforms&#x2F;Obfuscation&#x2F;&lt;&#x2F;code&gt; 和 &lt;code&gt;${LLVM 项目目录}&#x2F;include&#x2F;llvm&#x2F;Transforms&#x2F;Obfuscation&#x2F;&lt;&#x2F;code&gt;。将这两个目录下的文件放入对应的目录就可以在代码树外编译 OLLVM 了。OLLVM 相关的文件可以在 &lt;a rel=&quot;external&quot; href=&quot;https:&#x2F;&#x2F;github.com&#x2F;obfuscator-llvm&#x2F;&#x2F;obfuscator&#x2F;tree&#x2F;llvm-4.0&quot;&gt;GitHub&lt;&#x2F;a&gt; 找到。&lt;&#x2F;p&gt;
@@ -1553,10 +1553,10 @@
           </name>
         </author>
         
-        <link rel="alternate" type="text/html" href="https://chenx6.github.io/post/elf_backdoor/"/>
-        <id>https://chenx6.github.io/post/elf_backdoor/</id>
+        <link rel="alternate" type="text/html" href="https://chenx6.uk/post/elf_backdoor/"/>
+        <id>https://chenx6.uk/post/elf_backdoor/</id>
         
-        <content type="html" xml:base="https://chenx6.github.io/post/elf_backdoor/">&lt;p&gt;在渗透测试中，给常用的可执行文件加上后门是很常见的操作。但是之前的加后门 &quot;The backdoor factory&quot; 已经不维护了，而且还是 Python2 写的，代码质量也...所以我自己尝试着重新用 Python3 造了个轮子。在造轮子的过程中，由于 APUE 扔在学校里面了，导致在写和系统相关的汇编时出现了一些翻车情况...&lt;&#x2F;p&gt;
+        <content type="html" xml:base="https://chenx6.uk/post/elf_backdoor/">&lt;p&gt;在渗透测试中，给常用的可执行文件加上后门是很常见的操作。但是之前的加后门 &quot;The backdoor factory&quot; 已经不维护了，而且还是 Python2 写的，代码质量也...所以我自己尝试着重新用 Python3 造了个轮子。在造轮子的过程中，由于 APUE 扔在学校里面了，导致在写和系统相关的汇编时出现了一些翻车情况...&lt;&#x2F;p&gt;
 &lt;h2 id=&quot;加后门的流程&quot;&gt;加后门的流程&lt;&#x2F;h2&gt;
 &lt;p&gt;基本分为两部分，先分析 ELF，然后根据之前的分析来给 ELF 加个&quot;补丁&quot;。&lt;&#x2F;p&gt;
 &lt;ol&gt;
@@ -1816,10 +1816,10 @@
           </name>
         </author>
         
-        <link rel="alternate" type="text/html" href="https://chenx6.github.io/post/obfuscate_string/"/>
-        <id>https://chenx6.github.io/post/obfuscate_string/</id>
+        <link rel="alternate" type="text/html" href="https://chenx6.uk/post/obfuscate_string/"/>
+        <id>https://chenx6.uk/post/obfuscate_string/</id>
         
-        <content type="html" xml:base="https://chenx6.github.io/post/obfuscate_string/">&lt;p&gt;这个项目可以作为我看了这么久 LLVM 的 Docs 助眠的一个小总结吧。这个项目主要就是给函数使用的常量字符串进行加密，在程序被静态分析的时候干扰分析。当然找到思路后，这个混淆还是很容易解开的。&lt;&#x2F;p&gt;
+        <content type="html" xml:base="https://chenx6.uk/post/obfuscate_string/">&lt;p&gt;这个项目可以作为我看了这么久 LLVM 的 Docs 助眠的一个小总结吧。这个项目主要就是给函数使用的常量字符串进行加密，在程序被静态分析的时候干扰分析。当然找到思路后，这个混淆还是很容易解开的。&lt;&#x2F;p&gt;
 &lt;blockquote&gt;
 &lt;p&gt;吐槽下，网上的文章质量参差不齐，写的让人不知所云的，真的恐怖。所以还是面向 Stackoverflow 和官方文档编程吧...&lt;&#x2F;p&gt;
 &lt;&#x2F;blockquote&gt;
@@ -2233,10 +2233,10 @@
           </name>
         </author>
         
-        <link rel="alternate" type="text/html" href="https://chenx6.github.io/post/rewrite_ollvm_bcf/"/>
-        <id>https://chenx6.github.io/post/rewrite_ollvm_bcf/</id>
+        <link rel="alternate" type="text/html" href="https://chenx6.uk/post/rewrite_ollvm_bcf/"/>
+        <id>https://chenx6.uk/post/rewrite_ollvm_bcf/</id>
         
-        <content type="html" xml:base="https://chenx6.github.io/post/rewrite_ollvm_bcf/">&lt;p&gt;由于我个人觉得 OLLVM 的代码年久失修，所以就新建了个项目，开始学习并重写 OLLVM。项目地址：&lt;a rel=&quot;external&quot; href=&quot;https:&#x2F;&#x2F;github.com&#x2F;chenx6&#x2F;baby_obfuscator&quot;&gt;https:&#x2F;&#x2F;github.com&#x2F;chenx6&#x2F;baby_obfuscator&lt;&#x2F;a&gt;。如果将我的重写项目和 OLLVM 相比的话，我的项目的优点就是编译比较快（编译整个项目只需要不到 1 分钟），代码比较“新”吧...&lt;&#x2F;p&gt;
+        <content type="html" xml:base="https://chenx6.uk/post/rewrite_ollvm_bcf/">&lt;p&gt;由于我个人觉得 OLLVM 的代码年久失修，所以就新建了个项目，开始学习并重写 OLLVM。项目地址：&lt;a rel=&quot;external&quot; href=&quot;https:&#x2F;&#x2F;github.com&#x2F;chenx6&#x2F;baby_obfuscator&quot;&gt;https:&#x2F;&#x2F;github.com&#x2F;chenx6&#x2F;baby_obfuscator&lt;&#x2F;a&gt;。如果将我的重写项目和 OLLVM 相比的话，我的项目的优点就是编译比较快（编译整个项目只需要不到 1 分钟），代码比较“新”吧...&lt;&#x2F;p&gt;
 &lt;p&gt;下面讲讲我个人重写虚假控制流的思路，以及对其他项目中相同功能的理解。&lt;&#x2F;p&gt;
 &lt;h2 id=&quot;什么是虚假控制流_(Bogus_control_flow)&quot;&gt;什么是虚假控制流 (Bogus control flow)&lt;&#x2F;h2&gt;
 &lt;p&gt;在讲解虚假控制流时，我们先解释一些名词，然后看下流程表示就可以知道大概了。&lt;&#x2F;p&gt;

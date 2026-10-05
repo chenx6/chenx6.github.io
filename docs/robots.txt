@@ -1,4 +1,4 @@
 User-agent: *
 Disallow:
 Allow: /
-Sitemap: https://chenx6.github.io/sitemap.xml
+Sitemap: https://chenx6.uk/sitemap.xml

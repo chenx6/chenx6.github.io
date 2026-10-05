@@ -2,11 +2,11 @@
 <feed xmlns="http://www.w3.org/2005/Atom" xml:lang="zh_CN">
     <title>二进制咸鱼的自我救赎 - nix</title>
     <subtitle>幸福往往是摸的透彻，而敬业的心却常常隐藏。</subtitle>
-    <link rel="self" type="application/atom+xml" href="https://chenx6.github.io/tags/nix/atom.xml"/>
-    <link rel="alternate" type="text/html" href="https://chenx6.github.io/"/>
+    <link rel="self" type="application/atom+xml" href="https://chenx6.uk/tags/nix/atom.xml"/>
+    <link rel="alternate" type="text/html" href="https://chenx6.uk"/>
     <generator uri="https://www.getzola.org/">Zola</generator>
     <updated>2024-03-23T00:00:00+00:00</updated>
-    <id>https://chenx6.github.io/tags/nix/atom.xml</id>
+    <id>https://chenx6.uk/tags/nix/atom.xml</id>
     <entry xml:lang="zh_CN">
         <title>低成本体验 Nix 之 nix-on-droid</title>
         <published>2024-03-23T00:00:00+00:00</published>
@@ -20,10 +20,10 @@
           </name>
         </author>
         
-        <link rel="alternate" type="text/html" href="https://chenx6.github.io/post/nix-on-droid/"/>
-        <id>https://chenx6.github.io/post/nix-on-droid/</id>
+        <link rel="alternate" type="text/html" href="https://chenx6.uk/post/nix-on-droid/"/>
+        <id>https://chenx6.uk/post/nix-on-droid/</id>
         
-        <content type="html" xml:base="https://chenx6.github.io/post/nix-on-droid/">&lt;p&gt;对 Linux 感兴趣的用户应该会接触过很多奇怪的 Linux 发行版，例如使用声明式配置文件配置系统的 NixOS，通过一套配置文件就可以搭建起来一个系统。但是 NixOS 的安装和学习曲线都算比较陡峭的，在互联网冲浪的时候，发现有个 &lt;a rel=&quot;external&quot; href=&quot;https:&#x2F;&#x2F;github.com&#x2F;nix-community&#x2F;nix-on-droid&quot;&gt;nix-on-droid&lt;&#x2F;a&gt; 项目，可以在安卓系统上搭建起一个迷你版本的 Nix 环境，所以就下载体验了一波，并写文记录使用。&lt;&#x2F;p&gt;
+        <content type="html" xml:base="https://chenx6.uk/post/nix-on-droid/">&lt;p&gt;对 Linux 感兴趣的用户应该会接触过很多奇怪的 Linux 发行版，例如使用声明式配置文件配置系统的 NixOS，通过一套配置文件就可以搭建起来一个系统。但是 NixOS 的安装和学习曲线都算比较陡峭的，在互联网冲浪的时候，发现有个 &lt;a rel=&quot;external&quot; href=&quot;https:&#x2F;&#x2F;github.com&#x2F;nix-community&#x2F;nix-on-droid&quot;&gt;nix-on-droid&lt;&#x2F;a&gt; 项目，可以在安卓系统上搭建起一个迷你版本的 Nix 环境，所以就下载体验了一波，并写文记录使用。&lt;&#x2F;p&gt;
 &lt;h2 id=&quot;安装&quot;&gt;安装&lt;&#x2F;h2&gt;
 &lt;p&gt;通过 F-Droid 就可以下载项目的 APK 安装包，安装 APK 之后会进行初始化，该项目会自动从网上下载一个初始化的镜像并进行初始化，在下载和安装完之后就会进入系统了。&lt;&#x2F;p&gt;
 &lt;h2 id=&quot;Nix_语言简易教程&quot;&gt;Nix 语言简易教程&lt;&#x2F;h2&gt;
@@ -71,7 +71,7 @@
 &lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: light-dark(#9C3EDA, #C792EA);&quot;&gt;  imports&lt;&#x2F;span&gt;&lt;span style=&quot;color: light-dark(#39ADB5, #89DDFF);&quot;&gt; =&lt;&#x2F;span&gt;&lt;span style=&quot;color: light-dark(#39ADB5, #89DDFF);&quot;&gt; [&lt;&#x2F;span&gt;&lt;span style=&quot;color: light-dark(#91B859, #C3E88D);&quot;&gt; .&#x2F;kde.nix&lt;&#x2F;span&gt;&lt;span style=&quot;color: light-dark(#39ADB5, #89DDFF);&quot;&gt; ]&lt;&#x2F;span&gt;&lt;span style=&quot;color: light-dark(#39ADB5, #89DDFF);&quot;&gt;;&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
 &lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;  .&lt;&#x2F;span&gt;&lt;span&gt;.&lt;&#x2F;span&gt;&lt;span&gt;.&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
 &lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: light-dark(#39ADB5, #89DDFF);&quot;&gt;}&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;&lt;h3 id=&quot;其他&quot;&gt;其他&lt;&#x2F;h3&gt;
-&lt;p&gt;上面是一些常见的概念，NixOS 还可以做到修改包的默认配置，添加自定义的包等功能，这些功能请查询 &lt;a href=&quot;https:&#x2F;&#x2F;chenx6.github.io&#x2F;post&#x2F;nix-on-droid&#x2F;#refs&quot;&gt;Refs&lt;&#x2F;a&gt; 中提到的官方文档。&lt;&#x2F;p&gt;
+&lt;p&gt;上面是一些常见的概念，NixOS 还可以做到修改包的默认配置，添加自定义的包等功能，这些功能请查询 &lt;a href=&quot;https:&#x2F;&#x2F;chenx6.uk&#x2F;post&#x2F;nix-on-droid&#x2F;#refs&quot;&gt;Refs&lt;&#x2F;a&gt; 中提到的官方文档。&lt;&#x2F;p&gt;
 &lt;h2 id=&quot;实战&quot;&gt;实战&lt;&#x2F;h2&gt;
 &lt;h3 id=&quot;使用_nix-shell_来创建开发环境&quot;&gt;使用 nix-shell 来创建开发环境&lt;&#x2F;h3&gt;
 &lt;p&gt;我平时用 Python 来写一些脚本时，需要一个开发环境。这时候就可以通过 nix-shell 命令和相关配置来配置所需要的软件和包。&lt;&#x2F;p&gt;

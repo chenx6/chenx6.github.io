@@ -2,11 +2,11 @@
 <feed xmlns="http://www.w3.org/2005/Atom" xml:lang="zh_CN">
     <title>二进制咸鱼的自我救赎 - python</title>
     <subtitle>幸福往往是摸的透彻，而敬业的心却常常隐藏。</subtitle>
-    <link rel="self" type="application/atom+xml" href="https://chenx6.github.io/tags/python/atom.xml"/>
-    <link rel="alternate" type="text/html" href="https://chenx6.github.io/"/>
+    <link rel="self" type="application/atom+xml" href="https://chenx6.uk/tags/python/atom.xml"/>
+    <link rel="alternate" type="text/html" href="https://chenx6.uk"/>
     <generator uri="https://www.getzola.org/">Zola</generator>
     <updated>2025-12-31T00:00:00+00:00</updated>
-    <id>https://chenx6.github.io/tags/python/atom.xml</id>
+    <id>https://chenx6.uk/tags/python/atom.xml</id>
     <entry xml:lang="zh_CN">
         <title>Advent of Code 2025 完赛记录</title>
         <published>2025-12-31T00:00:00+00:00</published>
@@ -20,10 +20,10 @@
           </name>
         </author>
         
-        <link rel="alternate" type="text/html" href="https://chenx6.github.io/post/aoc_2025/"/>
-        <id>https://chenx6.github.io/post/aoc_2025/</id>
+        <link rel="alternate" type="text/html" href="https://chenx6.uk/post/aoc_2025/"/>
+        <id>https://chenx6.uk/post/aoc_2025/</id>
         
-        <content type="html" xml:base="https://chenx6.github.io/post/aoc_2025/">&lt;p&gt;连续几年都参加了 AOC，但是没有一年能完赛，今年终于完成了比赛。今年的题目不会很难，而且题量缩减，再加上大模型也能给一点思路（其实用大模型写代码的话估计可以秒杀很多题目，但是我没有这么用），所以还是能做完的。这篇文章主要讲一下里面用到了一些算法的地方。&lt;&#x2F;p&gt;
+        <content type="html" xml:base="https://chenx6.uk/post/aoc_2025/">&lt;p&gt;连续几年都参加了 AOC，但是没有一年能完赛，今年终于完成了比赛。今年的题目不会很难，而且题量缩减，再加上大模型也能给一点思路（其实用大模型写代码的话估计可以秒杀很多题目，但是我没有这么用），所以还是能做完的。这篇文章主要讲一下里面用到了一些算法的地方。&lt;&#x2F;p&gt;
 &lt;h2 id=&quot;Day5_Part2&quot;&gt;Day5 Part2&lt;&#x2F;h2&gt;
 &lt;p&gt;题目可以理解为找出给定的所有区间内的整数。而且也给了提示区间是有重复的，所以我们遍历所有区间，来不断的合并重复的区间，并删除原本的区间，直到没有线段可以合并，说明合并完成。假设两个区间分别 &lt;code&gt;(start, end)&lt;&#x2F;code&gt; 和 &lt;code&gt;(a_start, a_end)&lt;&#x2F;code&gt;，判断在 x 轴上重合可以用 &lt;code&gt;max(start, a_start) &amp;lt;= min(end, a_end)&lt;&#x2F;code&gt; 这个公式来判断。&lt;&#x2F;p&gt;
 &lt;pre class=&quot;giallo&quot; style=&quot;color-scheme: light dark; color: light-dark(#90A4AE, #BABED8); background-color: light-dark(#FAFAFA, #292D3E);&quot;&gt;&lt;code data-lang=&quot;python&quot;&gt;&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: light-dark(#9C3EDA, #C792EA);&quot;&gt;def&lt;&#x2F;span&gt;&lt;span style=&quot;color: light-dark(#6182B8, #82AAFF);&quot;&gt; solve_p2&lt;&#x2F;span&gt;&lt;span style=&quot;color: light-dark(#39ADB5, #89DDFF);&quot;&gt;(&lt;&#x2F;span&gt;&lt;span style=&quot;font-style: italic;&quot;&gt;lines&lt;&#x2F;span&gt;&lt;span style=&quot;color: light-dark(#39ADB5, #89DDFF);&quot;&gt;:&lt;&#x2F;span&gt;&lt;span&gt; list&lt;&#x2F;span&gt;&lt;span style=&quot;color: light-dark(#39ADB5, #89DDFF);&quot;&gt;[&lt;&#x2F;span&gt;&lt;span style=&quot;color: light-dark(#E2931D, #FFCB6B);&quot;&gt;str&lt;&#x2F;span&gt;&lt;span style=&quot;color: light-dark(#39ADB5, #89DDFF);&quot;&gt;]&lt;&#x2F;span&gt;&lt;span style=&quot;color: light-dark(#39ADB5, #89DDFF);&quot;&gt;)&lt;&#x2F;span&gt;&lt;span style=&quot;color: light-dark(#39ADB5, #89DDFF);&quot;&gt;:&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
@@ -284,10 +284,10 @@
           </name>
         </author>
         
-        <link rel="alternate" type="text/html" href="https://chenx6.github.io/post/pyinfra/"/>
-        <id>https://chenx6.github.io/post/pyinfra/</id>
+        <link rel="alternate" type="text/html" href="https://chenx6.uk/post/pyinfra/"/>
+        <id>https://chenx6.uk/post/pyinfra/</id>
         
-        <content type="html" xml:base="https://chenx6.github.io/post/pyinfra/">&lt;p&gt;每次购买新服务器都要手动配置一堆的基础服务，而且配置过程太无聊了。经过研究和试验之后发现：通过 shell 脚本去执行配置就要被 shell script 的很多坑爹细节坑到，而且 shell script 本身功能有有限，还是需要借助一些外部软件来实现更多功能；ansible 配置太复杂，而且我个人不喜欢 yaml 格式，觉得这格式过于奇葩；Nix 学习成本高，而且比较占磁盘空间。&lt;&#x2F;p&gt;
+        <content type="html" xml:base="https://chenx6.uk/post/pyinfra/">&lt;p&gt;每次购买新服务器都要手动配置一堆的基础服务，而且配置过程太无聊了。经过研究和试验之后发现：通过 shell 脚本去执行配置就要被 shell script 的很多坑爹细节坑到，而且 shell script 本身功能有有限，还是需要借助一些外部软件来实现更多功能；ansible 配置太复杂，而且我个人不喜欢 yaml 格式，觉得这格式过于奇葩；Nix 学习成本高，而且比较占磁盘空间。&lt;&#x2F;p&gt;
 &lt;p&gt;有一天，我在 Hacker News 上刷到了 &lt;a rel=&quot;external&quot; href=&quot;https:&#x2F;&#x2F;pyinfra.com&#x2F;&quot;&gt;pyinfra&lt;&#x2F;a&gt; 这个软件，可以通过 Python 代码进行声明式的配置系统。不觉得很酷吗？作为一个懒狗，我觉得这太酷了，很符合我对自动化运维的想象。&lt;&#x2F;p&gt;
 &lt;h2 id=&quot;基本概念&quot;&gt;基本概念&lt;&#x2F;h2&gt;
 &lt;p&gt;安装 pyinfra 很简单，使用 &lt;code&gt;pipx install pyinfra&lt;&#x2F;code&gt; 就完成安装了。&lt;&#x2F;p&gt;
@@ -441,10 +441,10 @@
           </name>
         </author>
         
-        <link rel="alternate" type="text/html" href="https://chenx6.github.io/post/gdb_py/"/>
-        <id>https://chenx6.github.io/post/gdb_py/</id>
+        <link rel="alternate" type="text/html" href="https://chenx6.uk/post/gdb_py/"/>
+        <id>https://chenx6.uk/post/gdb_py/</id>
         
-        <content type="html" xml:base="https://chenx6.github.io/post/gdb_py/">&lt;p&gt;在工作中碰到了很多地方只能用 gdb 进行调试，并且得进行很多冗余的操作。经过资料查询后发现，可以使用 Python 对 gdb 进行 api 调用，但是网上相关文档比较的少，所以本文将记录一些相关操作。&lt;&#x2F;p&gt;
+        <content type="html" xml:base="https://chenx6.uk/post/gdb_py/">&lt;p&gt;在工作中碰到了很多地方只能用 gdb 进行调试，并且得进行很多冗余的操作。经过资料查询后发现，可以使用 Python 对 gdb 进行 api 调用，但是网上相关文档比较的少，所以本文将记录一些相关操作。&lt;&#x2F;p&gt;
 &lt;h2 id=&quot;相关_API_介绍&quot;&gt;相关 API 介绍&lt;&#x2F;h2&gt;
 &lt;h3 id=&quot;基本操作&quot;&gt;基本操作&lt;&#x2F;h3&gt;
 &lt;p&gt;&lt;code&gt;gdb.execute (command [, from_tty [, to_string]])&lt;&#x2F;code&gt; 执行 gdb 命令。&lt;&#x2F;p&gt;
@@ -535,10 +535,10 @@
           </name>
         </author>
         
-        <link rel="alternate" type="text/html" href="https://chenx6.github.io/post/parser_combinator/"/>
-        <id>https://chenx6.github.io/post/parser_combinator/</id>
+        <link rel="alternate" type="text/html" href="https://chenx6.uk/post/parser_combinator/"/>
+        <id>https://chenx6.uk/post/parser_combinator/</id>
         
-        <content type="html" xml:base="https://chenx6.github.io/post/parser_combinator/">&lt;p&gt;因为我是骑自行车上下班的，对风向和风速很敏感，然后我住的离机场比较近，于是我想通过机场的天气状况判断下我的通勤是否容易。在翻阅资料后，发现机场的天气是使用 METAR 报文进行发送的，所以我将尝试用 Parser combinator 对报文进行解析，来获得天气状况。&lt;&#x2F;p&gt;
+        <content type="html" xml:base="https://chenx6.uk/post/parser_combinator/">&lt;p&gt;因为我是骑自行车上下班的，对风向和风速很敏感，然后我住的离机场比较近，于是我想通过机场的天气状况判断下我的通勤是否容易。在翻阅资料后，发现机场的天气是使用 METAR 报文进行发送的，所以我将尝试用 Parser combinator 对报文进行解析，来获得天气状况。&lt;&#x2F;p&gt;
 &lt;p&gt;本文采用的是 Python 进行编程，因为 Python 明显会比 Haskell 和 Rust 简单易读，Python 的缺点就是 lambda 函数很菜。&lt;&#x2F;p&gt;
 &lt;blockquote&gt;
 &lt;p&gt;在写文章的时候发现我写的 parser 解析的信息不够完全，所以这个 parser 只供学习使用，请勿用于生产环境！&lt;&#x2F;p&gt;
@@ -756,10 +756,10 @@
           </name>
         </author>
         
-        <link rel="alternate" type="text/html" href="https://chenx6.github.io/post/meterpreter/"/>
-        <id>https://chenx6.github.io/post/meterpreter/</id>
+        <link rel="alternate" type="text/html" href="https://chenx6.uk/post/meterpreter/"/>
+        <id>https://chenx6.uk/post/meterpreter/</id>
         
-        <content type="html" xml:base="https://chenx6.github.io/post/meterpreter/">&lt;p&gt;meterpreter 是 metasploit 里自带的一款远程控制工具，具有正向&#x2F;反向连接模式，并且功能强大，所以想分析下其实现。&lt;&#x2F;p&gt;
+        <content type="html" xml:base="https://chenx6.uk/post/meterpreter/">&lt;p&gt;meterpreter 是 metasploit 里自带的一款远程控制工具，具有正向&#x2F;反向连接模式，并且功能强大，所以想分析下其实现。&lt;&#x2F;p&gt;
 &lt;ul&gt;
 &lt;li&gt;2022-10-23 初版博文发布&lt;&#x2F;li&gt;
 &lt;li&gt;2023-01-21 加入端口转发功能的实现分析&lt;&#x2F;li&gt;
@@ -1068,10 +1068,10 @@
           </name>
         </author>
         
-        <link rel="alternate" type="text/html" href="https://chenx6.github.io/post/from_log/"/>
-        <id>https://chenx6.github.io/post/from_log/</id>
+        <link rel="alternate" type="text/html" href="https://chenx6.uk/post/from_log/"/>
+        <id>https://chenx6.uk/post/from_log/</id>
         
-        <content type="html" xml:base="https://chenx6.github.io/post/from_log/">&lt;p&gt;2023-03-12 更新：添加了使用 &lt;code&gt;ida_hexrays.decompile&lt;&#x2F;code&gt; 的方法&lt;&#x2F;p&gt;
+        <content type="html" xml:base="https://chenx6.uk/post/from_log/">&lt;p&gt;2023-03-12 更新：添加了使用 &lt;code&gt;ida_hexrays.decompile&lt;&#x2F;code&gt; 的方法&lt;&#x2F;p&gt;
 &lt;p&gt;在逆向二进制程序中，经常碰到将程序 strip 了，但是日志函数中保留着函数名字的情况。所以写文记录在这种情况下，使用 IDAPython 恢复函数名字的过程。&lt;&#x2F;p&gt;
 &lt;h2 id=&quot;日志函数长什么样&quot;&gt;日志函数长什么样&lt;&#x2F;h2&gt;
 &lt;p&gt;下面是我手写的一个日志函数。主要有几个部分：&lt;&#x2F;p&gt;

