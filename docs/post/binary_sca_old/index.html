@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="zh-hans">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" href="data:;base64,iVBORw0KGgo=">
+  <title>恢复一个可执行文件中的函数名 -- 守旧派方法 - 二进制咸鱼的自我救赎</title>
+  <link rel="stylesheet" href="https://chenx6.uk/water.min.css">
+  <link rel="stylesheet" type="text/css" href="/syntax-theme-dark.css" media="(prefers-color-scheme: dark)">
+  <link rel="stylesheet" type="text/css" href="/syntax-theme-light.css" media="(prefers-color-scheme: light)">
+  <link rel="stylesheet" href="https://chenx6.uk/custom.css">
+  
+  <link rel="alternate" type="application/atom+xml" title="RSS" href="https://chenx6.uk/atom.xml">
+  
+
+  
+  
+
+</head>
+
+<body>
+  <header>
+    <a href="https:&#x2F;&#x2F;chenx6.uk"><h1>二进制咸鱼的自我救赎</h1></a>
+    
+    <p class="lead">幸福往往是摸的透彻，而敬业的心却常常隐藏。</p>
+    
+    
+      <a href="https:&#x2F;&#x2F;chenx6.uk&#x2F;about">
+        About
+      </a>
+    
+    
+    <a href="https://chenx6.uk/atom.xml">RSS</a>
+    
+  </header>
+  
+<div class="container">
+  <div class="post">
+    <h2 class="post-title">恢复一个可执行文件中的函数名 -- 守旧派方法</h2>
+    <span class="post-date">2026-10-09</span>
+    
+  
+    
+      <a href="https://chenx6.uk/tags/re/">#re</a>
+    
+  
+
+    <aside class="toc">
+      
+      <details>
+        <summary>Table of contents</summary>
+        <ul>
+          
+          <li>
+            <a href="https://chenx6.uk/post/binary_sca_old/#现有的恢复方法">现有的恢复方法</a>
+            
+          </li>
+          
+          <li>
+            <a href="https://chenx6.uk/post/binary_sca_old/#主要思路">主要思路</a>
+            
+          </li>
+          
+          <li>
+            <a href="https://chenx6.uk/post/binary_sca_old/#具体实现">具体实现</a>
+            
+            <ul>
+              
+              <li>
+                <a href="https://chenx6.uk/post/binary_sca_old/#数据库设计">数据库设计</a>
+              </li>
+              
+              <li>
+                <a href="https://chenx6.uk/post/binary_sca_old/#提取特征和函数之间的关系">提取特征和函数之间的关系</a>
+              </li>
+              
+              <li>
+                <a href="https://chenx6.uk/post/binary_sca_old/#查找提取出来的特征">查找提取出来的特征</a>
+              </li>
+              
+            </ul>
+            
+          </li>
+          
+          <li>
+            <a href="https://chenx6.uk/post/binary_sca_old/#效果">效果</a>
+            
+          </li>
+          
+          <li>
+            <a href="https://chenx6.uk/post/binary_sca_old/#总结">总结</a>
+            
+          </li>
+          
+          <li>
+            <a href="https://chenx6.uk/post/binary_sca_old/#Refs">Refs</a>
+            
+          </li>
+          
+        </ul>
+      </details>
+      
+    </aside>
+    <p>在逆向工程中，有时候对着一个开源库分析了半天，然后才发现这是一个开源库，会让人非常懊恼。所以我研究了一下多种恢复函数的方法，对比这些方法的性能，效果等方面。这篇文章先讲述传统方法：通过固定特征和函数之间的关系来恢复函数名字。</p>
+<h2 id="现有的恢复方法">现有的恢复方法</h2>
+<ul>
+<li>通过固定特征，例如常量，字符串等特征。优点在于对于不同优化等级，架构产生的可执行文件中，这些特征变化不大。缺点在于有些开源库固定特征不明显，这时候没法检测。这个方法是 BDBA <sup class="footnote-reference"><a href="#1">1</a></sup> 正在使用的方法。</li>
+<li>通过图相似性。优点在于市面上较多实现。缺点在于图神经网络的训练较为困难，并且对于不同优化等级的二进制文件识别不好，而且可扩展性未知。这个方法在学术界使用较多。</li>
+<li>通过对反编译后的代码进行 RAG。优点在于借助大模型，可以对不同优化等级和架构的文件进行分析。缺点在于分析速度较慢，需要进行反编译，Embedding, 查找等步骤。这个方法是腾讯的 BinaryAI 正在使用的方法。</li>
+<li>符号执行，向量搜索等等更新的方法。</li>
+</ul>
+<p>在这篇文章里，我将尝试第一种“守旧派”方法。</p>
+<h2 id="主要思路">主要思路</h2>
+<p>主要分为两部分，收集特征和检测特征。收集特征使用二进制分析工具，提取特征和函数之间的关系，并存入数据库进行后续查询。检测特征也是先提取特征和函数之间的关系，然后去查找提取出来的特征。</p>
+<p>这个思路和逆向工程中的思路类似，例如我知道 curl 开源库的 "tool_help" 函数使用了 "Usage: curl [options...] <url>" 字符串，那么我在逆向别的文件中看到 "Usage: curl [options...] <url>" 字符串的时候，就可以考虑这个函数是不是 curl 开源库中的 "tool_help" 函数了，如果别的开源库都没有这个字符串，那说明这个函数很大概率就是 "tool_help" 函数。</p>
+<h2 id="具体实现">具体实现</h2>
+<h3 id="数据库设计">数据库设计</h3>
+<p>特征 &lt;1=N&gt; (开源库, 版本, 函数)。特征为字符串经过 xxhash 得到的值。</p>
+<pre class="giallo" style="color-scheme: light dark; color: light-dark(#90A4AE, #BABED8); background-color: light-dark(#FAFAFA, #292D3E);"><code data-lang="sql"><span class="giallo-l"><span style="color: light-dark(#F76D47, #F78C6C);">CREATE</span><span style="color: light-dark(#F76D47, #F78C6C);"> TABLE</span><span style="color: light-dark(#6182B8, #82AAFF);"> IF</span><span style="color: light-dark(#F76D47, #F78C6C);"> NOT</span><span style="color: light-dark(#F76D47, #F78C6C);"> EXISTS</span><span> info (</span></span>
+<span class="giallo-l"><span>    id </span><span style="color: light-dark(#9C3EDA, #C792EA);">INTEGER</span><span style="color: light-dark(#9C3EDA, #C792EA);"> PRIMARY KEY</span><span>,</span></span>
+<span class="giallo-l"><span>    library </span><span style="color: light-dark(#9C3EDA, #C792EA);">TEXT</span><span>,</span></span>
+<span class="giallo-l"><span style="color: light-dark(#F76D47, #F78C6C);">    version</span><span style="color: light-dark(#9C3EDA, #C792EA);"> TEXT</span><span>,</span></span>
+<span class="giallo-l"><span style="color: light-dark(#F76D47, #F78C6C);">    function</span><span style="color: light-dark(#9C3EDA, #C792EA);"> TEXT</span><span>,</span></span>
+<span class="giallo-l"><span>    offset </span><span style="color: light-dark(#9C3EDA, #C792EA);">INTEGER</span><span>,</span></span>
+<span class="giallo-l"><span>    callrefs </span><span style="color: light-dark(#9C3EDA, #C792EA);">TEXT</span><span>,</span></span>
+<span class="giallo-l"><span style="color: light-dark(#F76D47, #F78C6C);">    UNIQUE</span><span>(library, </span><span style="color: light-dark(#F76D47, #F78C6C);">version</span><span>, </span><span style="color: light-dark(#F76D47, #F78C6C);">function</span><span>)</span></span>
+<span class="giallo-l"><span>);</span></span>
+<span class="giallo-l"><span style="color: light-dark(#F76D47, #F78C6C);">CREATE</span><span style="color: light-dark(#F76D47, #F78C6C);"> TABLE</span><span style="color: light-dark(#6182B8, #82AAFF);"> IF</span><span style="color: light-dark(#F76D47, #F78C6C);"> NOT</span><span style="color: light-dark(#F76D47, #F78C6C);"> EXISTS</span><span> hash_info (</span></span>
+<span class="giallo-l"><span style="color: light-dark(#F76D47, #F78C6C);">    hash</span><span style="color: light-dark(#9C3EDA, #C792EA);"> INTEGER</span><span>,</span></span>
+<span class="giallo-l"><span>    info_id </span><span style="color: light-dark(#9C3EDA, #C792EA);">INTEGER</span><span>,</span></span>
+<span class="giallo-l"><span style="color: light-dark(#F76D47, #F78C6C);">    UNIQUE</span><span>(info_id, </span><span style="color: light-dark(#F76D47, #F78C6C);">hash</span><span>)</span></span>
+<span class="giallo-l"><span>);</span></span></code></pre><h3 id="提取特征和函数之间的关系">提取特征和函数之间的关系</h3>
+<p>这里使用了 rizin 这个分析工具，使用 "aaa" 命令进行分析，然后使用 "afl" 命令获取函数的名字，偏移等信息，并将函数和数据的引用关系信息存储。在后面获取函数中字符串常量，通过之前的引用关系，查找字符串和函数的关系。这里将字符串使用 xxhash 进行哈希，并在数据库中做了索引，来降低查找字符串特征的时间。录入文件的时候可以下载他的 debuginfo, rizin 会在分析的时候自动加载 debuginfo，来完善函数名字信息，函数名字会带有 "dbg." 开头。</p>
+<pre class="giallo" style="color-scheme: light dark; color: light-dark(#90A4AE, #BABED8); background-color: light-dark(#FAFAFA, #292D3E);"><code data-lang="python"><span class="giallo-l"><span style="color: light-dark(#9C3EDA, #C792EA);">def</span><span style="color: light-dark(#6182B8, #82AAFF);"> analysis</span><span style="color: light-dark(#39ADB5, #89DDFF);">(</span><span style="font-style: italic;">file</span><span style="color: light-dark(#39ADB5, #89DDFF);">:</span><span style="color: light-dark(#E2931D, #FFCB6B);"> str</span><span style="color: light-dark(#39ADB5, #89DDFF);">)</span><span style="color: light-dark(#39ADB5, #89DDFF);"> -&gt;</span><span> tuple</span><span style="color: light-dark(#39ADB5, #89DDFF);">[</span><span>list</span><span style="color: light-dark(#39ADB5, #89DDFF);">[</span><span>Function</span><span style="color: light-dark(#39ADB5, #89DDFF);">]</span><span style="color: light-dark(#39ADB5, #89DDFF);">,</span><span> list</span><span style="color: light-dark(#39ADB5, #89DDFF);">[</span><span>StringAnalyseResult</span><span style="color: light-dark(#39ADB5, #89DDFF);">]</span><span style="color: light-dark(#39ADB5, #89DDFF);">]</span><span style="color: light-dark(#39ADB5, #89DDFF);"> |</span><span style="color: light-dark(#39ADB5, #89DDFF);"> None</span><span style="color: light-dark(#39ADB5, #89DDFF);">:</span></span>
+<span class="giallo-l"><span style="color: light-dark(#39ADB5, #89DDFF);font-style: italic;">    with</span><span style="color: light-dark(#6182B8, #82AAFF);"> rzopen</span><span style="color: light-dark(#39ADB5, #89DDFF);">(</span><span>file</span><span style="color: light-dark(#39ADB5, #89DDFF);">)</span><span style="color: light-dark(#39ADB5, #89DDFF);font-style: italic;"> as</span><span> p</span><span style="color: light-dark(#39ADB5, #89DDFF);">:</span></span>
+<span class="giallo-l"><span>        p</span><span style="color: light-dark(#39ADB5, #89DDFF);">.</span><span style="color: light-dark(#6182B8, #82AAFF);">cmd</span><span style="color: light-dark(#39ADB5, #89DDFF);">(</span><span style="color: light-dark(#39ADB5, #89DDFF);">&quot;</span><span style="color: light-dark(#91B859, #C3E88D);">aaa</span><span style="color: light-dark(#39ADB5, #89DDFF);">&quot;</span><span style="color: light-dark(#39ADB5, #89DDFF);">)</span></span>
+<span class="giallo-l"><span style="color: light-dark(#90A4AE, #676E95);font-style: italic;">        #</span><span style="color: light-dark(#90A4AE, #676E95);font-style: italic;"> Functions</span></span>
+<span class="giallo-l"><span>        res</span><span style="color: light-dark(#39ADB5, #89DDFF);"> =</span><span> p</span><span style="color: light-dark(#39ADB5, #89DDFF);">.</span><span style="color: light-dark(#6182B8, #82AAFF);">cmdj</span><span style="color: light-dark(#39ADB5, #89DDFF);">(</span><span style="color: light-dark(#39ADB5, #89DDFF);">&quot;</span><span style="color: light-dark(#91B859, #C3E88D);">aflj</span><span style="color: light-dark(#39ADB5, #89DDFF);">&quot;</span><span style="color: light-dark(#39ADB5, #89DDFF);">)</span></span>
+<span class="giallo-l"><span style="color: light-dark(#39ADB5, #89DDFF);font-style: italic;">        if</span><span style="color: light-dark(#39ADB5, #89DDFF);"> not</span><span> res</span><span style="color: light-dark(#39ADB5, #89DDFF);">:</span></span>
+<span class="giallo-l"><span style="color: light-dark(#39ADB5, #89DDFF);font-style: italic;">            return</span></span>
+<span class="giallo-l"><span>        funcs</span><span style="color: light-dark(#39ADB5, #89DDFF);"> =</span><span style="color: light-dark(#39ADB5, #89DDFF);"> [</span></span>
+<span class="giallo-l"><span style="color: light-dark(#6182B8, #82AAFF);">            Function</span><span style="color: light-dark(#39ADB5, #89DDFF);">(</span><span style="color: light-dark(#6182B8, #82AAFF);">i</span><span style="color: light-dark(#39ADB5, #89DDFF);">[</span><span style="color: light-dark(#39ADB5, #89DDFF);">&quot;</span><span style="color: light-dark(#91B859, #C3E88D);">name</span><span style="color: light-dark(#39ADB5, #89DDFF);">&quot;</span><span style="color: light-dark(#39ADB5, #89DDFF);">]</span><span style="color: light-dark(#39ADB5, #89DDFF);">,</span><span style="color: light-dark(#6182B8, #82AAFF);"> i</span><span style="color: light-dark(#39ADB5, #89DDFF);">[</span><span style="color: light-dark(#39ADB5, #89DDFF);">&quot;</span><span style="color: light-dark(#91B859, #C3E88D);">offset</span><span style="color: light-dark(#39ADB5, #89DDFF);">&quot;</span><span style="color: light-dark(#39ADB5, #89DDFF);">]</span><span style="color: light-dark(#39ADB5, #89DDFF);">,</span><span style="color: light-dark(#6182B8, #82AAFF);"> i</span><span style="color: light-dark(#39ADB5, #89DDFF);">[</span><span style="color: light-dark(#39ADB5, #89DDFF);">&quot;</span><span style="color: light-dark(#91B859, #C3E88D);">size</span><span style="color: light-dark(#39ADB5, #89DDFF);">&quot;</span><span style="color: light-dark(#39ADB5, #89DDFF);">]</span><span style="color: light-dark(#39ADB5, #89DDFF);">,</span><span style="color: light-dark(#6182B8, #82AAFF);"> i</span><span style="color: light-dark(#39ADB5, #89DDFF);">.</span><span style="color: light-dark(#6182B8, #82AAFF);">get</span><span style="color: light-dark(#39ADB5, #89DDFF);">(</span><span style="color: light-dark(#39ADB5, #89DDFF);">&quot;</span><span style="color: light-dark(#91B859, #C3E88D);">callrefs</span><span style="color: light-dark(#39ADB5, #89DDFF);">&quot;</span><span style="color: light-dark(#39ADB5, #89DDFF);">,</span><span style="color: light-dark(#39ADB5, #89DDFF);"> [</span><span style="color: light-dark(#39ADB5, #89DDFF);">]</span><span style="color: light-dark(#39ADB5, #89DDFF);">)</span><span style="color: light-dark(#39ADB5, #89DDFF);">)</span></span>
+<span class="giallo-l"><span style="color: light-dark(#39ADB5, #89DDFF);font-style: italic;">            for</span><span> i</span><span style="color: light-dark(#39ADB5, #89DDFF);font-style: italic;"> in</span><span> res</span></span>
+<span class="giallo-l"><span style="color: light-dark(#39ADB5, #89DDFF);">        ]</span></span>
+<span class="giallo-l"><span>        data_to_funcs</span><span style="color: light-dark(#39ADB5, #89DDFF);">:</span><span> dict</span><span style="color: light-dark(#39ADB5, #89DDFF);">[</span><span style="color: light-dark(#E2931D, #FFCB6B);">int</span><span style="color: light-dark(#39ADB5, #89DDFF);">,</span><span> list</span><span style="color: light-dark(#39ADB5, #89DDFF);">[</span><span style="color: light-dark(#E2931D, #FFCB6B);">int</span><span style="color: light-dark(#39ADB5, #89DDFF);">]</span><span style="color: light-dark(#39ADB5, #89DDFF);">]</span><span style="color: light-dark(#39ADB5, #89DDFF);"> =</span><span style="color: light-dark(#6182B8, #82AAFF);"> defaultdict</span><span style="color: light-dark(#39ADB5, #89DDFF);">(</span><span style="color: light-dark(#E2931D, #FFCB6B);">list</span><span style="color: light-dark(#39ADB5, #89DDFF);">)</span></span>
+<span class="giallo-l"><span style="color: light-dark(#39ADB5, #89DDFF);font-style: italic;">        for</span><span> func_idx</span><span style="color: light-dark(#39ADB5, #89DDFF);">,</span><span> i</span><span style="color: light-dark(#39ADB5, #89DDFF);font-style: italic;"> in</span><span style="color: light-dark(#6182B8, #82AAFF);"> enumerate</span><span style="color: light-dark(#39ADB5, #89DDFF);">(</span><span style="color: light-dark(#6182B8, #82AAFF);">res</span><span style="color: light-dark(#39ADB5, #89DDFF);">)</span><span style="color: light-dark(#39ADB5, #89DDFF);">:</span></span>
+<span class="giallo-l"><span style="color: light-dark(#90A4AE, #676E95);font-style: italic;">            #</span><span style="color: light-dark(#90A4AE, #676E95);font-style: italic;"> Process dataref to get data =&gt; functions index</span></span>
+<span class="giallo-l"><span style="color: light-dark(#39ADB5, #89DDFF);font-style: italic;">            for</span><span> ref</span><span style="color: light-dark(#39ADB5, #89DDFF);font-style: italic;"> in</span><span> i</span><span style="color: light-dark(#39ADB5, #89DDFF);">.</span><span style="color: light-dark(#6182B8, #82AAFF);">get</span><span style="color: light-dark(#39ADB5, #89DDFF);">(</span><span style="color: light-dark(#39ADB5, #89DDFF);">&quot;</span><span style="color: light-dark(#91B859, #C3E88D);">datarefs</span><span style="color: light-dark(#39ADB5, #89DDFF);">&quot;</span><span style="color: light-dark(#39ADB5, #89DDFF);">)</span><span style="color: light-dark(#39ADB5, #89DDFF);"> or</span><span style="color: light-dark(#39ADB5, #89DDFF);"> [</span><span style="color: light-dark(#39ADB5, #89DDFF);">]</span><span style="color: light-dark(#39ADB5, #89DDFF);">:</span></span>
+<span class="giallo-l"><span>                data_to_funcs</span><span style="color: light-dark(#39ADB5, #89DDFF);">[</span><span>ref</span><span style="color: light-dark(#39ADB5, #89DDFF);">[</span><span style="color: light-dark(#39ADB5, #89DDFF);">&quot;</span><span style="color: light-dark(#91B859, #C3E88D);">to</span><span style="color: light-dark(#39ADB5, #89DDFF);">&quot;</span><span style="color: light-dark(#39ADB5, #89DDFF);">]</span><span style="color: light-dark(#39ADB5, #89DDFF);">]</span><span style="color: light-dark(#39ADB5, #89DDFF);">.</span><span style="color: light-dark(#6182B8, #82AAFF);">append</span><span style="color: light-dark(#39ADB5, #89DDFF);">(</span><span style="color: light-dark(#6182B8, #82AAFF);">func_idx</span><span style="color: light-dark(#39ADB5, #89DDFF);">)</span></span>
+<span class="giallo-l"><span style="color: light-dark(#90A4AE, #676E95);font-style: italic;">        #</span><span style="color: light-dark(#90A4AE, #676E95);font-style: italic;"> Strings</span></span>
+<span class="giallo-l"><span>        res</span><span style="color: light-dark(#39ADB5, #89DDFF);"> =</span><span> p</span><span style="color: light-dark(#39ADB5, #89DDFF);">.</span><span style="color: light-dark(#6182B8, #82AAFF);">cmdj</span><span style="color: light-dark(#39ADB5, #89DDFF);">(</span><span style="color: light-dark(#39ADB5, #89DDFF);">&quot;</span><span style="color: light-dark(#91B859, #C3E88D);">izj</span><span style="color: light-dark(#39ADB5, #89DDFF);">&quot;</span><span style="color: light-dark(#39ADB5, #89DDFF);">)</span></span>
+<span class="giallo-l"><span style="color: light-dark(#39ADB5, #89DDFF);font-style: italic;">        if</span><span style="color: light-dark(#39ADB5, #89DDFF);"> not</span><span> res</span><span style="color: light-dark(#39ADB5, #89DDFF);">:</span></span>
+<span class="giallo-l"><span style="color: light-dark(#39ADB5, #89DDFF);font-style: italic;">            return</span></span>
+<span class="giallo-l"><span>        strings</span><span style="color: light-dark(#39ADB5, #89DDFF);">:</span><span> list</span><span style="color: light-dark(#39ADB5, #89DDFF);">[</span><span>StringAnalyseResult</span><span style="color: light-dark(#39ADB5, #89DDFF);">]</span><span style="color: light-dark(#39ADB5, #89DDFF);"> =</span><span style="color: light-dark(#39ADB5, #89DDFF);"> [</span><span style="color: light-dark(#39ADB5, #89DDFF);">]</span></span>
+<span class="giallo-l"><span style="color: light-dark(#39ADB5, #89DDFF);font-style: italic;">        for</span><span> v</span><span style="color: light-dark(#39ADB5, #89DDFF);font-style: italic;"> in</span><span> res</span><span style="color: light-dark(#39ADB5, #89DDFF);">:</span></span>
+<span class="giallo-l"><span style="color: light-dark(#39ADB5, #89DDFF);font-style: italic;">            for</span><span> func_idx</span><span style="color: light-dark(#39ADB5, #89DDFF);font-style: italic;"> in</span><span> data_to_funcs</span><span style="color: light-dark(#39ADB5, #89DDFF);">.</span><span style="color: light-dark(#6182B8, #82AAFF);">get</span><span style="color: light-dark(#39ADB5, #89DDFF);">(</span><span style="color: light-dark(#6182B8, #82AAFF);">v</span><span style="color: light-dark(#39ADB5, #89DDFF);">[</span><span style="color: light-dark(#39ADB5, #89DDFF);">&quot;</span><span style="color: light-dark(#91B859, #C3E88D);">vaddr</span><span style="color: light-dark(#39ADB5, #89DDFF);">&quot;</span><span style="color: light-dark(#39ADB5, #89DDFF);">]</span><span style="color: light-dark(#39ADB5, #89DDFF);">,</span><span style="color: light-dark(#39ADB5, #89DDFF);"> (</span><span style="color: light-dark(#39ADB5, #89DDFF);">)</span><span style="color: light-dark(#39ADB5, #89DDFF);">)</span><span style="color: light-dark(#39ADB5, #89DDFF);">:</span></span>
+<span class="giallo-l"><span>                s</span><span style="color: light-dark(#39ADB5, #89DDFF);"> =</span><span> v</span><span style="color: light-dark(#39ADB5, #89DDFF);">[</span><span style="color: light-dark(#39ADB5, #89DDFF);">&quot;</span><span style="color: light-dark(#91B859, #C3E88D);">string</span><span style="color: light-dark(#39ADB5, #89DDFF);">&quot;</span><span style="color: light-dark(#39ADB5, #89DDFF);">]</span></span>
+<span class="giallo-l"><span>                strings</span><span style="color: light-dark(#39ADB5, #89DDFF);">.</span><span style="color: light-dark(#6182B8, #82AAFF);">append</span><span style="color: light-dark(#39ADB5, #89DDFF);">(</span><span style="color: light-dark(#39ADB5, #89DDFF);">(</span><span style="color: light-dark(#6182B8, #82AAFF);">func_idx</span><span style="color: light-dark(#39ADB5, #89DDFF);">,</span><span style="color: light-dark(#6182B8, #82AAFF);"> s</span><span style="color: light-dark(#39ADB5, #89DDFF);">,</span><span style="color: light-dark(#6182B8, #82AAFF);"> xxh3_signed</span><span style="color: light-dark(#39ADB5, #89DDFF);">(</span><span style="color: light-dark(#6182B8, #82AAFF);">s</span><span style="color: light-dark(#39ADB5, #89DDFF);">.</span><span style="color: light-dark(#6182B8, #82AAFF);">encode</span><span style="color: light-dark(#39ADB5, #89DDFF);">(</span><span style="color: light-dark(#39ADB5, #89DDFF);">)</span><span style="color: light-dark(#39ADB5, #89DDFF);">)</span><span style="color: light-dark(#39ADB5, #89DDFF);">)</span><span style="color: light-dark(#39ADB5, #89DDFF);">)</span></span>
+<span class="giallo-l"><span style="color: light-dark(#39ADB5, #89DDFF);font-style: italic;">        return</span><span style="color: light-dark(#39ADB5, #89DDFF);"> (</span><span>funcs</span><span style="color: light-dark(#39ADB5, #89DDFF);">,</span><span> strings</span><span style="color: light-dark(#39ADB5, #89DDFF);">)</span></span></code></pre><h3 id="查找提取出来的特征">查找提取出来的特征</h3>
+<p>在查找特征的时候，我们将被检测文件中的所有特征和数据库中的特征进行对比，统计特征在哪些开源库中出现过，然后和开源库的所有特征数量进行对比，如果重合度超过了阈值，则说明被检测文件用了这个开源库。0.4 这个阈值是经验参数，降低会同时提高误报率和检出率，个人建议最低也得是 0.2。</p>
+<pre class="giallo" style="color-scheme: light dark; color: light-dark(#90A4AE, #BABED8); background-color: light-dark(#FAFAFA, #292D3E);"><code data-lang="python"><span class="giallo-l"><span style="color: light-dark(#9C3EDA, #C792EA);">def</span><span style="color: light-dark(#6182B8, #82AAFF);"> query_library</span><span style="color: light-dark(#39ADB5, #89DDFF);">(</span></span>
+<span class="giallo-l"><span style="font-style: italic;">    conn</span><span style="color: light-dark(#39ADB5, #89DDFF);">:</span><span style="color: light-dark(#39ADB5, #89DDFF);"> &quot;</span><span style="color: light-dark(#91B859, #C3E88D);">Connection</span><span style="color: light-dark(#39ADB5, #89DDFF);">&quot;</span><span style="color: light-dark(#39ADB5, #89DDFF);">,</span><span style="font-style: italic;"> funcs</span><span style="color: light-dark(#39ADB5, #89DDFF);">:</span><span> list</span><span style="color: light-dark(#39ADB5, #89DDFF);">[</span><span>Function</span><span style="color: light-dark(#39ADB5, #89DDFF);">]</span><span style="color: light-dark(#39ADB5, #89DDFF);">,</span><span style="font-style: italic;"> strings</span><span style="color: light-dark(#39ADB5, #89DDFF);">:</span><span> list</span><span style="color: light-dark(#39ADB5, #89DDFF);">[</span><span>StringAnalyseResult</span><span style="color: light-dark(#39ADB5, #89DDFF);">]</span></span>
+<span class="giallo-l"><span style="color: light-dark(#39ADB5, #89DDFF);">)</span><span style="color: light-dark(#39ADB5, #89DDFF);">:</span></span>
+<span class="giallo-l"><span>    cnt</span><span style="color: light-dark(#39ADB5, #89DDFF);">:</span><span> Counter</span><span style="color: light-dark(#39ADB5, #89DDFF);">[</span><span>tuple</span><span style="color: light-dark(#39ADB5, #89DDFF);">[</span><span style="color: light-dark(#E2931D, #FFCB6B);">str</span><span style="color: light-dark(#39ADB5, #89DDFF);">,</span><span style="color: light-dark(#E2931D, #FFCB6B);"> str</span><span style="color: light-dark(#39ADB5, #89DDFF);">]</span><span style="color: light-dark(#39ADB5, #89DDFF);">]</span><span style="color: light-dark(#39ADB5, #89DDFF);"> =</span><span style="color: light-dark(#6182B8, #82AAFF);"> Counter</span><span style="color: light-dark(#39ADB5, #89DDFF);">(</span><span style="color: light-dark(#39ADB5, #89DDFF);">)</span></span>
+<span class="giallo-l"><span style="color: light-dark(#39ADB5, #89DDFF);font-style: italic;">    for</span><span> h</span><span style="color: light-dark(#39ADB5, #89DDFF);font-style: italic;"> in</span><span style="color: light-dark(#39ADB5, #89DDFF);"> {</span><span>i</span><span style="color: light-dark(#39ADB5, #89DDFF);font-style: italic;"> for</span><span> _</span><span style="color: light-dark(#39ADB5, #89DDFF);">,</span><span> _</span><span style="color: light-dark(#39ADB5, #89DDFF);">,</span><span> i</span><span style="color: light-dark(#39ADB5, #89DDFF);font-style: italic;"> in</span><span> strings</span><span style="color: light-dark(#39ADB5, #89DDFF);">}</span><span style="color: light-dark(#39ADB5, #89DDFF);">:</span></span>
+<span class="giallo-l"><span style="color: light-dark(#90A4AE, #676E95);font-style: italic;">        #</span><span style="color: light-dark(#90A4AE, #676E95);font-style: italic;"> Calculate (library,version) match count</span></span>
+<span class="giallo-l"><span>        cur</span><span style="color: light-dark(#39ADB5, #89DDFF);"> =</span><span> conn</span><span style="color: light-dark(#39ADB5, #89DDFF);">.</span><span style="color: light-dark(#6182B8, #82AAFF);">execute</span><span style="color: light-dark(#39ADB5, #89DDFF);">(</span></span>
+<span class="giallo-l"><span style="color: light-dark(#39ADB5, #89DDFF);">            &quot;&quot;&quot;</span></span>
+<span class="giallo-l"><span style="color: light-dark(#91B859, #C3E88D);">            SELECT library, version</span></span>
+<span class="giallo-l"><span style="color: light-dark(#91B859, #C3E88D);">            FROM info, hash_info</span></span>
+<span class="giallo-l"><span style="color: light-dark(#91B859, #C3E88D);">            WHERE hash = ? AND info.id = hash_info.info_id</span></span>
+<span class="giallo-l"><span style="color: light-dark(#39ADB5, #89DDFF);">            &quot;&quot;&quot;</span><span style="color: light-dark(#39ADB5, #89DDFF);">,</span></span>
+<span class="giallo-l"><span style="color: light-dark(#39ADB5, #89DDFF);">            (</span><span style="color: light-dark(#6182B8, #82AAFF);">h</span><span style="color: light-dark(#39ADB5, #89DDFF);">,</span><span style="color: light-dark(#39ADB5, #89DDFF);">)</span><span style="color: light-dark(#39ADB5, #89DDFF);">,</span></span>
+<span class="giallo-l"><span style="color: light-dark(#39ADB5, #89DDFF);">        )</span></span>
+<span class="giallo-l"><span>        res</span><span style="color: light-dark(#39ADB5, #89DDFF);"> =</span><span> cur</span><span style="color: light-dark(#39ADB5, #89DDFF);">.</span><span style="color: light-dark(#6182B8, #82AAFF);">fetchall</span><span style="color: light-dark(#39ADB5, #89DDFF);">(</span><span style="color: light-dark(#39ADB5, #89DDFF);">)</span></span>
+<span class="giallo-l"><span style="color: light-dark(#39ADB5, #89DDFF);font-style: italic;">        for</span><span> r</span><span style="color: light-dark(#39ADB5, #89DDFF);font-style: italic;"> in</span><span> res</span><span style="color: light-dark(#39ADB5, #89DDFF);">:</span></span>
+<span class="giallo-l"><span>            cnt</span><span style="color: light-dark(#39ADB5, #89DDFF);">[</span><span>r</span><span style="color: light-dark(#39ADB5, #89DDFF);">]</span><span style="color: light-dark(#39ADB5, #89DDFF);"> +=</span><span style="color: light-dark(#F76D47, #F78C6C);"> 1</span></span>
+<span class="giallo-l"><span style="color: light-dark(#39ADB5, #89DDFF);font-style: italic;">    for</span><span> info</span><span style="color: light-dark(#39ADB5, #89DDFF);">,</span><span> count</span><span style="color: light-dark(#39ADB5, #89DDFF);font-style: italic;"> in</span><span> cnt</span><span style="color: light-dark(#39ADB5, #89DDFF);">.</span><span style="color: light-dark(#6182B8, #82AAFF);">items</span><span style="color: light-dark(#39ADB5, #89DDFF);">(</span><span style="color: light-dark(#39ADB5, #89DDFF);">)</span><span style="color: light-dark(#39ADB5, #89DDFF);">:</span></span>
+<span class="giallo-l"><span style="color: light-dark(#90A4AE, #676E95);font-style: italic;">        #</span><span style="color: light-dark(#90A4AE, #676E95);font-style: italic;"> Get all hash count for current library and version</span></span>
+<span class="giallo-l"><span>        cur</span><span style="color: light-dark(#39ADB5, #89DDFF);"> =</span><span> conn</span><span style="color: light-dark(#39ADB5, #89DDFF);">.</span><span style="color: light-dark(#6182B8, #82AAFF);">execute</span><span style="color: light-dark(#39ADB5, #89DDFF);">(</span></span>
+<span class="giallo-l"><span style="color: light-dark(#39ADB5, #89DDFF);">            &quot;&quot;&quot;</span></span>
+<span class="giallo-l"><span style="color: light-dark(#91B859, #C3E88D);">            SELECT COUNT(hash)</span></span>
+<span class="giallo-l"><span style="color: light-dark(#91B859, #C3E88D);">            FROM info, hash_info</span></span>
+<span class="giallo-l"><span style="color: light-dark(#91B859, #C3E88D);">            WHERE library = ? AND version = ? AND info.id = hash_info.info_id</span></span>
+<span class="giallo-l"><span style="color: light-dark(#39ADB5, #89DDFF);">            &quot;&quot;&quot;</span><span style="color: light-dark(#39ADB5, #89DDFF);">,</span></span>
+<span class="giallo-l"><span style="color: light-dark(#6182B8, #82AAFF);">            info</span><span style="color: light-dark(#39ADB5, #89DDFF);">,</span></span>
+<span class="giallo-l"><span style="color: light-dark(#39ADB5, #89DDFF);">        )</span></span>
+<span class="giallo-l"><span>        res</span><span style="color: light-dark(#39ADB5, #89DDFF);"> =</span><span> cur</span><span style="color: light-dark(#39ADB5, #89DDFF);">.</span><span style="color: light-dark(#6182B8, #82AAFF);">fetchone</span><span style="color: light-dark(#39ADB5, #89DDFF);">(</span><span style="color: light-dark(#39ADB5, #89DDFF);">)</span></span>
+<span class="giallo-l"><span>        total</span><span style="color: light-dark(#39ADB5, #89DDFF);"> =</span><span> res</span><span style="color: light-dark(#39ADB5, #89DDFF);">[</span><span style="color: light-dark(#F76D47, #F78C6C);">0</span><span style="color: light-dark(#39ADB5, #89DDFF);">]</span></span>
+<span class="giallo-l"><span style="color: light-dark(#90A4AE, #676E95);font-style: italic;">        #</span><span style="color: light-dark(#90A4AE, #676E95);font-style: italic;"> Check confidence</span></span>
+<span class="giallo-l"><span>        confidence</span><span style="color: light-dark(#39ADB5, #89DDFF);"> =</span><span> count</span><span style="color: light-dark(#39ADB5, #89DDFF);"> /</span><span> total</span></span>
+<span class="giallo-l"><span style="color: light-dark(#39ADB5, #89DDFF);font-style: italic;">        if</span><span> confidence</span><span style="color: light-dark(#39ADB5, #89DDFF);"> &lt;</span><span style="color: light-dark(#F76D47, #F78C6C);"> 0.4</span><span style="color: light-dark(#39ADB5, #89DDFF);">:</span></span>
+<span class="giallo-l"><span style="color: light-dark(#39ADB5, #89DDFF);font-style: italic;">            continue</span></span>
+<span class="giallo-l"><span style="color: light-dark(#6182B8, #82AAFF);">        print</span><span style="color: light-dark(#39ADB5, #89DDFF);">(</span><span style="color: light-dark(#6182B8, #82AAFF);">info</span><span style="color: light-dark(#39ADB5, #89DDFF);">,</span><span style="color: light-dark(#6182B8, #82AAFF);"> confidence</span><span style="color: light-dark(#39ADB5, #89DDFF);">,</span><span style="color: light-dark(#6182B8, #82AAFF);"> count</span><span style="color: light-dark(#39ADB5, #89DDFF);">,</span><span style="color: light-dark(#6182B8, #82AAFF);"> total</span><span style="color: light-dark(#39ADB5, #89DDFF);">)</span></span>
+<span class="giallo-l"><span style="color: light-dark(#6182B8, #82AAFF);">        recover_funcname</span><span style="color: light-dark(#39ADB5, #89DDFF);">(</span><span style="color: light-dark(#6182B8, #82AAFF);">conn</span><span style="color: light-dark(#39ADB5, #89DDFF);">,</span><span style="color: light-dark(#6182B8, #82AAFF);"> info</span><span style="color: light-dark(#39ADB5, #89DDFF);">,</span><span style="color: light-dark(#6182B8, #82AAFF);"> funcs</span><span style="color: light-dark(#39ADB5, #89DDFF);">,</span><span style="color: light-dark(#6182B8, #82AAFF);"> strings</span><span style="color: light-dark(#39ADB5, #89DDFF);">)</span></span></code></pre>
+<p>在知道了被检测文件用了哪些开源库的情况下，我们可以根据数据库中开源库函数和特征的关系，来还原出被检测文件中函数和特征的关系。先确认开源库，再确认函数这种做法，能降低某些字符串出现在多个不同的开源库的不同函数中，导致错误检测的情况。如果出现一个提取出来的字符串对应多个函数的情况，我们直接忽略，不将这个字符串作为识别特征。</p>
+<pre class="giallo" style="color-scheme: light dark; color: light-dark(#90A4AE, #BABED8); background-color: light-dark(#FAFAFA, #292D3E);"><code data-lang="python"><span class="giallo-l"><span style="color: light-dark(#9C3EDA, #C792EA);">def</span><span style="color: light-dark(#6182B8, #82AAFF);"> recover_funcname</span><span style="color: light-dark(#39ADB5, #89DDFF);">(</span></span>
+<span class="giallo-l"><span style="font-style: italic;">    conn</span><span style="color: light-dark(#39ADB5, #89DDFF);">:</span><span style="color: light-dark(#39ADB5, #89DDFF);"> &quot;</span><span style="color: light-dark(#91B859, #C3E88D);">Connection</span><span style="color: light-dark(#39ADB5, #89DDFF);">&quot;</span><span style="color: light-dark(#39ADB5, #89DDFF);">,</span></span>
+<span class="giallo-l"><span style="font-style: italic;">    info</span><span style="color: light-dark(#39ADB5, #89DDFF);">:</span><span> tuple</span><span style="color: light-dark(#39ADB5, #89DDFF);">[</span><span style="color: light-dark(#E2931D, #FFCB6B);">str</span><span style="color: light-dark(#39ADB5, #89DDFF);">,</span><span style="color: light-dark(#E2931D, #FFCB6B);"> str</span><span style="color: light-dark(#39ADB5, #89DDFF);">]</span><span style="color: light-dark(#39ADB5, #89DDFF);">,</span></span>
+<span class="giallo-l"><span style="font-style: italic;">    funcs</span><span style="color: light-dark(#39ADB5, #89DDFF);">:</span><span> list</span><span style="color: light-dark(#39ADB5, #89DDFF);">[</span><span>Function</span><span style="color: light-dark(#39ADB5, #89DDFF);">]</span><span style="color: light-dark(#39ADB5, #89DDFF);">,</span></span>
+<span class="giallo-l"><span style="font-style: italic;">    strings</span><span style="color: light-dark(#39ADB5, #89DDFF);">:</span><span> list</span><span style="color: light-dark(#39ADB5, #89DDFF);">[</span><span>StringAnalyseResult</span><span style="color: light-dark(#39ADB5, #89DDFF);">]</span><span style="color: light-dark(#39ADB5, #89DDFF);">,</span></span>
+<span class="giallo-l"><span style="color: light-dark(#39ADB5, #89DDFF);">)</span><span style="color: light-dark(#39ADB5, #89DDFF);">:</span></span>
+<span class="giallo-l"><span>    matched</span><span style="color: light-dark(#39ADB5, #89DDFF);"> =</span><span style="color: light-dark(#E2931D, #FFCB6B);"> set</span><span style="color: light-dark(#39ADB5, #89DDFF);">(</span><span style="color: light-dark(#39ADB5, #89DDFF);">)</span></span>
+<span class="giallo-l"><span style="color: light-dark(#39ADB5, #89DDFF);font-style: italic;">    for</span><span> func_idx</span><span style="color: light-dark(#39ADB5, #89DDFF);">,</span><span> string</span><span style="color: light-dark(#39ADB5, #89DDFF);">,</span><span> h</span><span style="color: light-dark(#39ADB5, #89DDFF);font-style: italic;"> in</span><span> strings</span><span style="color: light-dark(#39ADB5, #89DDFF);">:</span></span>
+<span class="giallo-l"><span style="color: light-dark(#90A4AE, #676E95);font-style: italic;">        #</span><span style="color: light-dark(#90A4AE, #676E95);font-style: italic;"> Recover function name by using string match</span></span>
+<span class="giallo-l"><span style="color: light-dark(#39ADB5, #89DDFF);font-style: italic;">        if</span><span> h</span><span style="color: light-dark(#39ADB5, #89DDFF);"> in</span><span> matched</span><span style="color: light-dark(#39ADB5, #89DDFF);">:</span></span>
+<span class="giallo-l"><span style="color: light-dark(#39ADB5, #89DDFF);font-style: italic;">            continue</span></span>
+<span class="giallo-l"><span>        matched</span><span style="color: light-dark(#39ADB5, #89DDFF);">.</span><span style="color: light-dark(#6182B8, #82AAFF);">add</span><span style="color: light-dark(#39ADB5, #89DDFF);">(</span><span style="color: light-dark(#6182B8, #82AAFF);">h</span><span style="color: light-dark(#39ADB5, #89DDFF);">)</span></span>
+<span class="giallo-l"><span>        cur</span><span style="color: light-dark(#39ADB5, #89DDFF);"> =</span><span> conn</span><span style="color: light-dark(#39ADB5, #89DDFF);">.</span><span style="color: light-dark(#6182B8, #82AAFF);">execute</span><span style="color: light-dark(#39ADB5, #89DDFF);">(</span></span>
+<span class="giallo-l"><span style="color: light-dark(#39ADB5, #89DDFF);">            &quot;&quot;&quot;</span></span>
+<span class="giallo-l"><span style="color: light-dark(#91B859, #C3E88D);">            SELECT function</span></span>
+<span class="giallo-l"><span style="color: light-dark(#91B859, #C3E88D);">            FROM info, hash_info</span></span>
+<span class="giallo-l"><span style="color: light-dark(#91B859, #C3E88D);">            WHERE library = ? AND version = ? AND hash = ? AND info.id = hash_info.info_id</span></span>
+<span class="giallo-l"><span style="color: light-dark(#39ADB5, #89DDFF);">            &quot;&quot;&quot;</span><span style="color: light-dark(#39ADB5, #89DDFF);">,</span></span>
+<span class="giallo-l"><span style="color: light-dark(#39ADB5, #89DDFF);">            (</span></span>
+<span class="giallo-l"><span style="color: light-dark(#6182B8, #82AAFF);">                info</span><span style="color: light-dark(#39ADB5, #89DDFF);">[</span><span style="color: light-dark(#F76D47, #F78C6C);">0</span><span style="color: light-dark(#39ADB5, #89DDFF);">]</span><span style="color: light-dark(#39ADB5, #89DDFF);">,</span></span>
+<span class="giallo-l"><span style="color: light-dark(#6182B8, #82AAFF);">                info</span><span style="color: light-dark(#39ADB5, #89DDFF);">[</span><span style="color: light-dark(#F76D47, #F78C6C);">1</span><span style="color: light-dark(#39ADB5, #89DDFF);">]</span><span style="color: light-dark(#39ADB5, #89DDFF);">,</span></span>
+<span class="giallo-l"><span style="color: light-dark(#6182B8, #82AAFF);">                h</span><span style="color: light-dark(#39ADB5, #89DDFF);">,</span></span>
+<span class="giallo-l"><span style="color: light-dark(#39ADB5, #89DDFF);">            )</span><span style="color: light-dark(#39ADB5, #89DDFF);">,</span></span>
+<span class="giallo-l"><span style="color: light-dark(#39ADB5, #89DDFF);">        )</span></span>
+<span class="giallo-l"><span>        res</span><span style="color: light-dark(#39ADB5, #89DDFF);"> =</span><span> cur</span><span style="color: light-dark(#39ADB5, #89DDFF);">.</span><span style="color: light-dark(#6182B8, #82AAFF);">fetchall</span><span style="color: light-dark(#39ADB5, #89DDFF);">(</span><span style="color: light-dark(#39ADB5, #89DDFF);">)</span></span>
+<span class="giallo-l"><span style="color: light-dark(#39ADB5, #89DDFF);font-style: italic;">        if</span><span style="color: light-dark(#39ADB5, #89DDFF);"> not</span><span> res</span><span style="color: light-dark(#39ADB5, #89DDFF);"> or</span><span style="color: light-dark(#6182B8, #82AAFF);"> len</span><span style="color: light-dark(#39ADB5, #89DDFF);">(</span><span style="color: light-dark(#6182B8, #82AAFF);">res</span><span style="color: light-dark(#39ADB5, #89DDFF);">)</span><span style="color: light-dark(#39ADB5, #89DDFF);"> &gt;</span><span style="color: light-dark(#F76D47, #F78C6C);"> 1</span><span style="color: light-dark(#39ADB5, #89DDFF);">:</span></span>
+<span class="giallo-l"><span style="color: light-dark(#90A4AE, #676E95);font-style: italic;">            #</span><span style="color: light-dark(#90A4AE, #676E95);font-style: italic;"> If current hash mapped to multiple function, ignore it</span></span>
+<span class="giallo-l"><span style="color: light-dark(#39ADB5, #89DDFF);font-style: italic;">            continue</span></span>
+<span class="giallo-l"><span>        orig_func_name</span><span style="color: light-dark(#39ADB5, #89DDFF);"> =</span><span> res</span><span style="color: light-dark(#39ADB5, #89DDFF);">[</span><span style="color: light-dark(#F76D47, #F78C6C);">0</span><span style="color: light-dark(#39ADB5, #89DDFF);">]</span><span style="color: light-dark(#39ADB5, #89DDFF);">[</span><span style="color: light-dark(#F76D47, #F78C6C);">0</span><span style="color: light-dark(#39ADB5, #89DDFF);">]</span></span>
+<span class="giallo-l"><span style="color: light-dark(#6182B8, #82AAFF);">        print</span><span style="color: light-dark(#39ADB5, #89DDFF);">(</span><span style="color: light-dark(#6182B8, #82AAFF);">funcs</span><span style="color: light-dark(#39ADB5, #89DDFF);">[</span><span style="color: light-dark(#6182B8, #82AAFF);">func_idx</span><span style="color: light-dark(#39ADB5, #89DDFF);">]</span><span style="color: light-dark(#39ADB5, #89DDFF);">.</span><span style="color: light-dark(#E53935, #F07178);">name</span><span style="color: light-dark(#39ADB5, #89DDFF);">,</span><span style="color: light-dark(#39ADB5, #89DDFF);"> &quot;</span><span style="color: light-dark(#91B859, #C3E88D);">=&gt;</span><span style="color: light-dark(#39ADB5, #89DDFF);">&quot;</span><span style="color: light-dark(#39ADB5, #89DDFF);">,</span><span style="color: light-dark(#6182B8, #82AAFF);"> orig_func_name</span><span style="color: light-dark(#39ADB5, #89DDFF);">,</span><span style="color: light-dark(#6182B8, #82AAFF);"> string</span><span style="color: light-dark(#39ADB5, #89DDFF);">.</span><span style="color: light-dark(#6182B8, #82AAFF);">encode</span><span style="color: light-dark(#39ADB5, #89DDFF);">(</span><span style="color: light-dark(#39ADB5, #89DDFF);">)</span><span style="color: light-dark(#39ADB5, #89DDFF);">)</span></span></code></pre>
+<blockquote>
+<p>完整代码请查看文章末尾的链接</p>
+</blockquote>
+<h2 id="效果">效果</h2>
+<p>我从 Debian 上下载了 bash, curl, libcrypto 和其对应的符号文件，arm64 架构的，来作为输入文件，总共录入了 6463 条特征。并对我电脑上 OpenSUSE x86_64 发行版中的不同版本 curl 进行了检测，成功检测出了 curl 开源软件，并且成功地将 46 个函数的名字进行了恢复，抽取前 5 个函数进行人工校验，3 个函数识别正确，1 个函数（dbg.read_field_headers）由于内联导致识别错误，1 个函数由于版本变化（录入特征的版本为 8.14.1，/usr/bin/curl 为 8.19.0）导致特征发生变化，产生识别错误。并且对无关的二进制文件进行检测，没有产生误报。</p>
+<p>部分输出如下：</p>
+<pre class="giallo" style="color-scheme: light dark; color: light-dark(#90A4AE, #BABED8); background-color: light-dark(#FAFAFA, #292D3E);"><code data-lang="plain"><span class="giallo-l"><span>$ uv run recover.py detect /usr/bin/curl</span></span>
+<span class="giallo-l"><span>(&#39;curl&#39;, &#39;8.14.1&#39;) 0.889090909090909 489 550</span></span>
+<span class="giallo-l"><span>fcn.0000de00 =&gt; dbg.get_param_word b&#39;Trailing data after quoted form parameter&#39;</span></span>
+<span class="giallo-l"><span>fcn.0000fd10 =&gt; dbg.read_field_headers b&#39;Out of memory for field headers&#39;</span></span>
+<span class="giallo-l"><span>fcn.0000fd10 =&gt; dbg.get_param_part b&#39;Out of memory for field header&#39;</span></span>
+<span class="giallo-l"><span>fcn.0000fd10 =&gt; dbg.get_param_part b&#39;Field filename not allowed here: %s&#39;</span></span>
+<span class="giallo-l"><span>fcn.0000fd10 =&gt; dbg.get_param_part b&#39;Field encoder not allowed here: %s&#39;</span></span>
+<span class="giallo-l"><span>fcn.00010980 =&gt; dbg.formparse b&#39;error while reading standard input&#39;</span></span>
+<span class="giallo-l"><span>fcn.00010980 =&gt; dbg.formparse b&#39;garbage at end of field specification: %s&#39;</span></span>
+<span class="giallo-l"><span>fcn.00010980 =&gt; dbg.formparse b&#39;Illegally formatted input field&#39;</span></span>
+<span class="giallo-l"><span>fcn.00012190 =&gt; dbg.getparameter b&quot;The filename argument &#39;%s&#39; looks like a flag.&quot;</span></span>
+<span class="giallo-l"><span>fcn.00012190 =&gt; fcn.00013ac0 b&#39;--trace overrides an earlier trace/verbose option&#39;</span></span>
+<span class="giallo-l"><span>fcn.00012190 =&gt; fcn.00013ac0 b&#39;--trace-ascii overrides an earlier trace/verbose option&#39;</span></span>
+<span class="giallo-l"><span>fcn.00012cc0 =&gt; dbg.ipfs_url_rewrite b&#39;IPFS automatic gateway detection failed&#39;</span></span>
+<span class="giallo-l"><span>fcn.00012cc0 =&gt; dbg.ipfs_url_rewrite b&#39;--ipfs-gateway was given a malformed URL&#39;</span></span>
+<span class="giallo-l"><span>fcn.00013650 =&gt; dbg.config2setopts b&#39;ignoring %s, not supported by libcurl with %s&#39;</span></span>
+<span class="giallo-l"><span>fcn.000137e0 =&gt; dbg.config2setopts b&#39;CURLOPT_SSL_SIGNATURE_ALGORITHMS&#39;</span></span>
+<span class="giallo-l"><span>...</span></span>
+<span class="giallo-l"><span>$ uv run recover.py detect /usr/bin/zstd</span></span>
+<span class="giallo-l"><span>ERROR: Cannot peek memory without specifying an address (esil address: 0x0009d718)</span></span>
+<span class="giallo-l"><span># 前面是 rizin 的无关报错，可以直接忽略</span></span>
+<span class="giallo-l"><span>$ uv run recover.py detect /usr/bin/objcopy</span></span>
+<span class="giallo-l"><span>$</span></span></code></pre><h2 id="总结">总结</h2>
+<p>这种方法和业界的 SOTA BDBA 正在使用的方法类似，BDBA 通过比较数据库中的特征和被检测文件中特征的重合度，来判断被检测文件是否用了开源项目。我在此基础上，加入函数和特征的关系分析，来实现恢复函数名字。如果只是检测程序中是否使用了开源库，可以将提取特征和函数之间的关系改成直接提取特征，降低分析程序带来的时间复杂度。对于版本识别，可以使用简单的正则表达式，提取出开源库的版本，使用更靠近的开源库版本特征，来实现更好的恢复函数和特征的关系。这个代码在后期还可以继续做出性能优化，包括降低分析的等级，对数据库进行优化，并发搜索等优化方法来减少分析的时间。</p>
+<p>在下一篇文章中，我将会探索深度学习，大模型等“维新派方法”来进行函数名恢复。</p>
+<p>完整代码在这：<a rel="external" href="https://github.com/chenx6/gadget/tree/master/bsca_old">https://github.com/chenx6/gadget/tree/master/bsca_old</a></p>
+<h2 id="Refs">Refs</h2>
+<div class="footnote-definition" id="1"><sup class="footnote-definition-label">1</sup>
+<p><a rel="external" href="https://www.blackduck.com/software-composition-analysis-tools/binary-analysis.html">Black Duck Binary Analysis</a></p>
+</div>
+
+  </div>
+  
+    <script src="https://utteranc.es/client.js"
+          repo="chenx6/chenx6.github.io"
+          issue-term="pathname"
+          label="comment"
+          theme="preferred-color-scheme"
+          crossorigin="anonymous"
+          async>
+    </script>
+  
+</div>
+
+  
+    <footer>2020-∞ chenx6 本作品采用<a rel="license" href="http://creativecommons.org/licenses/by/4.0/">知识共享署名 4.0 国际许可协议</a>进行许可。</footer>
+  
+</body>
+
+</html>
