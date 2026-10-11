@@ -35,9 +35,14 @@
     {% endif %}
   </header>
   {% block content %} {% endblock %}
-  {% if config.extra.copyright %}
-    <footer>{{ config.extra.copyright | safe }}</footer>
-  {% endif %}
+  <footer>
+    {% if config.extra.copyright %}
+      <p>{{ config.extra.copyright | safe }}</p>
+    {% endif %}
+    {% for img in config.extra.footer_imgs %}
+      <img src="{{ img }}">
+    {% endfor %}
+  </footer>
 </body>
 
 </html>
